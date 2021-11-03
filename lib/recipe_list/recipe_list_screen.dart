@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:recipe/add_recipe/add_recipe_screen.dart';
 
 // レシピ一覧画面
 class RecipeListPage extends StatelessWidget {
@@ -16,6 +17,12 @@ class RecipeListPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
+        title: Text(
+          'レシピ一覧',
+          style: TextStyle(
+            color: Colors.green,
+          ),
+        ),
       ),
       body: Column(),
       floatingActionButton: FloatingActionButton(
@@ -26,7 +33,14 @@ class RecipeListPage extends StatelessWidget {
           size: 30.0,
         ),
         elevation: 1.0,
-        onPressed: () => _onAddRecipe,
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddRecipeScreen(),
+                fullscreenDialog: true,
+              ));
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -37,43 +51,29 @@ class RecipeListPage extends StatelessWidget {
     );
   }
 
-  Future<void> _onAddRecipe() async {
-    print('onPressed');
-    // 画像ファイルを選択
-    final FilePickerResult? result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-    );
-
-    // 画像ファイルが選択された場合
-    if (result != null) {
-      // ログイン中のユーザー情報を取得
-      final User user = FirebaseAuth.instance.currentUser!;
-
-      // フォルダとファイル名を指定し画像ファイルをアップロード
-      final int timestamp = DateTime.now().microsecondsSinceEpoch;
-      final File file = File(result.files.single.path!);
-      final String name = file.path.split('/').last;
-      final String path = '${timestamp}_$name';
-      final TaskSnapshot task = await FirebaseStorage.instance
-          .ref()
-          .child('users/${user.uid}/photos') // フォルダ名
-          .child(path) // ファイル名
-          .putFile(file); // 画像ファイル
-    }
-  }
-}
-
-// レシピ一覧Widget
-class RecipeGridView extends StatelessWidget {
-  const RecipeGridView({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return GridView.count(
-      crossAxisCount: 2,
-      mainAxisSpacing: 16,
-      crossAxisSpacing: 16,
-      padding: const EdgeInsets.all(8),
-    );
-  }
+//   Future<void> _onAddRecipe() async {
+//     print('onPressed');
+//     // 画像ファイルを選択
+//     final FilePickerResult? result = await FilePicker.platform.pickFiles(
+//       type: FileType.image,
+//     );
+//
+//     // 画像ファイルが選択された場合
+//     if (result != null) {
+//       // ログイン中のユーザー情報を取得
+//       final User user = FirebaseAuth.instance.currentUser!;
+//
+//       // フォルダとファイル名を指定し画像ファイルをアップロード
+//       final int timestamp = DateTime.now().microsecondsSinceEpoch;
+//       final File file = File(result.files.single.path!);
+//       final String name = file.path.split('/').last;
+//       final String path = '${timestamp}_$name';
+//       final TaskSnapshot task = await FirebaseStorage.instance
+//           .ref()
+//           .child('users/${user.uid}/photos') // フォルダ名
+//           .child(path) // ファイル名
+//           .putFile(file); // 画像ファイル
+//     }
+//   }
+//
 }

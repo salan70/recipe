@@ -27,13 +27,17 @@ class _SignInScreenState extends State<SignInScreen> {
             children: [
               // タイトル
               Text(
-                'Photo App',
+                'Recipe App',
                 style: Theme.of(context).textTheme.headline4,
               ),
               SizedBox(height: 16),
               // 入力フォーム（メールアドレス）
               TextFormField(
-                decoration: InputDecoration(labelText: 'メールアドレス'),
+                // TextEditingControllerを設定
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: 'メールアドレス',
+                ),
                 keyboardType: TextInputType.emailAddress,
                 // メールアドレス用のバリデーション
                 validator: (String? value) {
@@ -47,13 +51,17 @@ class _SignInScreenState extends State<SignInScreen> {
               SizedBox(height: 8),
               // 入力フォーム（パスワード）
               TextFormField(
-                decoration: InputDecoration(labelText: 'パスワード'),
+                // TextEditingControllerを設定
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: 'パスワード',
+                ),
                 keyboardType: TextInputType.visiblePassword,
                 obscureText: true,
                 // パスワード用のバリデーション
                 validator: (String? value) {
                   if (value?.isEmpty == true) {
-                    Text('パスワード入力してください');
+                    // Text('パスワード入力してください');
                     return 'パスワードを入力してください!!!';
                   }
                   return null;
@@ -84,21 +92,50 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void _onSignIn() {
-    // 入力内容を確認する
-    if (_formKey.currentState?.validate() != true) {
-      // エラーメッセージがあるため処理を中断する
-      return;
+  Future<void> _onSignIn() async {
+    print('in onSignIn');
+    try {
+      if (_formKey.currentState?.validate() != true) {
+        // return;
+      }
+
+      // 新規登録と同じく入力された内容をもとにログイン処理を行う
+      final String email = _emailController.text;
+      final String password = _passwordController.text;
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => RecipeListPage(),
+        ),
+      );
+    } catch (e) {
+      // 失敗したらエラーメッセージを表示
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('エラー'),
+            content: Text(e.toString()),
+          );
+        },
+      );
     }
   }
 
   Future<void> _onSignUp() async {
     print('in onSignUp');
+    print(_emailController.text);
+    print(_passwordController.text);
     try {
       if (_formKey.currentState?.validate() != true) {
-        return;
+        print('in if');
+        print(_formKey.currentState);
+        print(_formKey.currentState?.validate());
+        // return;
       }
-
+      print('in regist');
       // メールアドレス・パスワードで新規登録
       //   TextEditingControllerから入力内容を取得
       //   Authenticationを使った複雑な処理はライブラリがやってくれる
@@ -114,6 +151,8 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       );
     } catch (e) {
+      print('in catch');
+      print(e.toString());
       // 失敗したらエラーメッセージを表示
       await showDialog(
         context: context,
