@@ -37,6 +37,7 @@ class AuthController extends StateNotifier<User?> {
     // ログインされていなければ、匿名でサインインしてログインさせる。
     if (user == null) {
       await _read(authRepositoryProvider).signInAnonymously();
+      print('新たに匿名でサインイン');
     }
   }
 
@@ -44,5 +45,10 @@ class AuthController extends StateNotifier<User?> {
   void signOut() async {
     // サインアウトメソッド
     await _read(authRepositoryProvider).signOut();
+  }
+
+  // ユーザー削除
+  Future<void> userDelete(User user) async {
+    await user.delete();
   }
 }

@@ -36,17 +36,21 @@ class MyApp extends StatelessWidget {
 class HomeScreen extends HookWidget {
   @override
   Widget build(BuildContext context) {
-    final authControllerState = useProvider(authControllerProvider);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('ShoppingList'),
-        leading: authControllerState != null
-            ? IconButton(
-                onPressed: () =>
-                    context.read(authControllerProvider.notifier).signOut(),
-                icon: Icon(Icons.logout))
-            : null,
-      ),
+    // final authControllerState = useProvider(authControllerProvider);
+    // return Scaffold(
+    //   appBar: AppBar(
+    //     title: Text('ShoppingList'),
+    //     leading: authControllerState != null
+    //         ? IconButton(
+    //             onPressed: () =>
+    //                 context.read(authControllerProvider.notifier).signOut(),
+    //             icon: Icon(Icons.logout))
+    //         : null,
+    //   ),
+    // );
+
+    return MaterialApp(
+      home: RecipeListPage(),
     );
   }
 }
