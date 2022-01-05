@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:recipe/domain/recipe.dart';
+import 'package:recipe/providers.dart';
 import 'package:uuid/uuid.dart';
 
 class TextFieldStateProcedures {
@@ -111,4 +116,75 @@ class ReorderableMultiTextFieldProcedures extends StatelessWidget {
       },
     );
   }
+}
+
+//
+
+class ProcedureListNotifier extends StateNotifier<List<Procedure>> {
+  ProcedureListNotifier([List<Procedure>? initialProcedure])
+      : super(initialProcedure ?? []);
+
+  ///Procedure関連
+  // 新しいProcedureを追加するメソッド
+  void addProcedure(Procedure procedure) {
+    state = [...state, procedure];
+  }
+
+  // IDを指定して、Procedureを削除するメソッド
+  void removeProcedure(String procedureId) {
+    state = [
+      for (final procedure in state)
+        if (procedure.id != procedureId) procedure,
+    ];
+  }
+}
+
+class ProceduresTextFieldState {
+  final String id;
+  // final TextEditingController controller;
+
+  ProceduresTextFieldState(this.id);
+}
+
+class TodoViewModelProvider extends StateNotifier<ProcedureState> {
+  TodoViewModelProvider(this._reader, this._todoRepository)
+      : super(const ProcedureState()) {
+    getProcedures();
+  }
+
+  final Reader _reader;
+  final TodoRepository _todoRepository;
+
+  Future<void> addTodo(String title) async {
+    final todo = await _todoRepository.addTodo(Todo(
+      title: title,
+      isDone: 0,
+    ));
+
+    state = state.copyWith(
+      todos: [todo, ...state.todos],
+    );
+  }
+
+  Future<void> getTodos() async {
+    final todos = await _todoRepository.getTodos();
+
+    state = state.copyWith(
+      todos: todos,
+    );
+  }
+}
+
+Widget procedureList(WidgetRef ref) {
+  final procedureViewModel = ref.watch(procedureListNotifierProvider.notifier);
+  final procedureState = ref.watch(procedureListNotifierProvider);
+
+  return ListView.builder(
+    itemCount: procedureState.todos.length,
+    itemBuilder: (BuildContext context, int index) {
+      final todo = procedureState.todos[index];
+
+      return procedureItem(todo, index, procedureViewModel);
+    },
+  );
 }

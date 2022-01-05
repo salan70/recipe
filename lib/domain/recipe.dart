@@ -1,4 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart';
+
+var _uuid = Uuid();
 
 class Recipe {
   Recipe(
@@ -21,17 +24,20 @@ class Recipe {
 }
 
 class Ingredient {
-  Ingredient(this.ingredientIndex, this.ingredientName, this.ingredientNum);
+  // Ingredient(this.ingredientIndex, this.ingredientName, this.ingredientNum);
 
   int? ingredientIndex;
   String? ingredientName;
-  double? ingredientNum;
+  // 本来はdouble
+  String? ingredientNum;
   // String? ingredientUnit;
 }
 
 class Procedure {
-  Procedure(this.procedureContent, this.procedureIndex);
+  Procedure({this.procedureContent, this.procedureIndex, String? id})
+      : id = id ?? _uuid.v4();
 
+  String? id;
   String? procedureContent;
   int? procedureIndex;
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:recipe/recipe_list/recipe_list_screen.dart';
+import 'package:recipe/view/recipe_list/recipe_list_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   @override

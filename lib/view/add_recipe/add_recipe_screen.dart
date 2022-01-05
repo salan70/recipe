@@ -6,15 +6,22 @@ import 'package:recipe/parts/reordable_text_field/ingredients.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipe/providers.dart';
-import 'package:recipe/recipe_list/recipe_list_screen.dart';
+import 'package:recipe/view/recipe_list/recipe_list_screen.dart';
 import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/add_recipe/add_redipe_model.dart';
+import 'package:recipe/view/add_recipe/add_redipe_model.dart';
+import 'package:uuid/uuid.dart';
 
 class AddRecipeScreen extends ConsumerWidget {
   final AddRecipeModel addRecipeModel = AddRecipeModel();
 
+  // 材料テキストフィールド 初期値
   final ReorderableMultiTextFieldControllerIngredients controllerIngredients =
-      ReorderableMultiTextFieldControllerIngredients([]);
+      ReorderableMultiTextFieldControllerIngredients([
+    TextFieldStateIngredients(
+      Uuid().v4(),
+      TextEditingController(text: ''),
+    )
+  ]);
 
   final ReorderableMultiTextFieldController controllerProcedures =
       ReorderableMultiTextFieldController([]);
@@ -75,7 +82,7 @@ class AddRecipeScreen extends ConsumerWidget {
             // 材料 手作り
             // Container(
             //   color: Colors.grey,
-            //   child: Column(
+            //   child: ListView(
             //     children: [],
             //   ),
             // ),

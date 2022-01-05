@@ -8,6 +8,8 @@ import 'package:uuid/uuid.dart';
 class TextFieldStateIngredients {
   final String id;
   final TextEditingController controller;
+  // final TextEditingController ingredientNameController;
+  // final TextEditingController ingredientNumController;
 
   TextFieldStateIngredients(this.id, this.controller);
 }
@@ -25,6 +27,11 @@ class ReorderableMultiTextFieldControllerIngredients
     );
 
     value = [...value, state];
+    print('-----------');
+    value.asMap().forEach((int i, value) {
+      print(i);
+      print(value.toString());
+    });
   }
 
   void remove(String id) {
@@ -57,8 +64,6 @@ class ReorderableMultiTextFieldControllerIngredients
   }
 }
 
-String? _selectedKey;
-
 class ReorderableMultiTextFieldIngredients extends ConsumerWidget {
   final ReorderableMultiTextFieldControllerIngredients controller;
   const ReorderableMultiTextFieldIngredients({
@@ -68,7 +73,9 @@ class ReorderableMultiTextFieldIngredients extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<Ingredient>? ingredientList;
+    Ingredient ingredient = Ingredient();
+
+    int ingredientIndex;
     String? ingredientName;
     String? ingredientNum;
 
@@ -97,25 +104,24 @@ class ReorderableMultiTextFieldIngredients extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: TextField(
-                          controller: textFieldState.controller,
+                          // controller: textFieldState.controller,
                           decoration: InputDecoration.collapsed(
                               hintText: "fill out here"),
                           onChanged: (String value) {
-                            // Providerから値を更新
-                            // context.read.(ingredientNameProvider).state = value;
-                            ingredientName = value;
+                            print('');
+                            ingredient.ingredientName = value;
+                            print(ingredient.ingredientName);
                           },
                         ),
                       ),
                       Expanded(
                         child: TextField(
-                          controller: textFieldState.controller,
+                          // controller: textFieldState.controller,
                           decoration: InputDecoration.collapsed(
                               hintText: "fill out here"),
                           onChanged: (String value) {
-                            // Providerから値を更新
-                            // context.read(ingredientNumProvider).state = value;
-                            ingredientNum = value;
+                            ingredient.ingredientNum = value;
+                            print(ingredient.ingredientNum);
                           },
                         ),
                       ),
