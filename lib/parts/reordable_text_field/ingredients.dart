@@ -8,8 +8,6 @@ import 'package:uuid/uuid.dart';
 class TextFieldStateIngredients {
   final String id;
   final TextEditingController controller;
-  // final TextEditingController ingredientNameController;
-  // final TextEditingController ingredientNumController;
 
   TextFieldStateIngredients(this.id, this.controller);
 }

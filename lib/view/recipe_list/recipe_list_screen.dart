@@ -32,7 +32,7 @@ class RecipeListPage extends StatelessWidget {
           color: Colors.green,
           size: 30.0,
         ),
-        elevation: 1.0,
+        elevation: 3.0,
         onPressed: () {
           Navigator.push(
               context,

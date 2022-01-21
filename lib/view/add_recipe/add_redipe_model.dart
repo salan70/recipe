@@ -11,7 +11,7 @@ class AddRecipeModel extends ChangeNotifier {
   String? recipeMemo;
   String? recipeImageURL;
 
-  Future addRecipe(Recipe recipe) async {
+  Future addRecipe(Recipe recipe, List<Procedure> procedure) async {
     DocumentReference docRef =
         await FirebaseFirestore.instance.collection('testCollection').add({
       'recipeName': recipe.recipeName,

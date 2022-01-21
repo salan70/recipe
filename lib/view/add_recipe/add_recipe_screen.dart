@@ -23,11 +23,10 @@ class AddRecipeScreen extends ConsumerWidget {
     )
   ]);
 
-  final ReorderableMultiTextFieldController controllerProcedures =
-      ReorderableMultiTextFieldController([]);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final proceduresList = ref.watch(proceduresTextFieldListNotifierProvider);
+
     String? recipeName;
     String? recipeMemo;
     double? recipeGrade = 3.0;
@@ -110,6 +109,9 @@ class AddRecipeScreen extends ConsumerWidget {
                 ],
               ),
             ),
+            Container(
+              child: ProceduresListWidget(),
+            ),
             // 作り方
             // Container(
             //   color: Colors.blueGrey,
@@ -157,8 +159,17 @@ class AddRecipeScreen extends ConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () async {
+                print("===追加===");
                 Recipe recipe = Recipe(recipeName, recipeGrade, recipeMemo);
-                addRecipeModel.addRecipe(recipe);
+                // addRecipeModel.addRecipe(recipe);
+
+                //テスト用
+                for (int i = 0; i < proceduresList.length; i++) {
+                  print(proceduresList[i].id.toString() +
+                      ":" +
+                      proceduresList[i].content);
+                }
+                print("=========");
                 // Navigator.push(
                 //     context,
                 //     MaterialPageRoute(

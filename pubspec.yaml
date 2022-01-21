@@ -9,6 +9,8 @@ environment:
 
 dependencies:
 
+  freezed_annotation:
+
   flutter:
     sdk: flutter
 
@@ -31,6 +33,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  build_runner:
+  freezed:
+  json_serializable:
 
 flutter:
   uses-material-design: true
