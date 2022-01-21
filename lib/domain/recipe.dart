@@ -19,19 +19,18 @@ class Recipe {
 }
 
 class Ingredient {
-  // Ingredient(this.ingredientIndex, this.ingredientName, this.ingredientNum);
+  Ingredient(this.id, this.name, this.amount, this.unit);
 
-  int? ingredientIndex;
-  String? ingredientName;
-  // 本来はdouble
-  String? ingredientNum;
-  // String? ingredientUnit;
+  String id;
+  String name;
+  double amount;
+  String unit;
 }
 
-class Procedures {
-  Procedures(this.id, this.content);
+class Procedure {
+  Procedure(this.id, this.content);
 
-  final int id;
+  final String id;
   final String content;
 }
 

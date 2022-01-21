@@ -3,8 +3,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/parts/reordable_text_field/procedures.dart';
 import 'package:recipe/parts/reordable_text_field/ingredients.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipe/providers.dart';
 import 'package:recipe/view/recipe_list/recipe_list_screen.dart';
 import 'package:recipe/domain/recipe.dart';
@@ -14,18 +12,9 @@ import 'package:uuid/uuid.dart';
 class AddRecipeScreen extends ConsumerWidget {
   final AddRecipeModel addRecipeModel = AddRecipeModel();
 
-  // 材料テキストフィールド 初期値
-  final ReorderableMultiTextFieldControllerIngredients controllerIngredients =
-      ReorderableMultiTextFieldControllerIngredients([
-    TextFieldStateIngredients(
-      Uuid().v4(),
-      TextEditingController(text: ''),
-    )
-  ]);
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final proceduresList = ref.watch(proceduresTextFieldListNotifierProvider);
+    final proceduresList = ref.watch(procedureListNotifierProvider);
 
     String? recipeName;
     String? recipeMemo;
@@ -78,63 +67,12 @@ class AddRecipeScreen extends ConsumerWidget {
                 recipeGrade = rating;
               },
             )),
-            // 材料 手作り
-            // Container(
-            //   color: Colors.grey,
-            //   child: ListView(
-            //     children: [],
-            //   ),
-            // ),
 
-            // 材料 ネット引用
-            Container(
-              color: Colors.grey,
-              child: Column(
-                children: [
-                  Container(
-                    child: Text("材料"),
-                  ),
-                  Container(
-                    padding: EdgeInsets.all(10),
-                    child: ReorderableMultiTextFieldIngredients(
-                      controller: controllerIngredients,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      controllerIngredients.add("");
-                    },
-                    child: Text("追加"),
-                  )
-                ],
-              ),
-            ),
+            // 材料
+            // 手順
             Container(
               child: ProceduresListWidget(),
             ),
-            // 作り方
-            // Container(
-            //   color: Colors.blueGrey,
-            //   child: Column(
-            //     children: [
-            //       Container(
-            //         child: Text("作り方"),
-            //       ),
-            //       Container(
-            //         padding: EdgeInsets.all(10),
-            //         child: ReorderableMultiTextFieldProcedures(
-            //           controller: controllerProcedures,
-            //         ),
-            //       ),
-            //       TextButton(
-            //         onPressed: () {
-            //           controllerProcedures.add("");
-            //         },
-            //         child: Text("追加"),
-            //       )
-            //     ],
-            //   ),
-            // ),
             // メモ
             Container(
               color: Colors.grey,
@@ -161,21 +99,21 @@ class AddRecipeScreen extends ConsumerWidget {
               onPressed: () async {
                 print("===追加===");
                 Recipe recipe = Recipe(recipeName, recipeGrade, recipeMemo);
-                // addRecipeModel.addRecipe(recipe);
+                addRecipeModel.addRecipe(recipe, proceduresList);
 
                 //テスト用
-                for (int i = 0; i < proceduresList.length; i++) {
-                  print(proceduresList[i].id.toString() +
-                      ":" +
-                      proceduresList[i].content);
-                }
-                print("=========");
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => RecipeListPage(),
-                //       fullscreenDialog: true,
-                //     ));
+                // for (int i = 0; i < proceduresList.length; i++) {
+                //   print(proceduresList[i].id.toString() +
+                //       ":" +
+                //       proceduresList[i].content);
+                // }
+                // print("=========");
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => RecipeListPage(),
+                      fullscreenDialog: true,
+                    ));
               },
               child: Text("追加"),
             ),

@@ -11,7 +11,7 @@ class AddRecipeModel extends ChangeNotifier {
   String? recipeMemo;
   String? recipeImageURL;
 
-  Future addRecipe(Recipe recipe, List<Procedure> procedure) async {
+  Future addRecipe(Recipe recipe, List<Procedure> proceduresList) async {
     DocumentReference docRef =
         await FirebaseFirestore.instance.collection('testCollection').add({
       'recipeName': recipe.recipeName,
@@ -19,13 +19,19 @@ class AddRecipeModel extends ChangeNotifier {
       'recipeMemo': recipe.recipeMemo
     });
     print(docRef.id);
-    // // 追加の処理
-    // await FirebaseFirestore.instance
-    //     .collection('testCollection')
-    //     .doc(docRef.id)
-    //     .collection('ingredients')
-    //     .doc()
-    //     .set({'name': "パセリ", 'num': "500", 'No': "1"});
+    // 手順を保存
+    for (int i = 0; i < proceduresList.length; i++) {
+      await FirebaseFirestore.instance
+          .collection('testCollection')
+          .doc(docRef.id)
+          .collection('procedures')
+          .doc()
+          .set({
+        'id': proceduresList[i].id,
+        'content': proceduresList[i].content,
+        'num': i
+      });
+    }
   }
 }
 

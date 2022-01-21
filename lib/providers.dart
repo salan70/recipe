@@ -53,3 +53,13 @@ final ingredientNameControllerStateProvider = StateProvider.autoDispose((ref) {
 final ingredientNumControllerStateProvider = StateProvider.autoDispose((ref) {
   return TextEditingController(text: '');
 });
+
+final ingredientListNotifierProvider =
+    StateNotifierProvider.autoDispose<IngredientListNotifier, List<Ingredient>>(
+  (ref) => IngredientListNotifier(),
+);
+
+final procedureListNotifierProvider =
+    StateNotifierProvider.autoDispose<ProcedureListNotifier, List<Procedure>>(
+  (ref) => ProcedureListNotifier(),
+);

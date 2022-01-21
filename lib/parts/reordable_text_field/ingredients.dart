@@ -1,150 +1,83 @@
+// outside
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/providers.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-class TextFieldStateIngredients {
-  final String id;
-  final TextEditingController controller;
+// inside
+import 'package:recipe/domain/recipe.dart';
+import 'package:recipe/providers.dart';
 
-  TextFieldStateIngredients(this.id, this.controller);
-}
+class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
+  IngredientListNotifier() : super([Ingredient(Uuid().v4(), "", 0, "")]);
 
-class ReorderableMultiTextFieldControllerIngredients
-    extends ValueNotifier<List<TextFieldStateIngredients>> {
-  ReorderableMultiTextFieldControllerIngredients(
-      List<TextFieldStateIngredients> value)
-      : super(value);
-
-  void add(text) {
-    final state = TextFieldStateIngredients(
-      Uuid().v4(),
-      TextEditingController(text: text),
-    );
-
-    value = [...value, state];
-    print('-----------');
-    value.asMap().forEach((int i, value) {
-      print(i);
-      print(value.toString());
-    });
+  void add(Ingredient ingredient) {
+    state = [...state, ingredient];
   }
 
   void remove(String id) {
-    final removedText = value.where((element) => element.id == id);
-    if (removedText.isEmpty) {
-      throw "Textがありません";
-    }
-
-    value = value.where((element) => element.id != id).toList();
-
-    Future.delayed(Duration(seconds: 1)).then(
-      (value) => removedText.first.controller.dispose(),
-    );
+    state = [
+      for (final ingredient in state)
+        if (ingredient.id != id) ingredient,
+    ];
   }
 
   void reorder(int oldIndex, int newIndex) {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
-    final item = value.removeAt(oldIndex);
-    value = [...value..insert(newIndex, item)];
-  }
-
-  @override
-  void dispose() {
-    value.forEach((element) {
-      element.controller.dispose();
-    });
-    super.dispose();
+    final item = state.removeAt(oldIndex);
+    state = [...state..insert(newIndex, item)];
   }
 }
 
-class ReorderableMultiTextFieldIngredients extends ConsumerWidget {
-  final ReorderableMultiTextFieldControllerIngredients controller;
-  const ReorderableMultiTextFieldIngredients({
-    Key? key,
-    required this.controller,
-  }) : super(key: key);
+class IngredientListWidget extends ConsumerWidget {
+  const IngredientListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Ingredient ingredient = Ingredient();
+    final ingredientList = ref.watch(ingredientListNotifierProvider);
+    final notifier = ref.watch(ingredientListNotifierProvider.notifier);
 
-    int ingredientIndex;
-    String? ingredientName;
-    String? ingredientNum;
-
-    // final ingredientName = ref.watch(ingredientNameProvider);
-    // final ingredientNum = ref.watch(ingredientNumProvider);
-
-    return ValueListenableBuilder<List<TextFieldStateIngredients>>(
-      valueListenable: controller,
-      builder: (context, state, _) {
-        return ReorderableListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          children: state
-              .map(
-                (textFieldState) => Slidable(
-                  key: ValueKey(textFieldState.id),
+    return Column(
+      children: [
+        Builder(builder: (context) {
+          return ReorderableListView(
+            onReorder: (oldIndex, newIndex) =>
+                notifier.reorder(oldIndex, newIndex),
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            children: [
+              for (int index = 0; index < ingredientList.length; index++)
+                Slidable(
+                  key: ValueKey(ingredientList[index].id),
                   actionPane: SlidableDrawerActionPane(),
                   secondaryActions: [
                     IconSlideAction(
                       color: Colors.red,
                       iconWidget: Text("delete"),
-                      onTap: () => controller.remove(textFieldState.id),
+                      onTap: () => notifier.remove(ingredientList[index].id),
                     ),
                   ],
                   child: Row(
                     children: [
+                      Expanded(child: Text((index + 1).toString())),
                       Expanded(
-                        child: TextField(
-                          // controller: textFieldState.controller,
-                          decoration: InputDecoration.collapsed(
-                              hintText: "fill out here"),
-                          onChanged: (String value) {
-                            print('');
-                            ingredient.ingredientName = value;
-                            print(ingredient.ingredientName);
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: TextField(
-                          // controller: textFieldState.controller,
-                          decoration: InputDecoration.collapsed(
-                              hintText: "fill out here"),
-                          onChanged: (String value) {
-                            ingredient.ingredientNum = value;
-                            print(ingredient.ingredientNum);
-                          },
-                        ),
-                      ),
-                      // Expanded(
-                      //   child: DropdownButton<String>(
-                      //     value: _selectedKey,
-                      //     icon: const Icon(Icons.arrow_downward),
-                      //     iconSize: 24,
-                      //     elevation: 16,
-                      //     style: const TextStyle(color: Colors.deepPurple),
-                      //     underline: Container(
-                      //       height: 2,
-                      //       color: Colors.deepPurpleAccent,
-                      //     ),
-                      //     onChanged: () =>
-                      //         context.read(ingredientsDropBoxProvider).state++,
-                      //     items: <String>['One', 'Two', 'Free', 'Four']
-                      //         .map<DropdownMenuItem<String>>((String value) {
-                      //       return DropdownMenuItem<String>(
-                      //         value: value,
-                      //         child: Text(value),
-                      //       );
-                      //     }).toList(),
-                      //   ),
-                      // ),
+                          child: TextField(
+                        maxLines: null,
+                        onChanged: (String value) {
+                          ingredientList[index] = Ingredient(
+                              ingredientList[index].id, value, 0, "");
+
+                          ///テスト用
+                          // for (int i = 0; i < proceduresList.length; i++) {
+                          //   print(proceduresList[i].id.toString() +
+                          //       ":" +
+                          //       proceduresList[i].content);
+                          // }
+                          // print("------------------");
+                        },
+                      )),
                       Padding(
                         padding: const EdgeInsets.only(
                           bottom: 8.0,
@@ -156,14 +89,19 @@ class ReorderableMultiTextFieldIngredients extends ConsumerWidget {
                     ],
                   ),
                 ),
-              )
-              .toList(),
-          onReorder: (oldIndex, newIndex) => controller.reorder(
-            oldIndex,
-            newIndex,
-          ),
-        );
-      },
+            ],
+          );
+        }),
+        TextButton(
+          onPressed: () {
+            String id = Uuid().v4();
+            final Ingredient ingredient = Ingredient(id, "", 0, "");
+            notifier.add(ingredient);
+            print(id);
+          },
+          child: Text("追加"),
+        )
+      ],
     );
   }
 }
