@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter/services.dart';
 
 // inside
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/providers.dart';
 
 class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
-  IngredientListNotifier() : super([Ingredient(Uuid().v4(), "", 0, "")]);
+  IngredientListNotifier() : super([Ingredient(Uuid().v4(), "", 0, "個")]);
 
   void add(Ingredient ingredient) {
     state = [...state, ingredient];
@@ -38,6 +39,7 @@ class IngredientListWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ingredientList = ref.watch(ingredientListNotifierProvider);
     final notifier = ref.watch(ingredientListNotifierProvider.notifier);
+    final unit = ref.watch(ingredientUnitProvider.notifier);
 
     return Column(
       children: [
@@ -61,23 +63,68 @@ class IngredientListWidget extends ConsumerWidget {
                   ],
                   child: Row(
                     children: [
-                      Expanded(child: Text((index + 1).toString())),
                       Expanded(
                           child: TextField(
-                        maxLines: null,
+                        decoration: InputDecoration.collapsed(hintText: "ルッコラ"),
                         onChanged: (String value) {
-                          ingredientList[index] = Ingredient(
-                              ingredientList[index].id, value, 0, "");
+                          String name = value;
+                          ingredientList[index].name = name;
 
                           ///テスト用
-                          // for (int i = 0; i < proceduresList.length; i++) {
-                          //   print(proceduresList[i].id.toString() +
-                          //       ":" +
-                          //       proceduresList[i].content);
-                          // }
-                          // print("------------------");
+                          print("--------name-------");
+                          for (int i = 0; i < ingredientList.length; i++) {
+                            print(ingredientList[i].id +
+                                ":" +
+                                ingredientList[i].name +
+                                ":" +
+                                ingredientList[i].amount.toString());
+                          }
                         },
                       )),
+                      Expanded(
+                          child: TextField(
+                        decoration: InputDecoration.collapsed(hintText: "2000"),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        onChanged: (value) {
+                          double amount;
+
+                          try {
+                            amount = double.parse(value.toString());
+                          } catch (exception) {
+                            amount = 0;
+                          }
+                          ingredientList[index].amount = amount;
+
+                          ///テスト用
+                          print("-------amount------");
+                          for (int i = 0; i < ingredientList.length; i++) {
+                            print(ingredientList[i].id +
+                                ":" +
+                                ingredientList[i].name +
+                                ":" +
+                                ingredientList[i].amount.toString());
+                          }
+                        },
+                      )),
+                      Expanded(
+                        child: DropdownButton<String>(
+                          value: ingredientList[index].unit,
+                          onChanged: (String? value) {
+                            unit.state = value!;
+                            ingredientList[index].unit = unit.state;
+                          },
+                          items: ["個", "g", "本", "大さじ", "小さじ"]
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(
                           bottom: 8.0,
@@ -95,7 +142,7 @@ class IngredientListWidget extends ConsumerWidget {
         TextButton(
           onPressed: () {
             String id = Uuid().v4();
-            final Ingredient ingredient = Ingredient(id, "", 0, "");
+            final Ingredient ingredient = Ingredient(id, "", 0, "個");
             notifier.add(ingredient);
             print(id);
           },

@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/view/add_recipe/add_redipe_model.dart';
 import 'domain/recipe.dart';
 import 'package:recipe/parts/reordable_text_field/procedures.dart';
+import 'package:recipe/parts/reordable_text_field/ingredients.dart';
 // import 'package:photoapp/photo.dart';
 // import 'package:photoapp/
 
@@ -48,6 +49,10 @@ final ingredientNumProvider = StateProvider.autoDispose((ref) {
 // 材料controller
 final ingredientNameControllerStateProvider = StateProvider.autoDispose((ref) {
   return TextEditingController(text: '');
+});
+
+final ingredientUnitProvider = StateProvider.autoDispose((ref) {
+  return '個';
 });
 
 final ingredientNumControllerStateProvider = StateProvider.autoDispose((ref) {

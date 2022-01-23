@@ -1,3 +1,8 @@
+// import 'package:freezed_annotation/freezed_annotation.dart';
+// import 'package:flutter/foundation.dart';
+
+// part 'recipe.freezed.dart';
+
 class Recipe {
   Recipe(
     // this.recipeId,
@@ -26,6 +31,16 @@ class Ingredient {
   double amount;
   String unit;
 }
+
+// @freezed
+// class Ingredient with _$Ingredient {
+//   const factory Ingredient({
+//     required String id,
+//     required String name,
+//     required double amount,
+//     required String unit,
+//   }) = _Ingredient;
+// }
 
 class Procedure {
   Procedure(this.id, this.content);

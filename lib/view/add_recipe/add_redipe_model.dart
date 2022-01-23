@@ -42,11 +42,3 @@ class RecipeListNotifier extends StateNotifier<List<Recipe>> {
     state = [...state, recipe];
   }
 }
-
-class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
-  IngredientListNotifier() : super([]);
-
-  void add(Ingredient ingredient) {
-    state = [...state, ingredient];
-  }
-}

@@ -7,7 +7,6 @@ import 'package:recipe/providers.dart';
 import 'package:recipe/view/recipe_list/recipe_list_screen.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/view/add_recipe/add_redipe_model.dart';
-import 'package:uuid/uuid.dart';
 
 class AddRecipeScreen extends ConsumerWidget {
   final AddRecipeModel addRecipeModel = AddRecipeModel();
@@ -69,6 +68,10 @@ class AddRecipeScreen extends ConsumerWidget {
             )),
 
             // 材料
+            Container(
+              child: IngredientListWidget(),
+            ),
+
             // 手順
             Container(
               child: ProceduresListWidget(),
