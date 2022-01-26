@@ -8,9 +8,19 @@ import 'package:flutter/services.dart';
 // inside
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/providers.dart';
+import 'package:recipe/parts/validation/validation.dart';
 
 class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
-  IngredientListNotifier() : super([Ingredient(Uuid().v4(), "", 0, "個")]);
+  IngredientListNotifier()
+      : super([
+          Ingredient(
+            id: Uuid().v4(),
+            name: "",
+            amount: "",
+            unit: "個",
+            // formState: GlobalKey<FormState>()
+          ),
+        ]);
 
   void add(Ingredient ingredient) {
     state = [...state, ingredient];
@@ -30,6 +40,36 @@ class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
     final item = state.removeAt(oldIndex);
     state = [...state..insert(newIndex, item)];
   }
+
+  void editName(String id, String name) {
+    state = [
+      for (final ingredient in state)
+        if (ingredient.id == id)
+          ingredient.copyWith(name: name)
+        else
+          ingredient,
+    ];
+  }
+
+  void editAmount(String id, String amount) {
+    state = [
+      for (final ingredient in state)
+        if (ingredient.id == id)
+          ingredient.copyWith(amount: amount)
+        else
+          ingredient,
+    ];
+  }
+
+  void editUnit(String id, String unit) {
+    state = [
+      for (final ingredient in state)
+        if (ingredient.id == id)
+          ingredient.copyWith(unit: unit)
+        else
+          ingredient,
+    ];
+  }
 }
 
 class IngredientListWidget extends ConsumerWidget {
@@ -38,15 +78,16 @@ class IngredientListWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ingredientList = ref.watch(ingredientListNotifierProvider);
-    final notifier = ref.watch(ingredientListNotifierProvider.notifier);
-    final unit = ref.watch(ingredientUnitProvider.notifier);
+    final ingredientListNotifier =
+        ref.watch(ingredientListNotifierProvider.notifier);
+    final Validation validation = Validation();
 
     return Column(
       children: [
         Builder(builder: (context) {
           return ReorderableListView(
             onReorder: (oldIndex, newIndex) =>
-                notifier.reorder(oldIndex, newIndex),
+                ingredientListNotifier.reorder(oldIndex, newIndex),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             children: [
@@ -58,7 +99,8 @@ class IngredientListWidget extends ConsumerWidget {
                     IconSlideAction(
                       color: Colors.red,
                       iconWidget: Text("delete"),
-                      onTap: () => notifier.remove(ingredientList[index].id),
+                      onTap: () => ingredientListNotifier
+                          .remove(ingredientList[index].id),
                     ),
                   ],
                   child: Row(
@@ -67,8 +109,8 @@ class IngredientListWidget extends ConsumerWidget {
                           child: TextField(
                         decoration: InputDecoration.collapsed(hintText: "ルッコラ"),
                         onChanged: (String value) {
-                          String name = value;
-                          ingredientList[index].name = name;
+                          ingredientListNotifier.editName(
+                              ingredientList[index].id, value);
 
                           ///テスト用
                           print("--------name-------");
@@ -77,26 +119,25 @@ class IngredientListWidget extends ConsumerWidget {
                                 ":" +
                                 ingredientList[i].name +
                                 ":" +
-                                ingredientList[i].amount.toString());
+                                ingredientList[i].amount.toString() +
+                                ":" +
+                                ingredientList[i].unit);
                           }
                         },
                       )),
                       Expanded(
                           child: TextField(
-                        decoration: InputDecoration.collapsed(hintText: "2000"),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
+                        keyboardType: TextInputType.datetime,
+                        decoration: InputDecoration(
+                          labelText: "2000",
+                          errorText: validation
+                              .errorText(ingredientList[index].amount),
+                        ),
                         onChanged: (value) {
-                          double amount;
+                          String? amount = value;
 
-                          try {
-                            amount = double.parse(value.toString());
-                          } catch (exception) {
-                            amount = 0;
-                          }
-                          ingredientList[index].amount = amount;
+                          ingredientListNotifier.editAmount(
+                              ingredientList[index].id, amount);
 
                           ///テスト用
                           print("-------amount------");
@@ -105,7 +146,9 @@ class IngredientListWidget extends ConsumerWidget {
                                 ":" +
                                 ingredientList[i].name +
                                 ":" +
-                                ingredientList[i].amount.toString());
+                                ingredientList[i].amount.toString() +
+                                ":" +
+                                ingredientList[i].unit);
                           }
                         },
                       )),
@@ -113,8 +156,20 @@ class IngredientListWidget extends ConsumerWidget {
                         child: DropdownButton<String>(
                           value: ingredientList[index].unit,
                           onChanged: (String? value) {
-                            unit.state = value!;
-                            ingredientList[index].unit = unit.state;
+                            ingredientListNotifier.editUnit(
+                                ingredientList[index].id, value!);
+
+                            ///テスト用
+                            print("--------unit-------");
+                            for (int i = 0; i < ingredientList.length; i++) {
+                              print(ingredientList[i].id +
+                                  ":" +
+                                  ingredientList[i].name +
+                                  ":" +
+                                  ingredientList[i].amount.toString() +
+                                  ":" +
+                                  ingredientList[i].unit);
+                            }
                           },
                           items: ["個", "g", "本", "大さじ", "小さじ"]
                               .map<DropdownMenuItem<String>>((String value) {
@@ -141,10 +196,14 @@ class IngredientListWidget extends ConsumerWidget {
         }),
         TextButton(
           onPressed: () {
-            String id = Uuid().v4();
-            final Ingredient ingredient = Ingredient(id, "", 0, "個");
-            notifier.add(ingredient);
-            print(id);
+            final Ingredient ingredient = Ingredient(
+              id: Uuid().v4(),
+              name: "",
+              amount: "",
+              unit: "個",
+              // formState: GlobalKey<FormState>()
+            );
+            ingredientListNotifier.add(ingredient);
           },
           child: Text("追加"),
         )

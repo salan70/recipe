@@ -14,6 +14,7 @@ class AddRecipeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final proceduresList = ref.watch(procedureListNotifierProvider);
+    final ingredientList = ref.watch(ingredientListNotifierProvider);
 
     String? recipeName;
     String? recipeMemo;
@@ -100,23 +101,23 @@ class AddRecipeScreen extends ConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                print("===追加===");
-                Recipe recipe = Recipe(recipeName, recipeGrade, recipeMemo);
-                addRecipeModel.addRecipe(recipe, proceduresList);
-
-                //テスト用
-                // for (int i = 0; i < proceduresList.length; i++) {
-                //   print(proceduresList[i].id.toString() +
-                //       ":" +
-                //       proceduresList[i].content);
-                // }
-                // print("=========");
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RecipeListPage(),
-                      fullscreenDialog: true,
-                    ));
+                // print("===追加===");
+                // Recipe recipe = Recipe(recipeName, recipeGrade, recipeMemo);
+                // addRecipeModel.addRecipe(recipe, proceduresList);
+                //
+                // //テスト用
+                // // for (int i = 0; i < proceduresList.length; i++) {
+                // //   print(proceduresList[i].id.toString() +
+                // //       ":" +
+                // //       proceduresList[i].content);
+                // // }
+                // // print("=========");
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //       builder: (context) => RecipeListPage(),
+                //       fullscreenDialog: true,
+                //     ));
               },
               child: Text("追加"),
             ),
