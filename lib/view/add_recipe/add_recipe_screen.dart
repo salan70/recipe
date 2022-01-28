@@ -7,12 +7,15 @@ import 'package:recipe/providers.dart';
 import 'package:recipe/view/recipe_list/recipe_list_screen.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/view/add_recipe/add_redipe_model.dart';
+import 'package:recipe/parts/validation/validation.dart';
 
 class AddRecipeScreen extends ConsumerWidget {
   final AddRecipeModel addRecipeModel = AddRecipeModel();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final Validation validation = Validation();
+
     final proceduresList = ref.watch(procedureListNotifierProvider);
     final ingredientList = ref.watch(ingredientListNotifierProvider);
 
@@ -101,23 +104,37 @@ class AddRecipeScreen extends ConsumerWidget {
             ),
             ElevatedButton(
               onPressed: () async {
-                // print("===追加===");
-                // Recipe recipe = Recipe(recipeName, recipeGrade, recipeMemo);
-                // addRecipeModel.addRecipe(recipe, proceduresList);
-                //
-                // //テスト用
-                // // for (int i = 0; i < proceduresList.length; i++) {
-                // //   print(proceduresList[i].id.toString() +
-                // //       ":" +
-                // //       proceduresList[i].content);
-                // // }
-                // // print("=========");
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => RecipeListPage(),
-                //       fullscreenDialog: true,
-                //     ));
+                bool isOk = true;
+                for (int index = 0; index < ingredientList.length; index++) {
+                  if (validation.errorText(ingredientList[index].amount) !=
+                      null) {
+                    // 材料の数量の再入力を求める
+
+                    print("false");
+                    isOk = false;
+                  }
+                }
+
+                if (isOk) {
+                  print("===追加===");
+                  Recipe recipe = Recipe(recipeName, recipeGrade, recipeMemo);
+                  addRecipeModel.addRecipe(
+                      recipe, ingredientList, proceduresList);
+
+                  //テスト用
+                  // for (int i = 0; i < proceduresList.length; i++) {
+                  //   print(proceduresList[i].id.toString() +
+                  //       ":" +
+                  //       proceduresList[i].content);
+                  // }
+                  // print("=========");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RecipeListPage(),
+                        fullscreenDialog: true,
+                      ));
+                }
               },
               child: Text("追加"),
             ),

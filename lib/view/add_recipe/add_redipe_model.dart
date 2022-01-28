@@ -6,12 +6,11 @@ import 'package:recipe/domain/recipe.dart';
 class AddRecipeModel extends ChangeNotifier {
   String? recipeName;
   double? recipeGrade;
-  List<Ingredient>? recipeIngredient;
-  List<Procedure>? recipeProcedure;
   String? recipeMemo;
   String? recipeImageURL;
 
-  Future addRecipe(Recipe recipe, List<Procedure> proceduresList) async {
+  Future addRecipe(Recipe recipe, List<Ingredient> ingredientList,
+      List<Procedure> procedureList) async {
     DocumentReference docRef =
         await FirebaseFirestore.instance.collection('testCollection').add({
       'recipeName': recipe.recipeName,
@@ -19,17 +18,34 @@ class AddRecipeModel extends ChangeNotifier {
       'recipeMemo': recipe.recipeMemo
     });
     print(docRef.id);
-    // 手順を保存
-    for (int i = 0; i < proceduresList.length; i++) {
+
+    // 材料を保存
+    for (int i = 0; i < ingredientList.length; i++) {
       await FirebaseFirestore.instance
           .collection('testCollection')
           .doc(docRef.id)
-          .collection('procedures')
+          .collection('ingredient')
           .doc()
           .set({
-        'id': proceduresList[i].id,
-        'content': proceduresList[i].content,
-        'num': i
+        'id': ingredientList[i].id,
+        'name': ingredientList[i].name,
+        'amount': ingredientList[i].amount,
+        'unit': ingredientList[i].unit,
+        'orderNum': i,
+      });
+    }
+
+    // 手順を保存
+    for (int i = 0; i < procedureList.length; i++) {
+      await FirebaseFirestore.instance
+          .collection('testCollection')
+          .doc(docRef.id)
+          .collection('procedure')
+          .doc()
+          .set({
+        'id': procedureList[i].id,
+        'content': procedureList[i].content,
+        'orderNum': i
       });
     }
   }
