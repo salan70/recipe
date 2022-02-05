@@ -106,53 +106,62 @@ class IngredientListWidget extends ConsumerWidget {
                   child: Row(
                     children: [
                       Expanded(
+                          flex: 2,
                           child: TextField(
-                        decoration: InputDecoration.collapsed(hintText: "ルッコラ"),
-                        onChanged: (String value) {
-                          ingredientListNotifier.editName(
-                              ingredientList[index].id, value);
+                            decoration: InputDecoration(labelText: "ルッコラ"),
+                            onChanged: (String value) {
+                              ingredientListNotifier.editName(
+                                  ingredientList[index].id, value);
 
-                          ///テスト用
-                          print("--------name-------");
-                          for (int i = 0; i < ingredientList.length; i++) {
-                            print(ingredientList[i].id +
-                                ":" +
-                                ingredientList[i].name +
-                                ":" +
-                                ingredientList[i].amount.toString() +
-                                ":" +
-                                ingredientList[i].unit);
-                          }
-                        },
-                      )),
+                              ///テスト用
+                              // print("--------name-------");
+                              // for (int i = 0; i < ingredientList.length; i++) {
+                              //   print(ingredientList[i].id +
+                              //       ":" +
+                              //       ingredientList[i].name +
+                              //       ":" +
+                              //       ingredientList[i].amount.toString() +
+                              //       ":" +
+                              //       ingredientList[i].unit);
+                              // }
+                            },
+                          )),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Expanded(
+                          flex: 1,
                           child: TextField(
-                        keyboardType: TextInputType.datetime,
-                        decoration: InputDecoration(
-                          labelText: "2000",
-                          errorText: validation
-                              .errorText(ingredientList[index].amount),
-                        ),
-                        onChanged: (value) {
-                          String? amount = value;
+                            keyboardType: TextInputType.datetime,
+                            decoration: InputDecoration(
+                              labelText: "2000",
+                              errorText: validation
+                                  .errorText(ingredientList[index].amount),
+                            ),
+                            onChanged: (value) {
+                              String? amount = value;
 
-                          ingredientListNotifier.editAmount(
-                              ingredientList[index].id, amount);
+                              ingredientListNotifier.editAmount(
+                                  ingredientList[index].id, amount);
 
-                          ///テスト用
-                          print("-------amount------");
-                          for (int i = 0; i < ingredientList.length; i++) {
-                            print(ingredientList[i].id +
-                                ":" +
-                                ingredientList[i].name +
-                                ":" +
-                                ingredientList[i].amount.toString() +
-                                ":" +
-                                ingredientList[i].unit);
-                          }
-                        },
-                      )),
+                              ///テスト用
+                              // print("-------amount------");
+                              // for (int i = 0; i < ingredientList.length; i++) {
+                              //   print(ingredientList[i].id +
+                              //       ":" +
+                              //       ingredientList[i].name +
+                              //       ":" +
+                              //       ingredientList[i].amount.toString() +
+                              //       ":" +
+                              //       ingredientList[i].unit);
+                              // }
+                            },
+                          )),
+                      SizedBox(
+                        width: 10,
+                      ),
                       Expanded(
+                        flex: 1,
                         child: DropdownButton<String>(
                           value: ingredientList[index].unit,
                           onChanged: (String? value) {
@@ -160,16 +169,16 @@ class IngredientListWidget extends ConsumerWidget {
                                 ingredientList[index].id, value!);
 
                             ///テスト用
-                            print("--------unit-------");
-                            for (int i = 0; i < ingredientList.length; i++) {
-                              print(ingredientList[i].id +
-                                  ":" +
-                                  ingredientList[i].name +
-                                  ":" +
-                                  ingredientList[i].amount.toString() +
-                                  ":" +
-                                  ingredientList[i].unit);
-                            }
+                            // print("--------unit-------");
+                            // for (int i = 0; i < ingredientList.length; i++) {
+                            //   print(ingredientList[i].id +
+                            //       ":" +
+                            //       ingredientList[i].name +
+                            //       ":" +
+                            //       ingredientList[i].amount.toString() +
+                            //       ":" +
+                            //       ingredientList[i].unit);
+                            // }
                           },
                           items: ["個", "g", "本", "大さじ", "小さじ"]
                               .map<DropdownMenuItem<String>>((String value) {
@@ -180,14 +189,7 @@ class IngredientListWidget extends ConsumerWidget {
                           }).toList(),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 8.0,
-                          top: 8.0,
-                          left: 16,
-                        ),
-                        child: Icon(Icons.drag_handle),
-                      ),
+                      Icon(Icons.drag_handle),
                     ],
                   ),
                 ),

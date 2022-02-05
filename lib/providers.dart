@@ -10,17 +10,13 @@ import 'package:recipe/parts/reordable_text_field/ingredients.dart';
 // import 'package:photoapp/
 
 final recipeListNotifierProvider =
-    StateNotifierProvider<RecipeListNotifier, List<Recipe>>((ref) {
+    StateNotifierProvider.autoDispose<RecipeListNotifier, List<Recipe>>((ref) {
   return RecipeListNotifier();
 });
 
 // 匿名認証用?
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
-
-final StateProvider ingredientsDropBoxProvider = StateProvider((ref) {
-  return 0;
-});
 
 final ingredientListNotifierProvider =
     StateNotifierProvider.autoDispose<IngredientListNotifier, List<Ingredient>>(

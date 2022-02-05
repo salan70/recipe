@@ -62,23 +62,24 @@ class ProceduresListWidget extends ConsumerWidget {
                   ],
                   child: Row(
                     children: [
-                      Expanded(child: Text((index + 1).toString())),
+                      Expanded(flex: 1, child: Text((index + 1).toString())),
                       Expanded(
+                          flex: 15,
                           child: TextField(
-                        maxLines: null,
-                        onChanged: (String value) {
-                          proceduresList[index] =
-                              Procedure(proceduresList[index].id, value);
+                            maxLines: null,
+                            onChanged: (String value) {
+                              proceduresList[index] =
+                                  Procedure(proceduresList[index].id, value);
 
-                          ///テスト用
-                          // for (int i = 0; i < proceduresList.length; i++) {
-                          //   print(proceduresList[i].id.toString() +
-                          //       ":" +
-                          //       proceduresList[i].content);
-                          // }
-                          // print("------------------");
-                        },
-                      )),
+                              ///テスト用
+                              // for (int i = 0; i < proceduresList.length; i++) {
+                              //   print(proceduresList[i].id.toString() +
+                              //       ":" +
+                              //       proceduresList[i].content);
+                              // }
+                              // print("------------------");
+                            },
+                          )),
                       Padding(
                         padding: const EdgeInsets.only(
                           bottom: 8.0,

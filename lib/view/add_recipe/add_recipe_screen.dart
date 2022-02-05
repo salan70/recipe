@@ -128,12 +128,7 @@ class AddRecipeScreen extends ConsumerWidget {
                   //       proceduresList[i].content);
                   // }
                   // print("=========");
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RecipeListPage(),
-                        fullscreenDialog: true,
-                      ));
+                  Navigator.pop(context);
                 }
               },
               child: Text("追加"),
