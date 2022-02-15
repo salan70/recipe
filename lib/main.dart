@@ -27,72 +27,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: RecipeListPage(),
       // home: RecipeListPage(),
     );
   }
 }
-
-class HomeScreen extends HookWidget {
-  @override
-  Widget build(BuildContext context) {
-    // final authControllerState = useProvider(authControllerProvider);
-    // return Scaffold(
-    //   appBar: AppBar(
-    //     title: Text('ShoppingList'),
-    //     leading: authControllerState != null
-    //         ? IconButton(
-    //             onPressed: () =>
-    //                 context.read(authControllerProvider.notifier).signOut(),
-    //             icon: Icon(Icons.logout))
-    //         : null,
-    //   ),
-    // );
-
-    return MaterialApp(
-      home: RecipeListPage(),
-    );
-  }
-}
-
-// アプリ起動時にログイン画面を表示するパターン
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   runApp(MyApp());
-// }
-//
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Recipe App',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       // アプリ起動時にログイン画面を表示
-//       home: SignInScreen(),
-//     );
-//   }
-// }
-
-// アプリ起動時にレシピ一覧画面を表示するパターン
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-//   runApp(MyApp());
-// }
-//
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Recipe App',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       // アプリ起動時にログイン画面を表示
-//       home: RecipeListPage(),
-//     );
-//   }
-// }

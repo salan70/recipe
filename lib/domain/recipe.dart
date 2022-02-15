@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
@@ -7,14 +8,13 @@ part 'recipe.g.dart';
 
 class Recipe {
   Recipe(
-    // this.recipeId,
-    this.recipeName,
-    this.recipeGrade,
-    // this.recipeIngredient,
-    // this.recipeProcedure,
-    this.recipeMemo,
-    // this.recipeImage
-  );
+      // this.recipeId,
+      this.recipeName,
+      this.recipeGrade,
+      // this.recipeIngredient,
+      // this.recipeProcedure,
+      this.recipeMemo,
+      this.recipeImage);
 
   // String? recipeId;
   String? recipeName;
@@ -22,7 +22,7 @@ class Recipe {
   // List<Ingredient>? recipeIngredient;
   // List<Procedure>? recipeProcedure;
   String? recipeMemo;
-  // Image? recipeImage;
+  File? recipeImage;
 }
 
 // class Ingredient {
@@ -54,6 +54,8 @@ class Procedure {
   final String content;
 }
 
-class Image {
-  String? imageUrl;
+class ImageFile {
+  ImageFile(this.imageFile);
+
+  File? imageFile;
 }

@@ -14,6 +14,11 @@ final recipeListNotifierProvider =
   return RecipeListNotifier();
 });
 
+final imageFileNotifierProvider =
+    StateNotifierProvider.autoDispose<ImageFileNotifier, ImageFile>((ref) {
+  return ImageFileNotifier();
+});
+
 // 匿名認証用?
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);

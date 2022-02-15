@@ -1,18 +1,21 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:recipe/providers.dart';
+
+import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/view/add_recipe/add_recipe_screen.dart';
 
 // レシピ一覧画面
-class RecipeListPage extends StatelessWidget {
+class RecipeListPage extends ConsumerWidget {
   const RecipeListPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,

@@ -108,7 +108,7 @@ class IngredientListWidget extends ConsumerWidget {
                       Expanded(
                           flex: 2,
                           child: TextField(
-                            decoration: InputDecoration(labelText: "ルッコラ"),
+                            // decoration: InputDecoration(labelText: "ルッコラ"),
                             onChanged: (String value) {
                               ingredientListNotifier.editName(
                                   ingredientList[index].id, value);
@@ -134,7 +134,7 @@ class IngredientListWidget extends ConsumerWidget {
                           child: TextField(
                             keyboardType: TextInputType.datetime,
                             decoration: InputDecoration(
-                              labelText: "2000",
+                              // labelText: "2000",
                               errorText: validation
                                   .errorText(ingredientList[index].amount),
                             ),

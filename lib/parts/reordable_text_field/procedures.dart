@@ -80,14 +80,7 @@ class ProceduresListWidget extends ConsumerWidget {
                               // print("------------------");
                             },
                           )),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          bottom: 8.0,
-                          top: 8.0,
-                          left: 16,
-                        ),
-                        child: Icon(Icons.drag_handle),
-                      ),
+                      Icon(Icons.drag_handle),
                     ],
                   ),
                 ),
