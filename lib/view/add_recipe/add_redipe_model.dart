@@ -10,10 +10,11 @@ import 'package:recipe/domain/recipe.dart';
 
 class AddRecipeModel extends ChangeNotifier {
   AddRecipeModel(this.recipeName, this.recipeImageURL, this.recipeGrade,
-      this.recipeMemo, this.imageFile);
+      this.forHowManyPeople, this.recipeMemo, this.imageFile);
 
   String? recipeName;
   double? recipeGrade;
+  int? forHowManyPeople;
   String? recipeMemo;
   String? recipeImageURL;
   File? imageFile;
@@ -43,6 +44,7 @@ class AddRecipeModel extends ChangeNotifier {
         .add({
       'recipeName': recipe.recipeName,
       'recipeGrade': recipe.recipeGrade,
+      'forHowManyPeople': recipe.forHowManyPeople,
       'recipeMemo': recipe.recipeMemo,
       'recipeImage': recipeImageURL
     });

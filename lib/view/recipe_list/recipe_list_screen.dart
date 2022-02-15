@@ -27,7 +27,7 @@ class RecipeListPage extends ConsumerWidget {
           ),
         ),
       ),
-      body: Column(),
+      body: ListView(),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
         child: Icon(

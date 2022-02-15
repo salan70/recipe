@@ -11,6 +11,7 @@ class Recipe {
       // this.recipeId,
       this.recipeName,
       this.recipeGrade,
+      this.forHowManyPeople,
       // this.recipeIngredient,
       // this.recipeProcedure,
       this.recipeMemo,
@@ -19,6 +20,7 @@ class Recipe {
   // String? recipeId;
   String? recipeName;
   double? recipeGrade;
+  int? forHowManyPeople;
   // List<Ingredient>? recipeIngredient;
   // List<Procedure>? recipeProcedure;
   String? recipeMemo;

@@ -112,18 +112,6 @@ class IngredientListWidget extends ConsumerWidget {
                             onChanged: (String value) {
                               ingredientListNotifier.editName(
                                   ingredientList[index].id, value);
-
-                              ///テスト用
-                              // print("--------name-------");
-                              // for (int i = 0; i < ingredientList.length; i++) {
-                              //   print(ingredientList[i].id +
-                              //       ":" +
-                              //       ingredientList[i].name +
-                              //       ":" +
-                              //       ingredientList[i].amount.toString() +
-                              //       ":" +
-                              //       ingredientList[i].unit);
-                              // }
                             },
                           )),
                       SizedBox(
@@ -143,18 +131,6 @@ class IngredientListWidget extends ConsumerWidget {
 
                               ingredientListNotifier.editAmount(
                                   ingredientList[index].id, amount);
-
-                              ///テスト用
-                              // print("-------amount------");
-                              // for (int i = 0; i < ingredientList.length; i++) {
-                              //   print(ingredientList[i].id +
-                              //       ":" +
-                              //       ingredientList[i].name +
-                              //       ":" +
-                              //       ingredientList[i].amount.toString() +
-                              //       ":" +
-                              //       ingredientList[i].unit);
-                              // }
                             },
                           )),
                       SizedBox(
@@ -167,18 +143,6 @@ class IngredientListWidget extends ConsumerWidget {
                           onChanged: (String? value) {
                             ingredientListNotifier.editUnit(
                                 ingredientList[index].id, value!);
-
-                            ///テスト用
-                            // print("--------unit-------");
-                            // for (int i = 0; i < ingredientList.length; i++) {
-                            //   print(ingredientList[i].id +
-                            //       ":" +
-                            //       ingredientList[i].name +
-                            //       ":" +
-                            //       ingredientList[i].amount.toString() +
-                            //       ":" +
-                            //       ingredientList[i].unit);
-                            // }
                           },
                           items: ["個", "g", "本", "大さじ", "小さじ"]
                               .map<DropdownMenuItem<String>>((String value) {

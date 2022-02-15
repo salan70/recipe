@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:recipe/auth/auth_controller.dart';
@@ -14,7 +14,8 @@ import 'package:recipe/view/add_recipe/add_redipe_model.dart';
 import 'package:recipe/parts/validation/validation.dart';
 
 class AddRecipeScreen extends ConsumerWidget {
-  final AddRecipeModel addRecipeModel = AddRecipeModel("", "", 3.0, "", null);
+  final AddRecipeModel addRecipeModel =
+      AddRecipeModel("", "", 3.0, null, "", null);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -58,28 +59,71 @@ class AddRecipeScreen extends ConsumerWidget {
                   String uid = authControllerState.uid;
                   print("uid:" + authControllerState.uid);
 
-                  bool isOk = true;
-                  for (int index = 0; index < ingredientList.length; index++) {
-                    if (validation.errorText(ingredientList[index].amount) !=
-                        null) {
-                      // 材料の数量の再入力を求める
+                  if (addRecipeModel.recipeName == "") {
+                    final snackBar = SnackBar(
+                        backgroundColor: Colors.red,
+                        content: const Text(
+                          '料理名を入力してください',
+                          textAlign: TextAlign.center,
+                        ),
+                        elevation: 6.0,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else if (addRecipeModel.forHowManyPeople == null) {
+                    final snackBar = SnackBar(
+                        backgroundColor: Colors.red,
+                        content: const Text(
+                          '材料が何人分か入力してください',
+                          textAlign: TextAlign.center,
+                        ),
+                        elevation: 6.0,
+                        behavior: SnackBarBehavior.floating,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    bool ingredientAmountIsOk = true;
+                    for (int index = 0;
+                        index < ingredientList.length;
+                        index++) {
+                      if (validation.errorText(ingredientList[index].amount) !=
+                          null) {
+                        // 材料の数量の再入力を求める
+                        final snackBar = SnackBar(
+                            backgroundColor: Colors.red,
+                            content: const Text(
+                              '材料の数量に不正な値があります',
+                              textAlign: TextAlign.center,
+                            ),
+                            elevation: 6.0,
+                            behavior: SnackBarBehavior.floating,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-                      print("false");
-                      isOk = false;
+                        print("false");
+                        ingredientAmountIsOk = false;
+                      }
                     }
-                  }
 
-                  if (isOk) {
-                    print("===追加===");
-                    Recipe recipe = Recipe(
-                        addRecipeModel.recipeName,
-                        addRecipeModel.recipeGrade,
-                        addRecipeModel.recipeMemo,
-                        imageFile.imageFile);
-                    addRecipeModel.addRecipe(
-                        uid, recipe, ingredientList, proceduresList);
+                    if (ingredientAmountIsOk) {
+                      print("===追加===");
+                      Recipe recipe = Recipe(
+                          addRecipeModel.recipeName,
+                          addRecipeModel.recipeGrade,
+                          addRecipeModel.forHowManyPeople,
+                          addRecipeModel.recipeMemo,
+                          imageFile.imageFile);
+                      addRecipeModel.addRecipe(
+                          uid, recipe, ingredientList, proceduresList);
 
-                    Navigator.pop(context);
+                      Navigator.pop(context);
+                    }
                   }
                 }
               },
@@ -133,10 +177,22 @@ class AddRecipeScreen extends ConsumerWidget {
             // 材料
             Column(
               children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text("材料"),
-                ),
+                Row(children: [
+                  Text("材料"),
+                  SizedBox(width: 10),
+                  SizedBox(
+                      width: 20,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        onChanged: (value) {
+                          addRecipeModel.forHowManyPeople = int.parse(value);
+                        },
+                      )),
+                  Text("人分"),
+                ]),
                 Container(
                   child: IngredientListWidget(),
                 ),
