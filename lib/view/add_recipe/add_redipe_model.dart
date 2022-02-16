@@ -9,21 +9,21 @@ import 'package:image_picker/image_picker.dart';
 import 'package:recipe/domain/recipe.dart';
 
 class AddRecipeModel extends ChangeNotifier {
-  AddRecipeModel(this.recipeName, this.recipeImageURL, this.recipeGrade,
+  AddRecipeModel(this.recipeName, this.imageUrl, this.recipeGrade,
       this.forHowManyPeople, this.recipeMemo, this.imageFile);
 
   String? recipeName;
   double? recipeGrade;
   int? forHowManyPeople;
   String? recipeMemo;
-  String? recipeImageURL;
+  String? imageUrl;
   File? imageFile;
 
   Future addRecipe(String uid, Recipe recipe, List<Ingredient> ingredientList,
       List<Procedure> procedureList) async {
     // 画像をStorageに保存
-    if (recipe.recipeImage != null) {
-      imageFile = recipe.recipeImage;
+    if (recipe.imageFile != null) {
+      imageFile = recipe.imageFile;
       final int timestamp = DateTime.now().microsecondsSinceEpoch;
       final String name = imageFile!.path.split('/').last;
       final String path = '${timestamp}_$name';
@@ -33,20 +33,20 @@ class AddRecipeModel extends ChangeNotifier {
           .child(path)
           .putFile(imageFile!);
 
-      recipeImageURL = await task.ref.getDownloadURL();
+      imageUrl = await task.ref.getDownloadURL();
     }
 
     //レシピを保存
     DocumentReference docRef = await FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
-        .collection('recipe')
+        .collection('recipes')
         .add({
       'recipeName': recipe.recipeName,
       'recipeGrade': recipe.recipeGrade,
       'forHowManyPeople': recipe.forHowManyPeople,
       'recipeMemo': recipe.recipeMemo,
-      'recipeImage': recipeImageURL
+      'imageUrl': imageUrl
     });
 
     print(docRef.id);
@@ -56,7 +56,7 @@ class AddRecipeModel extends ChangeNotifier {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(uid)
-          .collection('recipe')
+          .collection('recipes')
           .doc(docRef.id)
           .collection('ingredient')
           .add({
@@ -73,7 +73,7 @@ class AddRecipeModel extends ChangeNotifier {
       await FirebaseFirestore.instance
           .collection('users')
           .doc(uid)
-          .collection('recipe')
+          .collection('recipes')
           .doc(docRef.id)
           .collection('procedure')
           .add({
@@ -82,14 +82,6 @@ class AddRecipeModel extends ChangeNotifier {
         'orderNum': i
       });
     }
-  }
-}
-
-class RecipeListNotifier extends StateNotifier<List<Recipe>> {
-  RecipeListNotifier() : super([]);
-
-  void add(Recipe recipe) {
-    state = [...state, recipe];
   }
 }
 

@@ -61,16 +61,19 @@ class AddRecipeScreen extends ConsumerWidget {
 
                   if (addRecipeModel.recipeName == "") {
                     final snackBar = SnackBar(
-                        backgroundColor: Colors.red,
-                        content: const Text(
-                          '料理名を入力してください',
-                          textAlign: TextAlign.center,
+                      backgroundColor: Colors.white,
+                      content: const Text(
+                        '料理名を入力してください',
+                        style: TextStyle(
+                          color: Colors.red,
                         ),
-                        elevation: 6.0,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))));
+                        textAlign: TextAlign.center,
+                      ),
+                      // behavior: SnackBarBehavior.floating,
+                      // shape: RoundedRectangleBorder(
+                      //     borderRadius:
+                      //         BorderRadius.all(Radius.circular(20)))
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   } else if (addRecipeModel.forHowManyPeople == null) {
                     final snackBar = SnackBar(
@@ -118,7 +121,10 @@ class AddRecipeScreen extends ConsumerWidget {
                           addRecipeModel.recipeGrade,
                           addRecipeModel.forHowManyPeople,
                           addRecipeModel.recipeMemo,
-                          imageFile.imageFile);
+                          "",
+                          imageFile.imageFile,
+                          ingredientList,
+                          proceduresList);
                       addRecipeModel.addRecipe(
                           uid, recipe, ingredientList, proceduresList);
 

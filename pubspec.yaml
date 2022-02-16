@@ -10,6 +10,7 @@ environment:
 dependencies:
 
   freezed_annotation:
+  json_annotation: ^4.4.0
 
   flutter:
     sdk: flutter
@@ -29,6 +30,7 @@ dependencies:
   uuid: ^3.0.5
   image_picker: ^0.8.3+3
   fluttertoast: ^8.0.8
+
 
 dev_dependencies:
   flutter_test:

@@ -1,13 +1,19 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipe/view/add_recipe/add_redipe_model.dart';
+import 'package:recipe/view/recipe_list/recipe_list_model.dart';
 import 'domain/recipe.dart';
 import 'package:recipe/parts/reordable_text_field/procedures.dart';
 import 'package:recipe/parts/reordable_text_field/ingredients.dart';
-// import 'package:photoapp/photo.dart';
-// import 'package:photoapp/
+import 'package:recipe/auth/auth_controller.dart';
+
+final authControllerProvider = StateNotifierProvider<AuthController, User?>(
+  (ref) => AuthController(ref.read)..appStarted(),
+);
 
 final recipeListNotifierProvider =
     StateNotifierProvider.autoDispose<RecipeListNotifier, List<Recipe>>((ref) {
@@ -32,3 +38,38 @@ final procedureListNotifierProvider =
     StateNotifierProvider.autoDispose<ProcedureListNotifier, List<Procedure>>(
   (ref) => ProcedureListNotifier(),
 );
+
+final recipesStreamProvider = StreamProvider<List<Recipe>>((ref) {
+  // users/{user.uid} ドキュメントのSnapshotを取得
+  final authControllerState = ref.watch(authControllerProvider);
+  final uid = authControllerState?.uid;
+
+  final recipeCollection = FirebaseFirestore.instance
+      .collection('users')
+      .doc(uid)
+      .collection('recipes');
+  final ingredientCollection =
+      recipeCollection.doc('各料理のid(docRefで取れる)').collection('ingredient');
+
+  // データ（Map型）を取得
+  final recipeStream = recipeCollection.snapshots().map(
+        // CollectionのデータからItemクラスを生成する
+        (e) => e.docs.map((DocumentSnapshot document) {
+          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+
+          final String recipeName = data['recipeName'];
+          final double? recipeGrade = data['recipeGrade'];
+          final int? forHowManyPeople = data['forHowManyPeople'];
+          final String? recipeMemo = data['recipeMemo'];
+          final String? imageUrl = data['imageUrl'];
+          final File? imageFile = data['imageFile'];
+
+          final List<Ingredient>? ingredientList = null;
+          final List<Procedure>? procedureList = null;
+
+          return Recipe(recipeName, recipeGrade, forHowManyPeople, recipeMemo,
+              imageUrl, imageFile, ingredientList, procedureList);
+        }).toList(),
+      );
+  return recipeStream;
+});

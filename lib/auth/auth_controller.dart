@@ -3,10 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'auth_repository.dart';
-
-final authControllerProvider = StateNotifierProvider<AuthController, User?>(
-  (ref) => AuthController(ref.read)..appStarted(),
-);
+import 'package:recipe/providers.dart';
 
 class AuthController extends StateNotifier<User?> {
   final Reader _read;
