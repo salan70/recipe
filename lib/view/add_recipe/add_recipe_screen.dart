@@ -117,14 +117,14 @@ class AddRecipeScreen extends ConsumerWidget {
                     if (ingredientAmountIsOk) {
                       print("===追加===");
                       Recipe recipe = Recipe(
-                          addRecipeModel.recipeName,
-                          addRecipeModel.recipeGrade,
-                          addRecipeModel.forHowManyPeople,
-                          addRecipeModel.recipeMemo,
-                          "",
-                          imageFile.imageFile,
-                          ingredientList,
-                          proceduresList);
+                          recipeName: addRecipeModel.recipeName,
+                          recipeGrade: addRecipeModel.recipeGrade,
+                          forHowManyPeople: addRecipeModel.forHowManyPeople,
+                          recipeMemo: addRecipeModel.recipeMemo,
+                          imageUrl: "",
+                          imageFile: imageFile.imageFile,
+                          ingredientList: ingredientList,
+                          procedureList: proceduresList);
                       addRecipeModel.addRecipe(
                           uid, recipe, ingredientList, proceduresList);
 

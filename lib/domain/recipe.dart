@@ -14,14 +14,14 @@ class ImageFile {
 
 class Recipe {
   Recipe(
-      this.recipeName,
+      {this.recipeName,
       this.recipeGrade,
       this.forHowManyPeople,
       this.recipeMemo,
       this.imageUrl,
       this.imageFile,
       this.ingredientList,
-      this.procedureList);
+      this.procedureList});
 
   final String? recipeName;
   final double? recipeGrade;
@@ -37,9 +37,9 @@ class Recipe {
 class Ingredient with _$Ingredient {
   const factory Ingredient({
     required String id,
-    required String name,
-    required String amount,
-    required String unit,
+    String? name,
+    String? amount,
+    String? unit,
   }) = _Ingredient;
 
   factory Ingredient.fromJson(Map<String, dynamic> json) =>

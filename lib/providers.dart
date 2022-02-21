@@ -40,36 +40,10 @@ final procedureListNotifierProvider =
 );
 
 final recipesStreamProvider = StreamProvider<List<Recipe>>((ref) {
-  // users/{user.uid} ドキュメントのSnapshotを取得
   final authControllerState = ref.watch(authControllerProvider);
-  final uid = authControllerState?.uid;
 
-  final recipeCollection = FirebaseFirestore.instance
-      .collection('users')
-      .doc(uid)
-      .collection('recipes');
-  final ingredientCollection =
-      recipeCollection.doc('各料理のid(docRefで取れる)').collection('ingredient');
+  final String uid = authControllerState!.uid;
+  RecipeListModel recipeListModel = RecipeListModel();
 
-  // データ（Map型）を取得
-  final recipeStream = recipeCollection.snapshots().map(
-        // CollectionのデータからItemクラスを生成する
-        (e) => e.docs.map((DocumentSnapshot document) {
-          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
-
-          final String recipeName = data['recipeName'];
-          final double? recipeGrade = data['recipeGrade'];
-          final int? forHowManyPeople = data['forHowManyPeople'];
-          final String? recipeMemo = data['recipeMemo'];
-          final String? imageUrl = data['imageUrl'];
-          final File? imageFile = data['imageFile'];
-
-          final List<Ingredient>? ingredientList = null;
-          final List<Procedure>? procedureList = null;
-
-          return Recipe(recipeName, recipeGrade, forHowManyPeople, recipeMemo,
-              imageUrl, imageFile, ingredientList, procedureList);
-        }).toList(),
-      );
-  return recipeStream;
+  return recipeListModel.fetchRecipeList(uid);
 });

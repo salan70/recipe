@@ -20,6 +20,7 @@ class RecipeListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     RecipeListNotifier recipeListNotifier = RecipeListNotifier();
     final recipes = ref.watch(recipesStreamProvider);
+    final recipes2 = ref.watch(recipesStreamProvider);
     final authControllerState = ref.watch(authControllerProvider);
 
     return Scaffold(
@@ -55,12 +56,28 @@ class RecipeListPage extends ConsumerWidget {
                         child: SizedBox(
                             width: 200,
                             height: 120,
-                            child: recipe.imageUrl != null
+                            child: recipe.imageUrl != ""
                                 ? Image.network(recipe.imageUrl.toString())
                                 : Container(
                                     color: Colors.blueGrey,
                                   )),
                       ),
+                      recipes2.when(
+                          error: (error, stack) => Text('Error: $error'),
+                          loading: () => const CircularProgressIndicator(),
+                          data: (recipes2) {
+                            return Text('');
+                          }),
+                      SizedBox(
+                          // child: recipe.ingredientList != null
+                          //     ? Wrap(children: [
+                          //         for (var ingredient in recipe.ingredientList!)
+                          //           Text(ingredient.name.toString()),
+                          //         Text("a"),
+                          //       ])
+                          //     : Text("材料なし"),
+
+                          ),
                     ],
                   );
                 });
