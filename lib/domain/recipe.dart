@@ -14,7 +14,8 @@ class ImageFile {
 
 class Recipe {
   Recipe(
-      {this.recipeName,
+      {this.recipeId,
+      this.recipeName,
       this.recipeGrade,
       this.forHowManyPeople,
       this.recipeMemo,
@@ -23,6 +24,7 @@ class Recipe {
       this.ingredientList,
       this.procedureList});
 
+  final String? recipeId;
   final String? recipeName;
   final double? recipeGrade;
   final int? forHowManyPeople;

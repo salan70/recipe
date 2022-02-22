@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:recipe/repository/fetch_recipe.dart';
 import 'package:recipe/view/add_recipe/add_redipe_model.dart';
 import 'package:recipe/view/recipe_list/recipe_list_model.dart';
 import 'domain/recipe.dart';
@@ -14,11 +15,6 @@ import 'package:recipe/auth/auth_controller.dart';
 final authControllerProvider = StateNotifierProvider<AuthController, User?>(
   (ref) => AuthController(ref.read)..appStarted(),
 );
-
-final recipeListNotifierProvider =
-    StateNotifierProvider.autoDispose<RecipeListNotifier, List<Recipe>>((ref) {
-  return RecipeListNotifier();
-});
 
 final imageFileNotifierProvider =
     StateNotifierProvider.autoDispose<ImageFileNotifier, ImageFile>((ref) {
@@ -41,9 +37,29 @@ final procedureListNotifierProvider =
 
 final recipesStreamProvider = StreamProvider<List<Recipe>>((ref) {
   final authControllerState = ref.watch(authControllerProvider);
+  final user = authControllerState;
 
-  final String uid = authControllerState!.uid;
-  RecipeListModel recipeListModel = RecipeListModel();
+  FetchRecipeRepository fetchRecipeRepository = FetchRecipeRepository(user);
 
-  return recipeListModel.fetchRecipeList(uid);
+  return fetchRecipeRepository.fetchRecipeList(user!.uid);
+});
+
+final ingredientsStreamProviderFamily =
+    StreamProviderFamily<List<Ingredient>, String>((ref, recipeId) {
+  final authControllerState = ref.watch(authControllerProvider);
+  final user = authControllerState;
+
+  FetchRecipeRepository fetchRecipeRepository = FetchRecipeRepository(user);
+
+  return fetchRecipeRepository.fetchIngredientList(user!.uid, recipeId);
+});
+
+final recipesStreamProviderFamily =
+    StreamProviderFamily<List<Recipe>, String>((ref, docRef) {
+  final authControllerState = ref.watch(authControllerProvider);
+  final user = authControllerState;
+
+  FetchRecipeRepository fetchRecipeRepository = FetchRecipeRepository(user);
+
+  return fetchRecipeRepository.fetchRecipeList(user!.uid);
 });

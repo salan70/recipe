@@ -18,9 +18,11 @@ class RecipeListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    RecipeListNotifier recipeListNotifier = RecipeListNotifier();
+    String? recipeId;
+
     final recipes = ref.watch(recipesStreamProvider);
-    final recipes2 = ref.watch(recipesStreamProvider);
+    RecipeListModel recipeListModel = RecipeListModel();
+
     final authControllerState = ref.watch(authControllerProvider);
 
     return Scaffold(
@@ -45,39 +47,51 @@ class RecipeListPage extends ConsumerWidget {
                 itemCount: recipes.length,
                 itemBuilder: (context, index) {
                   final recipe = recipes[index];
+                  recipeId = recipes[index].recipeId!;
+                  // print(recipeId);
+                  final ingredients =
+                      ref.watch(ingredientsStreamProviderFamily(recipeId!));
                   return Column(
                     children: [
                       SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
-                      Text(recipe.recipeName.toString()),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: SizedBox(
-                            width: 200,
-                            height: 120,
-                            child: recipe.imageUrl != ""
-                                ? Image.network(recipe.imageUrl.toString())
-                                : Container(
-                                    color: Colors.blueGrey,
-                                  )),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          recipe.recipeName.toString(),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      recipes2.when(
-                          error: (error, stack) => Text('Error: $error'),
-                          loading: () => const CircularProgressIndicator(),
-                          data: (recipes2) {
-                            return Text('');
-                          }),
-                      SizedBox(
-                          // child: recipe.ingredientList != null
-                          //     ? Wrap(children: [
-                          //         for (var ingredient in recipe.ingredientList!)
-                          //           Text(ingredient.name.toString()),
-                          //         Text("a"),
-                          //       ])
-                          //     : Text("材料なし"),
-
-                          ),
+                      Expanded(
+                        flex: 5,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: SizedBox(
+                              width: 200,
+                              height: 120,
+                              child: recipe.imageUrl != ""
+                                  ? Image.network(recipe.imageUrl.toString())
+                                  : Container(
+                                      color: Colors.blueGrey,
+                                    )),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: ingredients.when(
+                            error: (error, stack) => Text('Error: $error'),
+                            loading: () => const CircularProgressIndicator(),
+                            data: (ingredients) {
+                              String outputIngredientText = recipeListModel
+                                  .toOutputIngredientText(ingredients);
+                              return Text(
+                                outputIngredientText,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              );
+                            }),
+                      ),
                     ],
                   );
                 });
