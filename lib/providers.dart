@@ -54,6 +54,16 @@ final ingredientsStreamProviderFamily =
   return fetchRecipeRepository.fetchIngredientList(user!.uid, recipeId);
 });
 
+final proceduresStreamProviderFamily =
+    StreamProviderFamily<List<Procedure>, String>((ref, recipeId) {
+  final authControllerState = ref.watch(authControllerProvider);
+  final user = authControllerState;
+
+  FetchRecipeRepository fetchRecipeRepository = FetchRecipeRepository(user);
+
+  return fetchRecipeRepository.fetchProcedureList(user!.uid, recipeId);
+});
+
 final recipesStreamProviderFamily =
     StreamProviderFamily<List<Recipe>, String>((ref, docRef) {
   final authControllerState = ref.watch(authControllerProvider);

@@ -9,6 +9,7 @@ import 'package:recipe/providers.dart';
 
 import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/view/add_recipe/add_recipe_screen.dart';
+import 'package:recipe/view/recipe_detail/recipe_detail_screen.dart';
 import 'package:recipe/view/recipe_list/recipe_list_model.dart';
 import 'package:recipe/domain/recipe.dart';
 
@@ -51,48 +52,86 @@ class RecipeListPage extends ConsumerWidget {
                   // print(recipeId);
                   final ingredients =
                       ref.watch(ingredientsStreamProviderFamily(recipeId!));
-                  return Column(
-                    children: [
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Text(
-                          recipe.recipeName.toString(),
-                          overflow: TextOverflow.ellipsis,
+                  String outputIngredientText = '';
+
+                  final procedures =
+                      ref.watch(proceduresStreamProviderFamily(recipeId!));
+
+                  ingredients.when(
+                      data: (ingredient) {
+                        recipe.ingredientList = ingredient;
+
+                        print('---' + recipe.recipeName! + '---');
+                        if (recipe.ingredientList != null) {
+                          for (var ing in recipe.ingredientList!)
+                            print(ing.name);
+                        }
+
+                        outputIngredientText =
+                            recipeListModel.toOutputIngredientText(ingredient);
+                      },
+                      error: (error, stack) => Text('Error: $error'),
+                      loading: () => const CircularProgressIndicator());
+
+                  procedures.when(
+                      data: (procedure) {
+                        recipe.procedureList = procedure;
+                      },
+                      error: (error, stack) => Text('Error: $error'),
+                      loading: () => const CircularProgressIndicator());
+
+                  return GestureDetector(
+                    ///画面遷移
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            fullscreenDialog: true,
+                            builder: (context) => RecipeDetailScreen(recipe),
+                          ));
+                    },
+
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 10,
                         ),
-                      ),
-                      Expanded(
-                        flex: 5,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: SizedBox(
-                              width: 200,
-                              height: 120,
-                              child: recipe.imageUrl != ""
-                                  ? Image.network(recipe.imageUrl.toString())
-                                  : Container(
-                                      color: Colors.blueGrey,
-                                    )),
+                        Expanded(
+                          flex: 1,
+                          child: Hero(
+                            tag: 'recipeName' + recipe.recipeId!,
+                            child: Text(
+                              recipe.recipeName.toString(),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: ingredients.when(
-                            error: (error, stack) => Text('Error: $error'),
-                            loading: () => const CircularProgressIndicator(),
-                            data: (ingredients) {
-                              String outputIngredientText = recipeListModel
-                                  .toOutputIngredientText(ingredients);
-                              return Text(
-                                outputIngredientText,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              );
-                            }),
-                      ),
-                    ],
+                        Expanded(
+                          flex: 5,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(5),
+                            child: SizedBox(
+                                width: 200,
+                                height: 120,
+                                child: recipe.imageUrl != ""
+                                    ? Hero(
+                                        tag: 'recipeImage' + recipe.recipeId!,
+                                        child: Image.network(recipe.imageUrl!))
+                                    : Container(
+                                        color: Colors.blueGrey,
+                                      )),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            outputIngredientText,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 });
           }),

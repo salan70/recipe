@@ -31,8 +31,8 @@ class Recipe {
   final String? recipeMemo;
   final String? imageUrl;
   final File? imageFile;
-  final List<Ingredient>? ingredientList;
-  final List<Procedure>? procedureList;
+  List<Ingredient>? ingredientList;
+  List<Procedure>? procedureList;
 }
 
 @freezed
@@ -49,8 +49,8 @@ class Ingredient with _$Ingredient {
 }
 
 class Procedure {
-  Procedure(this.id, this.content);
+  Procedure({this.id, this.content});
 
-  final String id;
-  final String content;
+  final String? id;
+  final String? content;
 }

@@ -8,7 +8,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/domain/recipe.dart';
 
-class RecipeListModel extends ChangeNotifier {
+class RecipeDetailModel extends ChangeNotifier {
+  RecipeDetailModel(this.recipeID);
+  String recipeID = '';
+
   String toOutputIngredientText(List<Ingredient> ingredients) {
     final List<String> ingredientTextList = List.filled(ingredients.length, '');
     String outputIngredientText = '';

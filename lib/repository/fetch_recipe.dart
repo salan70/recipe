@@ -72,4 +72,29 @@ class FetchRecipeRepository {
 
     return ingredientStream;
   }
+
+  Stream<List<Procedure>> fetchProcedureList(String uid, String recipeId) {
+    final ingredientCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .collection('recipes')
+        .doc(recipeId)
+        .collection('procedure');
+
+    // データ（Map型）を取得
+    final procedureStream = ingredientCollection.snapshots().map(
+          // CollectionのデータからItemクラスを生成する
+          (e) => e.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data =
+                document.data()! as Map<String, dynamic>;
+
+            final String? id = data['id'];
+            final String? content = data['content'];
+
+            return Procedure(id: id, content: content);
+          }).toList(),
+        );
+
+    return procedureStream;
+  }
 }

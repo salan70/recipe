@@ -10,7 +10,7 @@ import 'package:recipe/providers.dart';
 
 class ProcedureListNotifier extends StateNotifier<List<Procedure>> {
   // ProceduresListNotifier(List<Procedures> state) : super(state);
-  ProcedureListNotifier() : super([Procedure(Uuid().v4(), "")]);
+  ProcedureListNotifier() : super([Procedure(id: Uuid().v4(), content: "")]);
 
   void add(Procedure procedure) {
     state = [...state, procedure];
@@ -57,7 +57,7 @@ class ProceduresListWidget extends ConsumerWidget {
                     IconSlideAction(
                       color: Colors.red,
                       iconWidget: Text("delete"),
-                      onTap: () => notifier.remove(proceduresList[index].id),
+                      onTap: () => notifier.remove(proceduresList[index].id!),
                     ),
                   ],
                   child: Row(
@@ -68,8 +68,8 @@ class ProceduresListWidget extends ConsumerWidget {
                           child: TextField(
                             maxLines: null,
                             onChanged: (String value) {
-                              proceduresList[index] =
-                                  Procedure(proceduresList[index].id, value);
+                              proceduresList[index] = Procedure(
+                                  id: proceduresList[index].id, content: value);
 
                               ///テスト用
                               // for (int i = 0; i < proceduresList.length; i++) {
@@ -90,7 +90,7 @@ class ProceduresListWidget extends ConsumerWidget {
         TextButton(
           onPressed: () {
             String id = Uuid().v4();
-            final Procedure procedures = Procedure(id, "");
+            final Procedure procedures = Procedure(id: id, content: "");
             notifier.add(procedures);
             print(id);
           },
