@@ -61,12 +61,6 @@ class RecipeListPage extends ConsumerWidget {
                       data: (ingredient) {
                         recipe.ingredientList = ingredient;
 
-                        print('---' + recipe.recipeName! + '---');
-                        if (recipe.ingredientList != null) {
-                          for (var ing in recipe.ingredientList!)
-                            print(ing.name);
-                        }
-
                         outputIngredientText =
                             recipeListModel.toOutputIngredientText(ingredient);
                       },

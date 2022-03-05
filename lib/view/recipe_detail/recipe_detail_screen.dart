@@ -13,11 +13,6 @@ class RecipeDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authControllerState = ref.watch(authControllerProvider);
 
-    print('===' + recipe.recipeName! + '===');
-    if (recipe.ingredientList != null) {
-      for (var ing in recipe.ingredientList!) print(ing.name);
-    }
-
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
@@ -107,6 +102,7 @@ class RecipeDetailScreen extends ConsumerWidget {
                 ),
               ],
             ),
+            SizedBox(height: 20),
 
             // 手順
             Column(
@@ -130,6 +126,7 @@ class RecipeDetailScreen extends ConsumerWidget {
                 ),
               ],
             ),
+            SizedBox(height: 20),
             // メモ
             Container(
               child: Column(

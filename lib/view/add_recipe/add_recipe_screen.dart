@@ -12,10 +12,11 @@ import 'package:recipe/view/recipe_list/recipe_list_screen.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/view/add_recipe/add_redipe_model.dart';
 import 'package:recipe/parts/validation/validation.dart';
+import 'package:recipe/repository/add_recipe.dart';
 
 class AddRecipeScreen extends ConsumerWidget {
-  final AddRecipeModel addRecipeModel =
-      AddRecipeModel("", "", 3.0, null, "", null);
+  final AddRecipeRepository addRecipeRepository =
+      AddRecipeRepository("", "", 3.0, null, "", null);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -46,7 +47,7 @@ class AddRecipeScreen extends ConsumerWidget {
           child: TextField(
             decoration: InputDecoration.collapsed(hintText: "料理名"),
             onChanged: (value) {
-              addRecipeModel.recipeName = value;
+              addRecipeRepository.recipeName = value;
               // Providerから値を更新
               // recipeName.state = value;
             },
@@ -59,7 +60,7 @@ class AddRecipeScreen extends ConsumerWidget {
                   String uid = authControllerState.uid;
                   print("uid:" + authControllerState.uid);
 
-                  if (addRecipeModel.recipeName == "") {
+                  if (addRecipeRepository.recipeName == "") {
                     final snackBar = SnackBar(
                       backgroundColor: Colors.white,
                       content: const Text(
@@ -75,7 +76,7 @@ class AddRecipeScreen extends ConsumerWidget {
                       //         BorderRadius.all(Radius.circular(20)))
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } else if (addRecipeModel.forHowManyPeople == null) {
+                  } else if (addRecipeRepository.forHowManyPeople == null) {
                     final snackBar = SnackBar(
                         backgroundColor: Colors.red,
                         content: const Text(
@@ -117,16 +118,16 @@ class AddRecipeScreen extends ConsumerWidget {
                     if (ingredientAmountIsOk) {
                       print("===追加===");
                       Recipe recipe = Recipe(
-                          recipeName: addRecipeModel.recipeName,
-                          recipeGrade: addRecipeModel.recipeGrade,
-                          forHowManyPeople: addRecipeModel.forHowManyPeople,
-                          recipeMemo: addRecipeModel.recipeMemo,
+                          recipeName: addRecipeRepository.recipeName,
+                          recipeGrade: addRecipeRepository.recipeGrade,
+                          forHowManyPeople:
+                              addRecipeRepository.forHowManyPeople,
+                          recipeMemo: addRecipeRepository.recipeMemo,
                           imageUrl: "",
                           imageFile: imageFile.imageFile,
                           ingredientList: ingredientList,
                           procedureList: proceduresList);
-                      addRecipeModel.addRecipe(
-                          uid, recipe, ingredientList, proceduresList);
+                      addRecipeRepository.addRecipe(uid, recipe);
 
                       Navigator.pop(context);
                     }
@@ -176,7 +177,7 @@ class AddRecipeScreen extends ConsumerWidget {
                 color: Colors.amber,
               ),
               onRatingUpdate: (rating) {
-                addRecipeModel.recipeGrade = rating;
+                addRecipeRepository.recipeGrade = rating;
               },
             )),
 
@@ -194,7 +195,8 @@ class AddRecipeScreen extends ConsumerWidget {
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         onChanged: (value) {
-                          addRecipeModel.forHowManyPeople = int.parse(value);
+                          addRecipeRepository.forHowManyPeople =
+                              int.parse(value);
                         },
                       )),
                   Text("人分"),
@@ -226,7 +228,7 @@ class AddRecipeScreen extends ConsumerWidget {
                   TextField(
                     maxLines: null,
                     onChanged: (value) {
-                      addRecipeModel.recipeMemo = value;
+                      addRecipeRepository.recipeMemo = value;
                     },
                   ),
                 ],

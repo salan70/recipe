@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:recipe/domain/recipe.dart';
 
@@ -14,7 +13,8 @@ class FetchRecipeRepository {
     final recipeCollection = FirebaseFirestore.instance
         .collection('users')
         .doc(uid)
-        .collection('recipes');
+        .collection('recipes')
+        .orderBy('createdAt');
 
     // データ（Map型）を取得
     final recipeStream = recipeCollection.snapshots().asBroadcastStream().map(
@@ -52,7 +52,8 @@ class FetchRecipeRepository {
         .doc(uid)
         .collection('recipes')
         .doc(recipeId)
-        .collection('ingredient');
+        .collection('ingredients')
+        .orderBy('orderNum');
 
     // データ（Map型）を取得
     final ingredientStream = ingredientCollection.snapshots().map(
@@ -79,7 +80,8 @@ class FetchRecipeRepository {
         .doc(uid)
         .collection('recipes')
         .doc(recipeId)
-        .collection('procedure');
+        .collection('procedures')
+        .orderBy('orderNum');
 
     // データ（Map型）を取得
     final procedureStream = ingredientCollection.snapshots().map(
