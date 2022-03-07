@@ -22,14 +22,14 @@ class AddRecipeRepository {
 
     // 画像をStorageに保存
     if (recipe.imageFile != null) {
-      imageFile = recipe.imageFile;
-      final String name = imageFile!.path.split('/').last;
+      File imageFile = recipe.imageFile!;
+      final String name = imageFile.path.split('/').last;
       final String path = '${timestamp}_$name';
       final TaskSnapshot task = await FirebaseStorage.instance
           .ref()
           .child('users/$uid/recipeImages')
           .child(path)
-          .putFile(imageFile!);
+          .putFile(imageFile);
 
       imageUrl = await task.ref.getDownloadURL();
     }
