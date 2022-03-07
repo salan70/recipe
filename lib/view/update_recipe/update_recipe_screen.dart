@@ -2,30 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/parts/reordable_text_field/procedures.dart';
 import 'package:recipe/parts/reordable_text_field/ingredients.dart';
 import 'package:recipe/providers.dart';
-import 'package:recipe/view/recipe_list/recipe_list_screen.dart';
 import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/view/add_recipe/add_recipe_model.dart';
 import 'package:recipe/parts/validation/validation.dart';
-import 'package:recipe/repository/add_recipe.dart';
+import 'package:recipe/repository/update_recipe.dart';
 
-class AddRecipeScreen extends ConsumerWidget {
-  final AddRecipeRepository addRecipeRepository =
-      AddRecipeRepository("", "", 3.0, null, "", null);
+class UpdateRecipeScreen extends ConsumerWidget {
+  UpdateRecipeScreen(this.recipe);
+  final Recipe recipe;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final UpdateRecipeRepository updateRecipeRepository =
+        UpdateRecipeRepository(
+            recipe.recipeName,
+            recipe.imageUrl,
+            recipe.recipeGrade,
+            recipe.forHowManyPeople,
+            recipe.recipeMemo,
+            null);
+
     final Validation validation = Validation();
 
     final authControllerState = ref.watch(authControllerProvider);
 
-    final imageFile = ref.watch(imageFileNotifierProvider);
-    final imageFileNotifier = ref.watch(imageFileNotifierProvider.notifier);
+    // final imageFile = ref.watch(imageFileNotifierProvider);
+    // final imageFileNotifier = ref.watch(imageFileNotifierProvider.notifier);
 
     final proceduresList = ref.watch(procedureListNotifierProvider);
     final ingredientList = ref.watch(ingredientListNotifierProvider);
@@ -45,9 +51,10 @@ class AddRecipeScreen extends ConsumerWidget {
         ),
         title: Center(
           child: TextField(
+            controller: TextEditingController(text: recipe.recipeName),
             decoration: InputDecoration.collapsed(hintText: "料理名"),
             onChanged: (value) {
-              addRecipeRepository.recipeName = value;
+              updateRecipeRepository.recipeName = value;
               // Providerから値を更新
               // recipeName.state = value;
             },
@@ -60,7 +67,7 @@ class AddRecipeScreen extends ConsumerWidget {
                   String uid = authControllerState.uid;
                   print("uid:" + authControllerState.uid);
 
-                  if (addRecipeRepository.recipeName == "") {
+                  if (updateRecipeRepository.recipeName == "") {
                     final snackBar = SnackBar(
                       backgroundColor: Colors.white,
                       content: const Text(
@@ -76,7 +83,7 @@ class AddRecipeScreen extends ConsumerWidget {
                       //         BorderRadius.all(Radius.circular(20)))
                     );
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } else if (addRecipeRepository.forHowManyPeople == null) {
+                  } else if (updateRecipeRepository.forHowManyPeople == null) {
                     final snackBar = SnackBar(
                         backgroundColor: Colors.red,
                         content: const Text(
@@ -118,16 +125,16 @@ class AddRecipeScreen extends ConsumerWidget {
                     if (ingredientAmountIsOk) {
                       print("===追加===");
                       Recipe recipe = Recipe(
-                          recipeName: addRecipeRepository.recipeName,
-                          recipeGrade: addRecipeRepository.recipeGrade,
+                          recipeName: updateRecipeRepository.recipeName,
+                          recipeGrade: updateRecipeRepository.recipeGrade,
                           forHowManyPeople:
-                              addRecipeRepository.forHowManyPeople,
-                          recipeMemo: addRecipeRepository.recipeMemo,
-                          imageUrl: "",
-                          imageFile: imageFile.imageFile,
+                              updateRecipeRepository.forHowManyPeople,
+                          recipeMemo: updateRecipeRepository.recipeMemo,
+                          imageUrl: '',
+                          imageFile: null,
                           ingredientList: ingredientList,
                           procedureList: proceduresList);
-                      addRecipeRepository.addRecipe(uid, recipe);
+                      updateRecipeRepository.updateRecipe(uid, recipe);
 
                       Navigator.pop(context);
                     }
@@ -147,10 +154,8 @@ class AddRecipeScreen extends ConsumerWidget {
             GestureDetector(
               child: SizedBox(
                 height: 250,
-                child: imageFile.imageFile != null
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.file(imageFile.imageFile!))
+                child: recipe.imageUrl != ''
+                    ? Image.network(recipe.imageUrl!)
                     : Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.0),
@@ -160,13 +165,13 @@ class AddRecipeScreen extends ConsumerWidget {
                       ),
               ),
               onTap: () async {
-                await imageFileNotifier.pickImage();
+                // await imageFileNotifier.pickImage();
               },
             ),
             // 評価
             Center(
                 child: RatingBar.builder(
-              initialRating: 3,
+              initialRating: recipe.recipeGrade!,
               minRating: 1,
               direction: Axis.horizontal,
               allowHalfRating: true,
@@ -177,7 +182,7 @@ class AddRecipeScreen extends ConsumerWidget {
                 color: Colors.amber,
               ),
               onRatingUpdate: (rating) {
-                addRecipeRepository.recipeGrade = rating;
+                updateRecipeRepository.recipeGrade = rating;
               },
             )),
 
@@ -190,12 +195,14 @@ class AddRecipeScreen extends ConsumerWidget {
                   SizedBox(
                       width: 20,
                       child: TextField(
+                        controller: TextEditingController(
+                            text: recipe.forHowManyPeople.toString()),
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         onChanged: (value) {
-                          addRecipeRepository.forHowManyPeople =
+                          updateRecipeRepository.forHowManyPeople =
                               int.parse(value);
                         },
                       )),
@@ -226,9 +233,10 @@ class AddRecipeScreen extends ConsumerWidget {
                     child: Text("メモ"),
                   ),
                   TextField(
+                    controller: TextEditingController(text: recipe.recipeMemo),
                     maxLines: null,
                     onChanged: (value) {
-                      addRecipeRepository.recipeMemo = value;
+                      updateRecipeRepository.recipeMemo = value;
                     },
                   ),
                 ],

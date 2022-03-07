@@ -5,8 +5,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:recipe/domain/recipe.dart';
 
-class AddRecipeRepository {
-  AddRecipeRepository(this.recipeName, this.imageUrl, this.recipeGrade,
+class UpdateRecipeRepository {
+  UpdateRecipeRepository(this.recipeName, this.imageUrl, this.recipeGrade,
       this.forHowManyPeople, this.recipeMemo, this.imageFile);
 
   String? recipeName;
@@ -16,7 +16,7 @@ class AddRecipeRepository {
   String? imageUrl;
   File? imageFile;
 
-  Future addRecipe(String uid, Recipe recipe) async {
+  Future updateRecipe(String uid, Recipe recipe) async {
     final int timestamp = DateTime.now().microsecondsSinceEpoch;
     final DateTime nowDatetime = DateTime.now();
 
@@ -49,29 +49,23 @@ class AddRecipeRepository {
     });
 
     print(docRef.id);
-    int ingredientListOrderNum = 0;
 
     // 材料を保存
     if (recipe.ingredientList != null) {
       for (int i = 0; i < recipe.ingredientList!.length; i++) {
-        if (recipe.ingredientList![i].name != '') {
-          print('test:' + recipe.ingredientList![i].name!);
-
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(uid)
-              .collection('recipes')
-              .doc(docRef.id)
-              .collection('ingredients')
-              .add({
-            'id': recipe.ingredientList![i].id,
-            'name': recipe.ingredientList![i].name,
-            'amount': recipe.ingredientList![i].amount,
-            'unit': recipe.ingredientList![i].unit,
-            'orderNum': ingredientListOrderNum,
-          });
-          ingredientListOrderNum++;
-        }
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .collection('recipes')
+            .doc(docRef.id)
+            .collection('ingredients')
+            .add({
+          'id': recipe.ingredientList![i].id,
+          'name': recipe.ingredientList![i].name,
+          'amount': recipe.ingredientList![i].amount,
+          'unit': recipe.ingredientList![i].unit,
+          'orderNum': i,
+        });
       }
     }
 

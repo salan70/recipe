@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:recipe/repository/fetch_recipe.dart';
-import 'package:recipe/view/add_recipe/add_redipe_model.dart';
+import 'package:recipe/view/add_recipe/add_recipe_model.dart';
 import 'package:recipe/view/recipe_list/recipe_list_model.dart';
 import 'domain/recipe.dart';
 import 'package:recipe/parts/reordable_text_field/procedures.dart';
@@ -66,8 +66,7 @@ final proceduresStreamProviderFamily =
 
 final recipesStreamProviderFamily =
     StreamProviderFamily<List<Recipe>, String>((ref, docRef) {
-  final authControllerState = ref.watch(authControllerProvider);
-  final user = authControllerState;
+  final user = ref.watch(authControllerProvider);
 
   FetchRecipeRepository fetchRecipeRepository = FetchRecipeRepository(user);
 

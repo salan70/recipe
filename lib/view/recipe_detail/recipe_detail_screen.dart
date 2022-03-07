@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/providers.dart';
 import 'package:recipe/domain/recipe.dart';
+import 'package:recipe/repository/delete_recipe.dart';
+import 'package:recipe/view/update_recipe/update_recipe_screen.dart';
 
 class RecipeDetailScreen extends ConsumerWidget {
   RecipeDetailScreen(this.recipe);
@@ -11,12 +13,13 @@ class RecipeDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authControllerState = ref.watch(authControllerProvider);
+    DeleteRecipeRepository deleteRecipeRepository = DeleteRecipeRepository();
+    final user = ref.watch(authControllerProvider);
 
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: Colors.blue,
+          color: Colors.green,
         ),
         backgroundColor: Colors.white,
         elevation: 1,
@@ -37,7 +40,16 @@ class RecipeDetailScreen extends ConsumerWidget {
           ),
         ),
         actions: <Widget>[
-          IconButton(onPressed: () {}, icon: Icon(Icons.check))
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => UpdateRecipeScreen(recipe),
+                      fullscreenDialog: true,
+                    ));
+              },
+              icon: Icon(Icons.edit))
         ],
       ),
       body: Container(
@@ -49,7 +61,7 @@ class RecipeDetailScreen extends ConsumerWidget {
             // 画像
             SizedBox(
               height: 250,
-              child: recipe.imageUrl != ""
+              child: recipe.imageUrl != ''
                   ? Hero(
                       tag: 'recipeImage' + recipe.recipeId!,
                       child: Image.network(recipe.imageUrl!))
@@ -136,10 +148,45 @@ class RecipeDetailScreen extends ConsumerWidget {
                     child: Text("メモ"),
                   ),
                   Container(
+                      alignment: Alignment.centerLeft,
                       child: recipe.recipeMemo != null
                           ? Text(recipe.recipeMemo!)
                           : Text('')),
                 ],
+              ),
+            ),
+            Center(
+              child: SizedBox(
+                width: 150,
+                child: TextButton(
+                    onPressed: () => showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: Text('確認'),
+                            content: Text('本当にこのレシピを削除しますか？'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: Text('いいえ'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  if (user != null || recipe.recipeId != null) {
+                                    await deleteRecipeRepository.deleteRecipe(
+                                        user!.uid, recipe.recipeId!);
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
+                                  } else {
+                                    print('else');
+                                  }
+                                },
+                                child: Text('はい'),
+                              ),
+                            ],
+                          ),
+                        ),
+                    child: Text('レシピを削除', style: TextStyle(color: Colors.red))),
               ),
             ),
           ],
