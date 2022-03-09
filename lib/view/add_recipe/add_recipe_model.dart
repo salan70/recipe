@@ -8,17 +8,17 @@ import 'package:image_picker/image_picker.dart';
 import 'package:recipe/domain/recipe.dart';
 
 /// AddRecipeRepositoryの作成によって不要？
-class AddRecipeModel extends ChangeNotifier {
-  AddRecipeModel(this.recipeName, this.imageUrl, this.recipeGrade,
-      this.forHowManyPeople, this.recipeMemo, this.imageFile);
-
-  String? recipeName;
-  double? recipeGrade;
-  int? forHowManyPeople;
-  String? recipeMemo;
-  String? imageUrl;
-  File? imageFile;
-}
+// class AddRecipeModel extends ChangeNotifier {
+//   AddRecipeModel(this.recipeName, this.imageUrl, this.recipeGrade,
+//       this.forHowManyPeople, this.recipeMemo, this.imageFile);
+//
+//   String? recipeName;
+//   double? recipeGrade;
+//   int? forHowManyPeople;
+//   String? recipeMemo;
+//   String? imageUrl;
+//   File? imageFile;
+// }
 
 class ImageFileNotifier extends StateNotifier<ImageFile> {
   ImageFileNotifier() : super(ImageFile(null));

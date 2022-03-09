@@ -15,9 +15,9 @@ class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
       : super([
           Ingredient(
             id: Uuid().v4(),
-            name: "",
-            amount: "",
-            unit: "個",
+            name: '',
+            amount: '',
+            unit: '個',
             // formState: GlobalKey<FormState>()
           ),
         ]);
@@ -70,17 +70,31 @@ class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
           ingredient,
     ];
   }
+
+  List<Ingredient> getList(List<Ingredient> ingredientList) {
+    return state = ingredientList;
+  }
 }
 
 class IngredientListWidget extends ConsumerWidget {
-  const IngredientListWidget({Key? key}) : super(key: key);
+  const IngredientListWidget({Key? key, this.originalIngredientList})
+      : super(key: key);
+
+  final List<Ingredient>? originalIngredientList;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ingredientList = ref.watch(ingredientListNotifierProvider);
-    final ingredientListNotifier =
+    List<Ingredient> ingredientList = ref.watch(ingredientListNotifierProvider);
+    IngredientListNotifier ingredientListNotifier =
         ref.watch(ingredientListNotifierProvider.notifier);
+
     final Validation validation = Validation();
+
+    final nameIsChanged = ref.watch(nameIsChangedProvider);
+    final nameIsChangedNotifier = ref.watch(nameIsChangedProvider.notifier);
+
+    final amountIsChanged = ref.watch(nameIsChangedProvider);
+    final amountIsChangedNotifier = ref.watch(nameIsChangedProvider.notifier);
 
     return Column(
       children: [
@@ -108,10 +122,18 @@ class IngredientListWidget extends ConsumerWidget {
                       Expanded(
                           flex: 2,
                           child: TextField(
+                            controller: nameIsChanged == false
+                                ? originalIngredientList != null
+                                    ? TextEditingController(
+                                        text:
+                                            originalIngredientList![index].name)
+                                    : null
+                                : null,
                             // decoration: InputDecoration(labelText: "ルッコラ"),
                             onChanged: (String value) {
                               ingredientListNotifier.editName(
                                   ingredientList[index].id, value);
+                              nameIsChangedNotifier.update((state) => true);
                             },
                           )),
                       SizedBox(
@@ -120,6 +142,14 @@ class IngredientListWidget extends ConsumerWidget {
                       Expanded(
                           flex: 1,
                           child: TextField(
+                            controller: amountIsChanged == false
+                                ? originalIngredientList != null
+                                    ? TextEditingController(
+                                        text: originalIngredientList![index]
+                                            .amount
+                                            .toString())
+                                    : null
+                                : null,
                             keyboardType: TextInputType.datetime,
                             decoration: InputDecoration(
                               // labelText: "2000",
@@ -127,10 +157,9 @@ class IngredientListWidget extends ConsumerWidget {
                                   .errorText(ingredientList[index].amount),
                             ),
                             onChanged: (value) {
-                              String? amount = value;
-
                               ingredientListNotifier.editAmount(
-                                  ingredientList[index].id, amount);
+                                  ingredientList[index].id, value);
+                              amountIsChangedNotifier.update((state) => true);
                             },
                           )),
                       SizedBox(

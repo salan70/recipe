@@ -1,28 +1,29 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/parts/reordable_text_field/procedures.dart';
 import 'package:recipe/parts/reordable_text_field/ingredients.dart';
 import 'package:recipe/providers.dart';
-import 'package:recipe/view/recipe_list/recipe_list_screen.dart';
+import 'package:recipe/repository/recipe_repository.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/view/add_recipe/add_recipe_model.dart';
 import 'package:recipe/parts/validation/validation.dart';
-import 'package:recipe/repository/add_recipe.dart';
 
 class AddRecipeScreen extends ConsumerWidget {
-  final AddRecipeRepository addRecipeRepository =
-      AddRecipeRepository("", "", 3.0, null, "", null);
+  final Recipe recipe = Recipe(recipeGrade: 3);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Validation validation = Validation();
 
     final authControllerState = ref.watch(authControllerProvider);
+
+    final RecipeRepository recipeRepository =
+        RecipeRepository(user: authControllerState!);
 
     final imageFile = ref.watch(imageFileNotifierProvider);
     final imageFileNotifier = ref.watch(imageFileNotifierProvider.notifier);
@@ -47,7 +48,8 @@ class AddRecipeScreen extends ConsumerWidget {
           child: TextField(
             decoration: InputDecoration.collapsed(hintText: "料理名"),
             onChanged: (value) {
-              addRecipeRepository.recipeName = value;
+              recipe.recipeName = value;
+              print(recipe.recipeName);
               // Providerから値を更新
               // recipeName.state = value;
             },
@@ -56,81 +58,61 @@ class AddRecipeScreen extends ConsumerWidget {
         actions: <Widget>[
           IconButton(
               onPressed: () async {
-                if (authControllerState != null) {
-                  String uid = authControllerState.uid;
-                  print("uid:" + authControllerState.uid);
-
-                  if (addRecipeRepository.recipeName == "") {
-                    final snackBar = SnackBar(
-                      backgroundColor: Colors.white,
-                      content: const Text(
-                        '料理名を入力してください',
-                        style: TextStyle(
-                          color: Colors.red,
-                        ),
-                        textAlign: TextAlign.center,
+                if (recipe.recipeName == null) {
+                  final snackBar = SnackBar(
+                    backgroundColor: Colors.white,
+                    content: const Text(
+                      '料理名を入力してください',
+                      style: TextStyle(
+                        color: Colors.red,
                       ),
-                      // behavior: SnackBarBehavior.floating,
-                      // shape: RoundedRectangleBorder(
-                      //     borderRadius:
-                      //         BorderRadius.all(Radius.circular(20)))
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } else if (addRecipeRepository.forHowManyPeople == null) {
-                    final snackBar = SnackBar(
-                        backgroundColor: Colors.red,
-                        content: const Text(
-                          '材料が何人分か入力してください',
-                          textAlign: TextAlign.center,
-                        ),
-                        elevation: 6.0,
-                        behavior: SnackBarBehavior.floating,
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } else {
-                    bool ingredientAmountIsOk = true;
-                    for (int index = 0;
-                        index < ingredientList.length;
-                        index++) {
-                      if (validation.errorText(ingredientList[index].amount) !=
-                          null) {
-                        // 材料の数量の再入力を求める
-                        final snackBar = SnackBar(
-                            backgroundColor: Colors.red,
-                            content: const Text(
-                              '材料の数量に不正な値があります',
-                              textAlign: TextAlign.center,
-                            ),
-                            elevation: 6.0,
-                            behavior: SnackBarBehavior.floating,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20))));
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      textAlign: TextAlign.center,
+                    ),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                } else if (recipe.forHowManyPeople == null) {
+                  final snackBar = SnackBar(
+                      backgroundColor: Colors.red,
+                      content: const Text(
+                        '材料が何人分か入力してください',
+                        style: TextStyle(color: Colors.red),
+                        textAlign: TextAlign.center,
+                      ));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                } else {
+                  bool ingredientAmountIsOk = true;
+                  for (int index = 0; index < ingredientList.length; index++) {
+                    if (validation.errorText(ingredientList[index].amount) !=
+                        null) {
+                      // 材料の数量の再入力を求める
+                      final snackBar = SnackBar(
+                          backgroundColor: Colors.red,
+                          content: const Text(
+                            '材料の数量に不正な値があります',
+                            style: TextStyle(color: Colors.red),
+                            textAlign: TextAlign.center,
+                          ));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-                        print("false");
-                        ingredientAmountIsOk = false;
-                      }
+                      print("false");
+                      ingredientAmountIsOk = false;
                     }
+                  }
 
-                    if (ingredientAmountIsOk) {
-                      print("===追加===");
-                      Recipe recipe = Recipe(
-                          recipeName: addRecipeRepository.recipeName,
-                          recipeGrade: addRecipeRepository.recipeGrade,
-                          forHowManyPeople:
-                              addRecipeRepository.forHowManyPeople,
-                          recipeMemo: addRecipeRepository.recipeMemo,
-                          imageUrl: "",
-                          imageFile: imageFile.imageFile,
-                          ingredientList: ingredientList,
-                          procedureList: proceduresList);
-                      addRecipeRepository.addRecipe(uid, recipe);
+                  if (ingredientAmountIsOk) {
+                    print("===追加===");
+                    Recipe addedRecipe = Recipe(
+                        recipeName: recipe.recipeName,
+                        recipeGrade: recipe.recipeGrade,
+                        forHowManyPeople: recipe.forHowManyPeople,
+                        recipeMemo: recipe.recipeMemo,
+                        imageUrl: "",
+                        imageFile: imageFile.imageFile,
+                        ingredientList: ingredientList,
+                        procedureList: proceduresList);
+                    recipeRepository.addRecipe(addedRecipe);
 
-                      Navigator.pop(context);
-                    }
+                    Navigator.pop(context);
                   }
                 }
               },
@@ -177,7 +159,7 @@ class AddRecipeScreen extends ConsumerWidget {
                 color: Colors.amber,
               ),
               onRatingUpdate: (rating) {
-                addRecipeRepository.recipeGrade = rating;
+                recipe.recipeGrade = rating;
               },
             )),
 
@@ -195,8 +177,7 @@ class AddRecipeScreen extends ConsumerWidget {
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         onChanged: (value) {
-                          addRecipeRepository.forHowManyPeople =
-                              int.parse(value);
+                          recipe.forHowManyPeople = int.parse(value);
                         },
                       )),
                   Text("人分"),
@@ -228,7 +209,7 @@ class AddRecipeScreen extends ConsumerWidget {
                   TextField(
                     maxLines: null,
                     onChanged: (value) {
-                      addRecipeRepository.recipeMemo = value;
+                      recipe.recipeMemo = value;
                     },
                   ),
                 ],

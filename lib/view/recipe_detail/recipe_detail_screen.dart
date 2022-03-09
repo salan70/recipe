@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/providers.dart';
 import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/repository/delete_recipe.dart';
+import 'package:recipe/repository/recipe_repository.dart';
 import 'package:recipe/view/update_recipe/update_recipe_screen.dart';
 
 class RecipeDetailScreen extends ConsumerWidget {
@@ -13,8 +13,11 @@ class RecipeDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    DeleteRecipeRepository deleteRecipeRepository = DeleteRecipeRepository();
     final user = ref.watch(authControllerProvider);
+    final ingredientListNotifier =
+        ref.watch(ingredientListNotifierProvider.notifier);
+
+    RecipeRepository recipeRepository = RecipeRepository(user: user!);
 
     return Scaffold(
       appBar: AppBar(
@@ -42,6 +45,11 @@ class RecipeDetailScreen extends ConsumerWidget {
         actions: <Widget>[
           IconButton(
               onPressed: () {
+                if (recipe.ingredientList != null) {
+                  if (recipe.ingredientList!.isEmpty == false) {
+                    ingredientListNotifier.getList(recipe.ingredientList!);
+                  }
+                }
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -173,8 +181,8 @@ class RecipeDetailScreen extends ConsumerWidget {
                               TextButton(
                                 onPressed: () async {
                                   if (user != null || recipe.recipeId != null) {
-                                    await deleteRecipeRepository.deleteRecipe(
-                                        user!.uid, recipe.recipeId!);
+                                    await recipeRepository
+                                        .deleteRecipe(recipe.recipeId!);
                                     Navigator.of(context)
                                         .popUntil((route) => route.isFirst);
                                   } else {

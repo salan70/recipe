@@ -3,8 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:flutter/foundation.dart';
 
-part 'recipe.freezed.dart';
-part 'recipe.g.dart';
+// part 'recipe.freezed.dart';
+// part 'recipe.g.dart';
 
 class ImageFile {
   ImageFile(this.imageFile);
@@ -24,28 +24,51 @@ class Recipe {
       this.ingredientList,
       this.procedureList});
 
-  final String? recipeId;
-  final String? recipeName;
-  final double? recipeGrade;
-  final int? forHowManyPeople;
-  final String? recipeMemo;
-  final String? imageUrl;
-  final File? imageFile;
+  String? recipeId;
+  String? recipeName;
+  double? recipeGrade;
+  int? forHowManyPeople;
+  String? recipeMemo;
+  String? imageUrl;
+  File? imageFile;
   List<Ingredient>? ingredientList;
   List<Procedure>? procedureList;
 }
 
-@freezed
-class Ingredient with _$Ingredient {
-  const factory Ingredient({
-    required String id,
-    String? name,
-    String? amount,
-    String? unit,
-  }) = _Ingredient;
+// @freezed
+// class Ingredient with _$Ingredient {
+//   const factory Ingredient({
+//     required String id,
+//     String? name,
+//     String? amount,
+//     String? unit,
+//   }) = _Ingredient;
+//
+//   factory Ingredient.fromJson(Map<String, dynamic> json) =>
+//       _$IngredientFromJson(json);
+// }
 
-  factory Ingredient.fromJson(Map<String, dynamic> json) =>
-      _$IngredientFromJson(json);
+@immutable
+class Ingredient {
+  const Ingredient(
+      {required this.id,
+      required this.name,
+      required this.amount,
+      required this.unit});
+
+  final String id;
+  final String? name;
+  final String? amount;
+  final String? unit;
+
+  Ingredient copyWith(
+      {String? id, String? name, String? amount, String? unit}) {
+    return Ingredient(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        amount: amount ?? this.amount,
+        unit: unit ?? this.unit);
+  }
 }
 
 class Procedure {
