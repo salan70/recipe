@@ -192,9 +192,8 @@ class RecipeRepository {
     }
   }
 
-  Future updateRecipe(Recipe recipe) async {
+  Future updateRecipe(String originalRecipeId, Recipe recipe) async {
     final int timestamp = DateTime.now().microsecondsSinceEpoch;
-    final DateTime nowDatetime = DateTime.now();
     String imageUrl = '';
 
     // 画像をStorageに保存
@@ -212,30 +211,45 @@ class RecipeRepository {
     }
 
     //レシピを保存
-    DocumentReference docRef = await FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .collection('recipes')
-        .add({
+        .doc(originalRecipeId)
+        .update({
       'recipeName': recipe.recipeName,
       'recipeGrade': recipe.recipeGrade,
       'forHowManyPeople': recipe.forHowManyPeople,
       'recipeMemo': recipe.recipeMemo,
       'imageUrl': imageUrl,
-      'createdAt': nowDatetime
     });
 
     // 材料を保存
     if (recipe.ingredientList != null) {
+      print('test:' + recipe.ingredientList!.length.toString());
+
+      final deleteIngredients = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('recipes')
+          .doc(originalRecipeId)
+          .collection('ingredients')
+          .get();
+
+      deleteIngredients.docs.forEach((doc) {
+        doc.reference.delete();
+      });
+
       for (int i = 0; i < recipe.ingredientList!.length; i++) {
+        print('test2:' + recipe.ingredientList!.length.toString());
         if (recipe.ingredientList![i].name != '') {
-          print('test:' + recipe.ingredientList![i].name!);
+          print('test ingredientListName:' + recipe.ingredientList![i].name!);
 
           await FirebaseFirestore.instance
               .collection('users')
               .doc(user.uid)
               .collection('recipes')
-              .doc(docRef.id)
+              .doc(originalRecipeId)
               .collection('ingredients')
               .add({
             'id': recipe.ingredientList![i].id,
@@ -250,23 +264,23 @@ class RecipeRepository {
     }
 
     // 手順を保存
-    if (recipe.procedureList != null) {
-      for (int i = 0; i < recipe.procedureList!.length; i++) {
-        if (recipe.procedureList![i].content != '') {
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .collection('recipes')
-              .doc(docRef.id)
-              .collection('procedures')
-              .add({
-            'id': recipe.procedureList![i].id,
-            'content': recipe.procedureList![i].content,
-            'orderNum': procedureListOrderNum
-          });
-          procedureListOrderNum++;
-        }
-      }
-    }
+    // if (recipe.procedureList != null) {
+    //   for (int i = 0; i < recipe.procedureList!.length; i++) {
+    //     if (recipe.procedureList![i].content != '') {
+    //       await FirebaseFirestore.instance
+    //           .collection('users')
+    //           .doc(user.uid)
+    //           .collection('recipes')
+    //           .doc(originalRecipeId)
+    //           .collection('procedures')
+    //           .add({
+    //         'id': recipe.procedureList![i].id,
+    //         'content': recipe.procedureList![i].content,
+    //         'orderNum': procedureListOrderNum
+    //       });
+    //       procedureListOrderNum++;
+    //     }
+    //   }
+    // }
   }
 }

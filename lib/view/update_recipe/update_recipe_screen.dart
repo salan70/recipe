@@ -10,6 +10,7 @@ import 'package:recipe/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/parts/validation/validation.dart';
 import 'package:recipe/repository/recipe_repository.dart';
+import 'package:uuid/uuid.dart';
 
 class UpdateRecipeScreen extends ConsumerWidget {
   UpdateRecipeScreen(this.recipe);
@@ -28,6 +29,16 @@ class UpdateRecipeScreen extends ConsumerWidget {
 
     final proceduresList = ref.watch(procedureListNotifierProvider);
     final ingredientList = ref.watch(ingredientListNotifierProvider);
+
+    final emptyIngredientList = [
+      Ingredient(
+        id: Uuid().v4(),
+        name: '',
+        amount: '',
+        unit: '個',
+        // formState: GlobalKey<FormState>()
+      ),
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -98,7 +109,8 @@ class UpdateRecipeScreen extends ConsumerWidget {
                   }
 
                   if (ingredientAmountIsOk) {
-                    print("===追加===");
+                    print("===更新===");
+                    print(ingredientList.length);
                     Recipe updatedRecipe = Recipe(
                         recipeName: recipe.recipeName,
                         recipeGrade: recipe.recipeGrade,
@@ -108,7 +120,8 @@ class UpdateRecipeScreen extends ConsumerWidget {
                         imageFile: imageFile.imageFile,
                         ingredientList: ingredientList,
                         procedureList: proceduresList);
-                    recipeRepository.updateRecipe(updatedRecipe);
+                    recipeRepository.updateRecipe(
+                        recipe.recipeId!, updatedRecipe);
 
                     Navigator.pop(context);
                   }
@@ -131,7 +144,7 @@ class UpdateRecipeScreen extends ConsumerWidget {
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: Image.file(imageFile.imageFile!))
-                    : recipe.imageUrl != ''
+                    : recipe.imageUrl != '' && recipe.imageUrl != null
                         ? Image.network(recipe.imageUrl!)
                         : Container(
                             decoration: BoxDecoration(
@@ -186,7 +199,11 @@ class UpdateRecipeScreen extends ConsumerWidget {
                 ]),
                 Container(
                   child: IngredientListWidget(
-                    originalIngredientList: recipe.ingredientList,
+                    originalIngredientList: recipe.ingredientList != null
+                        ? recipe.ingredientList!.isEmpty == false
+                            ? recipe.ingredientList
+                            : emptyIngredientList
+                        : emptyIngredientList,
                   ),
                 ),
               ],

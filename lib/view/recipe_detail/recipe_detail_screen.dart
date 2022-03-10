@@ -74,7 +74,11 @@ class RecipeDetailScreen extends ConsumerWidget {
                       tag: 'recipeImage' + recipe.recipeId!,
                       child: Image.network(recipe.imageUrl!))
                   : Container(
-                      color: Colors.blueGrey,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: Colors.grey[400],
+                      ),
+                      child: Icon(Icons.add_photo_alternate_outlined),
                     ),
             ),
             // 評価

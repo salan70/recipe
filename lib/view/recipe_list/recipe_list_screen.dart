@@ -102,15 +102,22 @@ class RecipeListPage extends ConsumerWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(5),
                             child: SizedBox(
-                                width: 200,
-                                height: 120,
-                                child: recipe.imageUrl != ""
-                                    ? Hero(
-                                        tag: 'recipeImage' + recipe.recipeId!,
-                                        child: Image.network(recipe.imageUrl!))
-                                    : Container(
-                                        color: Colors.blueGrey,
-                                      )),
+                              width: 200,
+                              height: 120,
+                              child: recipe.imageUrl != ""
+                                  ? Hero(
+                                      tag: 'recipeImage' + recipe.recipeId!,
+                                      child: Image.network(recipe.imageUrl!))
+                                  : Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        color: Colors.grey[400],
+                                      ),
+                                      child: Icon(
+                                          Icons.add_photo_alternate_outlined),
+                                    ),
+                            ),
                           ),
                         ),
                         Expanded(

@@ -84,8 +84,8 @@ class IngredientListWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<Ingredient> ingredientList = ref.watch(ingredientListNotifierProvider);
-    IngredientListNotifier ingredientListNotifier =
+    final ingredientList = ref.watch(ingredientListNotifierProvider);
+    final ingredientListNotifier =
         ref.watch(ingredientListNotifierProvider.notifier);
 
     final Validation validation = Validation();
@@ -193,9 +193,9 @@ class IngredientListWidget extends ConsumerWidget {
           onPressed: () {
             final Ingredient ingredient = Ingredient(
               id: Uuid().v4(),
-              name: "",
-              amount: "",
-              unit: "個",
+              name: '',
+              amount: '',
+              unit: '個',
               // formState: GlobalKey<FormState>()
             );
             ingredientListNotifier.add(ingredient);
