@@ -184,7 +184,7 @@ class RecipeDetailScreen extends ConsumerWidget {
                               ),
                               TextButton(
                                 onPressed: () async {
-                                  if (user != null || recipe.recipeId != null) {
+                                  if (recipe.recipeId != null) {
                                     await recipeRepository
                                         .deleteRecipe(recipe.recipeId!);
                                     Navigator.of(context)

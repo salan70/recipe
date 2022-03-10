@@ -18,7 +18,6 @@ class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
             name: '',
             amount: '',
             unit: '個',
-            // formState: GlobalKey<FormState>()
           ),
         ]);
 
@@ -77,10 +76,7 @@ class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
 }
 
 class IngredientListWidget extends ConsumerWidget {
-  const IngredientListWidget({Key? key, this.originalIngredientList})
-      : super(key: key);
-
-  final List<Ingredient>? originalIngredientList;
+  const IngredientListWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -112,7 +108,7 @@ class IngredientListWidget extends ConsumerWidget {
                   secondaryActions: [
                     IconSlideAction(
                       color: Colors.red,
-                      iconWidget: Text("delete"),
+                      iconWidget: Text('delete'),
                       onTap: () => ingredientListNotifier
                           .remove(ingredientList[index].id),
                     ),
@@ -123,13 +119,9 @@ class IngredientListWidget extends ConsumerWidget {
                           flex: 2,
                           child: TextField(
                             controller: nameIsChanged == false
-                                ? originalIngredientList != null
-                                    ? TextEditingController(
-                                        text:
-                                            originalIngredientList![index].name)
-                                    : null
+                                ? TextEditingController(
+                                    text: ingredientList[index].name)
                                 : null,
-                            // decoration: InputDecoration(labelText: "ルッコラ"),
                             onChanged: (String value) {
                               ingredientListNotifier.editName(
                                   ingredientList[index].id, value);
@@ -143,12 +135,9 @@ class IngredientListWidget extends ConsumerWidget {
                           flex: 1,
                           child: TextField(
                             controller: amountIsChanged == false
-                                ? originalIngredientList != null
-                                    ? TextEditingController(
-                                        text: originalIngredientList![index]
-                                            .amount
-                                            .toString())
-                                    : null
+                                ? TextEditingController(
+                                    text:
+                                        ingredientList[index].amount.toString())
                                 : null,
                             keyboardType: TextInputType.datetime,
                             decoration: InputDecoration(
@@ -196,7 +185,6 @@ class IngredientListWidget extends ConsumerWidget {
               name: '',
               amount: '',
               unit: '個',
-              // formState: GlobalKey<FormState>()
             );
             ingredientListNotifier.add(ingredient);
           },

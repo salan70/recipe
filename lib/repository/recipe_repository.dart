@@ -194,6 +194,7 @@ class RecipeRepository {
 
   Future updateRecipe(String originalRecipeId, Recipe recipe) async {
     final int timestamp = DateTime.now().microsecondsSinceEpoch;
+    print('imageUrl:' + recipe.imageUrl!);
     String imageUrl = '';
 
     // 画像をStorageに保存
@@ -208,6 +209,8 @@ class RecipeRepository {
           .putFile(imageFile);
 
       imageUrl = await task.ref.getDownloadURL();
+    } else if (recipe.imageUrl != '') {
+      imageUrl = recipe.imageUrl!;
     }
 
     //レシピを保存
