@@ -31,19 +31,6 @@ class Recipe {
   List<Procedure>? procedureList;
 }
 
-// @freezed
-// class Ingredient with _$Ingredient {
-//   const factory Ingredient({
-//     required String id,
-//     String? name,
-//     String? amount,
-//     String? unit,
-//   }) = _Ingredient;
-//
-//   factory Ingredient.fromJson(Map<String, dynamic> json) =>
-//       _$IngredientFromJson(json);
-// }
-
 @immutable
 class Ingredient {
   const Ingredient(

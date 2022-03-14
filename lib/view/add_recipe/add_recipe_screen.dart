@@ -49,9 +49,6 @@ class AddRecipeScreen extends ConsumerWidget {
             decoration: InputDecoration.collapsed(hintText: "料理名"),
             onChanged: (value) {
               recipe.recipeName = value;
-              print(recipe.recipeName);
-              // Providerから値を更新
-              // recipeName.state = value;
             },
           ),
         ),

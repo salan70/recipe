@@ -14,6 +14,77 @@ class RecipeRepository {
   int ingredientListOrderNum = 0;
   int procedureListOrderNum = 0;
 
+  /// delete
+  Future deleteRecipe(Recipe recipe) async {
+    _deleteIngredients(recipe);
+    _deleteProcedures(recipe);
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('recipes')
+        .doc(recipe.recipeId)
+        .delete();
+
+    if (recipe.imageUrl != '') {
+      _deleteImage(recipe);
+    }
+    print('delete:' + recipe.recipeId!);
+  }
+
+  Future<void> _deleteIngredients(Recipe recipe) async {
+    try {
+      final deleteIngredients = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('recipes')
+          .doc(recipe.recipeId)
+          .collection('ingredients')
+          .get();
+
+      deleteIngredients.docs.forEach((doc) {
+        doc.reference.delete();
+      });
+      print('材料削除成功');
+    } catch (e) {
+      print('材料削除失敗');
+      print(e);
+    }
+  }
+
+  Future<void> _deleteProcedures(Recipe recipe) async {
+    try {
+      final deleteProcedures = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('recipes')
+          .doc(recipe.recipeId)
+          .collection('procedures')
+          .get();
+
+      deleteProcedures.docs.forEach((doc) {
+        doc.reference.delete();
+      });
+      print('手順削除成功');
+    } catch (e) {
+      print('手順削除失敗');
+      print(e);
+    }
+  }
+
+  Future<void> _deleteImage(Recipe recipe) async {
+    final imageRef = FirebaseStorage.instance.refFromURL(recipe.imageUrl!);
+
+    try {
+      await imageRef.delete();
+      print('レシピ画像削除成功');
+    } catch (e) {
+      print('レシピ画像削除失敗');
+      print(e);
+    }
+  }
+
+  /// fetch
   Stream<List<Recipe>> fetchRecipeList() {
     final recipeCollection = FirebaseFirestore.instance
         .collection('users')
@@ -105,33 +176,11 @@ class RecipeRepository {
     return procedureStream;
   }
 
-  Future deleteRecipe(String recipeId) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('recipes')
-        .doc(recipeId)
-        .delete();
-  }
-
+  /// add
   Future addRecipe(Recipe recipe) async {
     final int timestamp = DateTime.now().microsecondsSinceEpoch;
     final DateTime nowDatetime = DateTime.now();
     String imageUrl = '';
-
-    // 画像をStorageに保存
-    if (recipe.imageFile != null) {
-      File imageFile = recipe.imageFile!;
-      final String name = imageFile.path.split('/').last;
-      final String path = '${timestamp}_$name';
-      final TaskSnapshot task = await FirebaseStorage.instance
-          .ref()
-          .child('users/${user.uid}/recipeImages')
-          .child(path)
-          .putFile(imageFile);
-
-      imageUrl = await task.ref.getDownloadURL();
-    }
 
     //レシピを保存
     DocumentReference docRef = await FirebaseFirestore.instance
@@ -143,9 +192,23 @@ class RecipeRepository {
       'recipeGrade': recipe.recipeGrade,
       'forHowManyPeople': recipe.forHowManyPeople,
       'recipeMemo': recipe.recipeMemo,
-      'imageUrl': imageUrl,
       'createdAt': nowDatetime
     });
+
+    // 画像をStorageに保存
+    if (recipe.imageFile != null) {
+      File imageFile = recipe.imageFile!;
+      final String name = imageFile.path.split('/').last;
+      final String path = '${timestamp}_$name';
+      final TaskSnapshot task = await FirebaseStorage.instance
+          .ref()
+          .child('users/${user.uid}/recipeImages/${docRef.id}')
+          .child(path)
+          .putFile(imageFile);
+
+      imageUrl = await task.ref.getDownloadURL();
+    }
+    await docRef.update({'imageUrl': imageUrl});
 
     // 材料を保存
     if (recipe.ingredientList != null) {
@@ -192,6 +255,7 @@ class RecipeRepository {
     }
   }
 
+  /// update
   Future updateRecipe(String originalRecipeId, Recipe recipe) async {
     final int timestamp = DateTime.now().microsecondsSinceEpoch;
     print('imageUrl:' + recipe.imageUrl!);
@@ -199,12 +263,14 @@ class RecipeRepository {
 
     // 画像をStorageに保存
     if (recipe.imageFile != null) {
+      _deleteImage(recipe);
+
       File imageFile = recipe.imageFile!;
       final String name = imageFile.path.split('/').last;
       final String path = '${timestamp}_$name';
       final TaskSnapshot task = await FirebaseStorage.instance
           .ref()
-          .child('users/${user.uid}/recipeImages')
+          .child('users/${user.uid}/recipeImages/$originalRecipeId')
           .child(path)
           .putFile(imageFile);
 

@@ -72,7 +72,15 @@ class RecipeDetailScreen extends ConsumerWidget {
               child: recipe.imageUrl != ''
                   ? Hero(
                       tag: 'recipeImage' + recipe.recipeId!,
-                      child: Image.network(recipe.imageUrl!))
+                      child: Image.network(
+                        recipe.imageUrl!,
+                        errorBuilder: (c, o, s) {
+                          return const Icon(
+                            Icons.error,
+                            color: Colors.red,
+                          );
+                        },
+                      ))
                   : Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8.0),
@@ -185,8 +193,7 @@ class RecipeDetailScreen extends ConsumerWidget {
                               TextButton(
                                 onPressed: () async {
                                   if (recipe.recipeId != null) {
-                                    await recipeRepository
-                                        .deleteRecipe(recipe.recipeId!);
+                                    await recipeRepository.deleteRecipe(recipe);
                                     Navigator.of(context)
                                         .popUntil((route) => route.isFirst);
                                   } else {

@@ -104,10 +104,28 @@ class RecipeListPage extends ConsumerWidget {
                             child: SizedBox(
                               width: 200,
                               height: 120,
-                              child: recipe.imageUrl != ""
-                                  ? Hero(
-                                      tag: 'recipeImage' + recipe.recipeId!,
-                                      child: Image.network(recipe.imageUrl!))
+                              child: recipe.imageUrl != null
+                                  ? recipe.imageUrl != ''
+                                      ? Hero(
+                                          tag: 'recipeImage' + recipe.recipeId!,
+                                          child: Image.network(
+                                            recipe.imageUrl!,
+                                            errorBuilder: (c, o, s) {
+                                              return const Icon(
+                                                Icons.error,
+                                                color: Colors.red,
+                                              );
+                                            },
+                                          ))
+                                      : Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            color: Colors.grey[400],
+                                          ),
+                                          child: Icon(Icons
+                                              .add_photo_alternate_outlined),
+                                        )
                                   : Container(
                                       decoration: BoxDecoration(
                                         borderRadius:
