@@ -9,8 +9,7 @@ import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/providers.dart';
 
 class ProcedureListNotifier extends StateNotifier<List<Procedure>> {
-  // ProceduresListNotifier(List<Procedures> state) : super(state);
-  ProcedureListNotifier() : super([Procedure(id: Uuid().v4(), content: "")]);
+  ProcedureListNotifier() : super([Procedure(id: Uuid().v4(), content: '')]);
 
   void add(Procedure procedure) {
     state = [...state, procedure];
@@ -30,6 +29,10 @@ class ProcedureListNotifier extends StateNotifier<List<Procedure>> {
     final item = state.removeAt(oldIndex);
     state = [...state..insert(newIndex, item)];
   }
+
+  List<Procedure> getList(List<Procedure> procedureList) {
+    return state = procedureList;
+  }
 }
 
 class ProceduresListWidget extends ConsumerWidget {
@@ -37,27 +40,33 @@ class ProceduresListWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final proceduresList = ref.watch(procedureListNotifierProvider);
-    final notifier = ref.watch(procedureListNotifierProvider.notifier);
+    final procedureList = ref.watch(procedureListNotifierProvider);
+    final procedureListNotifier =
+        ref.watch(procedureListNotifierProvider.notifier);
+
+    final contentIsChanged = ref.watch(contentIsChangedProvider);
+    final contentIsChangedNotifier =
+        ref.watch(contentIsChangedProvider.notifier);
 
     return Column(
       children: [
         Builder(builder: (context) {
           return ReorderableListView(
             onReorder: (oldIndex, newIndex) =>
-                notifier.reorder(oldIndex, newIndex),
+                procedureListNotifier.reorder(oldIndex, newIndex),
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),
             children: [
-              for (int index = 0; index < proceduresList.length; index++)
+              for (int index = 0; index < procedureList.length; index++)
                 Slidable(
-                  key: ValueKey(proceduresList[index].id),
+                  key: ValueKey(procedureList[index].id),
                   actionPane: SlidableDrawerActionPane(),
                   secondaryActions: [
                     IconSlideAction(
                       color: Colors.red,
-                      iconWidget: Text("delete"),
-                      onTap: () => notifier.remove(proceduresList[index].id!),
+                      iconWidget: Text('delete'),
+                      onTap: () => procedureListNotifier
+                          .remove(procedureList[index].id!),
                     ),
                   ],
                   child: Row(
@@ -66,18 +75,15 @@ class ProceduresListWidget extends ConsumerWidget {
                       Expanded(
                           flex: 15,
                           child: TextField(
+                            controller: contentIsChanged == false
+                                ? TextEditingController(
+                                    text: procedureList[index].content)
+                                : null,
                             maxLines: null,
                             onChanged: (String value) {
-                              proceduresList[index] = Procedure(
-                                  id: proceduresList[index].id, content: value);
-
-                              ///テスト用
-                              // for (int i = 0; i < proceduresList.length; i++) {
-                              //   print(proceduresList[i].id.toString() +
-                              //       ":" +
-                              //       proceduresList[i].content);
-                              // }
-                              // print("------------------");
+                              procedureList[index] = Procedure(
+                                  id: procedureList[index].id, content: value);
+                              contentIsChangedNotifier.update((state) => true);
                             },
                           )),
                       Icon(Icons.drag_handle),
@@ -90,11 +96,10 @@ class ProceduresListWidget extends ConsumerWidget {
         TextButton(
           onPressed: () {
             String id = Uuid().v4();
-            final Procedure procedures = Procedure(id: id, content: "");
-            notifier.add(procedures);
-            print(id);
+            final Procedure procedures = Procedure(id: id, content: '');
+            procedureListNotifier.add(procedures);
           },
-          child: Text("追加"),
+          child: Text('追加'),
         )
       ],
     );

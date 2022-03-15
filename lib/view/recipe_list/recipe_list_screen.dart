@@ -18,10 +18,8 @@ class RecipeListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     String? recipeId;
 
-    final recipes = ref.watch(recipesStreamProvider);
+    final recipes = ref.watch(recipeListStreamProvider);
     RecipeListModel recipeListModel = RecipeListModel();
-
-    final authControllerState = ref.watch(authControllerProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -45,14 +43,12 @@ class RecipeListPage extends ConsumerWidget {
                 itemCount: recipes.length,
                 itemBuilder: (context, index) {
                   final recipe = recipes[index];
-                  recipeId = recipes[index].recipeId!;
-                  // print(recipeId);
-                  final ingredients =
-                      ref.watch(ingredientsStreamProviderFamily(recipeId!));
+                  final ingredients = ref.watch(
+                      ingredientListStreamProviderFamily(recipe.recipeId!));
                   String outputIngredientText = '';
 
-                  final procedures =
-                      ref.watch(proceduresStreamProviderFamily(recipeId!));
+                  final procedures = ref.watch(
+                      procedureListStreamProviderFamily(recipe.recipeId!));
 
                   ingredients.when(
                       data: (ingredient) {
@@ -78,7 +74,8 @@ class RecipeListPage extends ConsumerWidget {
                           context,
                           MaterialPageRoute(
                             fullscreenDialog: true,
-                            builder: (context) => RecipeDetailScreen(recipe),
+                            builder: (context) =>
+                                RecipeDetailScreen(recipe.recipeId!),
                           ));
                     },
 
@@ -104,11 +101,11 @@ class RecipeListPage extends ConsumerWidget {
                             child: SizedBox(
                               width: 200,
                               height: 120,
-                              child: recipe.imageUrl != null
-                                  ? recipe.imageUrl != ''
-                                      ? Hero(
-                                          tag: 'recipeImage' + recipe.recipeId!,
-                                          child: Image.network(
+                              child: Hero(
+                                tag: 'recipeImage' + recipe.recipeId!,
+                                child: recipe.imageUrl != null
+                                    ? recipe.imageUrl != ''
+                                        ? Image.network(
                                             recipe.imageUrl!,
                                             errorBuilder: (c, o, s) {
                                               return const Icon(
@@ -116,25 +113,18 @@ class RecipeListPage extends ConsumerWidget {
                                                 color: Colors.red,
                                               );
                                             },
-                                          ))
-                                      : Container(
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            color: Colors.grey[400],
-                                          ),
-                                          child: Icon(Icons
-                                              .add_photo_alternate_outlined),
-                                        )
-                                  : Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        color: Colors.grey[400],
-                                      ),
-                                      child: Icon(
-                                          Icons.add_photo_alternate_outlined),
-                                    ),
+                                          )
+                                        : Container(
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(8.0),
+                                              color: Colors.grey[400],
+                                            ),
+                                            child: Icon(Icons
+                                                .add_photo_alternate_outlined),
+                                          )
+                                    : CircularProgressIndicator(),
+                              ),
                             ),
                           ),
                         ),

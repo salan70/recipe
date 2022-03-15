@@ -26,7 +26,7 @@ class UpdateRecipeScreen extends ConsumerWidget {
     final imageFile = ref.watch(imageFileNotifierProvider);
     final imageFileNotifier = ref.watch(imageFileNotifierProvider.notifier);
 
-    final proceduresList = ref.watch(procedureListNotifierProvider);
+    final procedureList = ref.watch(procedureListNotifierProvider);
     final ingredientList = ref.watch(ingredientListNotifierProvider);
 
     return Scaffold(
@@ -106,7 +106,7 @@ class UpdateRecipeScreen extends ConsumerWidget {
                         imageUrl: recipe.imageUrl,
                         imageFile: imageFile.imageFile,
                         ingredientList: ingredientList,
-                        procedureList: proceduresList);
+                        procedureList: procedureList);
                     recipeRepository.updateRecipe(
                         recipe.recipeId!, updatedRecipe);
 

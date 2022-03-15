@@ -23,7 +23,42 @@ final imageFileNotifierProvider =
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
-// reordable_text_fieldにて使用
+final recipeListStreamProvider = StreamProvider<List<Recipe>>((ref) {
+  final user = ref.watch(authControllerProvider);
+
+  RecipeRepository recipeRepository = RecipeRepository(user: user!);
+
+  return recipeRepository.fetchRecipeList();
+});
+
+final ingredientListStreamProviderFamily =
+    StreamProviderFamily<List<Ingredient>, String>((ref, recipeId) {
+  final user = ref.watch(authControllerProvider);
+
+  RecipeRepository recipeRepository = RecipeRepository(user: user!);
+
+  return recipeRepository.fetchIngredientList(recipeId);
+});
+
+final procedureListStreamProviderFamily =
+    StreamProviderFamily<List<Procedure>, String>((ref, recipeId) {
+  final user = ref.watch(authControllerProvider);
+
+  RecipeRepository recipeRepository = RecipeRepository(user: user!);
+
+  return recipeRepository.fetchProcedureList(recipeId);
+});
+
+final recipeStreamProviderFamily =
+    StreamProviderFamily<Recipe, String>((ref, recipeId) {
+  final user = ref.watch(authControllerProvider);
+
+  RecipeRepository recipeRepository = RecipeRepository(user: user!);
+
+  return recipeRepository.fetchRecipe(recipeId);
+});
+
+/// reordarale_text_field
 final ingredientListNotifierProvider =
     StateNotifierProvider.autoDispose<IngredientListNotifier, List<Ingredient>>(
   (ref) => IngredientListNotifier(),
@@ -34,44 +69,8 @@ final procedureListNotifierProvider =
   (ref) => ProcedureListNotifier(),
 );
 
-final recipesStreamProvider = StreamProvider<List<Recipe>>((ref) {
-  final authControllerState = ref.watch(authControllerProvider);
-  final user = authControllerState;
-
-  RecipeRepository recipeRepository = RecipeRepository(user: user!);
-
-  return recipeRepository.fetchRecipeList();
-});
-
-final ingredientsStreamProviderFamily =
-    StreamProviderFamily<List<Ingredient>, String>((ref, recipeId) {
-  final authControllerState = ref.watch(authControllerProvider);
-  final user = authControllerState;
-
-  RecipeRepository recipeRepository = RecipeRepository(user: user!);
-
-  return recipeRepository.fetchIngredientList(recipeId);
-});
-
-final proceduresStreamProviderFamily =
-    StreamProviderFamily<List<Procedure>, String>((ref, recipeId) {
-  final authControllerState = ref.watch(authControllerProvider);
-  final user = authControllerState;
-
-  RecipeRepository recipeRepository = RecipeRepository(user: user!);
-
-  return recipeRepository.fetchProcedureList(recipeId);
-});
-
-final recipesStreamProviderFamily =
-    StreamProviderFamily<List<Recipe>, String>((ref, docRef) {
-  final user = ref.watch(authControllerProvider);
-
-  RecipeRepository recipeRepository = RecipeRepository(user: user!);
-
-  return recipeRepository.fetchRecipeList();
-});
-
+// ingredient
 final nameIsChangedProvider = StateProvider.autoDispose((ref) => false);
-
 final amountIsChangedProvider = StateProvider.autoDispose((ref) => false);
+// procedure
+final contentIsChangedProvider = StateProvider.autoDispose((ref) => false);

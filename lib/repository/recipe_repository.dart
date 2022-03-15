@@ -16,8 +16,8 @@ class RecipeRepository {
 
   /// delete
   Future deleteRecipe(Recipe recipe) async {
-    _deleteIngredients(recipe);
-    _deleteProcedures(recipe);
+    await _deleteIngredients(recipe.recipeId!);
+    await _deleteProcedures(recipe.recipeId!);
 
     await FirebaseFirestore.instance
         .collection('users')
@@ -32,13 +32,13 @@ class RecipeRepository {
     print('delete:' + recipe.recipeId!);
   }
 
-  Future<void> _deleteIngredients(Recipe recipe) async {
+  Future<void> _deleteIngredients(String recipeId) async {
     try {
       final deleteIngredients = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .collection('recipes')
-          .doc(recipe.recipeId)
+          .doc(recipeId)
           .collection('ingredients')
           .get();
 
@@ -48,17 +48,17 @@ class RecipeRepository {
       print('材料削除成功');
     } catch (e) {
       print('材料削除失敗');
-      print(e);
+      print('e:' + e.toString());
     }
   }
 
-  Future<void> _deleteProcedures(Recipe recipe) async {
+  Future<void> _deleteProcedures(String recipeId) async {
     try {
       final deleteProcedures = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .collection('recipes')
-          .doc(recipe.recipeId)
+          .doc(recipeId)
           .collection('procedures')
           .get();
 
@@ -68,7 +68,7 @@ class RecipeRepository {
       print('手順削除成功');
     } catch (e) {
       print('手順削除失敗');
-      print(e);
+      print('e:' + e.toString());
     }
   }
 
@@ -80,11 +80,43 @@ class RecipeRepository {
       print('レシピ画像削除成功');
     } catch (e) {
       print('レシピ画像削除失敗');
-      print(e);
+      print('e:' + e.toString());
     }
   }
 
   /// fetch
+  Stream<Recipe> fetchRecipe(String recipeId) {
+    final recipeDocument = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('recipes')
+        .doc(recipeId);
+
+    final recipeStream =
+        recipeDocument.snapshots().map((DocumentSnapshot document) {
+      Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+
+      final String? recipeId = document.id;
+      final String recipeName = data['recipeName'];
+      final double? recipeGrade = data['recipeGrade'];
+      final int? forHowManyPeople = data['forHowManyPeople'];
+      final String? recipeMemo = data['recipeMemo'];
+      final String? imageUrl = data['imageUrl'];
+      final File? imageFile = null;
+
+      return Recipe(
+          recipeId: recipeId,
+          recipeName: recipeName,
+          recipeGrade: recipeGrade,
+          forHowManyPeople: forHowManyPeople,
+          recipeMemo: recipeMemo,
+          imageUrl: imageUrl,
+          imageFile: imageFile);
+    });
+
+    return recipeStream;
+  }
+
   Stream<List<Recipe>> fetchRecipeList() {
     final recipeCollection = FirebaseFirestore.instance
         .collection('users')
@@ -93,33 +125,34 @@ class RecipeRepository {
         .orderBy('createdAt');
 
     // データ（Map型）を取得
-    final recipeStream = recipeCollection.snapshots().asBroadcastStream().map(
-          // CollectionのデータからItemクラスを生成する
-          (e) => e.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data =
-                document.data()! as Map<String, dynamic>;
+    final recipeListStream =
+        recipeCollection.snapshots().asBroadcastStream().map(
+              // CollectionのデータからItemクラスを生成する
+              (e) => e.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data =
+                    document.data()! as Map<String, dynamic>;
 
-            final String? recipeId = document.id;
-            final String recipeName = data['recipeName'];
-            final double? recipeGrade = data['recipeGrade'];
-            final int? forHowManyPeople = data['forHowManyPeople'];
-            final String? recipeMemo = data['recipeMemo'];
-            final String? imageUrl = data['imageUrl'];
-            final File? imageFile = null;
+                final String? recipeId = document.id;
+                final String recipeName = data['recipeName'];
+                final double? recipeGrade = data['recipeGrade'];
+                final int? forHowManyPeople = data['forHowManyPeople'];
+                final String? recipeMemo = data['recipeMemo'];
+                final String? imageUrl = data['imageUrl'];
+                final File? imageFile = null;
 
-            return Recipe(
-              recipeId: recipeId,
-              recipeName: recipeName,
-              recipeGrade: recipeGrade,
-              forHowManyPeople: forHowManyPeople,
-              recipeMemo: recipeMemo,
-              imageUrl: imageUrl,
-              imageFile: imageFile,
+                return Recipe(
+                  recipeId: recipeId,
+                  recipeName: recipeName,
+                  recipeGrade: recipeGrade,
+                  forHowManyPeople: forHowManyPeople,
+                  recipeMemo: recipeMemo,
+                  imageUrl: imageUrl,
+                  imageFile: imageFile,
+                );
+              }).toList(),
             );
-          }).toList(),
-        );
 
-    return recipeStream;
+    return recipeListStream;
   }
 
   Stream<List<Ingredient>> fetchIngredientList(String recipeId) {
@@ -295,25 +328,10 @@ class RecipeRepository {
 
     // 材料を保存
     if (recipe.ingredientList != null) {
-      print('test:' + recipe.ingredientList!.length.toString());
-
-      final deleteIngredients = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('recipes')
-          .doc(originalRecipeId)
-          .collection('ingredients')
-          .get();
-
-      deleteIngredients.docs.forEach((doc) {
-        doc.reference.delete();
-      });
+      await _deleteIngredients(originalRecipeId);
 
       for (int i = 0; i < recipe.ingredientList!.length; i++) {
-        print('test2:' + recipe.ingredientList!.length.toString());
         if (recipe.ingredientList![i].name != '') {
-          print('test ingredientListName:' + recipe.ingredientList![i].name!);
-
           await FirebaseFirestore.instance
               .collection('users')
               .doc(user.uid)
@@ -333,23 +351,25 @@ class RecipeRepository {
     }
 
     // 手順を保存
-    // if (recipe.procedureList != null) {
-    //   for (int i = 0; i < recipe.procedureList!.length; i++) {
-    //     if (recipe.procedureList![i].content != '') {
-    //       await FirebaseFirestore.instance
-    //           .collection('users')
-    //           .doc(user.uid)
-    //           .collection('recipes')
-    //           .doc(originalRecipeId)
-    //           .collection('procedures')
-    //           .add({
-    //         'id': recipe.procedureList![i].id,
-    //         'content': recipe.procedureList![i].content,
-    //         'orderNum': procedureListOrderNum
-    //       });
-    //       procedureListOrderNum++;
-    //     }
-    //   }
-    // }
+    if (recipe.procedureList != null) {
+      await _deleteProcedures(originalRecipeId);
+
+      for (int i = 0; i < recipe.procedureList!.length; i++) {
+        if (recipe.procedureList![i].content != '') {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .collection('recipes')
+              .doc(originalRecipeId)
+              .collection('procedures')
+              .add({
+            'id': recipe.procedureList![i].id,
+            'content': recipe.procedureList![i].content,
+            'orderNum': procedureListOrderNum
+          });
+          procedureListOrderNum++;
+        }
+      }
+    }
   }
 }
