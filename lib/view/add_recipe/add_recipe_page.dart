@@ -103,11 +103,11 @@ class AddRecipeScreen extends ConsumerWidget {
                         recipeGrade: recipe.recipeGrade,
                         forHowManyPeople: recipe.forHowManyPeople,
                         recipeMemo: recipe.recipeMemo,
-                        imageUrl: "",
+                        imageUrl: '',
                         imageFile: imageFile.imageFile,
                         ingredientList: ingredientList,
                         procedureList: proceduresList);
-                    recipeRepository.addRecipe(addedRecipe);
+                    await recipeRepository.addRecipe(addedRecipe);
 
                     Navigator.pop(context);
                   }

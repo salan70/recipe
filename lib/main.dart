@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'auth/auth_controller.dart';
-import 'package:recipe/view/recipe_list/recipe_list_screen.dart';
+import 'package:recipe/view/recipe_list/recipe_list_page.dart';
 import 'package:recipe/sign_in/sign_in_screen.dart';
 
 //main()を非同期を制御する

@@ -5,10 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/repository/recipe_repository.dart';
-import 'package:recipe/view/update_recipe/update_recipe_screen.dart';
+import 'package:recipe/view/update_recipe/update_recipe_page.dart';
 
-class RecipeDetailScreen extends ConsumerWidget {
-  RecipeDetailScreen(this.recipeId);
+class RecipeDetailPage extends ConsumerWidget {
+  RecipeDetailPage(this.recipeId);
   final String recipeId;
 
   @override
@@ -151,7 +151,9 @@ class RecipeDetailScreen extends ConsumerWidget {
                         loading: () => const CircularProgressIndicator(),
                         data: (ingredientList) {
                           if (ingredientList.isEmpty == false) {
-                            ingredientListNotifier.getList(ingredientList);
+                            WidgetsBinding.instance!.addPostFrameCallback((_) {
+                              ingredientListNotifier.getList(ingredientList);
+                            });
                           }
                           return ListView.builder(
                             itemCount: ingredientList.length,
@@ -179,7 +181,9 @@ class RecipeDetailScreen extends ConsumerWidget {
                       loading: () => const CircularProgressIndicator(),
                       data: (procedureList) {
                         if (procedureList.isEmpty == false) {
-                          procedureListNotifier.getList(procedureList);
+                          WidgetsBinding.instance!.addPostFrameCallback((_) {
+                            procedureListNotifier.getList(procedureList);
+                          });
                         }
                         return Column(
                           children: [

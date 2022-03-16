@@ -76,7 +76,9 @@ class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
 }
 
 class IngredientListWidget extends ConsumerWidget {
-  const IngredientListWidget({Key? key}) : super(key: key);
+  const IngredientListWidget({Key? key, this.recipe}) : super(key: key);
+
+  final Recipe? recipe;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

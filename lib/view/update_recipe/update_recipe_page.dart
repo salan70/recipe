@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/parts/reordable_text_field/procedures.dart';
 import 'package:recipe/parts/reordable_text_field/ingredients.dart';
+import 'package:recipe/view/recipe_detail/recipe_detail_page.dart';
 import 'package:recipe/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/parts/validation/validation.dart';
@@ -107,10 +108,10 @@ class UpdateRecipeScreen extends ConsumerWidget {
                         imageFile: imageFile.imageFile,
                         ingredientList: ingredientList,
                         procedureList: procedureList);
-                    recipeRepository.updateRecipe(
-                        recipe.recipeId!, updatedRecipe);
 
                     Navigator.pop(context);
+                    await recipeRepository.updateRecipe(
+                        recipe.recipeId!, updatedRecipe);
                   }
                 }
               },
