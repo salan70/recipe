@@ -1,7 +1,10 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe/domain/cart.dart';
+import 'package:recipe/repository/cart_repository.dart';
 import 'package:recipe/repository/recipe_repository.dart';
 import 'package:recipe/view/add_recipe/add_recipe_model.dart';
 import 'package:recipe/view/recipe_list/recipe_list_model.dart';
@@ -74,3 +77,32 @@ final nameIsChangedProvider = StateProvider.autoDispose((ref) => false);
 final amountIsChangedProvider = StateProvider.autoDispose((ref) => false);
 // procedure
 final contentIsChangedProvider = StateProvider.autoDispose((ref) => false);
+
+/// basket
+final recipeNumCountProviderFamily =
+    StateProvider.family.autoDispose<int, int?>((count, initialCount) {
+  int count = 1;
+
+  if (initialCount != null) {
+    count = initialCount;
+  }
+  return count;
+});
+
+// final recipeNumCountProvider = StateProvider.autoDispose((ref) => 1);
+
+final inCartRecipeListStreamProvider =
+    StreamProvider<List<InCartRecipe>>((ref) {
+  final user = ref.watch(authControllerProvider);
+  CartRepository cartRepository = CartRepository(user: user!);
+
+  return cartRepository.fetchRecipeRefList();
+});
+
+final inCartRecipeStreamProviderFamily =
+    StreamProviderFamily<Recipe, String>((ref, recipeId) {
+  final user = ref.watch(authControllerProvider);
+  CartRepository cartRepository = CartRepository(user: user!);
+
+  return cartRepository.fetchRecipe(recipeId);
+});

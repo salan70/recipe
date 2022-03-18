@@ -6,12 +6,14 @@ import 'package:recipe/providers.dart';
 import 'package:hawk_fab_menu/hawk_fab_menu.dart';
 
 import 'package:recipe/auth/auth_controller.dart';
-import 'package:recipe/view/add_basket_recipe_detail/add_basket_recipe_detail_page.dart';
-import 'package:recipe/view/add_basket_recipe_list/add_basket_recipe_list_page.dart';
+import 'package:recipe/view/add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
+import 'package:recipe/view/add_cart_recipe_list/add_cart_recipe_list_page.dart';
 import 'package:recipe/view/add_recipe/add_recipe_page.dart';
 import 'package:recipe/view/recipe_detail/recipe_detail_page.dart';
 import 'package:recipe/view/recipe_list/recipe_list_model.dart';
 import 'package:recipe/domain/recipe.dart';
+
+import '../add_cart_recipe_list/add_cart_recipe_list_page.dart';
 
 // レシピ一覧画面
 class RecipeListPage extends ConsumerWidget {
@@ -24,14 +26,7 @@ class RecipeListPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
-        title: Text(
-          'レシピ一覧',
-          style: TextStyle(
-            color: Colors.green,
-          ),
-        ),
+        title: Text('レシピ一覧'),
       ),
       body: HawkFabMenu(
         body: recipes.when(
@@ -112,7 +107,6 @@ class RecipeListPage extends ConsumerWidget {
                                                 errorBuilder: (c, o, s) {
                                                   return const Icon(
                                                     Icons.error,
-                                                    color: Colors.red,
                                                   );
                                                 },
                                               )
@@ -145,7 +139,7 @@ class RecipeListPage extends ConsumerWidget {
                     );
                   });
             }),
-        icon: AnimatedIcons.menu_arrow,
+        icon: AnimatedIcons.list_view,
         fabColor: Colors.yellow,
         iconColor: Colors.green,
         items: [
@@ -156,19 +150,15 @@ class RecipeListPage extends ConsumerWidget {
                   context,
                   MaterialPageRoute(
                     fullscreenDialog: true,
-                    builder: (context) => AddBasketRecipeListPage(),
+                    builder: (context) => AddCartRecipeListPage(),
                   ));
             },
             icon: const Icon(Icons.add_shopping_cart),
-            color: Colors.red,
-            labelColor: Colors.blue,
           ),
           HawkFabMenuItem(
             label: 'Menu 2',
             ontap: () {},
             icon: const Icon(Icons.comment),
-            labelColor: Colors.white,
-            labelBackgroundColor: Colors.blue,
           ),
           HawkFabMenuItem(
             label: 'Menu 3 (default)',
@@ -178,13 +168,10 @@ class RecipeListPage extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
         child: Icon(
           Icons.add,
-          color: Colors.green,
-          size: 30.0,
+          size: 32.0,
         ),
-        elevation: 3.0,
         onPressed: () {
           Navigator.push(
               context,
@@ -196,8 +183,7 @@ class RecipeListPage extends ConsumerWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        color: Colors.white,
-        child: Container(height: 50.0),
+        child: Container(height: 48.0),
         shape: CircularNotchedRectangle(),
       ),
     );

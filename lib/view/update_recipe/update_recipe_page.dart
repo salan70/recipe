@@ -32,11 +32,6 @@ class UpdateRecipeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.blue,
-        ),
-        backgroundColor: Colors.white,
-        elevation: 1,
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
@@ -57,24 +52,18 @@ class UpdateRecipeScreen extends ConsumerWidget {
               onPressed: () async {
                 if (recipe.recipeName == null) {
                   final snackBar = SnackBar(
-                    backgroundColor: Colors.white,
                     content: const Text(
                       '料理名を入力してください',
-                      style: TextStyle(
-                        color: Colors.red,
-                      ),
                       textAlign: TextAlign.center,
                     ),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 } else if (recipe.forHowManyPeople == null) {
                   final snackBar = SnackBar(
-                      backgroundColor: Colors.red,
                       content: const Text(
-                        '材料が何人分か入力してください',
-                        style: TextStyle(color: Colors.red),
-                        textAlign: TextAlign.center,
-                      ));
+                    '材料が何人分か入力してください',
+                    textAlign: TextAlign.center,
+                  ));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 } else {
                   bool ingredientAmountIsOk = true;
@@ -83,12 +72,10 @@ class UpdateRecipeScreen extends ConsumerWidget {
                         null) {
                       // 材料の数量の再入力を求める
                       final snackBar = SnackBar(
-                          backgroundColor: Colors.red,
                           content: const Text(
-                            '材料の数量に不正な値があります',
-                            style: TextStyle(color: Colors.red),
-                            textAlign: TextAlign.center,
-                          ));
+                        '材料の数量に不正な値があります',
+                        textAlign: TextAlign.center,
+                      ));
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                       print("false");
@@ -171,7 +158,7 @@ class UpdateRecipeScreen extends ConsumerWidget {
                   Text("材料"),
                   SizedBox(width: 10),
                   SizedBox(
-                      width: 20,
+                      width: 32,
                       child: TextField(
                         controller: TextEditingController(
                             text: recipe.forHowManyPeople.toString()),

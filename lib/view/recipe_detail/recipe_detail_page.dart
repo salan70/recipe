@@ -34,11 +34,6 @@ class RecipeDetailPage extends ConsumerWidget {
       appBar: recipe.when(
           error: (error, stack) => AppBar(),
           loading: () => AppBar(
-                iconTheme: IconThemeData(
-                  color: Colors.green,
-                ),
-                backgroundColor: Colors.white,
-                elevation: 1,
                 leading: IconButton(
                   onPressed: () {
                     Navigator.pop(context);
@@ -48,11 +43,6 @@ class RecipeDetailPage extends ConsumerWidget {
               ),
           data: (recipe) {
             return AppBar(
-              iconTheme: IconThemeData(
-                color: Colors.green,
-              ),
-              backgroundColor: Colors.white,
-              elevation: 1,
               leading: IconButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -62,11 +52,8 @@ class RecipeDetailPage extends ConsumerWidget {
               title: Center(
                 child: Hero(
                   tag: 'recipeName' + recipe.recipeId!,
-                  child: Text(
-                    recipe.recipeName!,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(color: Colors.green),
-                  ),
+                  child:
+                      Text(recipe.recipeName!, overflow: TextOverflow.ellipsis),
                 ),
               ),
               actions: <Widget>[
@@ -104,7 +91,6 @@ class RecipeDetailPage extends ConsumerWidget {
                               errorBuilder: (c, o, s) {
                                 return const Icon(
                                   Icons.error,
-                                  color: Colors.red,
                                 );
                               },
                             )
@@ -211,20 +197,18 @@ class RecipeDetailPage extends ConsumerWidget {
                       }),
                   SizedBox(height: 20),
                   // メモ
-                  Container(
-                    child: Column(
-                      children: [
-                        Container(
+                  Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text("メモ"),
+                      ),
+                      Container(
                           alignment: Alignment.centerLeft,
-                          child: Text("メモ"),
-                        ),
-                        Container(
-                            alignment: Alignment.centerLeft,
-                            child: recipe.recipeMemo != null
-                                ? Text(recipe.recipeMemo!)
-                                : Text('')),
-                      ],
-                    ),
+                          child: recipe.recipeMemo != null
+                              ? Text(recipe.recipeMemo!)
+                              : Text('')),
+                    ],
                   ),
                   Center(
                     child: SizedBox(
@@ -257,8 +241,9 @@ class RecipeDetailPage extends ConsumerWidget {
                                   ],
                                 ),
                               ),
-                          child: Text('レシピを削除',
-                              style: TextStyle(color: Colors.red))),
+                          child: Text(
+                            'レシピを削除',
+                          )),
                     ),
                   ),
                 ],
