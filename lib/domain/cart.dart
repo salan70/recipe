@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class InCartRecipe {
   InCartRecipe(
       {required this.recipeRef,
+      this.inCartRecipeId,
       this.recipeId,
       this.recipeName,
       this.forHowManyPeople,
@@ -10,6 +11,7 @@ class InCartRecipe {
       this.imageUrl});
 
   DocumentReference recipeRef;
+  String? inCartRecipeId;
   String? recipeId;
   String? recipeName;
   int? forHowManyPeople;

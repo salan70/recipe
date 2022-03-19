@@ -32,7 +32,7 @@ class RecipeRepository {
     print('delete:' + recipe.recipeId!);
   }
 
-  Future<void> _deleteIngredients(String recipeId) async {
+  Future _deleteIngredients(String recipeId) async {
     try {
       final deleteIngredients = await FirebaseFirestore.instance
           .collection('users')
@@ -52,7 +52,7 @@ class RecipeRepository {
     }
   }
 
-  Future<void> _deleteProcedures(String recipeId) async {
+  Future _deleteProcedures(String recipeId) async {
     try {
       final deleteProcedures = await FirebaseFirestore.instance
           .collection('users')
@@ -72,7 +72,7 @@ class RecipeRepository {
     }
   }
 
-  Future<void> _deleteImage(Recipe recipe) async {
+  Future _deleteImage(Recipe recipe) async {
     final imageRef = FirebaseStorage.instance.refFromURL(recipe.imageUrl!);
 
     try {

@@ -166,6 +166,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
           ),
         ],
         grabbingHeight: 24,
+        sheetAbove: null,
         grabbing: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -204,6 +205,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                 return Container(
                   color: Colors.white,
                   child: ListView.builder(
+                      controller: listViewController,
                       itemCount: inCartRecipes.length,
                       itemBuilder: (context, index) {
                         final inCartRecipe = inCartRecipes[index];
@@ -222,10 +224,6 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                   recipeNumCountProviderFamily(
                                           inCartRecipe.count)
                                       .notifier);
-
-                              // final counter = ref.watch(recipeNumCountProvider);
-                              // final counterNotifier =
-                              //     ref.watch(recipeNumCountProvider.notifier);
 
                               return Row(
                                 children: [

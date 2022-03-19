@@ -6,6 +6,7 @@ import 'package:recipe/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/repository/cart_repository.dart';
 import 'package:recipe/repository/recipe_repository.dart';
+import 'package:recipe/view/add_cart_recipe_detail/add_cart_recipe_detail_model.dart';
 import 'package:recipe/view/update_recipe/update_recipe_page.dart';
 
 class AddBasketRecipeDetailPage extends ConsumerWidget {
@@ -16,6 +17,8 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authControllerProvider);
     CartRepository cartRepository = CartRepository(user: user!);
+    AddCartRecipeDetailModel addCartRecipeDetailModel =
+        AddCartRecipeDetailModel(user: user);
 
     final recipe = ref.watch(recipeStreamProviderFamily(recipeId));
 
@@ -35,6 +38,7 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
         ref.watch(recipeNumCountProviderFamily(null).notifier);
 
     bool isExistInCart = false;
+    String? inCartRecipeId;
     final inCartRecipes = ref.watch(inCartRecipeListStreamProvider);
 
     if (cartRepository.searchRecipe(recipeId)) {
@@ -277,6 +281,7 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                             counterNotifier = ref.watch(
                                 recipeNumCountProviderFamily(inCartRecipe.count)
                                     .notifier);
+                            inCartRecipeId = inCartRecipe.inCartRecipeId;
                             break;
                           }
                         }
@@ -286,8 +291,37 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
               Container(
                 child: ElevatedButton(
                   onPressed: () async {
-                    await cartRepository.addRecipe(counter, recipeId);
-                    Navigator.pop(context);
+                    if (counter == 0) {
+                      showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: Text('確認'),
+                          content: Text('数量が0ですがよろしいですか？'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => Navigator.pop(context, 'Cancel'),
+                              child: Text('いいえ'),
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                print('はい');
+                                await addCartRecipeDetailModel
+                                    .addOrUpdateRecipe(
+                                        inCartRecipeId, recipeId, counter);
+                                int popInt = 0;
+                                Navigator.popUntil(
+                                    context, (_) => popInt++ >= 2);
+                              },
+                              child: Text('はい'),
+                            ),
+                          ],
+                        ),
+                      );
+                    } else {
+                      await addCartRecipeDetailModel.addOrUpdateRecipe(
+                          inCartRecipeId, recipeId, counter);
+                      Navigator.pop(context);
+                    }
                   },
                   child: Text('確定'),
                 ),
@@ -296,12 +330,6 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
           ),
         ],
       ),
-      // bottomSheet: SizedBox(
-      //   height: 240,
-      //   child: Container(
-      //     color: Colors.red,
-      //   ),
-      // ),
     );
   }
 
@@ -317,11 +345,11 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                 children: [
                   IconButton(
                       onPressed: () {
-                        if (counter > 1) {
+                        if (counter > 0) {
                           counterNotifier.state--;
                         }
                       },
-                      icon: counter == 1
+                      icon: counter == 0
                           ? Icon(Icons.remove_circle_outline)
                           : Icon(Icons.remove_circle)),
                   Text('× $counter'),

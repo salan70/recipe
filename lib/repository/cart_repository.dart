@@ -14,6 +14,18 @@ class CartRepository {
   final Recipe? recipe;
 
   /// delete
+  Future deleteRecipe(String inCartRecipeId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('cart')
+          .doc(inCartRecipeId)
+          .delete();
+    } catch (e) {
+      print('inCartDeleteRecipe 失敗$e');
+    }
+  }
 
   /// fetch
   Stream<List<InCartRecipe>> fetchRecipeRefList() {
@@ -28,12 +40,16 @@ class CartRepository {
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;
 
+            final String inCartRecipeId = document.id;
             final String recipeId = data['recipeId'];
             final DocumentReference recipeRef = data['recipeRef'];
             final int? count = data['count'];
 
             return InCartRecipe(
-                recipeId: recipeId, recipeRef: recipeRef, count: count);
+                inCartRecipeId: inCartRecipeId,
+                recipeId: recipeId,
+                recipeRef: recipeRef,
+                count: count);
           }).toList(),
         );
 
@@ -105,6 +121,16 @@ class CartRepository {
   }
 
   /// update
+  Future<void> updateRecipe(int count, String inCartRecipeId) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('cart')
+        .doc(inCartRecipeId)
+        .update({
+      'count': count,
+    });
+  }
 
   /// search
   bool searchRecipe(String recipeId) {

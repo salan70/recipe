@@ -26,7 +26,8 @@ final imageFileNotifierProvider =
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
-final recipeListStreamProvider = StreamProvider<List<Recipe>>((ref) {
+final recipeListStreamProvider =
+    StreamProvider.autoDispose<List<Recipe>>((ref) {
   final user = ref.watch(authControllerProvider);
 
   RecipeRepository recipeRepository = RecipeRepository(user: user!);
@@ -34,8 +35,8 @@ final recipeListStreamProvider = StreamProvider<List<Recipe>>((ref) {
   return recipeRepository.fetchRecipeList();
 });
 
-final ingredientListStreamProviderFamily =
-    StreamProviderFamily<List<Ingredient>, String>((ref, recipeId) {
+final ingredientListStreamProviderFamily = StreamProvider.family
+    .autoDispose<List<Ingredient>, String>((ref, recipeId) {
   final user = ref.watch(authControllerProvider);
 
   RecipeRepository recipeRepository = RecipeRepository(user: user!);
@@ -44,7 +45,7 @@ final ingredientListStreamProviderFamily =
 });
 
 final procedureListStreamProviderFamily =
-    StreamProviderFamily<List<Procedure>, String>((ref, recipeId) {
+    StreamProvider.family.autoDispose<List<Procedure>, String>((ref, recipeId) {
   final user = ref.watch(authControllerProvider);
 
   RecipeRepository recipeRepository = RecipeRepository(user: user!);
@@ -53,7 +54,7 @@ final procedureListStreamProviderFamily =
 });
 
 final recipeStreamProviderFamily =
-    StreamProviderFamily<Recipe, String>((ref, recipeId) {
+    StreamProvider.family.autoDispose<Recipe, String>((ref, recipeId) {
   final user = ref.watch(authControllerProvider);
 
   RecipeRepository recipeRepository = RecipeRepository(user: user!);
@@ -92,7 +93,7 @@ final recipeNumCountProviderFamily =
 // final recipeNumCountProvider = StateProvider.autoDispose((ref) => 1);
 
 final inCartRecipeListStreamProvider =
-    StreamProvider<List<InCartRecipe>>((ref) {
+    StreamProvider.autoDispose<List<InCartRecipe>>((ref) {
   final user = ref.watch(authControllerProvider);
   CartRepository cartRepository = CartRepository(user: user!);
 
@@ -100,7 +101,7 @@ final inCartRecipeListStreamProvider =
 });
 
 final inCartRecipeStreamProviderFamily =
-    StreamProviderFamily<Recipe, String>((ref, recipeId) {
+    StreamProvider.family.autoDispose<Recipe, String>((ref, recipeId) {
   final user = ref.watch(authControllerProvider);
   CartRepository cartRepository = CartRepository(user: user!);
 
