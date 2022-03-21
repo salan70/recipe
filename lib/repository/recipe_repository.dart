@@ -16,8 +16,8 @@ class RecipeRepository {
 
   /// delete
   Future deleteRecipe(Recipe recipe) async {
-    await _deleteIngredients(recipe.recipeId!);
-    await _deleteProcedures(recipe.recipeId!);
+    await deleteIngredients(recipe.recipeId!);
+    await deleteProcedures(recipe.recipeId!);
 
     await FirebaseFirestore.instance
         .collection('users')
@@ -27,12 +27,12 @@ class RecipeRepository {
         .delete();
 
     if (recipe.imageUrl != '') {
-      _deleteImage(recipe);
+      deleteImage(recipe);
     }
     print('delete:' + recipe.recipeId!);
   }
 
-  Future _deleteIngredients(String recipeId) async {
+  Future deleteIngredients(String recipeId) async {
     try {
       final deleteIngredients = await FirebaseFirestore.instance
           .collection('users')
@@ -52,7 +52,7 @@ class RecipeRepository {
     }
   }
 
-  Future _deleteProcedures(String recipeId) async {
+  Future deleteProcedures(String recipeId) async {
     try {
       final deleteProcedures = await FirebaseFirestore.instance
           .collection('users')
@@ -72,7 +72,7 @@ class RecipeRepository {
     }
   }
 
-  Future _deleteImage(Recipe recipe) async {
+  Future deleteImage(Recipe recipe) async {
     final imageRef = FirebaseStorage.instance.refFromURL(recipe.imageUrl!);
 
     try {
@@ -250,8 +250,7 @@ class RecipeRepository {
         .update({'imageUrl': imageUrl});
   }
 
-  Future addIngredient(
-      List<Ingredient> ingredientList, DocumentReference docRef) async {
+  Future addIngredient(List<Ingredient> ingredientList, String recipeId) async {
     for (int i = 0; i < ingredientList.length; i++) {
       if (ingredientList[i].name != '') {
         print('test:' + ingredientList[i].name!);
@@ -260,7 +259,7 @@ class RecipeRepository {
             .collection('users')
             .doc(user.uid)
             .collection('recipes')
-            .doc(docRef.id)
+            .doc(recipeId)
             .collection('ingredients')
             .add({
           'id': ingredientList[i].id,
@@ -274,15 +273,14 @@ class RecipeRepository {
     }
   }
 
-  Future addProcedure(
-      List<Procedure> procedureList, DocumentReference docRef) async {
+  Future addProcedure(List<Procedure> procedureList, String recipeId) async {
     for (int i = 0; i < procedureList.length; i++) {
       if (procedureList[i].content != '') {
         await FirebaseFirestore.instance
             .collection('users')
             .doc(user.uid)
             .collection('recipes')
-            .doc(docRef.id)
+            .doc(recipeId)
             .collection('procedures')
             .add({
           'id': procedureList[i].id,
@@ -296,28 +294,6 @@ class RecipeRepository {
 
   /// update
   Future updateRecipe(String originalRecipeId, Recipe recipe) async {
-    final int timestamp = DateTime.now().microsecondsSinceEpoch;
-    print('imageUrl:' + recipe.imageUrl!);
-    String imageUrl = '';
-
-    // 画像をStorageに保存
-    if (recipe.imageFile != null) {
-      _deleteImage(recipe);
-
-      File imageFile = recipe.imageFile!;
-      final String name = imageFile.path.split('/').last;
-      final String path = '${timestamp}_$name';
-      final TaskSnapshot task = await FirebaseStorage.instance
-          .ref()
-          .child('users/${user.uid}/recipeImages/$originalRecipeId')
-          .child(path)
-          .putFile(imageFile);
-
-      imageUrl = await task.ref.getDownloadURL();
-    } else if (recipe.imageUrl != '') {
-      imageUrl = recipe.imageUrl!;
-    }
-
     //レシピを保存
     await FirebaseFirestore.instance
         .collection('users')
@@ -329,7 +305,6 @@ class RecipeRepository {
       'recipeGrade': recipe.recipeGrade,
       'forHowManyPeople': recipe.forHowManyPeople,
       'recipeMemo': recipe.recipeMemo,
-      'imageUrl': imageUrl,
     });
   }
 }

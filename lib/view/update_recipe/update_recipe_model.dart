@@ -10,8 +10,37 @@ class UpdateRecipeModel extends ChangeNotifier {
   UpdateRecipeModel({required this.user});
   final User user;
 
-  Future updateRecipe(String originalRecipeId, Recipe recipe) async {
+  Future<bool> updateRecipe(Recipe originalRecipe, Recipe recipe) async {
     RecipeRepository _recipeRepository = RecipeRepository(user: user);
-    await _recipeRepository.updateRecipe(originalRecipeId, recipe);
+
+    bool updateIsSuccess = false;
+
+    try {
+      if (recipe.imageFile != null) {
+        if (recipe.imageFile!.path != '') {
+          if (originalRecipe.imageUrl != '') {
+            await _recipeRepository.deleteImage(originalRecipe);
+          }
+          await _recipeRepository.addImage(
+              recipe.imageFile!, originalRecipe.recipeId!);
+        }
+      }
+      await _recipeRepository.updateRecipe(originalRecipe.recipeId!, recipe);
+      if (recipe.ingredientList != null) {
+        await _recipeRepository.deleteIngredients(originalRecipe.recipeId!);
+        await _recipeRepository.addIngredient(
+            recipe.ingredientList!, originalRecipe.recipeId!);
+      }
+      if (recipe.procedureList != null) {
+        await _recipeRepository.deleteProcedures(originalRecipe.recipeId!);
+        await _recipeRepository.addProcedure(
+            recipe.procedureList!, originalRecipe.recipeId!);
+      }
+      updateIsSuccess = true;
+    } catch (e) {
+      print(e);
+    }
+
+    return updateIsSuccess;
   }
 }

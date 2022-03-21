@@ -12,6 +12,7 @@ import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/parts/validation/validation.dart';
 import 'package:recipe/repository/recipe_repository.dart';
+import 'package:recipe/view/update_recipe/update_recipe_model.dart';
 
 class UpdateRecipeScreen extends ConsumerWidget {
   UpdateRecipeScreen(this.recipe);
@@ -21,15 +22,17 @@ class UpdateRecipeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Validation validation = Validation();
 
-    final authControllerState = ref.watch(authControllerProvider);
-    final RecipeRepository recipeRepository =
-        RecipeRepository(user: authControllerState!);
+    final user = ref.watch(authControllerProvider);
+
+    final UpdateRecipeModel updateRecipeModel = UpdateRecipeModel(user: user!);
 
     final imageFile = ref.watch(imageFileNotifierProvider);
     final imageFileNotifier = ref.watch(imageFileNotifierProvider.notifier);
 
     final procedureList = ref.watch(procedureListNotifierProvider);
     final ingredientList = ref.watch(ingredientListNotifierProvider);
+
+    final Recipe originalRecipe = recipe;
 
     return Scaffold(
       appBar: AppBar(
@@ -97,9 +100,25 @@ class UpdateRecipeScreen extends ConsumerWidget {
                         ingredientList: ingredientList,
                         procedureList: procedureList);
 
-                    await recipeRepository.updateRecipe(
-                        recipe.recipeId!, updatedRecipe);
-                    Navigator.pop(context);
+                    bool updateIsSuccess = await updateRecipeModel.updateRecipe(
+                        originalRecipe, updatedRecipe);
+
+                    if (updateIsSuccess) {
+                      Navigator.pop(context);
+                      final snackBar = SnackBar(
+                          content: const Text(
+                        'レシピを更新しました',
+                        textAlign: TextAlign.center,
+                      ));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    } else {
+                      final snackBar = SnackBar(
+                          content: const Text(
+                        'レシピの更新に失敗しました',
+                        textAlign: TextAlign.center,
+                      ));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
                   }
                 }
               },

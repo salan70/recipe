@@ -92,7 +92,7 @@ class AddRecipeScreen extends ConsumerWidget {
                         ingredientList: ingredientList,
                         procedureList: proceduresList);
                     bool addIsSuccess =
-                        await addRecipeModel.addRecipe(addedRecipe, imageFile);
+                        await addRecipeModel.addRecipe(addedRecipe);
 
                     if (addIsSuccess) {
                       Navigator.pop(context);
