@@ -48,9 +48,14 @@ class Ingredient {
   }
 }
 
+@immutable
 class Procedure {
-  Procedure({this.id, this.content});
+  Procedure({required this.id, required this.content});
 
   final String? id;
   final String? content;
+
+  Procedure copyWith({String? id, String? content}) {
+    return Procedure(id: id ?? this.id, content: content ?? this.content);
+  }
 }
