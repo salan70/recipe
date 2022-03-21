@@ -5,7 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
-import 'package:recipe/providers.dart';
+import 'package:recipe/components/providers.dart';
 import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/view/add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
 import 'package:recipe/view/recipe_list/recipe_list_model.dart';

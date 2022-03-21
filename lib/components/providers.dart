@@ -8,10 +8,11 @@ import 'package:recipe/repository/cart_repository.dart';
 import 'package:recipe/repository/recipe_repository.dart';
 import 'package:recipe/view/add_recipe/add_recipe_model.dart';
 import 'package:recipe/view/recipe_list/recipe_list_model.dart';
-import 'domain/recipe.dart';
-import 'package:recipe/parts/reordable_text_field/procedures.dart';
-import 'package:recipe/parts/reordable_text_field/ingredients.dart';
+import 'package:recipe/domain/recipe.dart';
+import 'package:recipe/components/parts/reordable_text_field/procedures.dart';
+import 'package:recipe/components/parts/reordable_text_field/ingredients.dart';
 import 'package:recipe/auth/auth_controller.dart';
+import 'package:recipe/state/image_file_state.dart';
 
 final authControllerProvider = StateNotifierProvider<AuthController, User?>(
   (ref) => AuthController(ref.read)..appStarted(),

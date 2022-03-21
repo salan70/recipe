@@ -6,10 +6,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 
 import 'package:recipe/auth/auth_controller.dart';
-import 'package:recipe/parts/reordable_text_field/procedures.dart';
-import 'package:recipe/parts/reordable_text_field/ingredients.dart';
-import 'package:recipe/providers.dart';
-import 'package:recipe/repository/recipe_repository.dart';
+import 'package:recipe/components/parts/reordable_text_field/procedures.dart';
+import 'package:recipe/components/parts/reordable_text_field/ingredients.dart';
+import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/view/add_recipe/add_recipe_model.dart';
 import 'package:recipe/parts/validation/validation.dart';
@@ -19,12 +18,9 @@ class AddRecipeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authControllerProvider);
     final Validation validation = Validation();
-
-    final authControllerState = ref.watch(authControllerProvider);
-
-    final RecipeRepository recipeRepository =
-        RecipeRepository(user: authControllerState!);
+    final AddRecipeModel addRecipeModel = AddRecipeModel(user: user!);
 
     final imageFile = ref.watch(imageFileNotifierProvider);
     final imageFileNotifier = ref.watch(imageFileNotifierProvider.notifier);
@@ -95,7 +91,7 @@ class AddRecipeScreen extends ConsumerWidget {
                         imageFile: imageFile,
                         ingredientList: ingredientList,
                         procedureList: proceduresList);
-                    await recipeRepository.addRecipe(addedRecipe);
+                    await addRecipeModel.addRecipe(addedRecipe);
 
                     Navigator.pop(context);
                   }

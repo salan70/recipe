@@ -1,20 +1,17 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:recipe/domain/recipe.dart';
+import 'package:recipe/repository/recipe_repository.dart';
 
-class ImageFileNotifier extends StateNotifier<File> {
-  ImageFileNotifier() : super(File(''));
+class AddRecipeModel extends ChangeNotifier {
+  AddRecipeModel({required this.user});
+  final User user;
 
-  File? imageFile;
-  final picker = ImagePicker();
-
-  Future pickImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      imageFile = File(pickedFile.path);
-      state = imageFile!;
-    }
+  Future addRecipe(Recipe recipe) async {
+    RecipeRepository _recipeRepository = RecipeRepository(user: user);
+    await _recipeRepository.addRecipe(recipe);
   }
 }

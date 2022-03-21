@@ -6,7 +6,7 @@ import 'package:uuid/uuid.dart';
 
 // inside
 import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/providers.dart';
+import 'package:recipe/components/providers.dart';
 
 class ProcedureListNotifier extends StateNotifier<List<Procedure>> {
   ProcedureListNotifier() : super([Procedure(id: Uuid().v4(), content: '')]);

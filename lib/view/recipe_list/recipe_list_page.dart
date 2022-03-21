@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:recipe/providers.dart';
 import 'package:hawk_fab_menu/hawk_fab_menu.dart';
 
 import 'package:recipe/auth/auth_controller.dart';
@@ -12,6 +11,7 @@ import 'package:recipe/view/add_recipe/add_recipe_page.dart';
 import 'package:recipe/view/recipe_detail/recipe_detail_page.dart';
 import 'package:recipe/view/recipe_list/recipe_list_model.dart';
 import 'package:recipe/domain/recipe.dart';
+import 'package:recipe/components/providers.dart';
 
 import '../add_cart_recipe_list/add_cart_recipe_list_page.dart';
 
