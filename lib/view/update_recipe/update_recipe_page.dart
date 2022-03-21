@@ -69,6 +69,13 @@ class UpdateRecipeScreen extends ConsumerWidget {
                     textAlign: TextAlign.center,
                   ));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                } else if (recipe.forHowManyPeople! < 1) {
+                  final snackBar = SnackBar(
+                      content: const Text(
+                    '材料は1人分以上で入力してください',
+                    textAlign: TextAlign.center,
+                  ));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 } else {
                   bool ingredientAmountIsOk = true;
                   for (int index = 0; index < ingredientList.length; index++) {
@@ -140,7 +147,14 @@ class UpdateRecipeScreen extends ConsumerWidget {
                         borderRadius: BorderRadius.circular(20),
                         child: Image.file(imageFile))
                     : recipe.imageUrl != '' && recipe.imageUrl != null
-                        ? Image.network(recipe.imageUrl!)
+                        ? Image.network(
+                            recipe.imageUrl!,
+                            errorBuilder: (c, o, s) {
+                              return const Icon(
+                                Icons.error,
+                              );
+                            },
+                          )
                         : Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
@@ -187,7 +201,9 @@ class UpdateRecipeScreen extends ConsumerWidget {
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         onChanged: (value) {
-                          recipe.forHowManyPeople = int.parse(value);
+                          if (int.tryParse(value) != null) {
+                            recipe.forHowManyPeople = int.parse(value);
+                          }
                         },
                       )),
                   Text("人分"),

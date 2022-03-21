@@ -62,6 +62,13 @@ class AddRecipeScreen extends ConsumerWidget {
                     textAlign: TextAlign.center,
                   ));
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                } else if (recipe.forHowManyPeople! < 1) {
+                  final snackBar = SnackBar(
+                      content: const Text(
+                    '材料は1人分以上で入力してください',
+                    textAlign: TextAlign.center,
+                  ));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 } else {
                   bool ingredientAmountIsOk = true;
                   for (int index = 0; index < ingredientList.length; index++) {

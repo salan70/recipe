@@ -16,6 +16,7 @@ class UpdateRecipeModel extends ChangeNotifier {
     bool updateIsSuccess = false;
 
     try {
+      // 元の画像がある & 画像を変更する場合、元の画像を削除して新たに画像を保存する
       if (recipe.imageFile != null) {
         if (recipe.imageFile!.path != '') {
           if (originalRecipe.imageUrl != '') {
@@ -25,6 +26,7 @@ class UpdateRecipeModel extends ChangeNotifier {
               recipe.imageFile!, originalRecipe.recipeId!);
         }
       }
+
       await _recipeRepository.updateRecipe(originalRecipe.recipeId!, recipe);
       if (recipe.ingredientList != null) {
         await _recipeRepository.deleteIngredients(originalRecipe.recipeId!);
