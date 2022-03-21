@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -91,7 +92,7 @@ class AddRecipeScreen extends ConsumerWidget {
                         forHowManyPeople: recipe.forHowManyPeople,
                         recipeMemo: recipe.recipeMemo,
                         imageUrl: '',
-                        imageFile: imageFile.imageFile,
+                        imageFile: imageFile,
                         ingredientList: ingredientList,
                         procedureList: proceduresList);
                     await recipeRepository.addRecipe(addedRecipe);
@@ -113,10 +114,10 @@ class AddRecipeScreen extends ConsumerWidget {
             GestureDetector(
               child: SizedBox(
                 height: 250,
-                child: imageFile.imageFile != null
+                child: imageFile.path != ''
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: Image.file(imageFile.imageFile!))
+                        child: Image.file(imageFile))
                     : Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.0),
@@ -126,6 +127,7 @@ class AddRecipeScreen extends ConsumerWidget {
                       ),
               ),
               onTap: () async {
+                print(imageFile);
                 await imageFileNotifier.pickImage();
               },
             ),

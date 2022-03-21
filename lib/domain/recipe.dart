@@ -2,12 +2,6 @@ import 'dart:io';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
 
-class ImageFile {
-  ImageFile(this.imageFile);
-
-  final File? imageFile;
-}
-
 class Recipe {
   Recipe(
       {this.recipeId,

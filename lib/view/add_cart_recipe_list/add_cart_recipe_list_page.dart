@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:recipe/domain/cart.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 
 import 'package:recipe/providers.dart';
@@ -21,6 +22,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
     final recipes = ref.watch(recipeListStreamProvider);
     final inCartRecipes = ref.watch(inCartRecipeListStreamProvider);
     RecipeListModel recipeListModel = RecipeListModel();
+    List<InCartRecipe>? inCartRecipeList;
 
     return Scaffold(
       appBar: AppBar(
@@ -202,6 +204,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
               error: (error, stack) => Text('Error: $error'),
               loading: () => const CircularProgressIndicator(),
               data: (inCartRecipes) {
+                inCartRecipeList = inCartRecipes;
                 return Container(
                   color: Colors.white,
                   child: ListView.builder(
@@ -224,6 +227,10 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                   recipeNumCountProviderFamily(
                                           inCartRecipe.count)
                                       .notifier);
+
+                              // inCartRecipeList![index].recipeName =
+                              //     recipe.recipeName;
+                              // inCartRecipeList![index].count = counter;
 
                               return Row(
                                 children: [
@@ -282,7 +289,14 @@ class AddCartRecipeListPage extends ConsumerWidget {
               Expanded(
                   child: Container(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (inCartRecipeList != null) {
+                      for (var inCartRecipe in inCartRecipeList!) {
+                        print(
+                            '${inCartRecipe.recipeName} ${inCartRecipe.count}');
+                      }
+                    }
+                  },
                   child: Text('確定'),
                 ),
               ))

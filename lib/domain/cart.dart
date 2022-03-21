@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InCartRecipe {
   InCartRecipe(
-      {required this.recipeRef,
+      {this.recipeRef,
       this.inCartRecipeId,
       this.recipeId,
       this.recipeName,
@@ -10,7 +10,7 @@ class InCartRecipe {
       this.count,
       this.imageUrl});
 
-  DocumentReference recipeRef;
+  DocumentReference? recipeRef;
   String? inCartRecipeId;
   String? recipeId;
   String? recipeName;

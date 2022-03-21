@@ -18,7 +18,7 @@ final authControllerProvider = StateNotifierProvider<AuthController, User?>(
 );
 
 final imageFileNotifierProvider =
-    StateNotifierProvider.autoDispose<ImageFileNotifier, ImageFile>((ref) {
+    StateNotifierProvider.autoDispose<ImageFileNotifier, File>((ref) {
   return ImageFileNotifier();
 });
 

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -92,7 +93,7 @@ class UpdateRecipeScreen extends ConsumerWidget {
                         forHowManyPeople: recipe.forHowManyPeople,
                         recipeMemo: recipe.recipeMemo,
                         imageUrl: recipe.imageUrl,
-                        imageFile: imageFile.imageFile,
+                        imageFile: imageFile,
                         ingredientList: ingredientList,
                         procedureList: procedureList);
 
@@ -115,10 +116,10 @@ class UpdateRecipeScreen extends ConsumerWidget {
             GestureDetector(
               child: SizedBox(
                 height: 250,
-                child: imageFile.imageFile != null
+                child: imageFile.path != ''
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(20),
-                        child: Image.file(imageFile.imageFile!))
+                        child: Image.file(imageFile))
                     : recipe.imageUrl != '' && recipe.imageUrl != null
                         ? Image.network(recipe.imageUrl!)
                         : Container(
