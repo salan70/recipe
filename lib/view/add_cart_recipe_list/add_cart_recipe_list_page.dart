@@ -21,8 +21,10 @@ class AddCartRecipeListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recipes = ref.watch(recipeListStreamProvider);
     final inCartRecipes = ref.watch(inCartRecipeListStreamProvider);
+
     RecipeListModel recipeListModel = RecipeListModel();
     List<InCartRecipe>? inCartRecipeList;
+    print('build');
 
     return Scaffold(
       appBar: AppBar(
@@ -228,9 +230,8 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                           inCartRecipe.count)
                                       .notifier);
 
-                              // inCartRecipeList![index].recipeName =
-                              //     recipe.recipeName;
-                              // inCartRecipeList![index].count = counter;
+                              inCartRecipe.forHowManyPeople =
+                                  recipe.forHowManyPeople;
 
                               return Row(
                                 children: [
@@ -254,17 +255,21 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                         IconButton(
                                             onPressed: () {
                                               if (counter > 1) {
+                                                print('-');
                                                 counterNotifier.state--;
+                                                print(counter);
                                               }
                                             },
                                             icon: counter == 1
                                                 ? Icon(
                                                     Icons.remove_circle_outline)
                                                 : Icon(Icons.remove_circle)),
-                                        Text('× $counter'),
+                                        Text('× ${counter}'),
                                         IconButton(
                                             onPressed: () {
+                                              print('+');
                                               counterNotifier.state++;
+                                              print(counter);
                                             },
                                             icon: Icon(Icons.add_circle)),
                                       ],

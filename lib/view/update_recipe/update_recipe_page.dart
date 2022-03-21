@@ -10,7 +10,7 @@ import 'package:recipe/components/parts/reordable_text_field/ingredients.dart';
 import 'package:recipe/view/recipe_detail/recipe_detail_page.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/parts/validation/validation.dart';
+import 'package:recipe/components/parts/validation/validation.dart';
 import 'package:recipe/repository/recipe_repository.dart';
 
 class UpdateRecipeScreen extends ConsumerWidget {
@@ -97,9 +97,9 @@ class UpdateRecipeScreen extends ConsumerWidget {
                         ingredientList: ingredientList,
                         procedureList: procedureList);
 
-                    Navigator.pop(context);
                     await recipeRepository.updateRecipe(
                         recipe.recipeId!, updatedRecipe);
+                    Navigator.pop(context);
                   }
                 }
               },

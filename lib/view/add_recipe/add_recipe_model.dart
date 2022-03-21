@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,8 +11,27 @@ class AddRecipeModel extends ChangeNotifier {
   AddRecipeModel({required this.user});
   final User user;
 
-  Future addRecipe(Recipe recipe) async {
+  Future<bool> addRecipe(Recipe recipe, File imageFile) async {
     RecipeRepository _recipeRepository = RecipeRepository(user: user);
-    await _recipeRepository.addRecipe(recipe);
+    bool addIsSuccess = false;
+
+    try {
+      DocumentReference docRef = await _recipeRepository.addRecipe(recipe);
+
+      if (imageFile.path != '') {
+        await _recipeRepository.addImage(imageFile, docRef.id);
+      }
+
+      if (recipe.ingredientList != null) {
+        await _recipeRepository.addIngredient(recipe.ingredientList!, docRef);
+      }
+      if (recipe.procedureList != null) {
+        await _recipeRepository.addProcedure(recipe.procedureList!, docRef);
+      }
+      addIsSuccess = true;
+    } catch (e) {
+      print(e);
+    }
+    return addIsSuccess;
   }
 }

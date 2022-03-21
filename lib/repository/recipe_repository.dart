@@ -210,10 +210,8 @@ class RecipeRepository {
   }
 
   /// add
-  Future addRecipe(Recipe recipe) async {
-    final int timestamp = DateTime.now().microsecondsSinceEpoch;
+  Future<DocumentReference> addRecipe(Recipe recipe) async {
     final DateTime nowDatetime = DateTime.now();
-    String imageUrl = '';
 
     //レシピを保存
     DocumentReference docRef = await FirebaseFirestore.instance
@@ -225,65 +223,73 @@ class RecipeRepository {
       'recipeGrade': recipe.recipeGrade,
       'forHowManyPeople': recipe.forHowManyPeople,
       'recipeMemo': recipe.recipeMemo,
-      'createdAt': nowDatetime
+      'createdAt': nowDatetime,
+      'imageUrl': '',
     });
+    return docRef;
+  }
 
-    // 画像をStorageに保存
-    if (recipe.imageFile != null) {
-      File imageFile = recipe.imageFile!;
-      final String name = imageFile.path.split('/').last;
-      final String path = '${timestamp}_$name';
-      final TaskSnapshot task = await FirebaseStorage.instance
-          .ref()
-          .child('users/${user.uid}/recipeImages/${docRef.id}')
-          .child(path)
-          .putFile(imageFile);
+  Future addImage(File imageFile, String recipeId) async {
+    final int timestamp = DateTime.now().microsecondsSinceEpoch;
 
-      imageUrl = await task.ref.getDownloadURL();
-    }
-    await docRef.update({'imageUrl': imageUrl});
+    final String name = imageFile.path.split('/').last;
+    final String path = '${timestamp}_$name';
+    final TaskSnapshot task = await FirebaseStorage.instance
+        .ref()
+        .child('users/${user.uid}/recipeImages/$recipeId')
+        .child(path)
+        .putFile(imageFile);
 
-    // 材料を保存
-    if (recipe.ingredientList != null) {
-      for (int i = 0; i < recipe.ingredientList!.length; i++) {
-        if (recipe.ingredientList![i].name != '') {
-          print('test:' + recipe.ingredientList![i].name!);
+    final imageUrl = await task.ref.getDownloadURL();
 
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .collection('recipes')
-              .doc(docRef.id)
-              .collection('ingredients')
-              .add({
-            'id': recipe.ingredientList![i].id,
-            'name': recipe.ingredientList![i].name,
-            'amount': recipe.ingredientList![i].amount,
-            'unit': recipe.ingredientList![i].unit,
-            'orderNum': ingredientListOrderNum,
-          });
-          ingredientListOrderNum++;
-        }
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('recipes')
+        .doc(recipeId)
+        .update({'imageUrl': imageUrl});
+  }
+
+  Future addIngredient(
+      List<Ingredient> ingredientList, DocumentReference docRef) async {
+    for (int i = 0; i < ingredientList.length; i++) {
+      if (ingredientList[i].name != '') {
+        print('test:' + ingredientList[i].name!);
+
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .collection('recipes')
+            .doc(docRef.id)
+            .collection('ingredients')
+            .add({
+          'id': ingredientList[i].id,
+          'name': ingredientList[i].name,
+          'amount': ingredientList[i].amount,
+          'unit': ingredientList[i].unit,
+          'orderNum': ingredientListOrderNum,
+        });
+        ingredientListOrderNum++;
       }
     }
+  }
 
-    // 手順を保存
-    if (recipe.procedureList != null) {
-      for (int i = 0; i < recipe.procedureList!.length; i++) {
-        if (recipe.procedureList![i].content != '') {
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .collection('recipes')
-              .doc(docRef.id)
-              .collection('procedures')
-              .add({
-            'id': recipe.procedureList![i].id,
-            'content': recipe.procedureList![i].content,
-            'orderNum': procedureListOrderNum
-          });
-          procedureListOrderNum++;
-        }
+  Future addProcedure(
+      List<Procedure> procedureList, DocumentReference docRef) async {
+    for (int i = 0; i < procedureList.length; i++) {
+      if (procedureList[i].content != '') {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .collection('recipes')
+            .doc(docRef.id)
+            .collection('procedures')
+            .add({
+          'id': procedureList[i].id,
+          'content': procedureList[i].content,
+          'orderNum': procedureListOrderNum
+        });
+        procedureListOrderNum++;
       }
     }
   }
@@ -325,52 +331,5 @@ class RecipeRepository {
       'recipeMemo': recipe.recipeMemo,
       'imageUrl': imageUrl,
     });
-
-    // 材料を保存
-    if (recipe.ingredientList != null) {
-      await _deleteIngredients(originalRecipeId);
-
-      for (int i = 0; i < recipe.ingredientList!.length; i++) {
-        if (recipe.ingredientList![i].name != '') {
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .collection('recipes')
-              .doc(originalRecipeId)
-              .collection('ingredients')
-              .add({
-            'id': recipe.ingredientList![i].id,
-            'name': recipe.ingredientList![i].name,
-            'amount': recipe.ingredientList![i].amount,
-            'unit': recipe.ingredientList![i].unit,
-            'orderNum': ingredientListOrderNum,
-          });
-          ingredientListOrderNum++;
-        }
-      }
-    }
-
-    // 手順を保存
-    if (recipe.procedureList != null) {
-      await _deleteProcedures(originalRecipeId);
-
-      for (int i = 0; i < recipe.procedureList!.length; i++) {
-        if (recipe.procedureList![i].content != '') {
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.uid)
-              .collection('recipes')
-              .doc(originalRecipeId)
-              .collection('procedures')
-              .add({
-            'id': recipe.procedureList![i].id,
-            'content': recipe.procedureList![i].content,
-            'orderNum': procedureListOrderNum
-          });
-          procedureListOrderNum++;
-        }
-      }
-    }
-    print('更新完了');
   }
 }

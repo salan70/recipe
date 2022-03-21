@@ -11,7 +11,7 @@ import 'package:recipe/components/parts/reordable_text_field/ingredients.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/view/add_recipe/add_recipe_model.dart';
-import 'package:recipe/parts/validation/validation.dart';
+import 'package:recipe/components/parts/validation/validation.dart';
 
 class AddRecipeScreen extends ConsumerWidget {
   final Recipe recipe = Recipe(recipeGrade: 3);
@@ -91,9 +91,25 @@ class AddRecipeScreen extends ConsumerWidget {
                         imageFile: imageFile,
                         ingredientList: ingredientList,
                         procedureList: proceduresList);
-                    await addRecipeModel.addRecipe(addedRecipe);
+                    bool addIsSuccess =
+                        await addRecipeModel.addRecipe(addedRecipe, imageFile);
 
-                    Navigator.pop(context);
+                    if (addIsSuccess) {
+                      Navigator.pop(context);
+                      final snackBar = SnackBar(
+                          content: const Text(
+                        'レシピを追加しました',
+                        textAlign: TextAlign.center,
+                      ));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    } else {
+                      final snackBar = SnackBar(
+                          content: const Text(
+                        'レシピの追加に失敗しました',
+                        textAlign: TextAlign.center,
+                      ));
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    }
                   }
                 }
               },

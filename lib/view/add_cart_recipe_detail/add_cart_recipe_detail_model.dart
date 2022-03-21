@@ -22,7 +22,7 @@ class AddCartRecipeDetailModel extends ChangeNotifier {
         }
       } else {
         try {
-          await cartRepository.addRecipe(count, recipeId);
+          await cartRepository.addRecipeInCart(count, recipeId);
         } catch (e) {
           print('cartRepository.add 失敗:$e');
         }
@@ -30,7 +30,7 @@ class AddCartRecipeDetailModel extends ChangeNotifier {
     } else {
       if (inCartRecipeId != null) {
         try {
-          await cartRepository.deleteRecipe(inCartRecipeId);
+          await cartRepository.deleteRecipeInCart(inCartRecipeId);
           print('delete完了');
         } catch (e) {
           print('cartRepository.delete 失敗:$e');

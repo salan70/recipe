@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/domain/cart.dart';
@@ -14,17 +13,15 @@ class CartRepository {
   final Recipe? recipe;
 
   /// delete
-  Future deleteRecipe(String inCartRecipeId) async {
-    try {
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('cart')
-          .doc(inCartRecipeId)
-          .delete();
-    } catch (e) {
-      print('inCartDeleteRecipe 失敗$e');
-    }
+  Future deleteRecipeInCart(String recipeId) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('recipes')
+        .doc(recipeId)
+        .update({
+      'countInCart': 0,
+    });
   }
 
   /// fetch
@@ -99,36 +96,24 @@ class CartRepository {
   }
 
   /// add
-  Future<void> addRecipe(int count, String recipeId) async {
-    final DateTime nowDatetime = DateTime.now();
-
-    final recipeRef = FirebaseFirestore.instance
+  Future<void> addRecipeInCart(int count, String recipeId) async {
+    await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .collection('recipes')
-        .doc(recipeId);
-
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('cart')
-        .add({
-      'recipeId': recipeId,
-      'recipeRef': recipeRef,
-      'count': count,
-      'addedAt': nowDatetime,
-    });
+        .doc(recipeId)
+        .update({'countInCart': count});
   }
 
   /// update
-  Future<void> updateRecipe(int count, String inCartRecipeId) async {
+  Future<void> updateRecipe(int count, String recipeId) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
-        .collection('cart')
-        .doc(inCartRecipeId)
+        .collection('recipes')
+        .doc(recipeId)
         .update({
-      'count': count,
+      'countInCart': count,
     });
   }
 
