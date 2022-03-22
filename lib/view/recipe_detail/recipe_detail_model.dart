@@ -1,34 +1,34 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/domain/recipe.dart';
 
+import '../../repository/recipe_repository.dart';
+
 class RecipeDetailModel extends ChangeNotifier {
-  RecipeDetailModel(this.recipeID);
-  String recipeID = '';
+  RecipeDetailModel({required this.user});
+  final User user;
 
-  String toOutputIngredientText(List<Ingredient> ingredients) {
-    final List<String> ingredientTextList = List.filled(ingredients.length, '');
-    String outputIngredientText = '';
-    int ingredientIndex = 0;
+  Future<bool> deleteRecipe(Recipe recipe) async {
+    bool deleteIsSuccess = false;
+    RecipeRepository _recipeRepository = RecipeRepository(user: user);
 
-    for (var ingredient in ingredients) {
-      String ingredientName = ingredient.name.toString();
-      String ingredientAmount = ingredient.amount.toString();
-      String ingredientUnit = ingredient.unit.toString();
-      String ingredientText =
-          ingredientName + ' ' + ingredientAmount + ingredientUnit;
-      ingredientTextList[ingredientIndex] = ingredientText;
-      // print(ingredientTextList[index]);
-      outputIngredientText += ingredientText;
-
-      if (ingredientIndex + 1 < ingredients.length) {
-        outputIngredientText += ', ';
+    try {
+      await _recipeRepository.deleteProcedures(recipe.recipeId!);
+      await _recipeRepository.deleteIngredients(recipe.recipeId!);
+      if (recipe.imageUrl != '') {
+        print('delete image: ${recipe.imageUrl}');
+        await _recipeRepository.deleteImage(recipe);
       }
+      await _recipeRepository.deleteRecipe(recipe);
+      print('delete:' + recipe.recipeId!);
 
-      ingredientIndex += 1;
+      deleteIsSuccess = true;
+    } catch (e) {
+      print(e);
     }
 
-    return outputIngredientText;
+    return deleteIsSuccess;
   }
 }

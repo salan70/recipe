@@ -21,7 +21,7 @@ final authControllerProvider = StateNotifierProvider<AuthController, User?>(
 );
 
 final imageFileNotifierProvider =
-    StateNotifierProvider.autoDispose<ImageFileNotifier, File>((ref) {
+    StateNotifierProvider.autoDispose<ImageFileNotifier, File?>((ref) {
   return ImageFileNotifier();
 });
 
@@ -37,13 +37,6 @@ final recipeListStreamProvider =
 
   return recipeRepository.fetchRecipeList();
 });
-
-// final recipeStreamNotifierProvider =
-//     StateNotifierProvider.autoDispose<RecipeStreamNotifier, List<RecipeStream>>(
-//         (ref) {
-//   final user = ref.watch(authControllerProvider);
-//   return RecipeStreamNotifier(user: user!);
-// });
 
 final ingredientListStreamProviderFamily = StreamProvider.family
     .autoDispose<List<Ingredient>, String>((ref, recipeId) {
@@ -99,21 +92,6 @@ final recipeNumCountProviderFamily =
   }
   return count;
 });
-
-// final recipeCountProviderFamily = StateProvider.family
-//     .autoDispose<int, RecipeCount?>((count, initialRecipeCount) {
-//   RecipeCount recipeCount = RecipeCount(id: '', count: 1);
-//
-//   if (initialRecipeCount != null) {
-//     recipeCount =
-//         RecipeCount(id: initialRecipeCount.id, count: initialRecipeCount.count);
-//   } else {
-//     recipeCount = RecipeCount(id: '', count: 1);
-//   }
-//   return recipeCount.count;
-// });
-
-// final recipeNumCountProvider = StateProvider.autoDispose((ref) => 1);
 
 final inCartRecipeListStreamProvider =
     StreamProvider.autoDispose<List<InCartRecipe>>((ref) {

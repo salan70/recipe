@@ -133,14 +133,25 @@ class AddRecipeScreen extends ConsumerWidget {
             GestureDetector(
               child: SizedBox(
                 height: 250,
-                child: imageFile.path != ''
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.file(imageFile))
+                child: imageFile != null
+                    ? imageFile.path != ''
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            // child: Image.file(imageFile)
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              // color: Colors.grey[400],
+                              color: Colors.red,
+                            ),
+                            child: Icon(Icons.add_photo_alternate_outlined),
+                          )
                     : Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8.0),
-                          color: Colors.grey[400],
+                          // color: Colors.grey[400],
+                          color: Colors.blue,
                         ),
                         child: Icon(Icons.add_photo_alternate_outlined),
                       ),

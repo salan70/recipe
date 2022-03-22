@@ -11,7 +11,6 @@ import 'package:recipe/view/recipe_detail/recipe_detail_page.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/parts/validation/validation.dart';
-import 'package:recipe/repository/recipe_repository.dart';
 import 'package:recipe/view/update_recipe/update_recipe_model.dart';
 
 class UpdateRecipeScreen extends ConsumerWidget {
@@ -142,26 +141,34 @@ class UpdateRecipeScreen extends ConsumerWidget {
             GestureDetector(
               child: SizedBox(
                 height: 250,
-                child: imageFile.path != ''
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.file(imageFile))
-                    : recipe.imageUrl != '' && recipe.imageUrl != null
-                        ? Image.network(
-                            recipe.imageUrl!,
-                            errorBuilder: (c, o, s) {
-                              return const Icon(
-                                Icons.error,
-                              );
-                            },
-                          )
-                        : Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                              color: Colors.grey[400],
-                            ),
-                            child: Icon(Icons.add_photo_alternate_outlined),
-                          ),
+                child: imageFile != null
+                    ? imageFile.path != ''
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.file(imageFile))
+                        : recipe.imageUrl != '' && recipe.imageUrl != null
+                            ? Image.network(
+                                recipe.imageUrl!,
+                                errorBuilder: (c, o, s) {
+                                  return const Icon(
+                                    Icons.error,
+                                  );
+                                },
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: Colors.grey[400],
+                                ),
+                                child: Icon(Icons.add_photo_alternate_outlined),
+                              )
+                    : Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8.0),
+                          color: Colors.grey[400],
+                        ),
+                        child: Icon(Icons.add_photo_alternate_outlined),
+                      ),
               ),
               onTap: () async {
                 await imageFileNotifier.pickImage();

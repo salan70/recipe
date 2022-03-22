@@ -16,20 +16,12 @@ class RecipeRepository {
 
   /// delete
   Future deleteRecipe(Recipe recipe) async {
-    await deleteIngredients(recipe.recipeId!);
-    await deleteProcedures(recipe.recipeId!);
-
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .collection('recipes')
         .doc(recipe.recipeId)
         .delete();
-
-    if (recipe.imageUrl != '') {
-      deleteImage(recipe);
-    }
-    print('delete:' + recipe.recipeId!);
   }
 
   Future deleteIngredients(String recipeId) async {

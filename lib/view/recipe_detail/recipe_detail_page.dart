@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/repository/recipe_repository.dart';
+import 'package:recipe/view/recipe_detail/recipe_detail_model.dart';
 import 'package:recipe/view/update_recipe/update_recipe_page.dart';
 
 class RecipeDetailPage extends ConsumerWidget {
@@ -28,7 +29,7 @@ class RecipeDetailPage extends ConsumerWidget {
     final procedureListNotifier =
         ref.watch(procedureListNotifierProvider.notifier);
 
-    RecipeRepository recipeRepository = RecipeRepository(user: user!);
+    RecipeDetailModel recipeDetailModel = RecipeDetailModel(user: user!);
 
     return Scaffold(
       appBar: recipe.when(
@@ -228,10 +229,29 @@ class RecipeDetailPage extends ConsumerWidget {
                                     TextButton(
                                       onPressed: () async {
                                         if (recipe.recipeId != null) {
-                                          await recipeRepository
-                                              .deleteRecipe(recipe);
-                                          Navigator.of(context).popUntil(
-                                              (route) => route.isFirst);
+                                          bool deleteIsSuccess =
+                                              await recipeDetailModel
+                                                  .deleteRecipe(recipe);
+
+                                          if (deleteIsSuccess) {
+                                            Navigator.of(context).popUntil(
+                                                (route) => route.isFirst);
+                                            final snackBar = SnackBar(
+                                                content: Text(
+                                              '${recipe.recipeName}を削除しました',
+                                              textAlign: TextAlign.center,
+                                            ));
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+                                          } else {
+                                            final snackBar = SnackBar(
+                                                content: const Text(
+                                              'レシピの削除に失敗しました',
+                                              textAlign: TextAlign.center,
+                                            ));
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(snackBar);
+                                          }
                                         } else {
                                           print('else');
                                         }
