@@ -9,33 +9,13 @@ class AddCartRecipeDetailModel extends ChangeNotifier {
   AddCartRecipeDetailModel({required this.user});
   final User user;
 
-  Future addOrUpdateRecipe(
-      String? inCartRecipeId, String recipeId, int count) async {
+  Future updateCount(String recipeId, int count) async {
     CartRepository cartRepository = CartRepository(user: user);
 
-    if (count != 0) {
-      if (inCartRecipeId != null) {
-        try {
-          await cartRepository.updateRecipe(count, inCartRecipeId);
-        } catch (e) {
-          print('cartRepository.update 失敗:$e');
-        }
-      } else {
-        try {
-          await cartRepository.addRecipeInCart(count, recipeId);
-        } catch (e) {
-          print('cartRepository.add 失敗:$e');
-        }
-      }
-    } else {
-      if (inCartRecipeId != null) {
-        try {
-          await cartRepository.deleteRecipeInCart(inCartRecipeId);
-          print('delete完了');
-        } catch (e) {
-          print('cartRepository.delete 失敗:$e');
-        }
-      }
+    try {
+      await cartRepository.updateCount(recipeId, count);
+    } catch (e) {
+      print('cartRepository.update 失敗:$e');
     }
   }
 }

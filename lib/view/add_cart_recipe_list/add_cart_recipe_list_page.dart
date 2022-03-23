@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:recipe/domain/cart.dart';
+import 'package:recipe/view/add_cart_recipe_list/add_cart_recipe_list_model.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
+import 'package:badges/badges.dart';
 
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/auth/auth_controller.dart';
@@ -19,12 +21,23 @@ class AddCartRecipeListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authControllerProvider);
+
     final recipes = ref.watch(recipeListStreamProvider);
-    final inCartRecipes = ref.watch(inCartRecipeListStreamProvider);
+    final recipeForInCartListStream =
+        ref.watch(recipeForInCartListStreamProvider);
+
+    final recipeForInCartListState =
+        ref.watch(recipeForInCartListNotifierProvider);
+    final recipeForInCartListStateNotifier =
+        ref.watch(recipeForInCartListNotifierProvider.notifier);
+
+    final stateIsChanged = ref.watch(stateIsChangedProvider);
+    final stateIsChangedNotifier = ref.watch(stateIsChangedProvider.notifier);
 
     RecipeListModel recipeListModel = RecipeListModel();
-    List<InCartRecipe>? inCartRecipeList;
-    print('build');
+    AddCartRecipeListModel addCartRecipeListModel =
+        AddCartRecipeListModel(user: user!);
 
     return Scaffold(
       appBar: AppBar(
@@ -73,6 +86,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                     return GestureDetector(
                       ///画面遷移
                       onTap: () {
+                        stateIsChangedNotifier.state = false;
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -159,15 +173,15 @@ class AddCartRecipeListPage extends ConsumerWidget {
           ),
           SnappingPosition.factor(
             snappingCurve: Curves.elasticOut,
-            snappingDuration: Duration(milliseconds: 1750),
-            positionFactor: 0.5,
+            snappingDuration: Duration(milliseconds: 1000),
+            positionFactor: 0.7,
           ),
-          SnappingPosition.factor(
-            grabbingContentOffset: GrabbingContentOffset.bottom,
-            snappingCurve: Curves.easeInExpo,
-            snappingDuration: Duration(seconds: 1),
-            positionFactor: 0.9,
-          ),
+          // SnappingPosition.factor(
+          //   grabbingContentOffset: GrabbingContentOffset.bottom,
+          //   snappingCurve: Curves.easeInExpo,
+          //   snappingDuration: Duration(seconds: 1),
+          //   positionFactor: 0.9,
+          // ),
         ],
         grabbingHeight: 24,
         sheetAbove: null,
@@ -202,82 +216,81 @@ class AddCartRecipeListPage extends ConsumerWidget {
         sheetBelow: SnappingSheetContent(
           draggable: true,
           childScrollController: listViewController,
-          child: inCartRecipes.when(
-              error: (error, stack) => Text('Error: $error'),
+          child: recipeForInCartListStream.when(
+              error: (error, stack) {
+                print('「recipeForInCartListStream.when」でエラー： $error');
+                return Text('Error: $error');
+              },
               loading: () => const CircularProgressIndicator(),
-              data: (inCartRecipes) {
-                inCartRecipeList = inCartRecipes;
+              data: (recipesForInCartList) {
+                if (stateIsChanged == false) {
+                  WidgetsBinding.instance!.addPostFrameCallback((_) {
+                    recipeForInCartListStateNotifier
+                        .getList(recipesForInCartList);
+                  });
+                }
+
                 return Container(
                   color: Colors.white,
                   child: ListView.builder(
                       controller: listViewController,
-                      itemCount: inCartRecipes.length,
+                      itemCount: recipeForInCartListState.length,
                       itemBuilder: (context, index) {
-                        final inCartRecipe = inCartRecipes[index];
-                        final recipe = ref.watch(
-                            inCartRecipeStreamProviderFamily(
-                                inCartRecipe.recipeId!));
-
-                        return recipe.when(
-                            error: (error, stack) => Text('Error: $error'),
-                            loading: () => const CircularProgressIndicator(),
-                            data: (recipe) {
-                              final counter = ref.watch(
-                                  recipeNumCountProviderFamily(
-                                      inCartRecipe.count));
-                              final counterNotifier = ref.watch(
-                                  recipeNumCountProviderFamily(
-                                          inCartRecipe.count)
-                                      .notifier);
-
-                              inCartRecipe.forHowManyPeople =
-                                  recipe.forHowManyPeople;
-
-                              return Row(
+                        return Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                recipeForInCartListState[index]
+                                    .recipeName
+                                    .toString(),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                child: Text(
+                                    '合計${recipeForInCartListState[index].forHowManyPeople! * recipeForInCartListState[index].countInCart!}人分'),
+                              ),
+                            ),
+                            Expanded(
+                              child: Row(
                                 children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                      recipe.recipeName.toString(),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      child: Text(
-                                          '合計${recipe.forHowManyPeople! * counter}人分'),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                            onPressed: () {
-                                              if (counter > 1) {
-                                                print('-');
-                                                counterNotifier.state--;
-                                                print(counter);
-                                              }
-                                            },
-                                            icon: counter == 1
-                                                ? Icon(
-                                                    Icons.remove_circle_outline)
-                                                : Icon(Icons.remove_circle)),
-                                        Text('× ${counter}'),
-                                        IconButton(
-                                            onPressed: () {
-                                              print('+');
-                                              counterNotifier.state++;
-                                              print(counter);
-                                            },
-                                            icon: Icon(Icons.add_circle)),
-                                      ],
-                                    ),
-                                  ),
+                                  IconButton(
+                                      onPressed: () {
+                                        stateIsChangedNotifier.state = true;
+                                        if (recipeForInCartListState[index]
+                                                .countInCart! >
+                                            0) {
+                                          recipeForInCartListStateNotifier
+                                              .decrease(
+                                                  recipeForInCartListState[
+                                                          index]
+                                                      .recipeId!);
+                                        }
+                                      },
+                                      icon: recipeForInCartListState[index]
+                                                  .countInCart! ==
+                                              0
+                                          ? Icon(Icons.remove_circle_outline)
+                                          : Icon(Icons.remove_circle)),
+                                  Text(
+                                      '× ${recipeForInCartListState[index].countInCart!}'),
+                                  IconButton(
+                                      onPressed: () {
+                                        stateIsChangedNotifier.state = true;
+                                        recipeForInCartListStateNotifier
+                                            .increase(
+                                                recipeForInCartListState[index]
+                                                    .recipeId!);
+                                      },
+                                      icon: Icon(Icons.add_circle)),
                                 ],
-                              );
-                            });
+                              ),
+                            ),
+                          ],
+                        );
                       }),
                 );
               }),
@@ -289,16 +302,96 @@ class AddCartRecipeListPage extends ConsumerWidget {
           child: Row(
             children: [
               Expanded(
-                  child: Container(child: Icon(Icons.shopping_cart_outlined))),
+                  child: SizedBox(
+                height: 64,
+                child: Container(
+                    child: Badge(
+                  toAnimate: false,
+                  badgeContent: Text(
+                    '${recipeForInCartListStateNotifier.calculateCountSum()}',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  child: Icon(Icons.shopping_cart_outlined),
+                  position: BadgePosition.topEnd(top: 10, end: 50),
+                )),
+              )),
               Expanded(child: Container()),
               Expanded(
                   child: Container(
                 child: ElevatedButton(
-                  onPressed: () {
-                    if (inCartRecipeList != null) {
-                      for (var inCartRecipe in inCartRecipeList!) {
-                        print(
-                            '${inCartRecipe.recipeName} ${inCartRecipe.count}');
+                  onPressed: () async {
+                    if (recipeForInCartListState.isEmpty != true) {
+                      bool updateIsSuccess = false;
+
+                      bool zeroIsInclude = addCartRecipeListModel
+                          .checkCart(recipeForInCartListState);
+                      bool zeroIsIncludeIsOk = false;
+
+                      if (zeroIsInclude) {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: Text('確認'),
+                            content: Text('数量が0のレシピがありますがよろしいですか？'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: Text('いいえ'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  print('はい');
+                                  updateIsSuccess = await addCartRecipeListModel
+                                      .updateCountsInCart(
+                                          recipeForInCartListState);
+
+                                  if (updateIsSuccess) {
+                                    int popInt = 0;
+                                    Navigator.popUntil(
+                                        context, (_) => popInt++ >= 2);
+                                    final snackBar = SnackBar(
+                                        content: const Text(
+                                      'カートを更新しました',
+                                      textAlign: TextAlign.center,
+                                    ));
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  } else {
+                                    final snackBar = SnackBar(
+                                        content: const Text(
+                                      'カートの更新に失敗しました',
+                                      textAlign: TextAlign.center,
+                                    ));
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(snackBar);
+                                  }
+                                },
+                                child: Text('はい'),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        updateIsSuccess = await addCartRecipeListModel
+                            .updateCountsInCart(recipeForInCartListState);
+
+                        if (updateIsSuccess) {
+                          Navigator.pop(context);
+                          final snackBar = SnackBar(
+                              content: const Text(
+                            'カートを更新しました',
+                            textAlign: TextAlign.center,
+                          ));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        } else {
+                          final snackBar = SnackBar(
+                              content: const Text(
+                            'カートの更新に失敗しました',
+                            textAlign: TextAlign.center,
+                          ));
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
                       }
                     }
                   },

@@ -14,7 +14,7 @@ import 'package:recipe/components/parts/reordable_text_field/procedures.dart';
 import 'package:recipe/components/parts/reordable_text_field/ingredients.dart';
 import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/state/image_file_state.dart';
-import 'package:recipe/state/cart_recipe_count_state.dart';
+import 'package:recipe/state/recipe_in_cart_list_state.dart';
 
 final authControllerProvider = StateNotifierProvider<AuthController, User?>(
   (ref) => AuthController(ref.read)..appStarted(),
@@ -87,24 +87,26 @@ final recipeNumCountProviderFamily =
     StateProvider.family.autoDispose<int, int?>((count, initialCount) {
   int count = 1;
 
-  if (initialCount != null) {
+  if (initialCount != null && initialCount != 0) {
     count = initialCount;
   }
   return count;
 });
 
-final inCartRecipeListStreamProvider =
-    StreamProvider.autoDispose<List<InCartRecipe>>((ref) {
+final recipeForInCartListStreamProvider =
+    StreamProvider.autoDispose<List<RecipeForInCartList>>((ref) {
   final user = ref.watch(authControllerProvider);
   CartRepository cartRepository = CartRepository(user: user!);
 
-  return cartRepository.fetchRecipeRefList();
+  return cartRepository.fetchRecipeForInCartList();
 });
 
-final inCartRecipeStreamProviderFamily =
-    StreamProvider.family.autoDispose<Recipe, String>((ref, recipeId) {
-  final user = ref.watch(authControllerProvider);
-  CartRepository cartRepository = CartRepository(user: user!);
+final recipeForInCartListNotifierProvider = StateNotifierProvider.autoDispose<
+    RecipeForInCartListNotifier, List<RecipeForInCartList>>(
+  (ref) => RecipeForInCartListNotifier(),
+);
 
-  return cartRepository.fetchRecipe(recipeId);
-});
+final stateIsChangedProvider = StateProvider.autoDispose((ref) => false);
+
+// page_control
+final selectPageProvider = StateProvider.autoDispose((ref) => 0);

@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/repository/recipe_repository.dart';
 import 'package:recipe/view/recipe_detail/recipe_detail_model.dart';
 import 'package:recipe/view/update_recipe/update_recipe_page.dart';
 

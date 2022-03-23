@@ -16,9 +16,8 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authControllerProvider);
-    CartRepository cartRepository = CartRepository(user: user!);
     AddCartRecipeDetailModel addCartRecipeDetailModel =
-        AddCartRecipeDetailModel(user: user);
+        AddCartRecipeDetailModel(user: user!);
 
     final recipe = ref.watch(recipeStreamProviderFamily(recipeId));
 
@@ -32,20 +31,6 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
         ref.watch(ingredientListNotifierProvider.notifier);
     final procedureListNotifier =
         ref.watch(procedureListNotifierProvider.notifier);
-
-    var counter = ref.watch(recipeNumCountProviderFamily(null));
-    var counterNotifier =
-        ref.watch(recipeNumCountProviderFamily(null).notifier);
-
-    bool isExistInCart = false;
-    String? inCartRecipeId;
-    final inCartRecipes = ref.watch(inCartRecipeListStreamProvider);
-
-    if (cartRepository.searchRecipe(recipeId)) {
-      isExistInCart = true;
-    }
-
-    int fowHowManyPeople = 0;
 
     return Scaffold(
       appBar: recipe.when(
@@ -97,7 +82,6 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                   error: (error, stack) => Text('Error: $error'),
                   loading: () => const CircularProgressIndicator(),
                   data: (recipe) {
-                    fowHowManyPeople = recipe.forHowManyPeople!;
                     return Column(
                       children: [
                         Container(
@@ -266,68 +250,59 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                   }),
             ),
           ),
-          Column(
-            children: [
-              isExistInCart == false
-                  ? _counterWidget(fowHowManyPeople, counter, counterNotifier)
-                  : inCartRecipes.when(
-                      error: (error, stack) => Text('Error: $error'),
-                      loading: () => const CircularProgressIndicator(),
-                      data: (inCartRecipes) {
-                        for (var inCartRecipe in inCartRecipes) {
-                          if (inCartRecipe.recipeId == recipeId) {
-                            counter = ref.watch(recipeNumCountProviderFamily(
-                                inCartRecipe.count));
-                            counterNotifier = ref.watch(
-                                recipeNumCountProviderFamily(inCartRecipe.count)
-                                    .notifier);
-                            inCartRecipeId = inCartRecipe.inCartRecipeId;
-                            break;
+          recipe.when(
+              error: (error, stack) => Text('Error: $error'),
+              loading: () => const CircularProgressIndicator(),
+              data: (recipe) {
+                final counter =
+                    ref.watch(recipeNumCountProviderFamily(recipe.countInCart));
+                final counterNotifier = ref.watch(
+                    recipeNumCountProviderFamily(recipe.countInCart).notifier);
+                return Column(
+                  children: [
+                    _counterWidget(
+                        recipe.forHowManyPeople!, counter, counterNotifier),
+                    Container(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (counter == 0) {
+                            showDialog<String>(
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                title: Text('確認'),
+                                content: Text('数量が0ですがよろしいですか？'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
+                                    child: Text('いいえ'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      print('はい');
+                                      await addCartRecipeDetailModel
+                                          .updateCount(recipeId, counter);
+                                      int popInt = 0;
+                                      Navigator.popUntil(
+                                          context, (_) => popInt++ >= 2);
+                                    },
+                                    child: Text('はい'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            await addCartRecipeDetailModel.updateCount(
+                                recipeId, counter);
+                            Navigator.pop(context);
                           }
-                        }
-                        return _counterWidget(
-                            fowHowManyPeople, counter, counterNotifier);
-                      }),
-              Container(
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (counter == 0) {
-                      showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: Text('確認'),
-                          content: Text('数量が0ですがよろしいですか？'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'Cancel'),
-                              child: Text('いいえ'),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                print('はい');
-                                await addCartRecipeDetailModel
-                                    .addOrUpdateRecipe(
-                                        inCartRecipeId, recipeId, counter);
-                                int popInt = 0;
-                                Navigator.popUntil(
-                                    context, (_) => popInt++ >= 2);
-                              },
-                              child: Text('はい'),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else {
-                      await addCartRecipeDetailModel.addOrUpdateRecipe(
-                          inCartRecipeId, recipeId, counter);
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: Text('確定'),
-                ),
-              ),
-            ],
-          ),
+                        },
+                        child: Text('確定'),
+                      ),
+                    ),
+                  ],
+                );
+              }),
         ],
       ),
     );

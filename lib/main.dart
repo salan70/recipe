@@ -4,6 +4,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:recipe/view/page_container/page_container_page.dart';
 
 import 'auth/auth_controller.dart';
 import 'package:recipe/view/recipe_list/recipe_list_page.dart';
@@ -38,7 +39,8 @@ class MyApp extends StatelessWidget {
       //   appBarElevation: 2,
       // ),
       // themeMode: themeMode,
-      home: RecipeListPage(),
+      // home: RecipeListPage(),
+      home: PageContainerPage(),
     );
   }
 }

@@ -8,6 +8,7 @@ class Recipe {
       this.recipeName,
       this.recipeGrade,
       this.forHowManyPeople,
+      this.countInCart,
       this.recipeMemo,
       this.imageUrl,
       this.imageFile,
@@ -18,6 +19,7 @@ class Recipe {
   String? recipeName;
   double? recipeGrade;
   int? forHowManyPeople;
+  int? countInCart;
   String? recipeMemo;
   String? imageUrl;
   File? imageFile;

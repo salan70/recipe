@@ -16,8 +16,8 @@ import 'package:recipe/components/providers.dart';
 import '../add_cart_recipe_list/add_cart_recipe_list_page.dart';
 
 // レシピ一覧画面
-class RecipeListPage extends ConsumerWidget {
-  const RecipeListPage({Key? key}) : super(key: key);
+class CartListPage extends ConsumerWidget {
+  const CartListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -26,7 +26,7 @@ class RecipeListPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('レシピ一覧'),
+        title: Text('カート'),
       ),
       body: HawkFabMenu(
         body: recipes.when(
@@ -158,12 +158,12 @@ class RecipeListPage extends ConsumerWidget {
           HawkFabMenuItem(
             label: 'Menu 2',
             ontap: () {},
-            icon: const Icon(Icons.comment),
+            icon: Icon(Icons.comment),
           ),
           HawkFabMenuItem(
             label: 'Menu 3 (default)',
             ontap: () {},
-            icon: const Icon(Icons.add_a_photo),
+            icon: Icon(Icons.add_a_photo),
           ),
         ],
       ),

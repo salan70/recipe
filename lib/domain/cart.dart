@@ -1,23 +1,29 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class InCartRecipe {
-  InCartRecipe(
-      {this.recipeRef,
-      this.inCartRecipeId,
-      this.recipeId,
-      this.recipeName,
-      this.forHowManyPeople,
-      this.count,
-      this.imageUrl});
+@immutable
+class RecipeForInCartList {
+  const RecipeForInCartList(
+      {required this.recipeId,
+      required this.recipeName,
+      required this.forHowManyPeople,
+      required this.countInCart});
 
-  DocumentReference? recipeRef;
-  String? inCartRecipeId;
-  String? recipeId;
-  String? recipeName;
-  int? forHowManyPeople;
-  int? count;
-  String? imageUrl;
+  final String? recipeId;
+  final String? recipeName;
+  final int? forHowManyPeople;
+  final int? countInCart;
+
+  RecipeForInCartList copyWith(
+      {String? recipeId,
+      String? recipeName,
+      int? forHowManyPeople,
+      int? countInCart}) {
+    return RecipeForInCartList(
+        recipeId: recipeId ?? this.recipeId,
+        recipeName: recipeName ?? this.recipeName,
+        forHowManyPeople: forHowManyPeople ?? this.forHowManyPeople,
+        countInCart: countInCart ?? this.countInCart);
+  }
 }
 
 class RecipeCount {

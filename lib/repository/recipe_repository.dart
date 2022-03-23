@@ -92,6 +92,7 @@ class RecipeRepository {
       final String recipeName = data['recipeName'];
       final double? recipeGrade = data['recipeGrade'];
       final int? forHowManyPeople = data['forHowManyPeople'];
+      final int? countInCart = data['countInCart'];
       final String? recipeMemo = data['recipeMemo'];
       final String? imageUrl = data['imageUrl'];
       final File? imageFile = null;
@@ -101,6 +102,7 @@ class RecipeRepository {
           recipeName: recipeName,
           recipeGrade: recipeGrade,
           forHowManyPeople: forHowManyPeople,
+          countInCart: countInCart,
           recipeMemo: recipeMemo,
           imageUrl: imageUrl,
           imageFile: imageFile);
@@ -128,6 +130,7 @@ class RecipeRepository {
                 final String recipeName = data['recipeName'];
                 final double? recipeGrade = data['recipeGrade'];
                 final int? forHowManyPeople = data['forHowManyPeople'];
+                final int? countInCart = data['countInCart'];
                 final String? recipeMemo = data['recipeMemo'];
                 final String? imageUrl = data['imageUrl'];
                 final File? imageFile = null;
@@ -137,6 +140,7 @@ class RecipeRepository {
                   recipeName: recipeName,
                   recipeGrade: recipeGrade,
                   forHowManyPeople: forHowManyPeople,
+                  countInCart: countInCart,
                   recipeMemo: recipeMemo,
                   imageUrl: imageUrl,
                   imageFile: imageFile,
