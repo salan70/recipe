@@ -98,7 +98,7 @@ final recipeForInCartListStreamProvider =
   final user = ref.watch(authControllerProvider);
   CartRepository cartRepository = CartRepository(user: user!);
 
-  return cartRepository.fetchRecipeForInCartList();
+  return cartRepository.fetchRecipeListInCart();
 });
 
 final recipeForInCartListNotifierProvider = StateNotifierProvider.autoDispose<

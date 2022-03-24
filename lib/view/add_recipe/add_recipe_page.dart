@@ -186,8 +186,10 @@ class AddRecipeScreen extends ConsumerWidget {
                   Text("材料"),
                   SizedBox(width: 10),
                   SizedBox(
-                      width: 32,
+                      width: 48,
                       child: TextField(
+                        maxLength: 2,
+                        decoration: InputDecoration(counterText: ''),
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly

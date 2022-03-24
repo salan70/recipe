@@ -142,7 +142,9 @@ class IngredientListWidget extends ConsumerWidget {
                                         ingredientList[index].amount.toString())
                                 : null,
                             keyboardType: TextInputType.datetime,
+                            maxLength: 6,
                             decoration: InputDecoration(
+                              counterText: '',
                               // labelText: "2000",
                               errorText: validation
                                   .errorText(ingredientList[index].amount),

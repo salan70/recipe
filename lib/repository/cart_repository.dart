@@ -15,7 +15,7 @@ class CartRepository {
   /// delete
 
   /// fetch
-  Stream<List<RecipeForInCartList>> fetchRecipeForInCartList() {
+  Stream<List<RecipeForInCartList>> fetchRecipeListInCart() {
     final recipeCollection = FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
