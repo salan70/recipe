@@ -1,27 +1,54 @@
+import 'package:fraction/fraction.dart';
+
 class Validation {
   Validation();
 
   String? errorText(String? text) {
-    final errorText = "値が不正です";
+    String? errorText;
 
-    // textが「null」「double型に変換可能」「""(値なし)」の場合、nullを返す
-    if (text == null || double.tryParse(text) != null || text == "") {
-      return null;
-    } else if (text.contains("/")) {
-      // 下記正規表現の意味：『半角数字と/(スラッシュ)以外を含む』
-      if (RegExp(r"(?=^(?=.*[^0-9\/]).*$)").hasMatch(text)) {
-        return errorText;
-        // 下記正規表現の意味：『「/(スラッシュ)」を2つ以上含む』
-      } else if (RegExp(r".*\/.*\/.*").hasMatch(text)) {
-        return errorText;
-        // 下記正規表現の意味：『「0」から始まる or 「/0」を含む』
-      } else if (RegExp(r"(^0.*)|(^(?=.*\/0).*$)").hasMatch(text)) {
-        return errorText;
-      } else {
-        return null;
+    if (text != null && text != '') {
+      if (checkDoubleAndPlus(text) == false) {
+        if (checkFractionAndPlus(text) == false) {
+          errorText = '値が不正です';
+        }
       }
-    } else {
-      return errorText;
     }
+    return errorText;
+  }
+
+  bool checkDoubleAndPlus(String text) {
+    bool isOk = true;
+
+    try {
+      double num = double.parse(text);
+      if (num <= 0) {
+        isOk = false;
+      }
+    } catch (e) {
+      isOk = false;
+    }
+
+    return isOk;
+  }
+
+  bool checkFractionAndPlus(String text) {
+    bool isOk = true;
+
+    try {
+      var fraction = Fraction.fromString(text);
+      if (fraction.toDouble() <= 0) {
+        isOk = false;
+      }
+    } catch (e) {
+      isOk = false;
+      try {
+        MixedFraction.fromString(text);
+        isOk = true;
+      } catch (e) {
+        isOk = false;
+      }
+    }
+
+    return isOk;
   }
 }
