@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:recipe/domain/recipe.dart';
 
 @immutable
-class RecipeForInCartList {
-  const RecipeForInCartList(
+class RecipeListInCart {
+  const RecipeListInCart(
       {required this.recipeId,
       required this.recipeName,
       required this.forHowManyPeople,
@@ -15,12 +15,12 @@ class RecipeForInCartList {
   final int? forHowManyPeople;
   final int? countInCart;
 
-  RecipeForInCartList copyWith(
+  RecipeListInCart copyWith(
       {String? recipeId,
       String? recipeName,
       int? forHowManyPeople,
       int? countInCart}) {
-    return RecipeForInCartList(
+    return RecipeListInCart(
         recipeId: recipeId ?? this.recipeId,
         recipeName: recipeName ?? this.recipeName,
         forHowManyPeople: forHowManyPeople ?? this.forHowManyPeople,
@@ -50,8 +50,8 @@ class IngredientPerInCartRecipe {
   Ingredient ingredient;
 }
 
-class IngredientInCartPerInRecipeList {
-  IngredientInCartPerInRecipeList(
+class IngredientInCartPerRecipeList {
+  IngredientInCartPerRecipeList(
       {required this.ingredientInCart,
       required this.recipeForIngredientInCartList});
 
@@ -82,5 +82,5 @@ class RecipeForIngredientInCart {
   String recipeName;
   int forHowManyPeople;
   int countInCart;
-  String ingredientAmount;
+  String? ingredientAmount;
 }

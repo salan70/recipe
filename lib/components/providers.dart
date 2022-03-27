@@ -93,8 +93,8 @@ final recipeNumCountProviderFamily =
   return count;
 });
 
-final recipeForInCartListStreamProvider =
-    StreamProvider.autoDispose<List<RecipeForInCartList>>((ref) {
+final recipeListInCartStreamProvider =
+    StreamProvider.autoDispose<List<RecipeListInCart>>((ref) {
   final user = ref.watch(authControllerProvider);
   CartRepository cartRepository = CartRepository(user: user!);
 
@@ -102,7 +102,7 @@ final recipeForInCartListStreamProvider =
 });
 
 final recipeForInCartListNotifierProvider = StateNotifierProvider.autoDispose<
-    RecipeForInCartListNotifier, List<RecipeForInCartList>>(
+    RecipeForInCartListNotifier, List<RecipeListInCart>>(
   (ref) => RecipeForInCartListNotifier(),
 );
 

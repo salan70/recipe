@@ -144,7 +144,7 @@ class RecipeListPage extends ConsumerWidget {
         iconColor: Colors.green,
         items: [
           HawkFabMenuItem(
-            label: 'かごにレシピを追加',
+            label: 'カートにレシピを追加',
             ontap: () {
               Navigator.push(
                   context,

@@ -24,8 +24,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
     final user = ref.watch(authControllerProvider);
 
     final recipes = ref.watch(recipeListStreamProvider);
-    final recipeForInCartListStream =
-        ref.watch(recipeForInCartListStreamProvider);
+    final recipeListInCartStream = ref.watch(recipeListInCartStreamProvider);
 
     final recipeForInCartListState =
         ref.watch(recipeForInCartListNotifierProvider);
@@ -216,9 +215,9 @@ class AddCartRecipeListPage extends ConsumerWidget {
         sheetBelow: SnappingSheetContent(
           draggable: true,
           childScrollController: listViewController,
-          child: recipeForInCartListStream.when(
+          child: recipeListInCartStream.when(
               error: (error, stack) {
-                print('「recipeForInCartListStream.when」でエラー： $error');
+                print('「recipeListInCartStream.when」でエラー： $error');
                 return Text('Error: $error');
               },
               loading: () => const CircularProgressIndicator(),
@@ -325,7 +324,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
 
                       bool zeroIsInclude = addCartRecipeListModel
                           .checkCart(recipeForInCartListState);
-                      bool zeroIsIncludeIsOk = false;
+                      // bool zeroIsIncludeIsOk = false;
 
                       if (zeroIsInclude) {
                         showDialog<String>(

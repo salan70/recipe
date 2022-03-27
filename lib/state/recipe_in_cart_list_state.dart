@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:recipe/domain/cart.dart';
 
 class RecipeForInCartListNotifier
-    extends StateNotifier<List<RecipeForInCartList>> {
+    extends StateNotifier<List<RecipeListInCart>> {
   RecipeForInCartListNotifier() : super([]);
 
   void delete(String id) {}
@@ -31,8 +31,7 @@ class RecipeForInCartListNotifier
     ];
   }
 
-  List<RecipeForInCartList> getList(
-      List<RecipeForInCartList> recipeForInCartList) {
+  List<RecipeListInCart> getList(List<RecipeListInCart> recipeForInCartList) {
     return state = recipeForInCartList;
   }
 

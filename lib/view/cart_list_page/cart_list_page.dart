@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -13,7 +14,9 @@ import 'package:recipe/view/recipe_list/recipe_list_model.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/providers.dart';
 
+import '../../domain/cart.dart';
 import '../add_cart_recipe_list/add_cart_recipe_list_page.dart';
+import 'cart_list_model.dart';
 
 // レシピ一覧画面
 class CartListPage extends ConsumerWidget {
@@ -21,130 +24,125 @@ class CartListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recipes = ref.watch(recipeListStreamProvider);
-    RecipeListModel recipeListModel = RecipeListModel();
+    CartListModel cartListModel = CartListModel();
+
+    final recipeListInCartStream = ref.watch(recipeListInCartStreamProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: Text('カート'),
       ),
       body: HawkFabMenu(
-        body: recipes.when(
-            error: (error, stack) => Text('Error: $error'),
-            loading: () => const CircularProgressIndicator(),
-            data: (recipes) {
-              return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
-                  itemCount: recipes.length,
-                  itemBuilder: (context, index) {
-                    final recipe = recipes[index];
-                    final ingredients = ref.watch(
-                        ingredientListStreamProviderFamily(recipe.recipeId!));
-                    String outputIngredientText = '';
+        body: Column(
+          children: [
+            Expanded(
+              child: recipeListInCartStream.when(
+                  error: (error, stack) => Text('Error: $error'),
+                  loading: () => const CircularProgressIndicator(),
+                  data: (recipeListInCart) {
+                    List<IngredientPerInCartRecipe>
+                        ingredientPerInCartRecipeList = [];
 
-                    final procedures = ref.watch(
-                        procedureListStreamProviderFamily(recipe.recipeId!));
-
-                    ingredients.when(
-                        data: (ingredient) {
-                          recipe.ingredientList = ingredient;
-
-                          outputIngredientText = recipeListModel
-                              .toOutputIngredientText(ingredient);
-                        },
+                    for (var recipe in recipeListInCart) {
+                      final ingredientList = ref.watch(
+                          ingredientListStreamProviderFamily(recipe.recipeId!));
+                      ingredientList.when(
                         error: (error, stack) => Text('Error: $error'),
-                        loading: () => const CircularProgressIndicator());
-
-                    procedures.when(
-                        data: (procedure) {
-                          recipe.procedureList = procedure;
+                        loading: () => const CircularProgressIndicator(),
+                        data: (ingredientList) {
+                          List<IngredientPerInCartRecipe> addList =
+                              cartListModel.createIngredientPerInCartRecipeList(
+                                  recipe, ingredientList);
+                          for (var item in addList)
+                            ingredientPerInCartRecipeList.add(item);
                         },
-                        error: (error, stack) => Text('Error: $error'),
-                        loading: () => const CircularProgressIndicator());
+                      );
+                    }
 
-                    return GestureDetector(
-                      ///画面遷移
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) =>
-                                  RecipeDetailPage(recipe.recipeId!),
-                            ));
-                      },
-                      child: Card(
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Hero(
-                                tag: 'recipeName' + recipe.recipeId!,
-                                child: Text(
-                                  recipe.recipeName.toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 5,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: SizedBox(
-                                  width: 200,
-                                  height: 120,
-                                  child: Hero(
-                                    tag: 'recipeImage' + recipe.recipeId!,
-                                    child: recipe.imageUrl != null
-                                        ? recipe.imageUrl != ''
-                                            ? Image.network(
-                                                recipe.imageUrl!,
-                                                errorBuilder: (c, o, s) {
-                                                  return const Icon(
-                                                    Icons.error,
-                                                  );
+                    List<IngredientInCartPerRecipeList>
+                        ingredientListInCartPerRecipeList =
+                        cartListModel.createIngredientListInCartPerRecipeList(
+                            ingredientPerInCartRecipeList);
+
+                    return ListView.builder(
+                        itemCount: ingredientListInCartPerRecipeList.length,
+                        itemBuilder: (context, index) {
+                          bool _isDone = false;
+                          final ingredient =
+                              ingredientListInCartPerRecipeList[index];
+                          return CheckboxListTile(
+                            title: Text(
+                                '${ingredient.ingredientInCart.ingredientName}'),
+                            subtitle: Text(
+                                '${ingredient.ingredientInCart.ingredientTotalAmount}${ingredient.ingredientInCart.ingredientUnit}'),
+                            controlAffinity: ListTileControlAffinity.leading,
+                            value: _isDone,
+                            onChanged: (bool) {},
+                            secondary: IconButton(
+                              icon: Icon(Icons.info_outline),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return AlertDialog(
+                                      title: Text(
+                                          '${ingredientListInCartPerRecipeList[index].ingredientInCart.ingredientName}を使うレシピ'),
+                                      contentPadding: EdgeInsets.zero,
+                                      content: Container(
+                                        width: double.maxFinite,
+                                        height: 200,
+                                        child: ListView.builder(
+                                          itemCount:
+                                              ingredientListInCartPerRecipeList[
+                                                      index]
+                                                  .recipeForIngredientInCartList
+                                                  .length,
+                                          itemBuilder: (context, recipeIndex) {
+                                            final recipe =
+                                                ingredientListInCartPerRecipeList[
+                                                            index]
+                                                        .recipeForIngredientInCartList[
+                                                    recipeIndex];
+                                            return ListTile(
+                                              title:
+                                                  Text('${recipe.recipeName}'),
+                                              subtitle: Text(
+                                                  '${recipe.ingredientAmount}${ingredient.ingredientInCart.ingredientUnit}'),
+                                              trailing: IconButton(
+                                                icon: Icon(Icons.info_outline),
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        fullscreenDialog: true,
+                                                        builder: (context) =>
+                                                            RecipeDetailPage(
+                                                                recipe
+                                                                    .recipeId),
+                                                      ));
                                                 },
-                                              )
-                                            : Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                  color: Colors.grey[400],
-                                                ),
-                                                child: Icon(Icons
-                                                    .add_photo_alternate_outlined),
-                                              )
-                                        : CircularProgressIndicator(),
-                                  ),
-                                ),
-                              ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                outputIngredientText,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  });
-            }),
+                          );
+                        });
+                  }),
+            ),
+          ],
+        ),
         icon: AnimatedIcons.list_view,
         fabColor: Colors.yellow,
         iconColor: Colors.green,
         items: [
           HawkFabMenuItem(
-            label: 'かごにレシピを追加',
+            label: 'カートにレシピを追加',
             ontap: () {
               Navigator.push(
                   context,
