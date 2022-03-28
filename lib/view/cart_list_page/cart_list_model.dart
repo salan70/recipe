@@ -1,9 +1,7 @@
 import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:recipe/components/calculation/calculation.dart';
 import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/repository/recipe_repository.dart';
 import 'package:fraction/fraction.dart';
 
 import '../../domain/cart.dart';
@@ -32,6 +30,8 @@ class CartListModel extends ChangeNotifier {
 
   List<IngredientInCartPerRecipeList> createIngredientListInCartPerRecipeList(
       List<IngredientPerInCartRecipe> ingredientPerInCartRecipeList) {
+    Calculation calculation = Calculation();
+
     List<IngredientInCartPerRecipeList> ingredientListInCartPerRecipeList = [];
 
     // ingredientNameとingredientUnitでソート
@@ -56,30 +56,15 @@ class CartListModel extends ChangeNotifier {
             ingredientListInCartPerRecipeList[returnListIndex - 1]
                 .ingredientInCart
                 .ingredientTotalAmount;
-        String previousTotalAmountType = checkAmountType(previousTotalAmount);
 
         // 新たに追加するtotalAmount
-        String addAmountType =
-            checkAmountType(ingredientPerInCartRecipeList[i].ingredient.amount);
-        String addTotalAmount = calcAmount(
+        String addTotalAmount = calculation.executeMultiply(
             ingredientPerInCartRecipeList[i].countInCart,
-            ingredientPerInCartRecipeList[i].ingredient.amount,
-            addAmountType);
-        String addTotalAmountType = checkAmountType(addTotalAmount);
-        if (addTotalAmount.endsWith('.0')) {
-          final pos = addTotalAmount.length - 2;
-          addTotalAmount = addTotalAmount.substring(0, pos);
-        }
+            ingredientPerInCartRecipeList[i].ingredient.amount);
 
         // totalAmountの計算
-        String calcType =
-            checkCalcType(previousTotalAmountType, addTotalAmountType);
         String totalAmount =
-            calcTotalAmount(previousTotalAmount, addTotalAmount, calcType);
-        if (totalAmount.endsWith('.0')) {
-          final pos = totalAmount.length - 2;
-          totalAmount = totalAmount.substring(0, pos);
-        }
+            calculation.executeAdd(previousTotalAmount, addTotalAmount);
 
         ingredientListInCartPerRecipeList[returnListIndex - 1]
             .ingredientInCart
@@ -105,18 +90,9 @@ class CartListModel extends ChangeNotifier {
         previousIngredientUnit =
             ingredientPerInCartRecipeList[i].ingredient.unit!;
 
-        String amountType =
-            checkAmountType(ingredientPerInCartRecipeList[i].ingredient.amount);
-        String totalAmount = calcAmount(
+        String totalAmount = calculation.executeMultiply(
             ingredientPerInCartRecipeList[i].countInCart,
-            ingredientPerInCartRecipeList[i].ingredient.amount,
-            amountType);
-        print(totalAmount);
-        // 整数の場合,「.0」を削除する
-        if (totalAmount.endsWith('.0')) {
-          final pos = totalAmount.length - 2;
-          totalAmount = totalAmount.substring(0, pos);
-        }
+            ingredientPerInCartRecipeList[i].ingredient.amount);
 
         // ingredient系
         IngredientInCart ingredientInCart = IngredientInCart(
@@ -150,107 +126,145 @@ class CartListModel extends ChangeNotifier {
     return ingredientListInCartPerRecipeList;
   }
 
-  String checkAmountType(String? amount) {
-    String amountType = 'double';
-
-    if (amount == null) {
-      amountType = 'nullOrBlank';
-    } else if (amount == '') {
-      amountType = 'nullOrBlank';
-    } else if (amount.contains('/')) {
-      print(3);
-      try {
-        Fraction.fromString(amount);
-        amountType = 'fraction';
-      } catch (e) {
-        try {
-          MixedFraction.fromString(amount);
-          amountType = 'mixed fraction';
-        } catch (e) {
-          amountType = 'error';
-          print(e);
-        }
-      }
-    }
-    return amountType;
-  }
-
-  String checkCalcType(
-      String previousTotalAmountType, String addTotalAmountType) {
-    String calcType = 'double';
-
-    if (previousTotalAmountType.contains('fraction') ||
-        addTotalAmountType.contains('fraction')) {
-      if (previousTotalAmountType == 'double' ||
-          addTotalAmountType == 'double') {
-        calcType = 'double&fraction';
-      } else {
-        if (previousTotalAmountType.contains('mixed fraction') ||
-            addTotalAmountType.contains('mixed fraction')) {
-          calcType = 'mixed fraction';
-        }
-        calcType = 'fraction';
-      }
-    }
-    return calcType;
-  }
-
-  String calcAmount(int countInCart, String? amount, String amountType) {
-    String result = '';
-
-    if (amountType != 'nullOrBlank') {
-      if (amountType == 'double') {
-        result = (countInCart * double.parse(amount!)).toString();
-      } else if (amountType == 'fraction') {
-        result = (Fraction.fromString(countInCart.toString()) *
-                Fraction.fromString(amount!))
-            .toString();
-      } else if (amountType == 'mixed fraction') {
-        result = (MixedFraction.fromFraction(
-                    Fraction.fromString(countInCart.toString())) *
-                MixedFraction.fromString(amount!))
-            .toString();
-      }
-    }
-
-    return result;
-  }
-
-  String calcTotalAmount(
-      String previousTotalAmount, String addTotalAmount, String calcType) {
-    String totalAmount = '';
-
-    // ''が含まれている場合に関する処理
-    if (previousTotalAmount == '') {
-      if (addTotalAmount != '') {
-        totalAmount = addTotalAmount;
-      }
-    } else if (addTotalAmount == '') {
-      totalAmount = previousTotalAmount;
-    }
-    // 計算するのはここから
-    else if (calcType == 'double') {
-      totalAmount =
-          (double.parse(previousTotalAmount) + double.parse(addTotalAmount))
-              .toString();
-    } else if (calcType == 'double&fraction') {
-      // fractionをdoubleにcast
-      if (previousTotalAmount.contains('/')) {
-        previousTotalAmount =
-            Fraction.fromString(previousTotalAmount).toDouble().toString();
-      } else {
-        addTotalAmount =
-            Fraction.fromString(addTotalAmount).toDouble().toString();
-      }
-      totalAmount =
-          (double.parse(previousTotalAmount) + double.parse(addTotalAmount))
-              .toString();
-    } else if (calcType == 'fraction') {
-      totalAmount = (Fraction.fromString(previousTotalAmount) +
-              Fraction.fromString(addTotalAmount))
-          .toString();
-    }
-
-    return totalAmount;
-  }
+  // String checkAmountType(String? amount) {
+  //   String amountType = 'double';
+  //
+  //   if (amount == null) {
+  //     amountType = 'nullOrBlank';
+  //   } else if (amount == '') {
+  //     amountType = 'nullOrBlank';
+  //   } else if (amount.contains('/')) {
+  //     try {
+  //       amount.toFraction();
+  //       amountType = 'fraction';
+  //     } catch (e) {
+  //       try {
+  //         amount.toMixedFraction();
+  //         amountType = 'mixed fraction';
+  //       } catch (e) {
+  //         amountType = 'error';
+  //         print(e);
+  //       }
+  //     }
+  //   }
+  //
+  //   return amountType;
+  // }
+  //
+  // String checkCalcType(
+  //     String previousTotalAmountType, String addTotalAmountType) {
+  //   String calcType = 'double';
+  //
+  //   if (previousTotalAmountType.contains('fraction') ||
+  //       addTotalAmountType.contains('fraction')) {
+  //     if (previousTotalAmountType == 'double' ||
+  //         addTotalAmountType == 'double') {
+  //       calcType = 'double&fraction';
+  //     } else {
+  //       if (previousTotalAmountType.contains('mixed fraction') ||
+  //           addTotalAmountType.contains('mixed fraction')) {
+  //         calcType = 'mixed fraction';
+  //       }
+  //       calcType = 'fraction';
+  //     }
+  //   }
+  //   return calcType;
+  // }
+  //
+  // String calcAmount(int countInCart, String? amount, String amountType) {
+  //   String result = '';
+  //
+  //   if (amountType != 'nullOrBlank') {
+  //     if (amountType == 'double') {
+  //       result = (countInCart * double.parse(amount!)).toString();
+  //     } else if (amountType == 'fraction') {
+  //       result = (countInCart.toFraction() * amount!.toFraction()).toString();
+  //     } else if (amountType == 'mixed fraction') {
+  //       result = (countInCart.toMixedFraction() * amount!.toMixedFraction())
+  //           .toString();
+  //       if (result.contains(' 0/')) {
+  //         result = (countInCart.toMixedFraction() * amount.toMixedFraction())
+  //             .toDouble()
+  //             .toString();
+  //       }
+  //     }
+  //   }
+  //
+  //   return result;
+  // }
+  //
+  // String calcTotalAmount(
+  //     String previousTotalAmount, String addTotalAmount, String calcType) {
+  //   String totalAmount = '';
+  //
+  //   // ''が含まれている場合に関する処理
+  //   if (previousTotalAmount == '') {
+  //     if (addTotalAmount != '') {
+  //       totalAmount = addTotalAmount;
+  //     }
+  //   } else if (addTotalAmount == '') {
+  //     totalAmount = previousTotalAmount;
+  //   }
+  //   // 計算するのはここから
+  //   else if (calcType == 'double') {
+  //     totalAmount =
+  //         (double.parse(previousTotalAmount) + double.parse(addTotalAmount))
+  //             .toString();
+  //   } else if (calcType == 'double&fraction') {
+  //     // fraction or mixedFraction をdoubleにcast
+  //     if (previousTotalAmount.contains('/')) {
+  //       try {
+  //         previousTotalAmount =
+  //             previousTotalAmount.toMixedFraction().toDouble().toString();
+  //         print(
+  //             'previousTotalAmount ($previousTotalAmount) Type is Mixed Fraction');
+  //       } catch (e) {
+  //         try {
+  //           previousTotalAmount =
+  //               previousTotalAmount.toFraction().toDouble().toString();
+  //           print(
+  //               'previousTotalAmount ($previousTotalAmount) Type is Fraction');
+  //         } catch (e) {
+  //           print(e);
+  //         }
+  //       }
+  //     } else {
+  //       try {
+  //         addTotalAmount =
+  //             addTotalAmount.toMixedFraction().toDouble().toString();
+  //         print('addTotalAmount ($addTotalAmount) Type is Mixed Fraction');
+  //       } catch (e) {
+  //         try {
+  //           addTotalAmount = addTotalAmount.toFraction().toDouble().toString();
+  //           print('addTotalAmount ($addTotalAmount) Type is Fraction');
+  //         } catch (e) {
+  //           print(e);
+  //         }
+  //       }
+  //       totalAmount =
+  //           (double.parse(previousTotalAmount) + double.parse(addTotalAmount))
+  //               .toString();
+  //     }
+  //   } else if (calcType == 'fraction') {
+  //     totalAmount =
+  //         (previousTotalAmount.toFraction() + addTotalAmount.toFraction())
+  //             .toString();
+  //   } else if (calcType == 'mixed fraction') {
+  //     //   try{
+  //     //     previousTotalAmount = previousTotalAmount.toFraction().toString();
+  //     //   }catch(e){
+  //     //     previousTotalAmount = previousTotalAmount.toMixedFraction().toString();
+  //     //   }
+  //     //   try{
+  //     //     addTotalAmount = previousTotalAmount.toFraction().toString();
+  //     //   }catch(e){
+  //     //     addTotalAmount = previousTotalAmount.toMixedFraction().toString();
+  //     //   }
+  //     totalAmount = (previousTotalAmount.toMixedFraction() +
+  //             addTotalAmount.toMixedFraction())
+  //         .toString();
+  //   }
+  //
+  //   return totalAmount;
+  // }
 }

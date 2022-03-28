@@ -84,7 +84,7 @@ class RecipeDetailPage extends ConsumerWidget {
                   SizedBox(
                     height: 250,
                     child: Hero(
-                      tag: 'recipeImage' + recipe.recipeId!,
+                      tag: 'recipeImage' + recipeId,
                       child: recipe.imageUrl != ''
                           ? Image.network(
                               recipe.imageUrl!,

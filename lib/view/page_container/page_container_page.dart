@@ -21,22 +21,24 @@ class PageContainerPage extends ConsumerWidget {
 
     return Scaffold(
       body: _pages[selectedPage],
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-          size: 32.0,
-        ),
-        onPressed: () {
-          if (selectedPage == 0) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AddRecipeScreen(),
-                  fullscreenDialog: true,
-                ));
-          }
-        },
-      ),
+      floatingActionButton: selectedPage == 0
+          ? FloatingActionButton(
+              child: Icon(
+                Icons.add,
+                size: 32.0,
+              ),
+              onPressed: () {
+                if (selectedPage == 0) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddRecipeScreen(),
+                        fullscreenDialog: true,
+                      ));
+                }
+              },
+            )
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         shape: CircularNotchedRectangle(),

@@ -70,7 +70,7 @@ class RecipeListPage extends ConsumerWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              fullscreenDialog: true,
+                              fullscreenDialog: false,
                               builder: (context) =>
                                   RecipeDetailPage(recipe.recipeId!),
                             ));

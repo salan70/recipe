@@ -106,17 +106,26 @@ class CartListPage extends ConsumerWidget {
                                             return ListTile(
                                               title:
                                                   Text('${recipe.recipeName}'),
-                                              subtitle: Text(
-                                                  '${recipe.ingredientAmount}${ingredient.ingredientInCart.ingredientUnit}'),
+                                              subtitle: Row(
+                                                children: [
+                                                  Text(
+                                                      '${recipe.forHowManyPeople * recipe.countInCart}人分'),
+                                                  SizedBox(
+                                                    width: 16,
+                                                  ),
+                                                  Text(
+                                                      '${recipe.ingredientAmount}${ingredient.ingredientInCart.ingredientUnit}'),
+                                                ],
+                                              ),
                                               trailing: IconButton(
                                                 icon: Icon(Icons.info_outline),
                                                 onPressed: () {
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                        fullscreenDialog: true,
+                                                        fullscreenDialog: false,
                                                         builder: (context) =>
-                                                            RecipeDetailPage(
+                                                            AddBasketRecipeDetailPage(
                                                                 recipe
                                                                     .recipeId),
                                                       ));
