@@ -4,13 +4,15 @@ import 'package:fraction/fraction.dart';
 class Calculation {
   /// execute
   String executeMultiply(int countInCart, String? amount) {
+    print('in exe multiply');
     String totalAmount = '';
     String amountType = checkNumType(amount);
+    print(amountType);
 
     switch (amountType) {
       case 'int':
         String num = castToInt(amount!);
-        totalAmount = multiplyDouble(countInCart, num);
+        totalAmount = multiplyInt(countInCart, num);
         break;
       case 'double':
         totalAmount = multiplyDouble(countInCart, amount!);
@@ -30,9 +32,12 @@ class Calculation {
   }
 
   String executeAdd(String? previousAmount, String? addAmount) {
+    print('in exe add');
     String totalAmount = '';
     String previousAmountType = checkNumType(previousAmount);
     String addAmountType = checkNumType(addAmount);
+    print(previousAmountType);
+    print(addAmountType);
 
     // totalAmount = ''
     if (previousAmountType == '' && addAmountType == '') {
@@ -50,13 +55,16 @@ class Calculation {
           addAmountType == 'mixed fraction') {
         totalAmount = doubleAddMixedFraction(previousAmount!, addAmount!);
       } else {
+        print('+++++++++++++');
         totalAmount = doubleAddDouble(previousAmount!, addAmount!);
+        print('------');
       }
     }
     // totalAmount = mixed fraction
     else if (previousAmountType == 'mixed fraction' ||
         addAmountType == 'mixed fraction') {
       if (previousAmountType == 'fraction' || addAmountType == 'fraction') {
+        print('$previousAmount $addAmount');
         totalAmount = fractionAddMixedFraction(previousAmount!, addAmount!);
       } else if (previousAmountType == 'int' || addAmountType == 'int') {
         totalAmount = intAddMixedFraction(previousAmount!, addAmount!);
@@ -70,7 +78,7 @@ class Calculation {
       if (previousAmountType == 'int' || addAmountType == 'int') {
         totalAmount = intAddFraction(previousAmount!, addAmount!);
       } else {
-        totalAmount = fractionAddMixedFraction(previousAmount!, addAmount!);
+        totalAmount = fractionAddFraction(previousAmount!, addAmount!);
       }
     }
     // totalAmount = int
@@ -99,6 +107,7 @@ class Calculation {
     else if (num.contains('/')) {
       try {
         num.toFraction();
+        // TODO castableいらない？
         if (num.toFraction().toDouble() >= 1) {
           amountType = 'castable fraction';
         } else {
@@ -158,11 +167,29 @@ class Calculation {
   }
 
   String intAddMixedFraction(String originalNum, String addNum) {
-    String totalAmount =
-        (originalNum.toMixedFraction() + addNum.toMixedFraction()).toString();
+    String totalAmount = '';
 
-    if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-      totalAmount = castToInt(totalAmount);
+    String originalNumType = checkNumType(originalNum);
+    String addNumType = checkNumType(addNum);
+
+    if (originalNumType == 'int') {
+      int originalNumInt = int.parse(originalNum);
+      totalAmount =
+          (originalNumInt.toMixedFraction() + addNum.toMixedFraction())
+              .toString();
+
+      if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
+        totalAmount = castToInt(totalAmount);
+      }
+    } else if (addNumType == 'int') {
+      int addNumInt = int.parse(addNum);
+      totalAmount =
+          (originalNum.toMixedFraction() + addNumInt.toMixedFraction())
+              .toString();
+
+      if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
+        totalAmount = castToInt(totalAmount);
+      }
     }
 
     return totalAmount;
@@ -172,7 +199,7 @@ class Calculation {
     String totalAmount =
         (double.parse(originalNum) + double.parse(addNum)).toString();
 
-    if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
+    if (totalAmount.endsWith('.0')) {
       totalAmount = castToInt(totalAmount);
     }
 
@@ -180,28 +207,52 @@ class Calculation {
   }
 
   String doubleAddFraction(String originalNum, String addNum) {
-    String totalAmount =
-        (originalNum.toFraction().toDouble() + addNum.toFraction().toDouble())
-            .toString();
+    String originalNumType = checkNumType(originalNum);
+    String totalAmount = '';
+
+    if (originalNumType == 'fraction') {
+      totalAmount =
+          (originalNum.toFraction().toDouble() + double.tryParse(addNum)!)
+              .toString();
+    } else {
+      totalAmount =
+          (double.tryParse(originalNum)! + addNum.toFraction().toDouble())
+              .toString();
+    }
 
     if (totalAmount.endsWith('.0')) {
       totalAmount = castToInt(totalAmount);
+    } else {
+      totalAmount = castToRoundedDouble(totalAmount);
     }
     return totalAmount;
   }
 
   String doubleAddMixedFraction(String originalNum, String addNum) {
-    String totalAmount = (originalNum.toMixedFraction().toDouble() +
-            addNum.toMixedFraction().toDouble())
-        .toString();
+    String originalNumType = checkNumType(originalNum);
+    String totalAmount = '';
+
+    if (originalNumType == 'mixed fraction') {
+      totalAmount =
+          (originalNum.toMixedFraction().toDouble() + double.tryParse(addNum)!)
+              .toString();
+    } else {
+      totalAmount =
+          (double.tryParse(originalNum)! + addNum.toMixedFraction().toDouble())
+              .toString();
+    }
 
     if (totalAmount.endsWith('.0')) {
       totalAmount = castToInt(totalAmount);
+    } else {
+      totalAmount = castToRoundedDouble(totalAmount);
     }
+    print('------');
     return totalAmount;
   }
 
   String fractionAddFraction(String originalNum, String addNum) {
+    print('in fraction add fraction');
     String totalAmount =
         (originalNum.toFraction() + addNum.toFraction()).toString();
 
@@ -220,13 +271,13 @@ class Calculation {
     String totalAmount = '';
 
     if (originalNumType == 'mixed fraction') {
-      List<String> originalNumList = addNum.split(' ');
+      List<String> originalNumList = originalNum.split(' ');
       String originalNumInt = originalNumList[0];
       String originalNumFraction = originalNumList[1];
 
-      totalAmount = (addNum.toFraction() +
-              originalNumInt.toFraction() +
-              originalNumFraction.toFraction())
+      totalAmount = (originalNumInt.toFraction() +
+              originalNumFraction.toFraction() +
+              addNum.toFraction())
           .toString();
     } else {
       List<String> addNumList = addNum.split(' ');
@@ -239,10 +290,10 @@ class Calculation {
           .toString();
     }
 
+    totalAmount = castToMixedFraction(totalAmount);
+
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
       totalAmount = castToInt(totalAmount);
-    } else if (totalAmount.toFraction().toDouble() >= 1) {
-      totalAmount = castToMixedFraction(totalAmount);
     }
 
     return totalAmount;
@@ -279,9 +330,8 @@ class Calculation {
   String multiplyFraction(int countInCart, String num) {
     String totalAmount =
         (countInCart.toFraction() * num.toFraction()).toString();
-
     if (totalAmount.toFraction().toDouble().toString().endsWith('.0')) {
-      totalAmount = castToInt(totalAmount);
+      totalAmount = castToInt(totalAmount.toFraction().toDouble().toString());
     } else if (totalAmount.toFraction().toDouble() >= 1) {
       totalAmount = castToMixedFraction(totalAmount);
     }
@@ -296,7 +346,6 @@ class Calculation {
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
       totalAmount = castToInt(totalAmount);
     }
-
     return totalAmount;
   }
 
@@ -309,8 +358,21 @@ class Calculation {
   }
 
   String castToInt(String num) {
-    int intNum = int.parse(num);
+    String intNum = num;
 
-    return intNum.toString();
+    if (num.endsWith('.0')) {
+      final pos = intNum.length - 2;
+      intNum = intNum.substring(0, pos);
+    }
+
+    return intNum;
+  }
+
+  String castToRoundedDouble(String num) {
+    final baseNum = 100;
+    String roundedDouble =
+        ((double.tryParse(num)! * baseNum).round() / baseNum).toString();
+
+    return roundedDouble;
   }
 }

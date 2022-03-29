@@ -5,12 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 
 import 'package:recipe/auth/auth_controller.dart';
-import 'package:recipe/components/parts/reordable_text_field/procedures.dart';
-import 'package:recipe/components/parts/reordable_text_field/ingredients.dart';
+import 'package:recipe/components/widgets/reordable_text_field/procedures.dart';
+import 'package:recipe/components/widgets/reordable_text_field/ingredients.dart';
 import 'package:recipe/view/recipe_detail/recipe_detail_page.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/components/parts/validation/validation.dart';
+import 'package:recipe/components/validation/validation.dart';
 import 'package:recipe/view/update_recipe/update_recipe_model.dart';
 
 class UpdateRecipeScreen extends ConsumerWidget {

@@ -8,7 +8,7 @@ import 'package:flutter/services.dart';
 // inside
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/providers.dart';
-import 'package:recipe/components/parts/validation/validation.dart';
+import 'package:recipe/components/validation/validation.dart';
 
 class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
   IngredientListNotifier()
