@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/domain/recipe.dart';
 
-import '../../components/providers.dart';
+import '../../../components/providers.dart';
 
 class RecipeListModel extends ChangeNotifier {
   String toOutputIngredientText(List<Ingredient> ingredients) {

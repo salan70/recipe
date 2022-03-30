@@ -216,7 +216,9 @@ class UpdateRecipeScreen extends ConsumerWidget {
                   Text("人分"),
                 ]),
                 Container(
-                  child: IngredientListWidget(),
+                  child: IngredientListWidget(
+                    recipe: recipe,
+                  ),
                 ),
               ],
             ),

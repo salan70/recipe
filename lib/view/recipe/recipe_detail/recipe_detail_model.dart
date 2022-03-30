@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/domain/recipe.dart';
 
-import '../../repository/recipe_repository.dart';
+import '../../../repository/recipe_repository.dart';
 
 class RecipeDetailModel extends ChangeNotifier {
   RecipeDetailModel({required this.user});

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:hawk_fab_menu/hawk_fab_menu.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/view/cart_list_page/cart_list_page.dart';
 import 'package:recipe/view/recipe_list/recipe_list_page.dart';
 
-import '../add_recipe/add_recipe_page.dart';
+import '../../add_cart_recipe_list/add_cart_recipe_list_page.dart';
+import '../../add_recipe/add_recipe_page.dart';
 
 class PageContainerPage extends ConsumerWidget {
   const PageContainerPage({Key? key}) : super(key: key);
@@ -20,7 +22,36 @@ class PageContainerPage extends ConsumerWidget {
     ];
 
     return Scaffold(
-      body: _pages[selectedPage],
+      body: HawkFabMenu(
+        body: _pages[selectedPage],
+        icon: AnimatedIcons.list_view,
+        fabColor: Colors.yellow,
+        iconColor: Colors.green,
+        items: [
+          HawkFabMenuItem(
+            label: 'カートの中身を変更',
+            ontap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    fullscreenDialog: false,
+                    builder: (context) => AddCartRecipeListPage(),
+                  ));
+            },
+            icon: const Icon(Icons.add_shopping_cart),
+          ),
+          HawkFabMenuItem(
+            label: 'アカウント',
+            ontap: () {},
+            icon: Icon(Icons.account_circle),
+          ),
+          HawkFabMenuItem(
+            label: '設定',
+            ontap: () {},
+            icon: Icon(Icons.settings),
+          ),
+        ],
+      ),
       floatingActionButton: selectedPage == 0
           ? FloatingActionButton(
               child: Icon(

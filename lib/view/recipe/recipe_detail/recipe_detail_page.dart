@@ -51,7 +51,7 @@ class RecipeDetailPage extends ConsumerWidget {
               ),
               title: Center(
                 child: Hero(
-                  tag: 'recipeName' + recipe.recipeId!,
+                  tag: 'recipeList recipeName' + recipe.recipeId!,
                   child:
                       Text(recipe.recipeName!, overflow: TextOverflow.ellipsis),
                 ),
@@ -84,7 +84,7 @@ class RecipeDetailPage extends ConsumerWidget {
                   SizedBox(
                     height: 250,
                     child: Hero(
-                      tag: 'recipeImage' + recipeId,
+                      tag: 'recipeList recipeImage' + recipeId,
                       child: recipe.imageUrl != ''
                           ? Image.network(
                               recipe.imageUrl!,

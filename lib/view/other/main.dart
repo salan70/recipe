@@ -3,19 +3,22 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:recipe/view/page_container/page_container_page.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:recipe/components/type_adapter/cart_checkbox.dart';
 
-import 'auth/auth_controller.dart';
-import 'package:recipe/view/recipe_list/recipe_list_page.dart';
-import 'package:recipe/sign_in/sign_in_screen.dart';
+import 'package:recipe/view/page_container/page_container_page.dart';
 
 //main()を非同期を制御する
 void main() async {
-//アプリ起動時に処理したいので追記
   WidgetsFlutterBinding.ensureInitialized();
-//Firebaseの初期化（同期）
   await Firebase.initializeApp();
+
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(CartCheckBoxAdapter());
+
+  await Hive.openBox('settings');
+  await Hive.openBox('checkBox');
 
   runApp(ProviderScope(child: MyApp()));
 }

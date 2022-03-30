@@ -2,9 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:recipe/components/calculation/calculation.dart';
 import 'package:recipe/domain/recipe.dart';
-import 'package:fraction/fraction.dart';
 
-import '../../domain/cart.dart';
+import '../../../domain/cart.dart';
 
 class CartListModel extends ChangeNotifier {
   List<IngredientPerInCartRecipe> createIngredientPerInCartRecipeList(
@@ -61,15 +60,15 @@ class CartListModel extends ChangeNotifier {
         String addTotalAmount = calculation.executeMultiply(
             ingredientPerInCartRecipeList[i].countInCart,
             ingredientPerInCartRecipeList[i].ingredient.amount);
-        print(
-            '------${ingredientPerInCartRecipeList[i].ingredient.name!}-----');
+        // print(
+        //     '------${ingredientPerInCartRecipeList[i].ingredient.name!}-----');
 
         // totalAmountの計算
         String totalAmount =
             calculation.executeAdd(previousTotalAmount, addTotalAmount);
 
-        print(
-            '${ingredientPerInCartRecipeList[i].ingredient.name!} $totalAmount');
+        // print(
+        //     '${ingredientPerInCartRecipeList[i].ingredient.name!} $totalAmount');
 
         ingredientListInCartPerRecipeList[returnListIndex - 1]
             .ingredientInCart
@@ -94,14 +93,14 @@ class CartListModel extends ChangeNotifier {
             ingredientPerInCartRecipeList[i].ingredient.name!;
         previousIngredientUnit =
             ingredientPerInCartRecipeList[i].ingredient.unit!;
-        print(
-            '------${ingredientPerInCartRecipeList[i].ingredient.name!}-----');
+        // print(
+        //     '------${ingredientPerInCartRecipeList[i].ingredient.name!}-----');
 
         String totalAmount = calculation.executeMultiply(
             ingredientPerInCartRecipeList[i].countInCart,
             ingredientPerInCartRecipeList[i].ingredient.amount);
-        print(
-            '${ingredientPerInCartRecipeList[i].ingredient.name!} $totalAmount');
+        // print(
+        //     '${ingredientPerInCartRecipeList[i].ingredient.name!} $totalAmount');
 
         // ingredient系
         IngredientInCart ingredientInCart = IngredientInCart(

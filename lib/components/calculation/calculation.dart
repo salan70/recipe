@@ -4,10 +4,10 @@ import 'package:fraction/fraction.dart';
 class Calculation {
   /// execute
   String executeMultiply(int countInCart, String? amount) {
-    print('in exe multiply');
+    // print('in exe multiply');
     String totalAmount = '';
     String amountType = checkNumType(amount);
-    print(amountType);
+    // print(amountType);
 
     switch (amountType) {
       case 'int':
@@ -32,12 +32,12 @@ class Calculation {
   }
 
   String executeAdd(String? previousAmount, String? addAmount) {
-    print('in exe add');
+    // print('in exe add');
     String totalAmount = '';
     String previousAmountType = checkNumType(previousAmount);
     String addAmountType = checkNumType(addAmount);
-    print(previousAmountType);
-    print(addAmountType);
+    // print(previousAmountType);
+    // print(addAmountType);
 
     // totalAmount = ''
     if (previousAmountType == '' && addAmountType == '') {
@@ -55,16 +55,16 @@ class Calculation {
           addAmountType == 'mixed fraction') {
         totalAmount = doubleAddMixedFraction(previousAmount!, addAmount!);
       } else {
-        print('+++++++++++++');
+        // print('+++++++++++++');
         totalAmount = doubleAddDouble(previousAmount!, addAmount!);
-        print('------');
+        // print('------');
       }
     }
     // totalAmount = mixed fraction
     else if (previousAmountType == 'mixed fraction' ||
         addAmountType == 'mixed fraction') {
       if (previousAmountType == 'fraction' || addAmountType == 'fraction') {
-        print('$previousAmount $addAmount');
+        // print('$previousAmount $addAmount');
         totalAmount = fractionAddMixedFraction(previousAmount!, addAmount!);
       } else if (previousAmountType == 'int' || addAmountType == 'int') {
         totalAmount = intAddMixedFraction(previousAmount!, addAmount!);
@@ -247,12 +247,12 @@ class Calculation {
     } else {
       totalAmount = castToRoundedDouble(totalAmount);
     }
-    print('------');
+    // print('------');
     return totalAmount;
   }
 
   String fractionAddFraction(String originalNum, String addNum) {
-    print('in fraction add fraction');
+    // print('in fraction add fraction');
     String totalAmount =
         (originalNum.toFraction() + addNum.toFraction()).toString();
 
