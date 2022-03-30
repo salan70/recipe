@@ -5,8 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:recipe/components/type_adapter/cart_checkbox.dart';
-
-import 'package:recipe/view/page_container/page_container_page.dart';
+import 'package:recipe/view/other/page_container/page_container_page.dart';
 
 //main()を非同期を制御する
 void main() async {

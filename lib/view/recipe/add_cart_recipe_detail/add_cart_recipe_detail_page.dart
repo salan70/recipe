@@ -3,11 +3,9 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
-import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/repository/cart_repository.dart';
-import 'package:recipe/repository/recipe_repository.dart';
-import 'package:recipe/view/add_cart_recipe_detail/add_cart_recipe_detail_model.dart';
-import 'package:recipe/view/update_recipe/update_recipe_page.dart';
+
+import '../update_recipe/update_recipe_page.dart';
+import 'add_cart_recipe_detail_model.dart';
 
 class AddBasketRecipeDetailPage extends ConsumerWidget {
   AddBasketRecipeDetailPage(this.recipeId);

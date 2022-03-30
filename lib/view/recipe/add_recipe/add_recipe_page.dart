@@ -10,8 +10,9 @@ import 'package:recipe/components/widgets/reordable_text_field/procedures.dart';
 import 'package:recipe/components/widgets/reordable_text_field/ingredients.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/view/add_recipe/add_recipe_model.dart';
 import 'package:recipe/components/validation/validation.dart';
+
+import 'add_recipe_model.dart';
 
 class AddRecipeScreen extends ConsumerWidget {
   final Recipe recipe = Recipe(recipeGrade: 3);

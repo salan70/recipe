@@ -7,8 +7,6 @@ import 'package:recipe/domain/cart.dart';
 import 'package:recipe/repository/cart_repository.dart';
 import 'package:recipe/repository/recipe_repository.dart';
 import 'package:recipe/state/recipe_stream_state.dart';
-import 'package:recipe/view/add_recipe/add_recipe_model.dart';
-import 'package:recipe/view/recipe_list/recipe_list_model.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/widgets/reordable_text_field/procedures.dart';
 import 'package:recipe/components/widgets/reordable_text_field/ingredients.dart';

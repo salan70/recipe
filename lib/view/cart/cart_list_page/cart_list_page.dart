@@ -1,14 +1,11 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:recipe/auth/auth_controller.dart';
-import 'package:recipe/components/type_adapter/cart_checkbox.dart';
-import 'package:recipe/view/add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
 import 'package:recipe/components/providers.dart';
+import 'package:recipe/view/recipe/add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
 
 import '../../../domain/cart.dart';
 import 'cart_list_model.dart';

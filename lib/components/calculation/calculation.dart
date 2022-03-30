@@ -344,7 +344,8 @@ class Calculation {
         (countInCart.toMixedFraction() * num.toMixedFraction()).toString();
 
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-      totalAmount = castToInt(totalAmount);
+      totalAmount =
+          castToInt(totalAmount.toMixedFraction().toDouble().toString());
     }
     return totalAmount;
   }

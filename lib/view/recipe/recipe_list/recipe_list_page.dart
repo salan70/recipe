@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'package:recipe/view/recipe_detail/recipe_detail_page.dart';
-import 'package:recipe/view/recipe_list/recipe_list_model.dart';
 import 'package:recipe/components/providers.dart';
+import 'package:recipe/view/recipe/recipe_list/recipe_list_model.dart';
+
+import '../recipe_detail/recipe_detail_page.dart';
 
 // レシピ一覧画面
 class RecipeListPage extends ConsumerWidget {
