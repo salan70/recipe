@@ -112,7 +112,7 @@ class CartListPage extends ConsumerWidget {
                 return Slidable(
                   key: ValueKey(id),
                   actionPane: SlidableDrawerActionPane(),
-                  secondaryActions: [
+                  actions: [
                     IconSlideAction(
                       color: Colors.green,
                       iconWidget: Text(_slidableActionText),
