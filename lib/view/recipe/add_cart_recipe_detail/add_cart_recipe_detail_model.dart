@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/domain/cart.dart';
-import 'package:recipe/repository/cart_repository.dart';
+import 'package:recipe/repository/firebase/cart_repository.dart';
 
 class AddCartRecipeDetailModel extends ChangeNotifier {
   AddCartRecipeDetailModel({required this.user});

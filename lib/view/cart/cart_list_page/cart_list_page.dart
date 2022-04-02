@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_tree/flutter_tree.dart';
 
 import 'package:recipe/components/providers.dart';
+import 'package:recipe/domain/type_adapter/cart_item.dart';
 import 'package:recipe/view/recipe/add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
 
 import '../../../domain/cart.dart';
@@ -24,10 +27,10 @@ class CartListPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text('カート'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: recipeListInCartStream.when(
+      body: ValueListenableBuilder(
+          valueListenable: Boxes.getCartItems().listenable(),
+          builder: (context, Box box, widget) {
+            return recipeListInCartStream.when(
                 error: (error, stack) => Text('Error: $error'),
                 loading: () => const CircularProgressIndicator(),
                 data: (recipeListInCart) {
@@ -55,100 +58,141 @@ class CartListPage extends ConsumerWidget {
                       cartListModel.createIngredientListInCartPerRecipeList(
                           ingredientPerInCartRecipeList);
 
-                  return ListView.builder(
-                      itemCount: ingredientListInCartPerRecipeList.length,
-                      itemBuilder: (context, index) {
-                        final ingredient =
-                            ingredientListInCartPerRecipeList[index];
-                        final id = ingredient.ingredientInCart.ingredientName +
-                            ingredient.ingredientInCart.ingredientUnit;
-                        return ValueListenableBuilder(
-                            valueListenable: Hive.box('checkBox').listenable(),
-                            builder: (context, Box box, widget) {
-                              return CheckboxListTile(
-                                title: Text(
-                                    '${ingredient.ingredientInCart.ingredientName}'),
-                                subtitle: Text(
-                                    '${ingredient.ingredientInCart.ingredientTotalAmount}${ingredient.ingredientInCart.ingredientUnit}'),
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                value: box.get(id, defaultValue: false),
-                                onChanged: (bool) {
-                                  box.put(id, bool);
-                                  print('$id: $bool');
-                                },
-                                secondary: IconButton(
-                                  icon: Icon(Icons.info_outline),
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (_) {
-                                        return AlertDialog(
-                                          title: Text(
-                                              '${ingredientListInCartPerRecipeList[index].ingredientInCart.ingredientName}を使うレシピ'),
-                                          contentPadding: EdgeInsets.zero,
-                                          content: Container(
-                                            width: double.maxFinite,
-                                            height: 200,
-                                            child: ListView.builder(
-                                              itemCount:
-                                                  ingredientListInCartPerRecipeList[
-                                                          index]
-                                                      .recipeForIngredientInCartList
-                                                      .length,
-                                              itemBuilder:
-                                                  (context, recipeIndex) {
-                                                final recipe =
-                                                    ingredientListInCartPerRecipeList[
-                                                                index]
-                                                            .recipeForIngredientInCartList[
-                                                        recipeIndex];
-                                                return ListTile(
-                                                  title: Text(
-                                                      '${recipe.recipeName}'),
-                                                  subtitle: Row(
-                                                    children: [
-                                                      Text(
-                                                          '${recipe.forHowManyPeople * recipe.countInCart}人分'),
-                                                      SizedBox(
-                                                        width: 16,
-                                                      ),
-                                                      Text(
-                                                          '${recipe.ingredientAmount}${ingredient.ingredientInCart.ingredientUnit}'),
-                                                    ],
-                                                  ),
-                                                  trailing: IconButton(
-                                                    icon: Icon(
-                                                        Icons.info_outline),
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            fullscreenDialog:
-                                                                false,
-                                                            builder: (context) =>
-                                                                AddBasketRecipeDetailPage(
-                                                                    recipe
-                                                                        .recipeId),
-                                                          ));
-                                                    },
-                                                  ),
-                                                );
-                                              },
-                                            ),
+                  List<IngredientInCartPerRecipeList> buyList = cartListModel
+                      .createBuyList(ingredientListInCartPerRecipeList);
+                  List<IngredientInCartPerRecipeList> notBuyList = cartListModel
+                      .createNotBuyList(ingredientListInCartPerRecipeList);
+
+                  // return ;
+
+                  return Container(
+                    color: Colors.blueGrey,
+                    child: ListView(
+                      children: [
+                        _ingredientListCardWidget('buyList', buyList),
+                        _ingredientListCardWidget('notBuyList', notBuyList),
+                        SizedBox(
+                          height: 48,
+                        ),
+                      ],
+                    ),
+                  );
+                });
+          }),
+    );
+  }
+
+  Widget _ingredientListCardWidget(
+      String listType, List<IngredientInCartPerRecipeList> ingredientList) {
+    CartListModel cartListModel = CartListModel();
+    String _cardTitle = listType == 'buyList'
+        ? '買うリスト'
+        : listType == 'notBuyList'
+            ? '買わないリスト'
+            : '';
+    String _slidableActionText = listType == 'buyList'
+        ? '買わないリストへ'
+        : listType == 'notBuyList'
+            ? '買うリストへ'
+            : '';
+    return Column(
+      children: [
+        Container(
+          child: Text(_cardTitle),
+        ),
+        Card(
+          child: ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: ingredientList.length,
+              itemBuilder: (context, index) {
+                final ingredient = ingredientList[index];
+                final id = ingredient.ingredientInCart.ingredientName +
+                    ingredient.ingredientInCart.ingredientUnit;
+                return Slidable(
+                  key: ValueKey(id),
+                  actionPane: SlidableDrawerActionPane(),
+                  secondaryActions: [
+                    IconSlideAction(
+                      color: Colors.green,
+                      iconWidget: Text(_slidableActionText),
+                      onTap: () {
+                        cartListModel.toggleIsNeed(
+                          id,
+                        );
+                      },
+                    ),
+                  ],
+                  child: CheckboxListTile(
+                    title:
+                        Text('${ingredient.ingredientInCart.ingredientName}'),
+                    subtitle: Text(
+                        '${ingredient.ingredientInCart.ingredientTotalAmount}${ingredient.ingredientInCart.ingredientUnit}'),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    value: cartListModel.getCartItem(id).isBought,
+                    onChanged: (isBought) {
+                      cartListModel.toggleIsBought(id, isBought!);
+                    },
+                    secondary: IconButton(
+                      icon: Icon(Icons.info_outline),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (_) {
+                            return AlertDialog(
+                              title: Text(
+                                  '${ingredient.ingredientInCart.ingredientName}を使うレシピ'),
+                              contentPadding: EdgeInsets.zero,
+                              content: Container(
+                                width: double.maxFinite,
+                                height: 200,
+                                child: ListView.builder(
+                                  itemCount: ingredient
+                                      .recipeForIngredientInCartList.length,
+                                  itemBuilder: (context, recipeIndex) {
+                                    final recipe = ingredient
+                                            .recipeForIngredientInCartList[
+                                        recipeIndex];
+                                    return ListTile(
+                                      title: Text('${recipe.recipeName}'),
+                                      subtitle: Row(
+                                        children: [
+                                          Text(
+                                              '${recipe.forHowManyPeople * recipe.countInCart}人分'),
+                                          SizedBox(
+                                            width: 16,
                                           ),
-                                        );
-                                      },
+                                          Text(
+                                              '${recipe.ingredientAmount}${ingredient.ingredientInCart.ingredientUnit}'),
+                                        ],
+                                      ),
+                                      trailing: IconButton(
+                                        icon: Icon(Icons.info_outline),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                fullscreenDialog: false,
+                                                builder: (context) =>
+                                                    AddBasketRecipeDetailPage(
+                                                        recipe.recipeId),
+                                              ));
+                                        },
+                                      ),
                                     );
                                   },
                                 ),
-                              );
-                            });
-                      });
-                }),
-          ),
-        ],
-      ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                    ),
+                  ),
+                );
+              }),
+        ),
+      ],
     );
   }
 }

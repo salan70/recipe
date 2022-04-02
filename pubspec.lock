@@ -333,6 +333,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_tree:
+    dependency: "direct dev"
+    description:
+      name: flutter_tree
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.3"
   flutter_web_plugins:
     dependency: transitive
     description: flutter

@@ -49,6 +49,7 @@ dev_dependencies:
   freezed:
   json_serializable:
   hive_generator: ^1.1.2
+  flutter_tree: ^2.0.3
 
 flutter:
   uses-material-design: true

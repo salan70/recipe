@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:recipe/components/calculation/calculation.dart';
 import 'package:recipe/domain/recipe.dart';
+import 'package:recipe/domain/type_adapter/cart_item.dart';
+import 'package:recipe/repository/hive/cart_item_repository.dart';
 
 import '../../../domain/cart.dart';
 
@@ -132,5 +134,59 @@ class CartListModel extends ChangeNotifier {
     }
 
     return ingredientListInCartPerRecipeList;
+  }
+
+  ///
+  List<IngredientInCartPerRecipeList> createBuyList(
+      List<IngredientInCartPerRecipeList> list) {
+    CartItemRepository cartItemRepository = CartItemRepository();
+    List<IngredientInCartPerRecipeList> buyList = [];
+
+    for (var ingredient in list) {
+      String id = ingredient.ingredientInCart.ingredientName +
+          ingredient.ingredientInCart.ingredientUnit;
+      CartItem cartItem = cartItemRepository.getItem(id);
+      if (cartItem.isNeed == true) {
+        buyList.add(ingredient);
+      }
+    }
+
+    return buyList;
+  }
+
+  List<IngredientInCartPerRecipeList> createNotBuyList(
+      List<IngredientInCartPerRecipeList> list) {
+    CartItemRepository cartItemRepository = CartItemRepository();
+    List<IngredientInCartPerRecipeList> notBuyList = [];
+
+    for (var ingredient in list) {
+      String id = ingredient.ingredientInCart.ingredientName +
+          ingredient.ingredientInCart.ingredientUnit;
+      CartItem cartItem = cartItemRepository.getItem(id);
+      if (cartItem.isNeed == false) {
+        notBuyList.add(ingredient);
+      }
+    }
+
+    return notBuyList;
+  }
+
+  CartItem getCartItem(String id) {
+    CartItemRepository cartItemRepository = CartItemRepository();
+    final cartItem = cartItemRepository.getItem(id);
+    return cartItem;
+  }
+
+  Future toggleIsBought(String id, bool isBought) async {
+    CartItemRepository cartItemRepository = CartItemRepository();
+    final item = cartItemRepository.getItem(id);
+    cartItemRepository.putIsBought(item, isBought);
+  }
+
+  Future toggleIsNeed(String id) async {
+    CartItemRepository cartItemRepository = CartItemRepository();
+    final item = cartItemRepository.getItem(id);
+    final isNeed = !item.isNeed;
+    cartItemRepository.putIsNeed(item, isNeed);
   }
 }
