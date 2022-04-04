@@ -23,62 +23,86 @@ class CartListPage extends ConsumerWidget {
 
     final recipeListInCartStream = ref.watch(recipeListInCartStreamProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('カート'),
-      ),
-      body: ValueListenableBuilder(
-          valueListenable: Boxes.getCartItems().listenable(),
-          builder: (context, Box box, widget) {
-            return recipeListInCartStream.when(
-                error: (error, stack) => Text('Error: $error'),
-                loading: () => const CircularProgressIndicator(),
-                data: (recipeListInCart) {
-                  List<IngredientPerInCartRecipe>
-                      ingredientPerInCartRecipeList = [];
-
-                  for (var recipe in recipeListInCart) {
-                    final ingredientList = ref.watch(
-                        ingredientListStreamProviderFamily(recipe.recipeId!));
-                    ingredientList.when(
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('カート'),
+          bottom: const TabBar(
+            tabs: <Widget>[
+              Tab(text: '材料'),
+              Tab(text: 'レシピ'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            /// 材料タブ
+            ValueListenableBuilder(
+                valueListenable: Boxes.getCartItems().listenable(),
+                builder: (context, Box box, widget) {
+                  return recipeListInCartStream.when(
                       error: (error, stack) => Text('Error: $error'),
                       loading: () => const CircularProgressIndicator(),
-                      data: (ingredientList) {
-                        List<IngredientPerInCartRecipe> addList =
-                            cartListModel.createIngredientPerInCartRecipeList(
-                                recipe, ingredientList);
-                        for (var item in addList)
-                          ingredientPerInCartRecipeList.add(item);
-                      },
-                    );
-                  }
+                      data: (recipeListInCart) {
+                        List<IngredientPerInCartRecipe>
+                            ingredientPerInCartRecipeList = [];
 
-                  List<IngredientInCartPerRecipeList>
-                      ingredientListInCartPerRecipeList =
-                      cartListModel.createIngredientListInCartPerRecipeList(
-                          ingredientPerInCartRecipeList);
+                        for (var recipe in recipeListInCart) {
+                          final ingredientList = ref.watch(
+                              ingredientListStreamProviderFamily(
+                                  recipe.recipeId!));
+                          ingredientList.when(
+                            error: (error, stack) => Text('Error: $error'),
+                            loading: () => const CircularProgressIndicator(),
+                            data: (ingredientList) {
+                              List<IngredientPerInCartRecipe> addList =
+                                  cartListModel
+                                      .createIngredientPerInCartRecipeList(
+                                          recipe, ingredientList);
+                              for (var item in addList)
+                                ingredientPerInCartRecipeList.add(item);
+                            },
+                          );
+                        }
 
-                  List<IngredientInCartPerRecipeList> buyList = cartListModel
-                      .createBuyList(ingredientListInCartPerRecipeList);
-                  List<IngredientInCartPerRecipeList> notBuyList = cartListModel
-                      .createNotBuyList(ingredientListInCartPerRecipeList);
+                        List<IngredientInCartPerRecipeList>
+                            ingredientListInCartPerRecipeList = cartListModel
+                                .createIngredientListInCartPerRecipeList(
+                                    ingredientPerInCartRecipeList);
 
-                  // return ;
+                        List<IngredientInCartPerRecipeList> buyList =
+                            cartListModel.createBuyList(
+                                ingredientListInCartPerRecipeList);
+                        List<IngredientInCartPerRecipeList> notBuyList =
+                            cartListModel.createNotBuyList(
+                                ingredientListInCartPerRecipeList);
 
-                  return Container(
-                    color: Colors.blueGrey,
-                    child: ListView(
-                      children: [
-                        _ingredientListCardWidget('buyList', buyList),
-                        _ingredientListCardWidget('notBuyList', notBuyList),
-                        SizedBox(
-                          height: 48,
-                        ),
-                      ],
-                    ),
-                  );
-                });
-          }),
+                        // return ;
+
+                        return Container(
+                          color: Colors.blueGrey,
+                          child: ListView(
+                            children: [
+                              _ingredientListCardWidget('buyList', buyList),
+                              _ingredientListCardWidget(
+                                  'notBuyList', notBuyList),
+                              SizedBox(
+                                height: 48,
+                              ),
+                            ],
+                          ),
+                        );
+                      });
+                }),
+
+            /// レシピタブ
+            Container(
+              color: Colors.green,
+            ),
+          ],
+        ),
+      ),
     );
   }
 

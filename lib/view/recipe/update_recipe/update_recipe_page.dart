@@ -32,6 +32,8 @@ class UpdateRecipeScreen extends ConsumerWidget {
 
     final Recipe originalRecipe = recipe;
 
+    print('image: ${recipe.imageUrl!}');
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -145,29 +147,29 @@ class UpdateRecipeScreen extends ConsumerWidget {
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(20),
                             child: Image.file(imageFile))
-                        : recipe.imageUrl != '' && recipe.imageUrl != null
-                            ? Image.network(
-                                recipe.imageUrl!,
-                                errorBuilder: (c, o, s) {
-                                  return const Icon(
-                                    Icons.error,
-                                  );
-                                },
-                              )
-                            : Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  color: Colors.grey[400],
-                                ),
-                                child: Icon(Icons.add_photo_alternate_outlined),
-                              )
-                    : Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          color: Colors.grey[400],
-                        ),
-                        child: Icon(Icons.add_photo_alternate_outlined),
-                      ),
+                        : Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              color: Colors.grey[400],
+                            ),
+                            child: Icon(Icons.add_photo_alternate_outlined),
+                          )
+                    : recipe.imageUrl != '' && recipe.imageUrl != null
+                        ? Image.network(
+                            recipe.imageUrl!,
+                            errorBuilder: (c, o, s) {
+                              return const Icon(
+                                Icons.error,
+                              );
+                            },
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              color: Colors.blue[400],
+                            ),
+                            child: Icon(Icons.add_photo_alternate_outlined),
+                          ),
               ),
               onTap: () async {
                 await imageFileNotifier.pickImage();
