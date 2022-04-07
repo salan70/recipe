@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_tree/flutter_tree.dart';
 
 import 'package:recipe/components/providers.dart';
-import 'package:recipe/domain/type_adapter/cart_item.dart';
+import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/view/recipe/add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
 
 import '../../../domain/cart.dart';
@@ -39,8 +39,8 @@ class CartListPage extends ConsumerWidget {
           children: [
             /// 材料タブ
             ValueListenableBuilder(
-                valueListenable: Boxes.getCartItems().listenable(),
-                builder: (context, Box box, widget) {
+                valueListenable: CartItemBoxes.getCartItems().listenable(),
+                builder: (context, box, widget) {
                   return recipeListInCartStream.when(
                       error: (error, stack) => Text('Error: $error'),
                       loading: () => const CircularProgressIndicator(),
@@ -78,8 +78,6 @@ class CartListPage extends ConsumerWidget {
                             cartListModel.createNotBuyList(
                                 ingredientListInCartPerRecipeList);
 
-                        // return ;
-
                         return Container(
                           color: Colors.blueGrey,
                           child: ListView(
@@ -97,9 +95,25 @@ class CartListPage extends ConsumerWidget {
                 }),
 
             /// レシピタブ
-            Container(
-              color: Colors.green,
-            ),
+            recipeListInCartStream.when(
+                error: (error, stack) => Text('Error: $error'),
+                loading: () => const CircularProgressIndicator(),
+                data: (recipeListInCart) {
+                  final _recipeList = recipeListInCart;
+                  return ListView.builder(
+                    itemCount: _recipeList.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final _recipe = _recipeList[index];
+                      return Row(
+                        children: [
+                          Text(_recipe.recipeName!),
+                          Text(
+                              '合計${_recipe.countInCart! * _recipe.forHowManyPeople!}人分'),
+                        ],
+                      );
+                    },
+                  );
+                })
           ],
         ),
       ),

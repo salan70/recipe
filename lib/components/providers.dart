@@ -9,7 +9,7 @@ import 'package:recipe/repository/firebase/recipe_repository.dart';
 import 'package:recipe/state/recipe_stream_state.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/widgets/reordable_text_field/procedures.dart';
-import 'package:recipe/components/widgets/reordable_text_field/ingredients.dart';
+import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
 import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/state/image_file_state.dart';
 import 'package:recipe/state/recipe_in_cart_list_state.dart';

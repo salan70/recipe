@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 
 import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/components/widgets/reordable_text_field/procedures.dart';
-import 'package:recipe/components/widgets/reordable_text_field/ingredients.dart';
+import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/validation/validation.dart';
@@ -217,7 +217,7 @@ class UpdateRecipeScreen extends ConsumerWidget {
                   Text("人分"),
                 ]),
                 Container(
-                  child: IngredientListWidget(
+                  child: IngredientTextFieldWidget(
                     recipe: recipe,
                   ),
                 ),

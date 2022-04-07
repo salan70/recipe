@@ -1,4 +1,3 @@
-// outside
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +5,6 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-// inside
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/components/validation/validation.dart';
@@ -76,8 +74,8 @@ class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
   }
 }
 
-class IngredientListWidget extends ConsumerWidget {
-  const IngredientListWidget({Key? key, this.recipe}) : super(key: key);
+class IngredientTextFieldWidget extends ConsumerWidget {
+  const IngredientTextFieldWidget({Key? key, this.recipe}) : super(key: key);
 
   final Recipe? recipe;
 

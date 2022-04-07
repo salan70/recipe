@@ -4,7 +4,8 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:recipe/domain/type_adapter/cart_item.dart';
+import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
+import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 import 'package:recipe/view/other/page_container/page_container_page.dart';
 
 //main()を非同期を制御する
@@ -14,7 +15,10 @@ void main() async {
 
   await Hive.initFlutter();
   Hive.registerAdapter(CartItemAdapter());
+  Hive.registerAdapter(IngredientUnitAdapter());
+
   await Hive.openBox<CartItem>('cartItems');
+  await Hive.openBox<IngredientUnit>('ingredientUnits');
 
   runApp(ProviderScope(child: MyApp()));
 }

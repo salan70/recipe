@@ -16,6 +16,6 @@ class CartItem {
   CartItem({required this.id, required this.isNeed, required this.isBought});
 }
 
-class Boxes {
+class CartItemBoxes {
   static Box<CartItem> getCartItems() => Hive.box<CartItem>('cartItems');
 }

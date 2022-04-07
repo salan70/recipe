@@ -7,10 +7,11 @@ import 'package:flutter/services.dart';
 
 import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/components/widgets/reordable_text_field/procedures.dart';
-import 'package:recipe/components/widgets/reordable_text_field/ingredients.dart';
+import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/validation/validation.dart';
+import 'package:recipe/view/other/ingredient_unit_edit/ingredient_unit_edit_page.dart';
 
 import 'add_recipe_model.dart';
 
@@ -200,9 +201,19 @@ class AddRecipeScreen extends ConsumerWidget {
                         },
                       )),
                   Text("人分"),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => IngredientUnitEditPage(),
+                              fullscreenDialog: false,
+                            ));
+                      },
+                      child: Text('単位を編集')),
                 ]),
                 Container(
-                  child: IngredientListWidget(),
+                  child: IngredientTextFieldWidget(),
                 ),
               ],
             ),
