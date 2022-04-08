@@ -3,11 +3,16 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_model.dart';
 import 'package:uuid/uuid.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/components/validation/validation.dart';
+
+import '../../../../domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 
 class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
   IngredientListNotifier()
@@ -16,7 +21,7 @@ class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
             id: Uuid().v4(),
             name: '',
             amount: '',
-            unit: '個',
+            unit: null,
           ),
         ]);
 
@@ -159,20 +164,83 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                       ),
                       Expanded(
                         flex: 1,
-                        child: DropdownButton<String>(
-                          value: ingredientList[index].unit,
-                          onChanged: (String? value) {
-                            ingredientListNotifier.editUnit(
-                                ingredientList[index].id, value!);
-                          },
-                          items: ["個", "g", "本", "大さじ", "小さじ"]
-                              .map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
-                        ),
+                        child: ValueListenableBuilder(
+                            valueListenable:
+                                IngredientUnitBoxes.getIngredientUnit()
+                                    .listenable(),
+                            builder: (context, box, widget) {
+                              IngredientTextFieldModel
+                                  _ingredientTextFieldModel =
+                                  IngredientTextFieldModel();
+                              final _ingredientUnitList =
+                                  _ingredientTextFieldModel
+                                      .fetchIngredientUnitList();
+                              String unitNameForTextButton =
+                                  ingredientList[index].unit == null ||
+                                          ingredientList[index].unit == ''
+                                      ? '単位'
+                                      : ingredientList[index].unit!;
+                              String _tmpUnitName = _ingredientUnitList[0];
+
+                              return TextButton(
+                                  onPressed: () {
+                                    showCupertinoModalPopup(
+                                        context: context,
+                                        builder: (context) {
+                                          return Container(
+                                            //Pickerの高さを指定。指定しない場合はフルスクリーン。
+                                            height: 250,
+                                            color: Colors.white,
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    TextButton(
+                                                      child: const Text('戻る'),
+                                                      onPressed: () =>
+                                                          Navigator.of(context)
+                                                              .pop(),
+                                                    ),
+                                                    TextButton(
+                                                        child: const Text('決定'),
+                                                        onPressed: () {
+                                                          ingredientListNotifier
+                                                              .editUnit(
+                                                                  ingredientList[
+                                                                          index]
+                                                                      .id,
+                                                                  _tmpUnitName);
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        }),
+                                                  ],
+                                                ),
+                                                const Divider(),
+                                                Expanded(
+                                                  child: CupertinoPicker(
+                                                    looping: false,
+                                                    itemExtent: 30,
+                                                    children:
+                                                        _ingredientUnitList
+                                                            .map((unitName) =>
+                                                                new Text(
+                                                                    unitName))
+                                                            .toList(),
+                                                    onSelectedItemChanged:
+                                                        (index) {
+                                                      _tmpUnitName =
+                                                          _ingredientUnitList[
+                                                              index];
+                                                    },
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  child: Text('$unitNameForTextButton'));
+                            }),
                       ),
                       Icon(Icons.drag_handle),
                     ],
@@ -187,7 +255,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
               id: Uuid().v4(),
               name: '',
               amount: '',
-              unit: '個',
+              unit: null,
             );
             ingredientListNotifier.add(ingredient);
           },

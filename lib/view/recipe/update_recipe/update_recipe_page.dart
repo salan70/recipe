@@ -12,6 +12,8 @@ import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/validation/validation.dart';
 import 'package:recipe/view/recipe/update_recipe/update_recipe_model.dart';
 
+import '../../other/ingredient_unit_edit/ingredient_unit_edit_page.dart';
+
 class UpdateRecipeScreen extends ConsumerWidget {
   UpdateRecipeScreen(this.recipe);
   final Recipe recipe;
@@ -215,6 +217,16 @@ class UpdateRecipeScreen extends ConsumerWidget {
                         },
                       )),
                   Text("人分"),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => IngredientUnitEditPage(),
+                              fullscreenDialog: false,
+                            ));
+                      },
+                      child: Text('単位を編集')),
                 ]),
                 Container(
                   child: IngredientTextFieldWidget(
