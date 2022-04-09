@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
 
-import '../update_recipe/update_recipe_page.dart';
+import '../add_or_update_recipe/add_or_update_recipe_page.dart';
 import 'add_cart_recipe_detail_model.dart';
 
 class AddBasketRecipeDetailPage extends ConsumerWidget {
@@ -54,8 +54,13 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
               title: Center(
                 child: Hero(
                   tag: 'recipeName' + recipe.recipeId!,
-                  child:
-                      Text(recipe.recipeName!, overflow: TextOverflow.ellipsis),
+                  child: Text(
+                    recipe.recipeName!,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).primaryColor),
+                  ),
                 ),
               ),
               actions: <Widget>[
@@ -64,7 +69,8 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => UpdateRecipeScreen(recipe),
+                            builder: (context) =>
+                                AddOrUpdateRecipePage(recipe, 'Update'),
                             fullscreenDialog: true,
                           ));
                     },

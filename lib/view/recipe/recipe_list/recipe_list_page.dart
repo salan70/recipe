@@ -19,7 +19,13 @@ class RecipeListPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('レシピ一覧'),
+        // backgroundColor: Theme.of(context).backgroundColor,
+        title: Text(
+          'レシピ一覧',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColor),
+        ),
       ),
       body: recipes.when(
           error: (error, stack) => Text('Error: $error'),

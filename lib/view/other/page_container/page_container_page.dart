@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hawk_fab_menu/hawk_fab_menu.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:recipe/components/providers.dart';
+import 'package:recipe/view/recipe/add_or_update_recipe/add_or_update_recipe_page.dart';
 
+import '../../../domain/recipe.dart';
 import '../../cart/cart_list_page/cart_list_page.dart';
 import '../../recipe/add_cart_recipe_list/add_cart_recipe_list_page.dart';
-import '../../recipe/add_recipe/add_recipe_page.dart';
 import '../../recipe/recipe_list/recipe_list_page.dart';
 
 class PageContainerPage extends ConsumerWidget {
@@ -63,7 +64,8 @@ class PageContainerPage extends ConsumerWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddRecipeScreen(),
+                        builder: (context) => AddOrUpdateRecipePage(
+                            Recipe(recipeGrade: 3), 'Add'),
                         fullscreenDialog: true,
                       ));
                 }

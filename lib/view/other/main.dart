@@ -33,8 +33,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Recipe App',
       theme: FlexThemeData.light(
-        bottomAppBarElevation: 10,
+        appBarBackground: Colors.white,
         scheme: usedScheme,
+        bottomAppBarElevation: 10,
         appBarElevation: 0.5,
       ),
       // darkTheme: FlexThemeData.dark(
@@ -42,7 +43,6 @@ class MyApp extends StatelessWidget {
       //   appBarElevation: 2,
       // ),
       // themeMode: themeMode,
-      // home: RecipeListPage(),
       home: PageContainerPage(),
     );
   }

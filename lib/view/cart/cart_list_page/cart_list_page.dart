@@ -27,7 +27,12 @@ class CartListPage extends ConsumerWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('カート'),
+          title: Text(
+            'カート',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor),
+          ),
           bottom: const TabBar(
             tabs: <Widget>[
               Tab(text: '材料'),
@@ -79,7 +84,7 @@ class CartListPage extends ConsumerWidget {
                                 ingredientListInCartPerRecipeList);
 
                         return Container(
-                          color: Colors.blueGrey,
+                          color: Theme.of(context).dividerColor,
                           child: ListView(
                             children: [
                               _ingredientListCardWidget('buyList', buyList),

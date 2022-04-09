@@ -45,7 +45,12 @@ class AddCartRecipeListPage extends ConsumerWidget {
           color: Colors.green,
         ),
         elevation: 1,
-        title: Text('かごに追加するレシピを選択'),
+        title: Text(
+          'かごに追加するレシピを選択',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColor),
+        ),
       ),
       body: SnappingSheet(
         child: recipes.when(

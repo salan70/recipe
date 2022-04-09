@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,24 +10,35 @@ import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_f
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/validation/validation.dart';
-import 'package:recipe/view/other/ingredient_unit_edit/ingredient_unit_edit_page.dart';
+import 'package:recipe/view/recipe/add_or_update_recipe/update_recipe_model.dart';
 
+import '../../other/ingredient_unit_edit/ingredient_unit_edit_page.dart';
 import 'add_recipe_model.dart';
 
-class AddRecipeScreen extends ConsumerWidget {
-  final Recipe recipe = Recipe(recipeGrade: 3);
+class AddOrUpdateRecipePage extends ConsumerWidget {
+  AddOrUpdateRecipePage(this.recipe, this.addOrUpdate);
+  final Recipe recipe;
+  final String addOrUpdate;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authControllerProvider);
     final Validation validation = Validation();
+
+    final user = ref.watch(authControllerProvider);
+
     final AddRecipeModel addRecipeModel = AddRecipeModel(user: user!);
+    final UpdateRecipeModel updateRecipeModel = UpdateRecipeModel(user: user);
 
     final imageFile = ref.watch(imageFileNotifierProvider);
     final imageFileNotifier = ref.watch(imageFileNotifierProvider.notifier);
 
-    final proceduresList = ref.watch(procedureListNotifierProvider);
+    final procedureList = ref.watch(procedureListNotifierProvider);
     final ingredientList = ref.watch(ingredientListNotifierProvider);
+
+    Recipe? originalRecipe;
+    if (addOrUpdate == 'Update') {
+      originalRecipe = recipe;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -39,11 +49,11 @@ class AddRecipeScreen extends ConsumerWidget {
           icon: Icon(Icons.arrow_back_ios),
         ),
         title: Center(
-          child: TextField(
-            decoration: InputDecoration.collapsed(hintText: "料理名"),
-            onChanged: (value) {
-              recipe.recipeName = value;
-            },
+          child: Text(
+            addOrUpdate == 'Add' ? 'レシピを追加' : 'レシピを編集',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).primaryColor),
           ),
         ),
         actions: <Widget>[
@@ -90,34 +100,69 @@ class AddRecipeScreen extends ConsumerWidget {
                   }
 
                   if (ingredientAmountIsOk) {
-                    print("===追加===");
-                    Recipe addedRecipe = Recipe(
-                        recipeName: recipe.recipeName,
-                        recipeGrade: recipe.recipeGrade,
-                        forHowManyPeople: recipe.forHowManyPeople,
-                        recipeMemo: recipe.recipeMemo,
-                        imageUrl: '',
-                        imageFile: imageFile,
-                        ingredientList: ingredientList,
-                        procedureList: proceduresList);
-                    bool addIsSuccess =
-                        await addRecipeModel.addRecipe(addedRecipe);
+                    if (addOrUpdate == 'Update') {
+                      print("===更新===");
+                      print(ingredientList.length);
+                      Recipe updatedRecipe = Recipe(
+                          recipeName: recipe.recipeName,
+                          recipeGrade: recipe.recipeGrade,
+                          forHowManyPeople: recipe.forHowManyPeople,
+                          recipeMemo: recipe.recipeMemo,
+                          imageUrl: recipe.imageUrl,
+                          imageFile: imageFile,
+                          ingredientList: ingredientList,
+                          procedureList: procedureList);
 
-                    if (addIsSuccess) {
-                      Navigator.pop(context);
-                      final snackBar = SnackBar(
-                          content: const Text(
-                        'レシピを追加しました',
-                        textAlign: TextAlign.center,
-                      ));
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      bool updateIsSuccess = await updateRecipeModel
+                          .updateRecipe(originalRecipe!, updatedRecipe);
+
+                      if (updateIsSuccess) {
+                        Navigator.pop(context);
+                        final snackBar = SnackBar(
+                            content: const Text(
+                          'レシピを更新しました',
+                          textAlign: TextAlign.center,
+                        ));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      } else {
+                        final snackBar = SnackBar(
+                            content: const Text(
+                          'レシピの更新に失敗しました',
+                          textAlign: TextAlign.center,
+                        ));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
                     } else {
-                      final snackBar = SnackBar(
-                          content: const Text(
-                        'レシピの追加に失敗しました',
-                        textAlign: TextAlign.center,
-                      ));
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      print(imageFile);
+                      Recipe addedRecipe = Recipe(
+                          recipeName: recipe.recipeName,
+                          recipeGrade: recipe.recipeGrade,
+                          forHowManyPeople: recipe.forHowManyPeople,
+                          recipeMemo: recipe.recipeMemo,
+                          imageUrl: '',
+                          imageFile: imageFile,
+                          ingredientList: ingredientList,
+                          procedureList: procedureList);
+                      bool addIsSuccess =
+                          await addRecipeModel.addRecipe(addedRecipe);
+                      print(addIsSuccess);
+
+                      if (addIsSuccess) {
+                        Navigator.pop(context);
+                        final snackBar = SnackBar(
+                            content: const Text(
+                          'レシピを追加しました',
+                          textAlign: TextAlign.center,
+                        ));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      } else {
+                        final snackBar = SnackBar(
+                            content: const Text(
+                          'レシピの追加に失敗しました',
+                          textAlign: TextAlign.center,
+                        ));
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
                     }
                   }
                 }
@@ -131,6 +176,13 @@ class AddRecipeScreen extends ConsumerWidget {
         child: ListView(
           children: [
             SizedBox(height: 20),
+            TextField(
+              controller: TextEditingController(text: recipe.recipeName),
+              decoration: InputDecoration.collapsed(hintText: "料理名"),
+              onChanged: (value) {
+                recipe.recipeName = value;
+              },
+            ),
             // 画像
             GestureDetector(
               child: SizedBox(
@@ -139,34 +191,39 @@ class AddRecipeScreen extends ConsumerWidget {
                     ? imageFile.path != ''
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            // child: Image.file(imageFile)
+                            child: Image.file(imageFile))
+                        : Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              color: Colors.grey[400],
+                            ),
+                            child: Icon(Icons.add_photo_alternate_outlined),
+                          )
+                    : recipe.imageUrl != '' && recipe.imageUrl != null
+                        ? Image.network(
+                            recipe.imageUrl!,
+                            errorBuilder: (c, o, s) {
+                              return const Icon(
+                                Icons.error,
+                              );
+                            },
                           )
                         : Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8.0),
-                              // color: Colors.grey[400],
-                              color: Colors.red,
+                              color: Colors.blue[400],
                             ),
                             child: Icon(Icons.add_photo_alternate_outlined),
-                          )
-                    : Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          // color: Colors.grey[400],
-                          color: Colors.blue,
-                        ),
-                        child: Icon(Icons.add_photo_alternate_outlined),
-                      ),
+                          ),
               ),
               onTap: () async {
-                print(imageFile);
                 await imageFileNotifier.pickImage();
               },
             ),
             // 評価
             Center(
                 child: RatingBar.builder(
-              initialRating: 3,
+              initialRating: recipe.recipeGrade!,
               minRating: 1,
               direction: Axis.horizontal,
               allowHalfRating: true,
@@ -188,16 +245,20 @@ class AddRecipeScreen extends ConsumerWidget {
                   Text("材料"),
                   SizedBox(width: 10),
                   SizedBox(
-                      width: 48,
+                      width: 32,
                       child: TextField(
-                        maxLength: 2,
-                        decoration: InputDecoration(counterText: ''),
+                        controller: recipe.forHowManyPeople == null
+                            ? null
+                            : TextEditingController(
+                                text: recipe.forHowManyPeople.toString()),
                         keyboardType: TextInputType.number,
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly
                         ],
                         onChanged: (value) {
-                          recipe.forHowManyPeople = int.parse(value);
+                          if (int.tryParse(value) != null) {
+                            recipe.forHowManyPeople = int.parse(value);
+                          }
                         },
                       )),
                   Text("人分"),
@@ -213,7 +274,9 @@ class AddRecipeScreen extends ConsumerWidget {
                       child: Text('単位を編集')),
                 ]),
                 Container(
-                  child: IngredientTextFieldWidget(),
+                  child: IngredientTextFieldWidget(
+                    recipe: recipe,
+                  ),
                 ),
               ],
             ),
@@ -237,6 +300,7 @@ class AddRecipeScreen extends ConsumerWidget {
                     child: Text("メモ"),
                   ),
                   TextField(
+                    controller: TextEditingController(text: recipe.recipeMemo),
                     maxLines: null,
                     onChanged: (value) {
                       recipe.recipeMemo = value;

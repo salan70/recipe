@@ -12,7 +12,12 @@ class IngredientUnitEditPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('材料の単位を編集'),
+        title: Text(
+          '材料の単位を編集',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColor),
+        ),
       ),
       body: ValueListenableBuilder(
           valueListenable: IngredientUnitBoxes.getIngredientUnit().listenable(),
