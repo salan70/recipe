@@ -22,7 +22,7 @@ class AddOrUpdateRecipePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Validation validation = Validation();
+    final Validations validation = Validations();
 
     final user = ref.watch(authControllerProvider);
 
@@ -84,7 +84,8 @@ class AddOrUpdateRecipePage extends ConsumerWidget {
                 } else {
                   bool ingredientAmountIsOk = true;
                   for (int index = 0; index < ingredientList.length; index++) {
-                    if (validation.errorText(ingredientList[index].amount) !=
+                    if (validation.outputAmountErrorText(
+                            ingredientList[index].amount) !=
                         null) {
                       // 材料の数量の再入力を求める
                       final snackBar = SnackBar(

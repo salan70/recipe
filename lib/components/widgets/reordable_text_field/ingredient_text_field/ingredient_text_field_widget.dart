@@ -90,7 +90,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
     final ingredientListNotifier =
         ref.watch(ingredientListNotifierProvider.notifier);
 
-    final Validation validation = Validation();
+    final Validations validation = Validations();
 
     final nameIsChanged = ref.watch(nameIsChangedProvider);
     final nameIsChangedNotifier = ref.watch(nameIsChangedProvider.notifier);
@@ -150,8 +150,8 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                             decoration: InputDecoration(
                               counterText: '',
                               // labelText: "2000",
-                              errorText: validation
-                                  .errorText(ingredientList[index].amount),
+                              errorText: validation.outputAmountErrorText(
+                                  ingredientList[index].amount),
                             ),
                             onChanged: (value) {
                               ingredientListNotifier.editAmount(
