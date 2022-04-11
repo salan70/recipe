@@ -29,9 +29,6 @@ class CartListPage extends ConsumerWidget {
         appBar: AppBar(
           title: Text(
             'カート',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).primaryColor),
           ),
           bottom: const TabBar(
             tabs: <Widget>[

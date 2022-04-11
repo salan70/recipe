@@ -28,7 +28,7 @@ class EditRecipeWidget extends ConsumerWidget {
           SizedBox(height: 20),
           TextField(
             controller: TextEditingController(text: recipe.recipeName),
-            decoration: InputDecoration.collapsed(hintText: "料理名"),
+            decoration: InputDecoration.collapsed(hintText: "レシピ名"),
             onChanged: (value) {
               recipe.recipeName = value;
             },

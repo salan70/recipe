@@ -41,15 +41,9 @@ class AddCartRecipeListPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: Colors.green,
-        ),
         elevation: 1,
         title: Text(
           'かごに追加するレシピを選択',
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).primaryColor),
         ),
       ),
       body: SnappingSheet(

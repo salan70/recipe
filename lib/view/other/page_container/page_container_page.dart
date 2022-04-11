@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hawk_fab_menu/hawk_fab_menu.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:recipe/components/providers.dart';
-import 'package:recipe/view/recipe/add_or_update_recipe/add_or_update_recipe_page.dart';
-import 'package:recipe/view/recipe/add_or_update_recipe/add_recipe_page.dart';
+import 'package:recipe/view/recipe/add_recipe/add_recipe_page.dart';
 
 import '../../../domain/recipe.dart';
 import '../../cart/cart_list_page/cart_list_page.dart';

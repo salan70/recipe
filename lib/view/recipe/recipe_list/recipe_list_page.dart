@@ -22,9 +22,6 @@ class RecipeListPage extends ConsumerWidget {
         // backgroundColor: Theme.of(context).backgroundColor,
         title: Text(
           'レシピ一覧',
-          style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Theme.of(context).primaryColor),
         ),
       ),
       body: recipes.when(
@@ -76,21 +73,8 @@ class RecipeListPage extends ConsumerWidget {
                     child: Card(
                       child: Column(
                         children: [
-                          SizedBox(
-                            height: 10,
-                          ),
                           Expanded(
-                            flex: 1,
-                            child: Hero(
-                              tag: 'recipeList recipeName' + recipe.recipeId!,
-                              child: Text(
-                                recipe.recipeName.toString(),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 5,
+                            flex: 6,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(5),
                               child: SizedBox(
@@ -125,10 +109,17 @@ class RecipeListPage extends ConsumerWidget {
                           ),
                           Expanded(
                             flex: 2,
-                            child: Text(
-                              outputIngredientText,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                            child: Hero(
+                              tag: 'recipeList recipeName' + recipe.recipeId!,
+                              child: Text(
+                                recipe.recipeName.toString(),
+                                maxLines: 2,
+                                textAlign: TextAlign.left,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .subtitle1,
+                              ),
                             ),
                           ),
                         ],
