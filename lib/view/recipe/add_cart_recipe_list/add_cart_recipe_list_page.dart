@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:badges/badges.dart';
@@ -95,68 +96,8 @@ class AddCartRecipeListPage extends ConsumerWidget {
                             ));
                       },
 
-                      child: Card(
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Hero(
-                                tag: 'recipeName' + recipe.recipeId!,
-                                child: Text(
-                                  recipe.recipeName.toString(),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 5,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: SizedBox(
-                                  width: 200,
-                                  height: 120,
-                                  child: Hero(
-                                    tag: 'recipeImage' + recipe.recipeId!,
-                                    child: recipe.imageUrl != null
-                                        ? recipe.imageUrl != ''
-                                            ? Image.network(
-                                                recipe.imageUrl!,
-                                                errorBuilder: (c, o, s) {
-                                                  return const Icon(
-                                                    Icons.error,
-                                                    color: Colors.red,
-                                                  );
-                                                },
-                                              )
-                                            : Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          8.0),
-                                                  color: Colors.grey[400],
-                                                ),
-                                                child: Icon(Icons
-                                                    .add_photo_alternate_outlined),
-                                              )
-                                        : CircularProgressIndicator(),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                outputIngredientText,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      child:
+                          RecipeCardWidget(recipe, 'add_cart_recipe_list_page'),
                     );
                   });
             }),
