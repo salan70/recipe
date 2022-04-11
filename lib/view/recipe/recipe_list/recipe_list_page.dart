@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
-import 'package:recipe/view/recipe/recipe_list/recipe_list_model.dart';
 
 import '../recipe_detail/recipe_detail_page.dart';
 
@@ -16,11 +15,9 @@ class RecipeListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recipes = ref.watch(recipeListStreamProvider);
-    RecipeListModel recipeListModel = RecipeListModel();
 
     return Scaffold(
       appBar: AppBar(
-        // backgroundColor: Theme.of(context).backgroundColor,
         title: Text(
           'レシピ一覧',
         ),
@@ -30,7 +27,7 @@ class RecipeListPage extends ConsumerWidget {
           loading: () => const CircularProgressIndicator(),
           data: (recipes) {
             return Padding(
-              padding: const EdgeInsets.all(8),
+              padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
               child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,

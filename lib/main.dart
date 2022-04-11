@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
-          subtitle2: TextStyle(color: Colors.black),
         ),
       ).copyWith(
         appBarTheme: AppBarTheme(
@@ -55,7 +54,7 @@ class MyApp extends StatelessWidget {
         ),
         cardTheme: CardTheme(
           margin: EdgeInsets.all(8),
-          elevation: 10,
+          elevation: 3,
         ),
       ),
       // darkTheme: FlexThemeData.dark(

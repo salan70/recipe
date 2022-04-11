@@ -8,6 +8,7 @@ import 'package:flutter_tree/flutter_tree.dart';
 
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
+import 'package:recipe/view/cart/cart_list_page/cart_list_recipe_detail/cart_list_recipe_deetail_page.dart';
 import 'package:recipe/view/recipe/add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
 
 import '../../../domain/cart.dart';
@@ -214,7 +215,7 @@ class CartListPage extends ConsumerWidget {
                                               MaterialPageRoute(
                                                 fullscreenDialog: false,
                                                 builder: (context) =>
-                                                    AddBasketRecipeDetailPage(
+                                                    CartListRecipeDetailPage(
                                                         recipe.recipeId),
                                               ));
                                         },
