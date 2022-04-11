@@ -38,30 +38,6 @@ class RecipeListPage extends ConsumerWidget {
                   itemCount: recipes.length,
                   itemBuilder: (context, index) {
                     final recipe = recipes[index];
-                    final ingredients = ref.watch(
-                        ingredientListStreamProviderFamily(recipe.recipeId!));
-                    String outputIngredientText = '';
-
-                    final procedures = ref.watch(
-                        procedureListStreamProviderFamily(recipe.recipeId!));
-
-                    ingredients.when(
-                        data: (ingredient) {
-                          recipe.ingredientList = ingredient;
-
-                          outputIngredientText = recipeListModel
-                              .toOutputIngredientText(ingredient);
-                        },
-                        error: (error, stack) => Text('Error: $error'),
-                        loading: () => const CircularProgressIndicator());
-
-                    procedures.when(
-                        data: (procedure) {
-                          recipe.procedureList = procedure;
-                        },
-                        error: (error, stack) => Text('Error: $error'),
-                        loading: () => const CircularProgressIndicator());
-
                     return GestureDetector(
                       ///画面遷移
                       onTap: () {

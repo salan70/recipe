@@ -52,54 +52,57 @@ class AddCartRecipeListPage extends ConsumerWidget {
             error: (error, stack) => Text('Error: $error'),
             loading: () => const CircularProgressIndicator(),
             data: (recipes) {
-              return GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
-                  itemCount: recipes.length,
-                  itemBuilder: (context, index) {
-                    final recipe = recipes[index];
-                    final ingredients = ref.watch(
-                        ingredientListStreamProviderFamily(recipe.recipeId!));
-                    String outputIngredientText = '';
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                    ),
+                    itemCount: recipes.length,
+                    itemBuilder: (context, index) {
+                      final recipe = recipes[index];
+                      final ingredients = ref.watch(
+                          ingredientListStreamProviderFamily(recipe.recipeId!));
+                      String outputIngredientText = '';
 
-                    final procedures = ref.watch(
-                        procedureListStreamProviderFamily(recipe.recipeId!));
+                      final procedures = ref.watch(
+                          procedureListStreamProviderFamily(recipe.recipeId!));
 
-                    ingredients.when(
-                        data: (ingredient) {
-                          recipe.ingredientList = ingredient;
+                      ingredients.when(
+                          data: (ingredient) {
+                            recipe.ingredientList = ingredient;
 
-                          outputIngredientText = recipeListModel
-                              .toOutputIngredientText(ingredient);
+                            outputIngredientText = recipeListModel
+                                .toOutputIngredientText(ingredient);
+                          },
+                          error: (error, stack) => Text('Error: $error'),
+                          loading: () => const CircularProgressIndicator());
+
+                      procedures.when(
+                          data: (procedure) {
+                            recipe.procedureList = procedure;
+                          },
+                          error: (error, stack) => Text('Error: $error'),
+                          loading: () => const CircularProgressIndicator());
+
+                      return GestureDetector(
+                        ///画面遷移
+                        onTap: () {
+                          stateIsChangedNotifier.state = false;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                fullscreenDialog: true,
+                                builder: (context) =>
+                                    AddBasketRecipeDetailPage(recipe.recipeId!),
+                              ));
                         },
-                        error: (error, stack) => Text('Error: $error'),
-                        loading: () => const CircularProgressIndicator());
 
-                    procedures.when(
-                        data: (procedure) {
-                          recipe.procedureList = procedure;
-                        },
-                        error: (error, stack) => Text('Error: $error'),
-                        loading: () => const CircularProgressIndicator());
-
-                    return GestureDetector(
-                      ///画面遷移
-                      onTap: () {
-                        stateIsChangedNotifier.state = false;
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              fullscreenDialog: true,
-                              builder: (context) =>
-                                  AddBasketRecipeDetailPage(recipe.recipeId!),
-                            ));
-                      },
-
-                      child:
-                          RecipeCardWidget(recipe, 'add_cart_recipe_list_page'),
-                    );
-                  });
+                        child: RecipeCardWidget(
+                            recipe, 'add_cart_recipe_list_page'),
+                      );
+                    }),
+              );
             }),
 
         ///snapingsheet
