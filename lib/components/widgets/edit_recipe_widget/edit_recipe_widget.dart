@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
+import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/components/widgets/reordable_text_field/procedures.dart';
@@ -66,21 +68,44 @@ class EditRecipeWidget extends ConsumerWidget {
                           child: Icon(Icons.add_photo_alternate_outlined),
                         ),
             ),
-            onTap: () async {
-              await imageFileNotifier.pickImage();
+            onTap: () {
+              showAdaptiveActionSheet(
+                context: context,
+                title: const Text('画像の選択'),
+                androidBorderRadius: 30,
+                actions: <BottomSheetAction>[
+                  BottomSheetAction(
+                      title: const Text('アルバムから選択'),
+                      onPressed: () async {
+                        await imageFileNotifier.pickImage(ImageSource.gallery);
+                        Navigator.pop(context);
+                      }),
+                  BottomSheetAction(
+                      title: const Text('カメラで撮影'),
+                      onPressed: () async {
+                        await imageFileNotifier.pickImage(ImageSource.camera);
+                        Navigator.pop(context);
+                      }),
+                ],
+                cancelAction: CancelAction(
+                    title: const Text('キャンセル'),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+              );
             },
           ),
           // 評価
           Center(
               child: RatingBar.builder(
             initialRating: recipe.recipeGrade!,
-            minRating: 1,
+            minRating: 0.5,
             direction: Axis.horizontal,
             allowHalfRating: true,
             itemCount: 5,
             itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
             itemBuilder: (context, _) => Icon(
-              Icons.star,
+              Icons.star_rounded,
               color: Colors.amber,
             ),
             onRatingUpdate: (rating) {

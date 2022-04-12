@@ -3,13 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:flutter_tree/flutter_tree.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
-import 'package:recipe/view/cart/cart_list_page/cart_list_recipe_detail/cart_list_recipe_deetail_page.dart';
-import 'package:recipe/view/recipe/add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
+import 'package:recipe/view/cart/cart_list_recipe_detail/cart_list_recipe_detail_page.dart';
 
 import '../../../domain/cart.dart';
 import 'cart_list_model.dart';
@@ -31,10 +29,19 @@ class CartListPage extends ConsumerWidget {
           title: Text(
             'カート',
           ),
-          bottom: const TabBar(
+          bottom: TabBar(
+            indicatorColor: Colors.black,
             tabs: <Widget>[
-              Tab(text: '材料'),
-              Tab(text: 'レシピ'),
+              Tab(
+                  child: Text(
+                '材料',
+                style: Theme.of(context).primaryTextTheme.subtitle1,
+              )),
+              Tab(
+                  child: Text(
+                'レシピ',
+                style: Theme.of(context).primaryTextTheme.subtitle1,
+              )),
             ],
           ),
         ),

@@ -119,12 +119,6 @@ class AddCartRecipeListPage extends ConsumerWidget {
             snappingDuration: Duration(milliseconds: 1000),
             positionFactor: 0.7,
           ),
-          // SnappingPosition.factor(
-          //   grabbingContentOffset: GrabbingContentOffset.bottom,
-          //   snappingCurve: Curves.easeInExpo,
-          //   snappingDuration: Duration(seconds: 1),
-          //   positionFactor: 0.9,
-          // ),
         ],
         grabbingHeight: 24,
         sheetAbove: null,

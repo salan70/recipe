@@ -73,13 +73,13 @@ class RecipeDetailWidget extends ConsumerWidget {
                     child: RatingBar.builder(
                   ignoreGestures: true,
                   initialRating: recipe.recipeGrade!,
-                  minRating: 1,
+                  minRating: 0.5,
                   direction: Axis.horizontal,
                   allowHalfRating: true,
                   itemCount: 5,
                   itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                   itemBuilder: (context, _) => Icon(
-                    Icons.star,
+                    Icons.star_rounded,
                     color: Colors.amber,
                   ),
                   onRatingUpdate: (rating) {},
