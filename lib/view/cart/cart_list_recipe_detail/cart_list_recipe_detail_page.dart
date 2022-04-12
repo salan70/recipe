@@ -21,10 +21,14 @@ class CartListRecipeDetailPage extends ConsumerWidget {
           'レシピの詳細',
         ),
       ),
-      body: Container(
-        margin: EdgeInsets.only(left: 20.0, right: 20.0),
-        width: double.infinity,
-        child: RecipeDetailWidget(recipeId),
+      body: ListView(
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 20.0, right: 20.0),
+            width: double.infinity,
+            child: RecipeDetailWidget(recipeId),
+          ),
+        ],
       ),
     );
   }

@@ -48,61 +48,64 @@ class CartListPage extends ConsumerWidget {
         body: TabBarView(
           children: [
             /// 材料タブ
-            ValueListenableBuilder(
-                valueListenable: CartItemBoxes.getCartItems().listenable(),
-                builder: (context, box, widget) {
-                  return recipeListInCartStream.when(
-                      error: (error, stack) => Text('Error: $error'),
-                      loading: () => const CircularProgressIndicator(),
-                      data: (recipeListInCart) {
-                        List<IngredientPerInCartRecipe>
-                            ingredientPerInCartRecipeList = [];
+            Padding(
+              padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+              child: ValueListenableBuilder(
+                  valueListenable: CartItemBoxes.getCartItems().listenable(),
+                  builder: (context, box, widget) {
+                    return recipeListInCartStream.when(
+                        error: (error, stack) => Text('Error: $error'),
+                        loading: () => const CircularProgressIndicator(),
+                        data: (recipeListInCart) {
+                          List<IngredientPerInCartRecipe>
+                              ingredientPerInCartRecipeList = [];
 
-                        for (var recipe in recipeListInCart) {
-                          final ingredientList = ref.watch(
-                              ingredientListStreamProviderFamily(
-                                  recipe.recipeId!));
-                          ingredientList.when(
-                            error: (error, stack) => Text('Error: $error'),
-                            loading: () => const CircularProgressIndicator(),
-                            data: (ingredientList) {
-                              List<IngredientPerInCartRecipe> addList =
-                                  cartListModel
-                                      .createIngredientPerInCartRecipeList(
-                                          recipe, ingredientList);
-                              for (var item in addList)
-                                ingredientPerInCartRecipeList.add(item);
-                            },
+                          for (var recipe in recipeListInCart) {
+                            final ingredientList = ref.watch(
+                                ingredientListStreamProviderFamily(
+                                    recipe.recipeId!));
+                            ingredientList.when(
+                              error: (error, stack) => Text('Error: $error'),
+                              loading: () => const CircularProgressIndicator(),
+                              data: (ingredientList) {
+                                List<IngredientPerInCartRecipe> addList =
+                                    cartListModel
+                                        .createIngredientPerInCartRecipeList(
+                                            recipe, ingredientList);
+                                for (var item in addList)
+                                  ingredientPerInCartRecipeList.add(item);
+                              },
+                            );
+                          }
+
+                          List<IngredientInCartPerRecipeList>
+                              ingredientListInCartPerRecipeList = cartListModel
+                                  .createIngredientListInCartPerRecipeList(
+                                      ingredientPerInCartRecipeList);
+
+                          List<IngredientInCartPerRecipeList> buyList =
+                              cartListModel.createBuyList(
+                                  ingredientListInCartPerRecipeList);
+                          List<IngredientInCartPerRecipeList> notBuyList =
+                              cartListModel.createNotBuyList(
+                                  ingredientListInCartPerRecipeList);
+
+                          return Container(
+                            child: ListView(
+                              children: [
+                                _ingredientListCardWidget(
+                                    context, 'buyList', buyList),
+                                _ingredientListCardWidget(
+                                    context, 'notBuyList', notBuyList),
+                                SizedBox(
+                                  height: 48,
+                                ),
+                              ],
+                            ),
                           );
-                        }
-
-                        List<IngredientInCartPerRecipeList>
-                            ingredientListInCartPerRecipeList = cartListModel
-                                .createIngredientListInCartPerRecipeList(
-                                    ingredientPerInCartRecipeList);
-
-                        List<IngredientInCartPerRecipeList> buyList =
-                            cartListModel.createBuyList(
-                                ingredientListInCartPerRecipeList);
-                        List<IngredientInCartPerRecipeList> notBuyList =
-                            cartListModel.createNotBuyList(
-                                ingredientListInCartPerRecipeList);
-
-                        return Container(
-                          color: Theme.of(context).dividerColor,
-                          child: ListView(
-                            children: [
-                              _ingredientListCardWidget('buyList', buyList),
-                              _ingredientListCardWidget(
-                                  'notBuyList', notBuyList),
-                              SizedBox(
-                                height: 48,
-                              ),
-                            ],
-                          ),
-                        );
-                      });
-                }),
+                        });
+                  }),
+            ),
 
             /// レシピタブ
             recipeListInCartStream.when(
@@ -114,12 +117,23 @@ class CartListPage extends ConsumerWidget {
                     itemCount: _recipeList.length,
                     itemBuilder: (BuildContext context, int index) {
                       final _recipe = _recipeList[index];
-                      return Row(
-                        children: [
-                          Text(_recipe.recipeName!),
-                          Text(
-                              '合計${_recipe.countInCart! * _recipe.forHowManyPeople!}人分'),
-                        ],
+                      return ListTile(
+                        title: Text(_recipe.recipeName!),
+                        subtitle: Text(
+                            '${_recipe.countInCart! * _recipe.forHowManyPeople!}人分'),
+                        trailing: IconButton(
+                          icon: Icon(Icons.info_outline),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  fullscreenDialog: false,
+                                  builder: (context) =>
+                                      CartListRecipeDetailPage(
+                                          _recipe.recipeId!),
+                                ));
+                          },
+                        ),
                       );
                     },
                   );
@@ -130,8 +144,8 @@ class CartListPage extends ConsumerWidget {
     );
   }
 
-  Widget _ingredientListCardWidget(
-      String listType, List<IngredientInCartPerRecipeList> ingredientList) {
+  Widget _ingredientListCardWidget(BuildContext context, String listType,
+      List<IngredientInCartPerRecipeList> ingredientList) {
     CartListModel cartListModel = CartListModel();
     String _cardTitle = listType == 'buyList'
         ? '買うリスト'
@@ -145,8 +159,16 @@ class CartListPage extends ConsumerWidget {
             : '';
     return Column(
       children: [
-        Container(
-          child: Text(_cardTitle),
+        Padding(
+          padding: const EdgeInsets.only(left: 8, right: 8),
+          child: Container(
+            width: double.infinity,
+            child: Text(
+              _cardTitle,
+              style: Theme.of(context).primaryTextTheme.subtitle1,
+              textAlign: TextAlign.left,
+            ),
+          ),
         ),
         Card(
           child: ListView.builder(
@@ -162,7 +184,7 @@ class CartListPage extends ConsumerWidget {
                   actionPane: SlidableDrawerActionPane(),
                   actions: [
                     IconSlideAction(
-                      color: Colors.green,
+                      color: Theme.of(context).dividerColor,
                       iconWidget: Text(_slidableActionText),
                       onTap: () {
                         cartListModel.toggleIsNeed(
@@ -172,10 +194,20 @@ class CartListPage extends ConsumerWidget {
                     ),
                   ],
                   child: CheckboxListTile(
-                    title:
-                        Text('${ingredient.ingredientInCart.ingredientName}'),
+                    title: Text(
+                      '${ingredient.ingredientInCart.ingredientName}',
+                      style: TextStyle(
+                          decoration: cartListModel.getCartItem(id).isBought
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none),
+                    ),
                     subtitle: Text(
-                        '${ingredient.ingredientInCart.ingredientTotalAmount}${ingredient.ingredientInCart.ingredientUnit}'),
+                      '${ingredient.ingredientInCart.ingredientTotalAmount}${ingredient.ingredientInCart.ingredientUnit}',
+                      style: TextStyle(
+                          decoration: cartListModel.getCartItem(id).isBought
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none),
+                    ),
                     controlAffinity: ListTileControlAffinity.leading,
                     value: cartListModel.getCartItem(id).isBought,
                     onChanged: (isBought) {
