@@ -71,7 +71,12 @@ class ProceduresListWidget extends ConsumerWidget {
                   ],
                   child: Row(
                     children: [
-                      Expanded(flex: 1, child: Text((index + 1).toString())),
+                      Expanded(
+                          flex: 1,
+                          child: Text(
+                            '${index + 1}',
+                            style: TextStyle(fontSize: 16),
+                          )),
                       Expanded(
                           flex: 15,
                           child: TextField(
@@ -79,6 +84,7 @@ class ProceduresListWidget extends ConsumerWidget {
                                 ? TextEditingController(
                                     text: procedureList[index].content)
                                 : null,
+                            maxLength: 100,
                             maxLines: null,
                             onChanged: (String value) {
                               procedureList[index] = Procedure(

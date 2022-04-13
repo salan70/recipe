@@ -27,15 +27,18 @@ class EditRecipeWidget extends ConsumerWidget {
       width: double.infinity,
       child: ListView(
         children: [
-          SizedBox(height: 20),
+          SizedBox(height: 16),
           TextField(
+            maxLength: 30,
+            style: Theme.of(context).primaryTextTheme.headline5,
             controller: TextEditingController(text: recipe.recipeName),
-            decoration: InputDecoration.collapsed(hintText: "レシピ名"),
+            decoration: InputDecoration.collapsed(hintText: 'レシピ名'),
             onChanged: (value) {
               recipe.recipeName = value;
             },
           ),
           // 画像
+          SizedBox(height: 8),
           GestureDetector(
             child: SizedBox(
               height: 250,
@@ -96,6 +99,7 @@ class EditRecipeWidget extends ConsumerWidget {
             },
           ),
           // 評価
+          SizedBox(height: 8),
           Center(
               child: RatingBar.builder(
             initialRating: recipe.recipeGrade!,
@@ -114,40 +118,54 @@ class EditRecipeWidget extends ConsumerWidget {
           )),
 
           // 材料
+          SizedBox(height: 8),
           Column(
             children: [
-              Row(children: [
-                Text("材料"),
-                SizedBox(width: 10),
-                SizedBox(
-                    width: 32,
-                    child: TextField(
-                      controller: recipe.forHowManyPeople == null
-                          ? null
-                          : TextEditingController(
-                              text: recipe.forHowManyPeople.toString()),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                      onChanged: (value) {
-                        if (int.tryParse(value) != null) {
-                          recipe.forHowManyPeople = int.parse(value);
-                        }
-                      },
-                    )),
-                Text("人分"),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => IngredientUnitEditPage(),
-                            fullscreenDialog: false,
-                          ));
-                    },
-                    child: Text('単位を編集')),
-              ]),
+              DefaultTextStyle(
+                style: Theme.of(context).primaryTextTheme.subtitle2!,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text('材料'),
+                          SizedBox(width: 8),
+                          SizedBox(
+                              width: 48,
+                              child: TextField(
+                                controller: recipe.forHowManyPeople == null
+                                    ? null
+                                    : TextEditingController(
+                                        text:
+                                            recipe.forHowManyPeople.toString()),
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(2)
+                                ],
+                                onChanged: (value) {
+                                  if (int.tryParse(value) != null) {
+                                    recipe.forHowManyPeople = int.parse(value);
+                                  }
+                                },
+                              )),
+                          Text('人分'),
+                        ],
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      IngredientUnitEditPage(),
+                                  fullscreenDialog: false,
+                                ));
+                          },
+                          child: Text('単位を編集')),
+                    ]),
+              ),
+              SizedBox(height: 8),
               Container(
                 child: IngredientTextFieldWidget(
                   recipe: recipe,
@@ -157,25 +175,36 @@ class EditRecipeWidget extends ConsumerWidget {
           ),
 
           // 手順
+          SizedBox(height: 8),
           Column(
             children: [
               Container(
                 alignment: Alignment.centerLeft,
-                child: Text("手順"),
+                child: Text(
+                  '手順',
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
               ),
+              SizedBox(height: 8),
               ProceduresListWidget(),
             ],
           ),
           // メモ
+          SizedBox(height: 8),
           Container(
             child: Column(
               children: [
                 Container(
                   alignment: Alignment.centerLeft,
-                  child: Text("メモ"),
+                  child: Text(
+                    'メモ',
+                    style: Theme.of(context).primaryTextTheme.subtitle2,
+                  ),
                 ),
+                SizedBox(height: 8),
                 TextField(
                   controller: TextEditingController(text: recipe.recipeMemo),
+                  maxLength: 500,
                   maxLines: null,
                   onChanged: (value) {
                     recipe.recipeMemo = value;

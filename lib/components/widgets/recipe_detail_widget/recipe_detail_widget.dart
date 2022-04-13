@@ -48,8 +48,8 @@ class RecipeDetailWidget extends ConsumerWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 8),
                   // 画像
+                  SizedBox(height: 8),
                   Container(
                     child: SizedBox(
                       height: 240,
@@ -97,7 +97,6 @@ class RecipeDetailWidget extends ConsumerWidget {
                             onRatingUpdate: (rating) {},
                           ),
                         ),
-                        SizedBox(height: 8),
                       ],
                     ),
                   ),
@@ -105,7 +104,6 @@ class RecipeDetailWidget extends ConsumerWidget {
                   // 材料
                   SizedBox(
                     height: 16,
-                    child: Container(),
                   ),
                   Container(
                     width: double.infinity,
@@ -170,7 +168,6 @@ class RecipeDetailWidget extends ConsumerWidget {
                   // 手順
                   SizedBox(
                     height: 16,
-                    child: Container(),
                   ),
                   procedureList.when(
                       error: (error, stack) => Text('Error: $error'),
@@ -225,7 +222,6 @@ class RecipeDetailWidget extends ConsumerWidget {
                   // メモ
                   SizedBox(
                     height: 16,
-                    child: Container(),
                   ),
                   Container(
                     width: double.infinity,
