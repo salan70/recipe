@@ -28,8 +28,12 @@ class IngredientUnitEditPage extends ConsumerWidget {
 
             return ListView(
               children: [
-                GestureDetector(
-                    onTap: () {
+                Center(
+                  child: TextButton(
+                    child: Text(
+                      '単位を追加',
+                    ),
+                    onPressed: () {
                       showDialog(
                           context: context,
                           builder: (context) {
@@ -79,23 +83,17 @@ class IngredientUnitEditPage extends ConsumerWidget {
                             );
                           });
                     },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border:
-                              Border(bottom: BorderSide(color: Colors.black))),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Text(
-                            '単位を追加',
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                        ],
-                      ),
-                    )),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 16, right: 16),
+                  child: Text(
+                    '単位一覧',
+                    style: Theme.of(context).primaryTextTheme.headline6,
+                  ),
+                ),
                 ReorderableListView.builder(
+                  itemExtent: 40,
                   onReorder: (oldIndex, newIndex) {
                     ingredientUnitEditModel.reorderIngredientUnitList(
                         oldIndex, newIndex);
@@ -118,37 +116,29 @@ class IngredientUnitEditPage extends ConsumerWidget {
                         ),
                       ],
                       child: Container(
+                          margin: EdgeInsets.only(left: 16),
                           decoration: BoxDecoration(
                               border: Border(
-                                  bottom: BorderSide(color: Colors.black))),
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    width: 16,
-                                  ),
-                                  Text(
-                                    '${ingredientUnitList[index]}',
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  ),
-                                  Spacer(),
-                                  Icon(Icons.drag_handle),
-                                  SizedBox(
-                                    width: 16,
-                                  ),
-                                ],
-                              )
-                            ],
+                                  bottom: BorderSide(
+                            color: Theme.of(context).dividerColor,
+                          ))),
+                          child: ListTile(
+                            title: Text(
+                              '${ingredientUnitList[index]}',
+                              style:
+                                  Theme.of(context).primaryTextTheme.subtitle1,
+                            ),
+                            trailing: Icon(Icons.drag_handle),
                           )),
                     );
                   },
                 ),
-                ElevatedButton(
+                Center(
+                  child: TextButton(
+                    child: Text(
+                      '単位を初期に戻す',
+                      style: TextStyle(color: Theme.of(context).errorColor),
+                    ),
                     onPressed: () {
                       showDialog<String>(
                         context: context,
@@ -158,7 +148,6 @@ class IngredientUnitEditPage extends ConsumerWidget {
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {
-                                // Navigator.pop(context, 'Cancel'),
                                 Navigator.of(context).pop();
                               },
                               child: Text('いいえ'),
@@ -177,13 +166,16 @@ class IngredientUnitEditPage extends ConsumerWidget {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(snackBar);
                               },
-                              child: Text('はい'),
+                              child: Text('はい',
+                                  style: TextStyle(
+                                      color: Theme.of(context).errorColor)),
                             ),
                           ],
                         ),
                       );
                     },
-                    child: Text('単位を初期に戻す')),
+                  ),
+                ),
               ],
             );
           }),

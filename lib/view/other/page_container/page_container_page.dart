@@ -45,7 +45,7 @@ class PageContainerPage extends ConsumerWidget {
                   ));
             },
             icon: Icon(
-              Icons.add_shopping_cart,
+              Icons.add_shopping_cart_rounded,
               color: Theme.of(context).primaryColorDark,
             ),
           ),
@@ -62,7 +62,7 @@ class PageContainerPage extends ConsumerWidget {
                   ));
             },
             icon: Icon(
-              Icons.account_circle,
+              Icons.account_circle_rounded,
               color: Theme.of(context).primaryColorDark,
             ),
           ),
@@ -72,7 +72,7 @@ class PageContainerPage extends ConsumerWidget {
             label: '設定',
             ontap: () {},
             icon: Icon(
-              Icons.settings,
+              Icons.settings_rounded,
               color: Theme.of(context).primaryColorDark,
             ),
           ),
@@ -84,7 +84,7 @@ class PageContainerPage extends ConsumerWidget {
       floatingActionButton: selectedPage == 0
           ? FloatingActionButton(
               child: Icon(
-                Icons.add,
+                Icons.add_rounded,
                 size: 32.0,
               ),
               onPressed: () {

@@ -194,12 +194,14 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                                             context: context,
                                             builder: (context) {
                                               return Container(
-                                                //Pickerの高さを指定。指定しない場合はフルスクリーン。
                                                 height: 250,
                                                 color: Colors.white,
                                                 child: Column(
                                                   children: [
                                                     Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
                                                       children: [
                                                         TextButton(
                                                           child:

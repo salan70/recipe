@@ -124,8 +124,8 @@ class CartListPage extends ConsumerWidget {
                         ),
                         subtitle: Text(
                             '${_recipe.countInCart! * _recipe.forHowManyPeople!}人分'),
-                        trailing: TextButton(
-                          child: Text('詳細'),
+                        trailing: IconButton(
+                          icon: Icon(Icons.chevron_right_rounded),
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -271,8 +271,8 @@ class CartListPage extends ConsumerWidget {
                       '${recipe.ingredientAmount}${ingredient.ingredientInCart.ingredientUnit}'),
                 ],
               ),
-              trailing: TextButton(
-                child: Text('詳細'),
+              trailing: IconButton(
+                icon: Icon(Icons.chevron_right_rounded),
                 onPressed: () {
                   Navigator.push(
                       context,
