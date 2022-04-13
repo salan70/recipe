@@ -50,9 +50,17 @@ class MyApp extends StatelessWidget {
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
+          subtitle2: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+          bodyText1: TextStyle(
+            color: Colors.black87,
+          ),
         ),
       ).copyWith(
         appBarTheme: AppBarTheme(
+          elevation: 1,
           iconTheme: IconThemeData(color: usedSchemePrimaryColor),
           backgroundColor: Colors.white,
           titleTextStyle: TextStyle(

@@ -24,7 +24,6 @@ class CartListRecipeDetailPage extends ConsumerWidget {
       body: ListView(
         children: [
           Container(
-            margin: EdgeInsets.only(left: 20.0, right: 20.0),
             width: double.infinity,
             child: RecipeDetailWidget(recipeId, 'cart_list_recipe_detail_page'),
           ),
