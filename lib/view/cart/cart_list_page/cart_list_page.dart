@@ -30,7 +30,7 @@ class CartListPage extends ConsumerWidget {
             'カート',
           ),
           bottom: TabBar(
-            indicatorColor: Colors.black,
+            indicatorColor: Theme.of(context).primaryColorDark,
             tabs: <Widget>[
               Tab(
                   child: Text(
@@ -118,7 +118,10 @@ class CartListPage extends ConsumerWidget {
                     itemBuilder: (BuildContext context, int index) {
                       final _recipe = _recipeList[index];
                       return ListTile(
-                        title: Text(_recipe.recipeName!),
+                        title: Text(
+                          _recipe.recipeName!,
+                          style: Theme.of(context).primaryTextTheme.subtitle1,
+                        ),
                         subtitle: Text(
                             '${_recipe.countInCart! * _recipe.forHowManyPeople!}人分'),
                         trailing: TextButton(
@@ -185,7 +188,10 @@ class CartListPage extends ConsumerWidget {
                   actions: [
                     IconSlideAction(
                       color: Theme.of(context).dividerColor,
-                      iconWidget: Text(_slidableActionText),
+                      iconWidget: Text(
+                        _slidableActionText,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                       onTap: () {
                         cartListModel.toggleIsNeed(
                           id,
@@ -197,6 +203,7 @@ class CartListPage extends ConsumerWidget {
                     title: Text(
                       '${ingredient.ingredientInCart.ingredientName}',
                       style: TextStyle(
+                          fontWeight: FontWeight.bold,
                           decoration: cartListModel.getCartItem(id).isBought
                               ? TextDecoration.lineThrough
                               : TextDecoration.none),
@@ -250,7 +257,10 @@ class CartListPage extends ConsumerWidget {
             final recipe =
                 ingredient.recipeForIngredientInCartList[recipeIndex];
             return ListTile(
-              title: Text('${recipe.recipeName}'),
+              title: Text(
+                '${recipe.recipeName}',
+                style: Theme.of(context).primaryTextTheme.subtitle1,
+              ),
               subtitle: Row(
                 children: [
                   Text('${recipe.forHowManyPeople * recipe.countInCart}人分'),
