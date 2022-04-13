@@ -42,8 +42,8 @@ class RecipeListPage extends ConsumerWidget {
                             context,
                             MaterialPageRoute(
                               fullscreenDialog: false,
-                              builder: (context) =>
-                                  RecipeDetailPage(recipe.recipeId!),
+                              builder: (context) => RecipeDetailPage(
+                                  recipe.recipeId!, 'recipe_list_page'),
                             ));
                       },
                       child: RecipeCardWidget(recipe, 'recipe_list_page'),

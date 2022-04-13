@@ -121,8 +121,8 @@ class CartListPage extends ConsumerWidget {
                         title: Text(_recipe.recipeName!),
                         subtitle: Text(
                             '${_recipe.countInCart! * _recipe.forHowManyPeople!}人分'),
-                        trailing: IconButton(
-                          icon: Icon(Icons.info_outline),
+                        trailing: TextButton(
+                          child: Text('詳細'),
                           onPressed: () {
                             Navigator.push(
                                 context,
@@ -219,51 +219,8 @@ class CartListPage extends ConsumerWidget {
                         showDialog(
                           context: context,
                           builder: (_) {
-                            return AlertDialog(
-                              title: Text(
-                                  '${ingredient.ingredientInCart.ingredientName}を使うレシピ'),
-                              contentPadding: EdgeInsets.zero,
-                              content: Container(
-                                width: double.maxFinite,
-                                height: 200,
-                                child: ListView.builder(
-                                  itemCount: ingredient
-                                      .recipeForIngredientInCartList.length,
-                                  itemBuilder: (context, recipeIndex) {
-                                    final recipe = ingredient
-                                            .recipeForIngredientInCartList[
-                                        recipeIndex];
-                                    return ListTile(
-                                      title: Text('${recipe.recipeName}'),
-                                      subtitle: Row(
-                                        children: [
-                                          Text(
-                                              '${recipe.forHowManyPeople * recipe.countInCart}人分'),
-                                          SizedBox(
-                                            width: 16,
-                                          ),
-                                          Text(
-                                              '${recipe.ingredientAmount}${ingredient.ingredientInCart.ingredientUnit}'),
-                                        ],
-                                      ),
-                                      trailing: IconButton(
-                                        icon: Icon(Icons.info_outline),
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                fullscreenDialog: false,
-                                                builder: (context) =>
-                                                    CartListRecipeDetailPage(
-                                                        recipe.recipeId),
-                                              ));
-                                        },
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            );
+                            return _recipeListPerIngredientDialog(
+                                context, ingredient);
                           },
                         );
                       },
@@ -273,6 +230,53 @@ class CartListPage extends ConsumerWidget {
               }),
         ),
       ],
+    );
+  }
+
+  Widget _recipeListPerIngredientDialog(
+      BuildContext context, IngredientInCartPerRecipeList ingredient) {
+    return AlertDialog(
+      title: Text(
+        '${ingredient.ingredientInCart.ingredientName}を使うレシピ',
+        style: Theme.of(context).primaryTextTheme.headline5,
+      ),
+      contentPadding: EdgeInsets.zero,
+      content: Container(
+        width: double.maxFinite,
+        height: 200,
+        child: ListView.builder(
+          itemCount: ingredient.recipeForIngredientInCartList.length,
+          itemBuilder: (context, recipeIndex) {
+            final recipe =
+                ingredient.recipeForIngredientInCartList[recipeIndex];
+            return ListTile(
+              title: Text('${recipe.recipeName}'),
+              subtitle: Row(
+                children: [
+                  Text('${recipe.forHowManyPeople * recipe.countInCart}人分'),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  Text(
+                      '${recipe.ingredientAmount}${ingredient.ingredientInCart.ingredientUnit}'),
+                ],
+              ),
+              trailing: TextButton(
+                child: Text('詳細'),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        fullscreenDialog: false,
+                        builder: (context) =>
+                            CartListRecipeDetailPage(recipe.recipeId),
+                      ));
+                },
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

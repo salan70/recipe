@@ -5,8 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/components/providers.dart';
 
 class RecipeDetailWidget extends ConsumerWidget {
-  RecipeDetailWidget(this.recipeId);
+  RecipeDetailWidget(this.recipeId, this.pageName);
   final String recipeId;
+  final String pageName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,15 +31,15 @@ class RecipeDetailWidget extends ConsumerWidget {
             width: double.infinity,
             child: Column(
               children: [
-                SizedBox(height: 8),
+                SizedBox(height: 16),
                 Hero(
-                  tag: 'recipeList recipeName' + recipe.recipeId!,
+                  tag: 'recipeList recipeName' + recipe.recipeId! + pageName,
                   child: Container(
                     width: double.infinity,
                     child: Text(
                       recipe.recipeName!,
                       textAlign: TextAlign.left,
-                      style: Theme.of(context).primaryTextTheme.subtitle1,
+                      style: Theme.of(context).primaryTextTheme.headline5,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -49,7 +50,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                   height: 250,
                   width: double.infinity,
                   child: Hero(
-                    tag: 'recipeList recipeImage' + recipeId,
+                    tag: 'recipeList recipeImage' + recipeId + pageName,
                     child: recipe.imageUrl != ''
                         ? Image.network(
                             recipe.imageUrl!,

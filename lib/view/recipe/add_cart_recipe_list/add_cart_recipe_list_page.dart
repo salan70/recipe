@@ -3,23 +3,19 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
-import 'package:recipe/domain/cart.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:badges/badges.dart';
 
 import 'package:recipe/components/providers.dart';
-import 'package:recipe/auth/auth_controller.dart';
-import 'package:recipe/domain/recipe.dart';
 
 import '../add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
-import '../recipe_list/recipe_list_model.dart';
 import 'add_cart_recipe_list_model.dart';
 
 // レシピ一覧画面
 class AddCartRecipeListPage extends ConsumerWidget {
   AddCartRecipeListPage({Key? key}) : super(key: key);
 
-  final ScrollController listViewController = new ScrollController();
+  final ScrollController listViewController = ScrollController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,7 +32,6 @@ class AddCartRecipeListPage extends ConsumerWidget {
     final stateIsChanged = ref.watch(stateIsChangedProvider);
     final stateIsChangedNotifier = ref.watch(stateIsChangedProvider.notifier);
 
-    RecipeListModel recipeListModel = RecipeListModel();
     AddCartRecipeListModel addCartRecipeListModel =
         AddCartRecipeListModel(user: user!);
 
@@ -61,29 +56,6 @@ class AddCartRecipeListPage extends ConsumerWidget {
                     itemCount: recipes.length,
                     itemBuilder: (context, index) {
                       final recipe = recipes[index];
-                      final ingredients = ref.watch(
-                          ingredientListStreamProviderFamily(recipe.recipeId!));
-                      String outputIngredientText = '';
-
-                      final procedures = ref.watch(
-                          procedureListStreamProviderFamily(recipe.recipeId!));
-
-                      ingredients.when(
-                          data: (ingredient) {
-                            recipe.ingredientList = ingredient;
-
-                            outputIngredientText = recipeListModel
-                                .toOutputIngredientText(ingredient);
-                          },
-                          error: (error, stack) => Text('Error: $error'),
-                          loading: () => const CircularProgressIndicator());
-
-                      procedures.when(
-                          data: (procedure) {
-                            recipe.procedureList = procedure;
-                          },
-                          error: (error, stack) => Text('Error: $error'),
-                          loading: () => const CircularProgressIndicator());
 
                       return GestureDetector(
                         ///画面遷移
@@ -93,8 +65,9 @@ class AddCartRecipeListPage extends ConsumerWidget {
                               context,
                               MaterialPageRoute(
                                 fullscreenDialog: true,
-                                builder: (context) =>
-                                    AddBasketRecipeDetailPage(recipe.recipeId!),
+                                builder: (context) => AddBasketRecipeDetailPage(
+                                    recipe.recipeId!,
+                                    'add_cart_recipe_list_page'),
                               ));
                         },
 
@@ -258,11 +231,8 @@ class AddCartRecipeListPage extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (recipeForInCartListState.isEmpty != true) {
-                      bool updateIsSuccess = false;
-
                       bool zeroIsInclude = addCartRecipeListModel
                           .checkCart(recipeForInCartListState);
-                      // bool zeroIsIncludeIsOk = false;
 
                       if (zeroIsInclude) {
                         showDialog<String>(
@@ -279,11 +249,10 @@ class AddCartRecipeListPage extends ConsumerWidget {
                               TextButton(
                                 onPressed: () async {
                                   print('はい');
-                                  updateIsSuccess = await addCartRecipeListModel
-                                      .updateCountsInCart(
-                                          recipeForInCartListState);
 
-                                  if (updateIsSuccess) {
+                                  if (await addCartRecipeListModel
+                                      .updateCountsInCart(
+                                          recipeForInCartListState)) {
                                     int popInt = 0;
                                     Navigator.popUntil(
                                         context, (_) => popInt++ >= 2);
@@ -310,10 +279,8 @@ class AddCartRecipeListPage extends ConsumerWidget {
                           ),
                         );
                       } else {
-                        updateIsSuccess = await addCartRecipeListModel
-                            .updateCountsInCart(recipeForInCartListState);
-
-                        if (updateIsSuccess) {
+                        if (await addCartRecipeListModel
+                            .updateCountsInCart(recipeForInCartListState)) {
                           Navigator.pop(context);
                           final snackBar = SnackBar(
                               content: const Text(

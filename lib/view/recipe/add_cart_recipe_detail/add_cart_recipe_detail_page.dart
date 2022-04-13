@@ -8,8 +8,9 @@ import 'package:recipe/view/recipe/update_recipe/update_recipe_page.dart';
 import 'add_cart_recipe_detail_model.dart';
 
 class AddBasketRecipeDetailPage extends ConsumerWidget {
-  AddBasketRecipeDetailPage(this.recipeId);
+  AddBasketRecipeDetailPage(this.recipeId, this.fromPageName);
   final String recipeId;
+  final String fromPageName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,17 +19,6 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
         AddCartRecipeDetailModel(user: user!);
 
     final recipe = ref.watch(recipeStreamProviderFamily(recipeId));
-
-    final ingredientList =
-        ref.watch(ingredientListStreamProviderFamily(recipeId));
-
-    final procedureList =
-        ref.watch(procedureListStreamProviderFamily(recipeId));
-
-    final ingredientListNotifier =
-        ref.watch(ingredientListNotifierProvider.notifier);
-    final procedureListNotifier =
-        ref.watch(procedureListNotifierProvider.notifier);
 
     return Scaffold(
       appBar: recipe.when(
@@ -88,7 +78,8 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                         Container(
                           margin: EdgeInsets.only(left: 20.0, right: 20.0),
                           width: double.infinity,
-                          child: RecipeDetailWidget(recipeId),
+                          child: RecipeDetailWidget(
+                              recipeId, 'add_cart_recipe_detail_page'),
                         ),
                       ],
                     );

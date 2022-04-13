@@ -7,8 +7,9 @@ import 'package:recipe/view/recipe/recipe_detail/recipe_detail_model.dart';
 import 'package:recipe/view/recipe/update_recipe/update_recipe_page.dart';
 
 class RecipeDetailPage extends ConsumerWidget {
-  RecipeDetailPage(this.recipeId);
+  RecipeDetailPage(this.recipeId, this.fromPageName);
   final String recipeId;
+  final String fromPageName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -71,7 +72,7 @@ class RecipeDetailPage extends ConsumerWidget {
               width: double.infinity,
               child: ListView(
                 children: [
-                  RecipeDetailWidget(recipeId),
+                  RecipeDetailWidget(recipeId, fromPageName),
                   Center(
                     child: TextButton(
                       child: Text(

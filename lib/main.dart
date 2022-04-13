@@ -38,6 +38,14 @@ class MyApp extends StatelessWidget {
         scheme: usedScheme,
         bottomAppBarElevation: 10,
         primaryTextTheme: TextTheme(
+          headline5: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+          headline6: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
           subtitle1: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
