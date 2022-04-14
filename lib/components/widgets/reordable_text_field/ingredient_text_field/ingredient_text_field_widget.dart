@@ -278,7 +278,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
             );
             ingredientListNotifier.add(ingredient);
           },
-          child: Text("追加"),
+          child: Text('追加'),
         )
       ],
     );

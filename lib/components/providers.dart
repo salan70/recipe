@@ -27,6 +27,12 @@ final imageFileNotifierProvider =
 final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
+final passwordIsObscureProvider = StateProvider.autoDispose((ref) => true);
+
+final emailProvider = StateProvider.autoDispose((ref) => '');
+
+final passwordProvider = StateProvider.autoDispose((ref) => '');
+
 final recipeListStreamProvider =
     StreamProvider.autoDispose<List<Recipe>>((ref) {
   final user = ref.watch(authControllerProvider);
