@@ -3,8 +3,8 @@ import 'package:hawk_fab_menu/hawk_fab_menu.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
-import 'package:recipe/view/account/login_or_sign_up/login_or_sign_up_page.dart';
 import 'package:recipe/view/recipe/add_recipe/add_recipe_page.dart';
+import 'package:recipe/view/setting/setting_top/setting_top_page.dart';
 
 import '../../../domain/recipe.dart';
 import '../../cart/cart_list_page/cart_list_page.dart';
@@ -26,9 +26,8 @@ class PageContainerPage extends ConsumerWidget {
 
     return Scaffold(
       body: HawkFabMenu(
-        /// HawkFar関連
+        /// HawkFab関連
         icon: AnimatedIcons.list_view,
-        // fabColor: Theme.of(context).primaryColorLight,
         fabColor: Colors.white,
         iconColor: Theme.of(context).primaryColorDark,
         items: [
@@ -52,17 +51,10 @@ class PageContainerPage extends ConsumerWidget {
           HawkFabMenuItem(
             // color: Theme.of(context).primaryColorLight,
             color: Colors.white,
-            label: 'アカウント',
-            ontap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    fullscreenDialog: false,
-                    builder: (context) => LoginOrSignUpPage(),
-                  ));
-            },
+            label: 'レシピを検索',
+            ontap: () {},
             icon: Icon(
-              Icons.account_circle_rounded,
+              Icons.search_rounded,
               color: Theme.of(context).primaryColorDark,
             ),
           ),
@@ -70,7 +62,15 @@ class PageContainerPage extends ConsumerWidget {
             // color: Theme.of(context).primaryColorLight,
             color: Colors.white,
             label: '設定',
-            ontap: () {},
+            ontap: () {
+              print(2);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    fullscreenDialog: false,
+                    builder: (context) => SettingTopPage(),
+                  ));
+            },
             icon: Icon(
               Icons.settings_rounded,
               color: Theme.of(context).primaryColorDark,
