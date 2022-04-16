@@ -207,8 +207,6 @@ class RecipeRepository {
 
   /// add
   Future<DocumentReference> addRecipe(Recipe recipe) async {
-    final DateTime nowDatetime = DateTime.now();
-
     //レシピを保存
     DocumentReference docRef = await FirebaseFirestore.instance
         .collection('users')
@@ -219,7 +217,7 @@ class RecipeRepository {
       'recipeGrade': recipe.recipeGrade,
       'forHowManyPeople': recipe.forHowManyPeople,
       'recipeMemo': recipe.recipeMemo,
-      'createdAt': nowDatetime,
+      'createdAt': DateTime.now(),
       'imageUrl': '',
     });
     return docRef;

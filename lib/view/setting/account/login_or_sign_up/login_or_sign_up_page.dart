@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/components/providers.dart';
+import 'package:recipe/state/auth/auth_provider.dart';
 
 // レシピ一覧画面
 class LoginOrSignUpPage extends ConsumerWidget {

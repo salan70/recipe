@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
+import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:badges/badges.dart';
 
@@ -19,7 +20,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authControllerProvider);
+    final user = ref.watch(userStateNotifierProvider);
 
     final recipes = ref.watch(recipeListStreamProvider);
     final recipeListInCartStream = ref.watch(recipeListInCartStreamProvider);

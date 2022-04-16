@@ -6,36 +6,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/repository/firebase/cart_repository.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
-import 'package:recipe/state/recipe_stream_state.dart';
+import 'package:recipe/state/auth/auth_provider.dart';
+import 'package:recipe/state/recipe/recipe_stream_state.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/widgets/reordable_text_field/procedures.dart';
 import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
-import 'package:recipe/auth/auth_controller.dart';
-import 'package:recipe/state/image_file_state.dart';
-import 'package:recipe/state/recipe_in_cart_list_state.dart';
-
-final authControllerProvider = StateNotifierProvider<AuthController, User?>(
-  (ref) => AuthController(ref.read)..appStarted(),
-);
+import 'package:recipe/state/image_file/image_file_state.dart';
+import 'package:recipe/state/recipe_in_cart/recipe_in_cart_list_state.dart';
 
 final imageFileNotifierProvider =
     StateNotifierProvider.autoDispose<ImageFileNotifier, File?>((ref) {
   return ImageFileNotifier();
 });
 
-// 匿名認証用?
-final firebaseAuthProvider =
-    Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
-
-final passwordIsObscureProvider = StateProvider.autoDispose((ref) => true);
-
-final emailProvider = StateProvider.autoDispose((ref) => '');
-
-final passwordProvider = StateProvider.autoDispose((ref) => '');
-
 final recipeListStreamProvider =
     StreamProvider.autoDispose<List<Recipe>>((ref) {
-  final user = ref.watch(authControllerProvider);
+  final user = ref.watch(userStateNotifierProvider);
 
   RecipeRepository recipeRepository = RecipeRepository(user: user!);
 
@@ -44,7 +30,7 @@ final recipeListStreamProvider =
 
 final ingredientListStreamProviderFamily = StreamProvider.family
     .autoDispose<List<Ingredient>, String>((ref, recipeId) {
-  final user = ref.watch(authControllerProvider);
+  final user = ref.watch(userStateNotifierProvider);
 
   RecipeRepository recipeRepository = RecipeRepository(user: user!);
 
@@ -53,7 +39,7 @@ final ingredientListStreamProviderFamily = StreamProvider.family
 
 final procedureListStreamProviderFamily =
     StreamProvider.family.autoDispose<List<Procedure>, String>((ref, recipeId) {
-  final user = ref.watch(authControllerProvider);
+  final user = ref.watch(userStateNotifierProvider);
 
   RecipeRepository recipeRepository = RecipeRepository(user: user!);
 
@@ -62,7 +48,7 @@ final procedureListStreamProviderFamily =
 
 final recipeStreamProviderFamily =
     StreamProvider.family.autoDispose<Recipe, String>((ref, recipeId) {
-  final user = ref.watch(authControllerProvider);
+  final user = ref.watch(userStateNotifierProvider);
 
   RecipeRepository recipeRepository = RecipeRepository(user: user!);
 
@@ -99,7 +85,7 @@ final recipeNumCountProviderFamily =
 
 final recipeListInCartStreamProvider =
     StreamProvider.autoDispose<List<RecipeListInCart>>((ref) {
-  final user = ref.watch(authControllerProvider);
+  final user = ref.watch(userStateNotifierProvider);
   CartRepository cartRepository = CartRepository(user: user!);
 
   return cartRepository.fetchRecipeListInCart();

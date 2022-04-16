@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe/components/providers.dart';
+import 'package:recipe/state/auth/auth_provider.dart';
 
 // レシピ一覧画面
 class SignUpPage extends ConsumerWidget {
@@ -11,6 +11,9 @@ class SignUpPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userStateNotifierProvider);
+    final userNotifier = ref.watch(userStateNotifierProvider.notifier);
+
     final passwordIsObscure = ref.watch(passwordIsObscureProvider);
     final passwordIsObscureNotifier =
         ref.watch(passwordIsObscureProvider.notifier);
@@ -25,7 +28,7 @@ class SignUpPage extends ConsumerWidget {
         ValidationBuilder().email('有効なメールアドレスを入力してください').build();
     final passwordValidate = ValidationBuilder()
         .minLength(8, '8文字以上で入力してください')
-        .maxLength(16, '16文字以下で入力してください')
+        .maxLength(20, '20文字以下で入力してください')
         .build();
 
     return Scaffold(
@@ -71,11 +74,9 @@ class SignUpPage extends ConsumerWidget {
                         password == '' ? null : passwordValidate(password),
                     prefixIcon: Icon(Icons.lock_open_rounded),
                     suffixIcon: IconButton(
-                      // 文字の表示・非表示でアイコンを変える
                       icon: Icon(passwordIsObscure
                           ? Icons.visibility_off_rounded
                           : Icons.visibility_rounded),
-                      // アイコンがタップされたら現在と反対の状態をセットする
                       onPressed: () {
                         passwordIsObscureNotifier
                             .update((state) => !passwordIsObscure);
@@ -89,7 +90,9 @@ class SignUpPage extends ConsumerWidget {
                 child: SizedBox(
                   width: 144,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await userNotifier.signUp(email, password);
+                    },
                     child: Text(
                       '登録',
                       style: TextStyle(fontSize: 20),

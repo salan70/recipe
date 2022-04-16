@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/components/widgets/reordable_text_field/procedures.dart';
 import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
 import 'package:recipe/components/providers.dart';

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/components/widgets/recipe_detail_widget/recipe_detail_widget.dart';
+import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/view/recipe/update_recipe/update_recipe_page.dart';
 
 import 'add_cart_recipe_detail_model.dart';
@@ -14,7 +15,7 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authControllerProvider);
+    final user = ref.watch(userStateNotifierProvider);
     AddCartRecipeDetailModel addCartRecipeDetailModel =
         AddCartRecipeDetailModel(user: user!);
 

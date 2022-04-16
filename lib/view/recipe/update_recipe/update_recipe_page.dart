@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 
-import 'package:recipe/auth/auth_controller.dart';
 import 'package:recipe/components/widgets/edit_recipe_widget/edit_recipe_widget.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/validation/validation.dart';
+import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/view/recipe/update_recipe/update_recipe_model.dart';
 
 class UpdateRecipePage extends ConsumerWidget {
@@ -18,7 +18,7 @@ class UpdateRecipePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Validations validation = Validations();
 
-    final user = ref.watch(authControllerProvider);
+    final user = ref.watch(userStateNotifierProvider);
 
     final UpdateRecipeModel updateRecipeModel = UpdateRecipeModel(user: user!);
 
