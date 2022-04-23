@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import 'package:recipe/components/widgets/edit_recipe_widget/edit_recipe_widget.dart';
 import 'package:recipe/components/providers.dart';
@@ -46,6 +46,7 @@ class AddRecipePage extends ConsumerWidget {
                 /// レシピ追加の条件を満たしている場合の処理
                 if (validation.outputRecipeErrorText(recipe, ingredientList) ==
                     null) {
+                  EasyLoading.show(status: 'loading...');
                   Recipe addedRecipe = Recipe(
                       recipeName: recipe.recipeName,
                       recipeGrade: recipe.recipeGrade,
@@ -58,19 +59,9 @@ class AddRecipePage extends ConsumerWidget {
 
                   if (await addRecipeModel.addRecipe(addedRecipe)) {
                     Navigator.pop(context);
-                    final snackBar = SnackBar(
-                        content: Text(
-                      '${recipe.recipeName}を追加しました',
-                      textAlign: TextAlign.center,
-                    ));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    EasyLoading.showSuccess('${recipe.recipeName}を追加しました');
                   } else {
-                    final snackBar = SnackBar(
-                        content: const Text(
-                      'レシピの追加に失敗しました',
-                      textAlign: TextAlign.center,
-                    ));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    EasyLoading.showError('レシピの追加に失敗しました');
                   }
                 }
 
@@ -78,13 +69,7 @@ class AddRecipePage extends ConsumerWidget {
                 else {
                   final recipeErrorText =
                       validation.outputRecipeErrorText(recipe, ingredientList);
-                  final snackBar = SnackBar(
-                    content: Text(
-                      recipeErrorText!,
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  EasyLoading.showError('$recipeErrorText');
                 }
               },
               icon: Icon(Icons.check))

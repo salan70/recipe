@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
@@ -89,29 +90,19 @@ class RecipeDetailPage extends ConsumerWidget {
                           ),
                           TextButton(
                             onPressed: () async {
+                              EasyLoading.show(status: 'loading...');
                               //削除失敗
                               if (recipe.recipeId == null ||
                                   !await recipeDetailModel
                                       .deleteRecipe(recipe)) {
-                                final snackBar = SnackBar(
-                                    content: const Text(
-                                  'レシピの削除に失敗しました',
-                                  textAlign: TextAlign.center,
-                                ));
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
+                                EasyLoading.showError('レシピの削除に失敗しました');
                               }
                               //削除成功
                               else {
                                 Navigator.of(context)
                                     .popUntil((route) => route.isFirst);
-                                final snackBar = SnackBar(
-                                    content: Text(
-                                  '${recipe.recipeName}を削除しました',
-                                  textAlign: TextAlign.center,
-                                ));
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
+                                EasyLoading.showSuccess(
+                                    '${recipe.recipeName}を削除しました');
                               }
                             },
                             child: Text(

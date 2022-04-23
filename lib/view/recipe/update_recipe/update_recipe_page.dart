@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/services.dart';
 
 import 'package:recipe/components/widgets/edit_recipe_widget/edit_recipe_widget.dart';
 import 'package:recipe/components/providers.dart';
@@ -45,9 +45,12 @@ class UpdateRecipePage extends ConsumerWidget {
         actions: <Widget>[
           IconButton(
               onPressed: () async {
+                final recipeErrorText =
+                    validation.outputRecipeErrorText(recipe, ingredientList);
+
                 /// レシピ追加の条件を満たしている場合の処理
-                if (validation.outputRecipeErrorText(recipe, ingredientList) ==
-                    null) {
+                if (recipeErrorText == null) {
+                  EasyLoading.show(status: 'loading...');
                   Recipe updatedRecipe = Recipe(
                       recipeName: recipe.recipeName,
                       recipeGrade: recipe.recipeGrade,
@@ -61,33 +64,15 @@ class UpdateRecipePage extends ConsumerWidget {
                   if (await updateRecipeModel.updateRecipe(
                       originalRecipe, updatedRecipe)) {
                     Navigator.pop(context);
-                    final snackBar = SnackBar(
-                        content: Text(
-                      '${recipe.recipeName}を更新しました',
-                      textAlign: TextAlign.center,
-                    ));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    EasyLoading.showSuccess('${recipe.recipeName}を更新しました');
                   } else {
-                    final snackBar = SnackBar(
-                        content: const Text(
-                      'レシピの更新に失敗しました',
-                      textAlign: TextAlign.center,
-                    ));
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    EasyLoading.showError('レシピの更新に失敗しました');
                   }
                 }
 
                 /// レシピ追加の条件を満たしていない場合の処理
                 else {
-                  final recipeErrorText =
-                      validation.outputRecipeErrorText(recipe, ingredientList);
-                  final snackBar = SnackBar(
-                    content: Text(
-                      recipeErrorText!,
-                      textAlign: TextAlign.center,
-                    ),
-                  );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  EasyLoading.showError(recipeErrorText);
                 }
               },
               icon: Icon(Icons.check))

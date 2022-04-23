@@ -1,17 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 
 // レシピ一覧画面
-class SignUpPage extends ConsumerWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+class LoginPage extends ConsumerWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userStateNotifierProvider);
     final userNotifier = ref.watch(userStateNotifierProvider.notifier);
 
     final passwordIsObscure = ref.watch(passwordIsObscureProvider);
@@ -33,7 +33,7 @@ class SignUpPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('新規登録'),
+        title: Text('ログイン'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -43,7 +43,7 @@ class SignUpPage extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'メールアドレスで登録',
+                'メールアドレスでログイン',
                 style: Theme.of(context).primaryTextTheme.subtitle1,
                 textAlign: TextAlign.left,
               ),
@@ -91,11 +91,19 @@ class SignUpPage extends ConsumerWidget {
                   width: 144,
                   child: ElevatedButton(
                     onPressed: () async {
-                      await userNotifier.signUp(email, password);
-                      Navigator.pop(context);
+                      EasyLoading.show(status: 'loading...');
+                      String? errorText =
+                          await userNotifier.login(email, password);
+                      if (errorText == null) {
+                        Navigator.pop(context);
+                        EasyLoading.showSuccess('ログインしました');
+                      } else {
+                        //TODO toastじゃなくてdialogのほうがいい？(エラーメッセージを読めるように)
+                        EasyLoading.showError('ログインに失敗しました\n$errorText');
+                      }
                     },
                     child: Text(
-                      '登録',
+                      'ログイン',
                       style: TextStyle(fontSize: 20),
                     ),
                   ),
@@ -105,7 +113,7 @@ class SignUpPage extends ConsumerWidget {
                 height: 8,
               ),
               Text(
-                '他のアカウントで登録',
+                '他のアカウントでログイン',
                 style: Theme.of(context).primaryTextTheme.subtitle1,
                 textAlign: TextAlign.left,
               ),

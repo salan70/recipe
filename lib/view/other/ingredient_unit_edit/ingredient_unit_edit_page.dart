@@ -88,7 +88,7 @@ class IngredientUnitEditPage extends ConsumerWidget {
                 Container(
                   margin: EdgeInsets.only(left: 16, right: 16),
                   child: Text(
-                    '単位一覧',
+                    '現在の単位一覧',
                     style: Theme.of(context).primaryTextTheme.headline6,
                   ),
                 ),

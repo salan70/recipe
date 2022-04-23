@@ -6,8 +6,8 @@ final firebaseAuthProvider =
     Provider<FirebaseAuth>((ref) => FirebaseAuth.instance);
 
 final userStateNotifierProvider =
-    StateNotifierProvider.autoDispose<UserStateNotifier, User?>(
-  (ref) => UserStateNotifier()..appStarted(),
+    StateNotifierProvider.autoDispose<AuthStateNotifier, User?>(
+  (ref) => AuthStateNotifier()..appStarted(),
 );
 
 final infoTextProvider = StateProvider.autoDispose((ref) {
