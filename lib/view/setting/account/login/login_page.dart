@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
+import 'package:sign_button/sign_button.dart';
 
 // レシピ一覧画面
 class LoginPage extends ConsumerWidget {
@@ -110,12 +111,62 @@ class LoginPage extends ConsumerWidget {
                 ),
               ),
               SizedBox(
-                height: 8,
+                height: 40,
               ),
               Text(
                 '他のアカウントでログイン',
                 style: Theme.of(context).primaryTextTheme.subtitle1,
                 textAlign: TextAlign.left,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: SignInButton(
+                      buttonType: ButtonType.google,
+                      btnText: 'Google',
+                      buttonSize: ButtonSize.large,
+                      width: double.infinity,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      elevation: 1,
+                      onPressed: () async {
+                        print('google');
+                        EasyLoading.show(status: 'loading...');
+                        final errorText = await userNotifier.loginWithGoogle();
+                        if (errorText == null) {
+                          Navigator.pop(context);
+                          EasyLoading.showSuccess('ログインしました');
+                        } else {
+                          EasyLoading.showError('ログインに失敗しました\n$errorText');
+                        }
+                      }),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: SignInButton(
+                      buttonType: ButtonType.apple,
+                      btnText: 'Apple',
+                      buttonSize: ButtonSize.large,
+                      width: double.infinity,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      elevation: 1,
+                      onPressed: () async {
+                        print('apple');
+                        EasyLoading.show(status: 'loading...');
+                        final errorText = await userNotifier.loginWithApple();
+                        if (errorText == null) {
+                          Navigator.pop(context);
+                          EasyLoading.showSuccess('ログインしました');
+                        } else {
+                          EasyLoading.showError('ログインに失敗しました\n$errorText');
+                        }
+                      }),
+                ),
               ),
             ],
           ),

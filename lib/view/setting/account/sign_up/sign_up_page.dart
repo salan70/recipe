@@ -160,8 +160,17 @@ class SignUpPage extends ConsumerWidget {
                           borderRadius: BorderRadius.circular(5),
                         ),
                         elevation: 1,
-                        onPressed: () {
-                          print('click');
+                        onPressed: () async {
+                          print('apple');
+                          EasyLoading.show(status: 'loading...');
+                          final errorText =
+                              await userNotifier.signUpWithApple();
+                          if (errorText == null) {
+                            Navigator.pop(context);
+                            EasyLoading.showSuccess('登録しました');
+                          } else {
+                            EasyLoading.showError('登録に失敗しました\n$errorText');
+                          }
                         }),
                   ),
                 ),

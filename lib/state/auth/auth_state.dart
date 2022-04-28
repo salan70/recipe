@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:recipe/repository/firebase/user_repository.dart';
 import 'package:recipe/view/setting/account/sign_up/sign_up_model.dart';
 
@@ -27,10 +28,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     await firebaseAuth.signOut();
     await firebaseAuth.signInAnonymously();
-    print('signOut before ${state!.email.toString()}');
     state = firebaseAuth.currentUser;
-    print('signOut');
-    print('signOut after ${state!.email.toString()}');
   }
 
   /// Email
@@ -86,6 +84,72 @@ class AuthStateNotifier extends StateNotifier<User?> {
         await FirebaseAuth.instance.signInWithCredential(credential);
         print('b');
       }
+      state = _firebaseAuth.currentUser;
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String?> loginWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
+
+    try {
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      state = _firebaseAuth.currentUser;
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  /// Apple Account
+  Future<String?> signUpWithApple() async {
+    final currentUser = _firebaseAuth.currentUser;
+    try {
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+      OAuthProvider oauthProvider = OAuthProvider('apple.com');
+      final credential = oauthProvider.credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+      if (currentUser!.isAnonymous) {
+        await currentUser.linkWithCredential(credential);
+      } else {
+        await FirebaseAuth.instance.signInWithCredential(credential);
+      }
+      state = _firebaseAuth.currentUser;
+      return null;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future<String?> loginWithApple() async {
+    try {
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+      OAuthProvider oauthProvider = OAuthProvider('apple.com');
+      final credential = oauthProvider.credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+      await FirebaseAuth.instance.signInWithCredential(credential);
       state = _firebaseAuth.currentUser;
       return null;
     } catch (e) {
