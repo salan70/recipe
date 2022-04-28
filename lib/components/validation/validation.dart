@@ -6,15 +6,18 @@ class Validations {
   /// レシピのvalidation
   String? outputRecipeErrorText(
       Recipe recipe, List<Ingredient> ingredientList) {
-    if (!_isEnteredRecipeName(recipe.recipeName)) {
+    if (!_isEnteredString(recipe.recipeName)) {
       return 'レシピ名を入力してください';
-    } else if (!_isEnteredRecipeForHowManyPeople(recipe.forHowManyPeople)) {
+    } else if (!_isEnteredInt(recipe.forHowManyPeople)) {
       return '材料が何人分か入力してください';
-    } else if (!_isGraterThanZeroRecipeForHowManyPeople(
-        recipe.forHowManyPeople!)) {
+    } else if (!_isGraterThanZero(recipe.forHowManyPeople!)) {
       return '材料は1人分以上で入力してください';
     } else {
       for (var ingredient in ingredientList) {
+        if (_isEnteredString(ingredient.name) &&
+            !_isEnteredString(ingredient.unit)) {
+          return '単位が選択されていない材料があります';
+        }
         if (outputAmountErrorText(ingredient.amount) != null) {
           return '材料の数量に不正な値があります';
         }
@@ -23,7 +26,7 @@ class Validations {
     return null;
   }
 
-  bool _isEnteredRecipeName(String? recipeName) {
+  bool _isEnteredString(String? recipeName) {
     if (recipeName == null || recipeName == '') {
       return false;
     } else {
@@ -31,7 +34,7 @@ class Validations {
     }
   }
 
-  bool _isEnteredRecipeForHowManyPeople(int? forHowManyPeople) {
+  bool _isEnteredInt(int? forHowManyPeople) {
     if (forHowManyPeople == null) {
       return false;
     } else {
@@ -39,7 +42,7 @@ class Validations {
     }
   }
 
-  bool _isGraterThanZeroRecipeForHowManyPeople(int forHowManyPeople) {
+  bool _isGraterThanZero(int forHowManyPeople) {
     if (forHowManyPeople > 0) {
       return true;
     } else {

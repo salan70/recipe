@@ -1,16 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:sign_button/sign_button.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
+import 'package:recipe/view/setting/account/sign_up/sign_up_model.dart';
 
-// レシピ一覧画面
 class SignUpPage extends ConsumerWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    SignUpModel signUpModel = SignUpModel();
+
     final user = ref.watch(userStateNotifierProvider);
     final userNotifier = ref.watch(userStateNotifierProvider.notifier);
 
@@ -91,8 +95,16 @@ class SignUpPage extends ConsumerWidget {
                   width: 144,
                   child: ElevatedButton(
                     onPressed: () async {
-                      await userNotifier.signUp(email, password);
-                      Navigator.pop(context);
+                      EasyLoading.show(status: 'loading...');
+                      final signUpErrorText =
+                          await signUpModel.signUpWithEmail(email, password);
+                      if (signUpErrorText == null) {
+                        userNotifier.authStateUpdate();
+                        Navigator.pop(context);
+                        EasyLoading.showSuccess('登録しました');
+                      } else {
+                        EasyLoading.showError('登録に失敗しました\n$signUpErrorText');
+                      }
                     },
                     child: Text(
                       '登録',
@@ -102,12 +114,55 @@ class SignUpPage extends ConsumerWidget {
                 ),
               ),
               SizedBox(
-                height: 8,
+                height: 40,
               ),
               Text(
                 '他のアカウントで登録',
                 style: Theme.of(context).primaryTextTheme.subtitle1,
                 textAlign: TextAlign.left,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: SignInButton(
+                      buttonType: ButtonType.google,
+                      btnText: 'Google',
+                      buttonSize: ButtonSize.large,
+                      width: double.infinity,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      elevation: 1,
+                      onPressed: () async {
+                        EasyLoading.show(status: 'loading...');
+                        final signUpErrorText =
+                            await signUpModel.signUpWithGoogle();
+                        if (signUpErrorText == null) {
+                          userNotifier.authStateUpdate();
+                          Navigator.pop(context);
+                          EasyLoading.showSuccess('登録しました');
+                        } else {
+                          EasyLoading.showError('登録に失敗しました\n$signUpErrorText');
+                        }
+                      }),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: SignInButton(
+                      buttonType: ButtonType.apple,
+                      btnText: 'Apple',
+                      buttonSize: ButtonSize.large,
+                      width: double.infinity,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      elevation: 1,
+                      onPressed: () {
+                        print('click');
+                      }),
+                ),
               ),
             ],
           ),

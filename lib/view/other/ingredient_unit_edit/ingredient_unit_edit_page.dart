@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -54,6 +55,7 @@ class IngredientUnitEditPage extends ConsumerWidget {
                                 TextButton(
                                   child: Text('OK'),
                                   onPressed: () {
+                                    EasyLoading.show(status: 'loading...');
                                     errorTextWhenAdding =
                                         ingredientUnitEditModel
                                             .outputAddError(addedUnit);
@@ -61,21 +63,11 @@ class IngredientUnitEditPage extends ConsumerWidget {
                                       ingredientUnitEditModel
                                           .addIngredientUnit(addedUnit!);
                                       Navigator.of(context).pop();
-                                      final snackBar = SnackBar(
-                                          content: Text(
-                                        '$addedUnitを追加しました',
-                                        textAlign: TextAlign.center,
-                                      ));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackBar);
+                                      EasyLoading.showSuccess(
+                                          '$addedUnitを追加しました');
                                     } else {
-                                      final snackBar = SnackBar(
-                                          content: Text(
-                                        '$errorTextWhenAdding',
-                                        textAlign: TextAlign.center,
-                                      ));
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackBar);
+                                      EasyLoading.showError(
+                                          '$errorTextWhenAdding');
                                     }
                                   },
                                 ),
@@ -85,13 +77,13 @@ class IngredientUnitEditPage extends ConsumerWidget {
                     },
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 16, right: 16),
-                  child: Text(
-                    '現在の単位一覧',
-                    style: Theme.of(context).primaryTextTheme.headline6,
-                  ),
-                ),
+                // Container(
+                //   margin: EdgeInsets.only(left: 16, right: 16),
+                //   child: Text(
+                //     '現在の単位一覧',
+                //     style: Theme.of(context).primaryTextTheme.headline6,
+                //   ),
+                // ),
                 ReorderableListView.builder(
                   itemExtent: 40,
                   onReorder: (oldIndex, newIndex) {

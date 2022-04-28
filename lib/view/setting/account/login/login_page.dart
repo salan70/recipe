@@ -93,7 +93,7 @@ class LoginPage extends ConsumerWidget {
                     onPressed: () async {
                       EasyLoading.show(status: 'loading...');
                       String? errorText =
-                          await userNotifier.login(email, password);
+                          await userNotifier.loginWithEmail(email, password);
                       if (errorText == null) {
                         Navigator.pop(context);
                         EasyLoading.showSuccess('ログインしました');

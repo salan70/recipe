@@ -33,7 +33,7 @@ class IngredientUnitEditModel {
   }
 
   String? outputAddError(String? unitName) {
-    if (unitName == null) {
+    if (unitName == null || unitName == '') {
       return '入力されていません';
     } else if (checkIsDuplicate(unitName)) {
       return '$unitNameは既にあります';
