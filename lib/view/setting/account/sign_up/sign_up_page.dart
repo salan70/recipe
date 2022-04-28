@@ -39,132 +39,134 @@ class SignUpPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text('新規登録'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'メールアドレスで登録',
-                style: Theme.of(context).primaryTextTheme.subtitle1,
-                textAlign: TextAlign.left,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (email) {
-                    emailNotifier.update((state) => email);
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'メールアドレス',
-                    errorText: email == '' ? null : emailValidate(email),
-                    prefixIcon: Icon(Icons.mail_outline_rounded),
-                    border: OutlineInputBorder(),
-                  ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'メールアドレスで登録',
+                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                  textAlign: TextAlign.left,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (password) {
-                    passwordNotifier.update((state) => password);
-                  },
-                  obscureText: passwordIsObscure,
-                  decoration: InputDecoration(
-                    labelText: 'パスワード',
-                    errorText:
-                        password == '' ? null : passwordValidate(password),
-                    prefixIcon: Icon(Icons.lock_open_rounded),
-                    suffixIcon: IconButton(
-                      icon: Icon(passwordIsObscure
-                          ? Icons.visibility_off_rounded
-                          : Icons.visibility_rounded),
-                      onPressed: () {
-                        passwordIsObscureNotifier
-                            .update((state) => !passwordIsObscure);
-                      },
-                    ),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              Center(
-                child: SizedBox(
-                  width: 144,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      EasyLoading.show(status: 'loading...');
-                      final signUpErrorText =
-                          await signUpModel.signUpWithEmail(email, password);
-                      if (signUpErrorText == null) {
-                        userNotifier.authStateUpdate();
-                        Navigator.pop(context);
-                        EasyLoading.showSuccess('登録しました');
-                      } else {
-                        EasyLoading.showError('登録に失敗しました\n$signUpErrorText');
-                      }
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    onChanged: (email) {
+                      emailNotifier.update((state) => email);
                     },
-                    child: Text(
-                      '登録',
-                      style: TextStyle(fontSize: 20),
+                    decoration: InputDecoration(
+                      labelText: 'メールアドレス',
+                      errorText: email == '' ? null : emailValidate(email),
+                      prefixIcon: Icon(Icons.mail_outline_rounded),
+                      border: OutlineInputBorder(),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              Text(
-                '他のアカウントで登録',
-                style: Theme.of(context).primaryTextTheme.subtitle1,
-                textAlign: TextAlign.left,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: SignInButton(
-                      buttonType: ButtonType.google,
-                      btnText: 'Google',
-                      buttonSize: ButtonSize.large,
-                      width: double.infinity,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    onChanged: (password) {
+                      passwordNotifier.update((state) => password);
+                    },
+                    obscureText: passwordIsObscure,
+                    decoration: InputDecoration(
+                      labelText: 'パスワード',
+                      errorText:
+                          password == '' ? null : passwordValidate(password),
+                      prefixIcon: Icon(Icons.lock_open_rounded),
+                      suffixIcon: IconButton(
+                        icon: Icon(passwordIsObscure
+                            ? Icons.visibility_off_rounded
+                            : Icons.visibility_rounded),
+                        onPressed: () {
+                          passwordIsObscureNotifier
+                              .update((state) => !passwordIsObscure);
+                        },
                       ),
-                      elevation: 1,
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: SizedBox(
+                    width: 144,
+                    child: ElevatedButton(
                       onPressed: () async {
                         EasyLoading.show(status: 'loading...');
                         final signUpErrorText =
-                            await signUpModel.signUpWithGoogle();
+                            await userNotifier.signUpWithEmail(email, password);
                         if (signUpErrorText == null) {
-                          userNotifier.authStateUpdate();
                           Navigator.pop(context);
                           EasyLoading.showSuccess('登録しました');
                         } else {
                           EasyLoading.showError('登録に失敗しました\n$signUpErrorText');
                         }
-                      }),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: SignInButton(
-                      buttonType: ButtonType.apple,
-                      btnText: 'Apple',
-                      buttonSize: ButtonSize.large,
-                      width: double.infinity,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+                      },
+                      child: Text(
+                        '登録',
+                        style: TextStyle(fontSize: 20),
                       ),
-                      elevation: 1,
-                      onPressed: () {
-                        print('click');
-                      }),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 40,
+                ),
+                Text(
+                  '他のアカウントで登録',
+                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                  textAlign: TextAlign.left,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: SignInButton(
+                        buttonType: ButtonType.google,
+                        btnText: 'Google',
+                        buttonSize: ButtonSize.large,
+                        width: double.infinity,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        elevation: 1,
+                        onPressed: () async {
+                          print('google');
+                          EasyLoading.show(status: 'loading...');
+                          final signUpErrorText =
+                              await userNotifier.signUpWithGoogle();
+                          if (signUpErrorText == null) {
+                            Navigator.pop(context);
+                            EasyLoading.showSuccess('登録しました');
+                          } else {
+                            EasyLoading.showError(
+                                '登録に失敗しました\n$signUpErrorText');
+                          }
+                        }),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: SignInButton(
+                        buttonType: ButtonType.apple,
+                        btnText: 'Apple',
+                        buttonSize: ButtonSize.large,
+                        width: double.infinity,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        elevation: 1,
+                        onPressed: () {
+                          print('click');
+                        }),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -13,7 +13,6 @@ class SignUpModel extends ChangeNotifier {
   Future<String?> signUpWithEmail(String email, String password) async {
     //TODO repositoryと分ける
     final currentUser = _firebaseAuth.currentUser;
-
     try {
       final AuthCredential credential =
           EmailAuthProvider.credential(email: email, password: password);
