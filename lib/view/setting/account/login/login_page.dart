@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:form_validator/form_validator.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:sign_button/sign_button.dart';
 
-// レシピ一覧画面
 class LoginPage extends ConsumerWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -36,142 +36,217 @@ class LoginPage extends ConsumerWidget {
       appBar: AppBar(
         title: Text('ログイン'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Container(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'メールアドレスでログイン',
-                style: Theme.of(context).primaryTextTheme.subtitle1,
-                textAlign: TextAlign.left,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (email) {
-                    emailNotifier.update((state) => email);
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'メールアドレス',
-                    errorText: email == '' ? null : emailValidate(email),
-                    prefixIcon: Icon(Icons.mail_outline_rounded),
-                    border: OutlineInputBorder(),
-                  ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Container(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'メールアドレスでログイン',
+                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                  textAlign: TextAlign.left,
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  onChanged: (password) {
-                    passwordNotifier.update((state) => password);
-                  },
-                  obscureText: passwordIsObscure,
-                  decoration: InputDecoration(
-                    labelText: 'パスワード',
-                    errorText:
-                        password == '' ? null : passwordValidate(password),
-                    prefixIcon: Icon(Icons.lock_open_rounded),
-                    suffixIcon: IconButton(
-                      icon: Icon(passwordIsObscure
-                          ? Icons.visibility_off_rounded
-                          : Icons.visibility_rounded),
-                      onPressed: () {
-                        passwordIsObscureNotifier
-                            .update((state) => !passwordIsObscure);
-                      },
-                    ),
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-              ),
-              Center(
-                child: SizedBox(
-                  width: 144,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      EasyLoading.show(status: 'loading...');
-                      String? errorText =
-                          await userNotifier.loginWithEmail(email, password);
-                      if (errorText == null) {
-                        Navigator.pop(context);
-                        EasyLoading.showSuccess('ログインしました');
-                      } else {
-                        //TODO toastじゃなくてdialogのほうがいい？(エラーメッセージを読めるように)
-                        EasyLoading.showError('ログインに失敗しました\n$errorText');
-                      }
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    onChanged: (email) {
+                      emailNotifier.update((state) => email);
                     },
-                    child: Text(
-                      'ログイン',
-                      style: TextStyle(fontSize: 20),
+                    decoration: InputDecoration(
+                      labelText: 'メールアドレス',
+                      errorText: email == '' ? null : emailValidate(email),
+                      prefixIcon: Icon(Icons.mail_outline_rounded),
+                      border: OutlineInputBorder(),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 40,
-              ),
-              Text(
-                '他のアカウントでログイン',
-                style: Theme.of(context).primaryTextTheme.subtitle1,
-                textAlign: TextAlign.left,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: SignInButton(
-                      buttonType: ButtonType.google,
-                      btnText: 'Google',
-                      buttonSize: ButtonSize.large,
-                      width: double.infinity,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    onChanged: (password) {
+                      passwordNotifier.update((state) => password);
+                    },
+                    obscureText: passwordIsObscure,
+                    decoration: InputDecoration(
+                      labelText: 'パスワード',
+                      errorText:
+                          password == '' ? null : passwordValidate(password),
+                      prefixIcon: Icon(Icons.lock_open_rounded),
+                      suffixIcon: IconButton(
+                        icon: Icon(passwordIsObscure
+                            ? Icons.visibility_off_rounded
+                            : Icons.visibility_rounded),
+                        onPressed: () {
+                          passwordIsObscureNotifier
+                              .update((state) => !passwordIsObscure);
+                        },
                       ),
-                      elevation: 1,
-                      onPressed: () async {
-                        print('google');
-                        EasyLoading.show(status: 'loading...');
-                        final errorText = await userNotifier.loginWithGoogle();
-                        if (errorText == null) {
-                          Navigator.pop(context);
-                          EasyLoading.showSuccess('ログインしました');
-                        } else {
-                          EasyLoading.showError('ログインに失敗しました\n$errorText');
-                        }
-                      }),
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: SignInButton(
-                      buttonType: ButtonType.apple,
-                      btnText: 'Apple',
-                      buttonSize: ButtonSize.large,
-                      width: double.infinity,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
+                Center(
+                  child: SizedBox(
+                    width: 144,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final yesAction = CupertinoDialogAction(
+                          child: Text('はい'),
+                          onPressed: () async {
+                            Navigator.pop(context);
+                            EasyLoading.show(status: 'loading...');
+                            String? errorText = await userNotifier
+                                .loginWithEmail(email, password);
+                            if (errorText == null) {
+                              Navigator.pop(context);
+                              EasyLoading.showSuccess('ログインしました');
+                            } else {
+                              EasyLoading.dismiss();
+                              _showCupertinoLoginErrorAlertDialog(
+                                  context, errorText);
+                            }
+                          },
+                        );
+                        _showCupertinoLoginAlertDialog(context, yesAction);
+                      },
+                      child: Text(
+                        'ログイン',
+                        style: TextStyle(fontSize: 20),
                       ),
-                      elevation: 1,
-                      onPressed: () async {
-                        print('apple');
-                        EasyLoading.show(status: 'loading...');
-                        final errorText = await userNotifier.loginWithApple();
-                        if (errorText == null) {
-                          Navigator.pop(context);
-                          EasyLoading.showSuccess('ログインしました');
-                        } else {
-                          EasyLoading.showError('ログインに失敗しました\n$errorText');
-                        }
-                      }),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 40,
+                ),
+                Text(
+                  '他のアカウントでログイン',
+                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                  textAlign: TextAlign.left,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: SignInButton(
+                        buttonType: ButtonType.google,
+                        btnText: 'Google',
+                        buttonSize: ButtonSize.large,
+                        width: double.infinity,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        elevation: 1,
+                        onPressed: () async {
+                          final yesAction = CupertinoDialogAction(
+                            child: Text('はい'),
+                            onPressed: () async {
+                              Navigator.pop(context);
+                              EasyLoading.show(status: 'loading...');
+                              final errorText =
+                                  await userNotifier.loginWithGoogle();
+                              if (errorText == null) {
+                                Navigator.pop(context);
+                                EasyLoading.showSuccess('ログインしました');
+                              } else {
+                                EasyLoading.dismiss();
+                                _showCupertinoLoginErrorAlertDialog(
+                                    context, errorText);
+                              }
+                            },
+                          );
+                          _showCupertinoLoginAlertDialog(context, yesAction);
+                        }),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: SignInButton(
+                        buttonType: ButtonType.apple,
+                        btnText: 'Apple',
+                        buttonSize: ButtonSize.large,
+                        width: double.infinity,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        elevation: 1,
+                        onPressed: () async {
+                          final yesAction = CupertinoDialogAction(
+                            child: Text('はい'),
+                            onPressed: () async {
+                              Navigator.pop(context);
+                              EasyLoading.show(status: 'loading...');
+                              final errorText =
+                                  await userNotifier.loginWithApple();
+                              if (errorText == null) {
+                                Navigator.pop(context);
+                                EasyLoading.showSuccess('ログインしました');
+                              } else {
+                                EasyLoading.dismiss();
+                                _showCupertinoLoginErrorAlertDialog(
+                                    context, errorText);
+                              }
+                            },
+                          );
+                          _showCupertinoLoginAlertDialog(context, yesAction);
+                        }),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
+    );
+  }
+
+  Future _showCupertinoLoginAlertDialog(
+      BuildContext context, CupertinoDialogAction yesAction) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text('注意'),
+          content: Text(
+            'このままログインすると現在登録されているレシピが消えてしまいますが、よろしいですか？\n※現在登録されているレシピを保存したい場合は「新規登録画面」より新規登録を行ってください。',
+            textAlign: TextAlign.left,
+          ),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: Text('いいえ'),
+              isDestructiveAction: true,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            yesAction,
+          ],
+        );
+      },
+    );
+  }
+
+  Future _showCupertinoLoginErrorAlertDialog(
+      BuildContext context, String errorText) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text('ログイン失敗'),
+          content: Text('$errorText'),
+          actions: [
+            CupertinoDialogAction(
+              child: Text('閉じる'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

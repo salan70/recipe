@@ -9,7 +9,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
   AuthStateNotifier() : super(null);
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  SignUpModel _signUpModel = SignUpModel();
+  final SignUpModel _signUpModel = SignUpModel();
+
+  ///TODO SignUp login時、userInfoをfireStoreに保存する
+  ///TODO login時、currentUserを削除する
 
   // アプリ開始
   Future appStarted() async {
