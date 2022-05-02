@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
@@ -272,42 +274,32 @@ class AddCartRecipeListPage extends ConsumerWidget {
                           .checkCart(recipeForInCartListState);
 
                       if (zeroIsInclude) {
-                        showDialog<String>(
+                        showDialog(
                           context: context,
-                          builder: (BuildContext context) => AlertDialog(
+                          builder: (context) => CupertinoAlertDialog(
                             title: Text('確認'),
                             content: Text('数量が0のレシピがありますがよろしいですか？'),
                             actions: <Widget>[
-                              TextButton(
+                              CupertinoDialogAction(
                                 onPressed: () =>
                                     Navigator.pop(context, 'Cancel'),
                                 child: Text('いいえ'),
+                                isDestructiveAction: true,
                               ),
-                              TextButton(
+                              CupertinoDialogAction(
                                 onPressed: () async {
                                   print('はい');
-
+                                  EasyLoading.show(status: 'loading...');
                                   if (await addCartRecipeListModel
                                       .updateCountsInCart(
                                           recipeForInCartListState)) {
                                     int popInt = 0;
                                     Navigator.popUntil(
                                         context, (_) => popInt++ >= 2);
-                                    final snackBar = SnackBar(
-                                        content: const Text(
-                                      'カートを更新しました',
-                                      textAlign: TextAlign.center,
-                                    ));
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
+                                    EasyLoading.showSuccess('カートを更新しました');
                                   } else {
-                                    final snackBar = SnackBar(
-                                        content: const Text(
-                                      'カートの更新に失敗しました',
-                                      textAlign: TextAlign.center,
-                                    ));
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
+                                    ///TODO errorText出力するようにする？
+                                    EasyLoading.showError('カートの更新に失敗しました');
                                   }
                                 },
                                 child: Text('はい'),
@@ -316,22 +308,14 @@ class AddCartRecipeListPage extends ConsumerWidget {
                           ),
                         );
                       } else {
+                        EasyLoading.show(status: 'loading...');
                         if (await addCartRecipeListModel
                             .updateCountsInCart(recipeForInCartListState)) {
                           Navigator.pop(context);
-                          final snackBar = SnackBar(
-                              content: const Text(
-                            'カートを更新しました',
-                            textAlign: TextAlign.center,
-                          ));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          EasyLoading.showSuccess('カートを更新しました');
                         } else {
-                          final snackBar = SnackBar(
-                              content: const Text(
-                            'カートの更新に失敗しました',
-                            textAlign: TextAlign.center,
-                          ));
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          ///TODO errorText出力するようにする？
+                          EasyLoading.showError('カートの更新に失敗しました');
                         }
                       }
                     }

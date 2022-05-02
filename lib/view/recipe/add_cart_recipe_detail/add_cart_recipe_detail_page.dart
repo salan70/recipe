@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
@@ -111,27 +113,33 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     if (counter == 0) {
-                                      showDialog<String>(
+                                      showDialog(
                                         context: context,
-                                        builder: (BuildContext context) =>
-                                            AlertDialog(
+                                        builder: (context) =>
+                                            CupertinoAlertDialog(
                                           title: Text('確認'),
                                           content: Text('数量が0ですがよろしいですか？'),
                                           actions: <Widget>[
-                                            TextButton(
+                                            CupertinoDialogAction(
                                               onPressed: () => Navigator.pop(
                                                   context, 'Cancel'),
                                               child: Text('いいえ'),
+                                              isDestructiveAction: true,
                                             ),
-                                            TextButton(
+                                            CupertinoDialogAction(
                                               onPressed: () async {
-                                                print('はい');
+                                                EasyLoading.show(
+                                                    status: 'loading...');
                                                 await addCartRecipeDetailModel
                                                     .updateCount(
                                                         recipeId, counter);
                                                 int popInt = 0;
                                                 Navigator.popUntil(context,
                                                     (_) => popInt++ >= 2);
+
+                                                /// TODO error時の処理も書く
+                                                EasyLoading.showSuccess(
+                                                    'カートを更新しました');
                                               },
                                               child: Text('はい'),
                                             ),
@@ -139,9 +147,14 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                                         ),
                                       );
                                     } else {
+                                      EasyLoading.show(status: 'loading...');
                                       await addCartRecipeDetailModel
                                           .updateCount(recipeId, counter);
                                       Navigator.pop(context);
+
+                                      /// TODO error時の処理も書く
+                                      EasyLoading.showSuccess(
+                                          '${recipe.recipeName}をカートに追加しました');
                                     }
                                   },
                                   child: Text(
