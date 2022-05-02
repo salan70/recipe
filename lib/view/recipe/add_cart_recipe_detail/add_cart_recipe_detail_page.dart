@@ -191,9 +191,13 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                 ),
                 IconButton(
                     onPressed: () {
-                      counterNotifier.state++;
+                      if (counter < 99) {
+                        counterNotifier.state++;
+                      }
                     },
-                    icon: Icon(Icons.add_circle))
+                    icon: counter == 99
+                        ? Icon(Icons.add_circle_outline)
+                        : Icon(Icons.add_circle))
               ],
             ),
           ],

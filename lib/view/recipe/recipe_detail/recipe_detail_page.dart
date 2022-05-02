@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,42 +79,42 @@ class RecipeDetailPage extends ConsumerWidget {
                       'レシピを削除',
                       style: TextStyle(color: Theme.of(context).errorColor),
                     ),
-                    onPressed: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: Text('確認'),
-                        content: Text('本当にこのレシピを削除しますか？'),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'Cancel'),
-                            child: Text('いいえ'),
-                          ),
-                          TextButton(
-                            onPressed: () async {
-                              EasyLoading.show(status: 'loading...');
-                              //削除失敗
-                              if (recipe.recipeId == null ||
-                                  !await recipeDetailModel
-                                      .deleteRecipe(recipe)) {
-                                EasyLoading.showError('レシピの削除に失敗しました');
-                              }
-                              //削除成功
-                              else {
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
-                                EasyLoading.showSuccess(
-                                    '${recipe.recipeName}を削除しました');
-                              }
-                            },
-                            child: Text(
-                              'はい',
-                              style: TextStyle(
-                                  color: Theme.of(context).errorColor),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    onPressed: () => showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: Text('単位を追加'),
+                            content: Text('本当にこのレシピを削除しますか？'),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                child: Text('キャンセル'),
+                                isDestructiveAction: true,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              CupertinoDialogAction(
+                                child: Text('OK'),
+                                onPressed: () async {
+                                  EasyLoading.show(status: 'loading...');
+                                  //削除失敗
+                                  if (recipe.recipeId == null ||
+                                      !await recipeDetailModel
+                                          .deleteRecipe(recipe)) {
+                                    EasyLoading.showError('レシピの削除に失敗しました');
+                                  }
+                                  //削除成功
+                                  else {
+                                    Navigator.of(context)
+                                        .popUntil((route) => route.isFirst);
+                                    EasyLoading.showSuccess(
+                                        '${recipe.recipeName}を削除しました');
+                                  }
+                                },
+                              ),
+                            ],
+                          );
+                        }),
                   ),
                 ),
               ],
