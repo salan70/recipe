@@ -130,8 +130,13 @@ class EditRecipeWidget extends ConsumerWidget {
                           Text('材料'),
                           SizedBox(width: 8),
                           SizedBox(
-                              width: 48,
+                              width: 24,
                               child: TextField(
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.only(
+                                      left: 2, top: 4, bottom: 4),
+                                  isDense: true,
+                                ),
                                 controller: recipe.forHowManyPeople == null
                                     ? null
                                     : TextEditingController(

@@ -29,15 +29,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const FlexScheme usedScheme = FlexScheme.green;
+    FlexScheme usedScheme = FlexScheme.green;
     Color usedSchemePrimaryColor =
         FlexColorScheme.light(scheme: usedScheme).primary!;
+    Color usedSchemeBackGroundColor =
+        FlexColorScheme.light(scheme: usedScheme).background!;
 
     return MaterialApp(
       title: 'Recipe App',
       theme: FlexThemeData.light(
         scheme: usedScheme,
+        background: usedSchemeBackGroundColor,
         bottomAppBarElevation: 10,
+      ).copyWith(
+        /// textField
+        inputDecorationTheme: InputDecorationTheme(
+          contentPadding: EdgeInsets.only(left: 4, bottom: 4),
+          isDense: true,
+        ),
+
+        /// text
         primaryTextTheme: TextTheme(
           headline5: TextStyle(
             color: Colors.black,
@@ -59,7 +70,8 @@ class MyApp extends StatelessWidget {
             color: Colors.black87,
           ),
         ),
-      ).copyWith(
+
+        /// appBar
         appBarTheme: AppBarTheme(
           elevation: 1,
           iconTheme: IconThemeData(color: usedSchemePrimaryColor),
@@ -69,6 +81,8 @@ class MyApp extends StatelessWidget {
               fontWeight: FontWeight.bold,
               color: usedSchemePrimaryColor),
         ),
+
+        /// card
         cardTheme: CardTheme(
           margin: EdgeInsets.all(8),
           elevation: 3,

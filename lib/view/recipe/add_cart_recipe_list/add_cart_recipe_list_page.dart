@@ -65,15 +65,14 @@ class AddCartRecipeListPage extends ConsumerWidget {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                fullscreenDialog: true,
+                                fullscreenDialog: false,
                                 builder: (context) => AddBasketRecipeDetailPage(
                                     recipe.recipeId!,
                                     'add_cart_recipe_list_page'),
                               ));
                         },
 
-                        child: RecipeCardWidget(
-                            recipe, 'add_cart_recipe_list_page'),
+                        child: RecipeCardWidget(recipe),
                       );
                     }),
               );

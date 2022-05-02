@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 import 'package:recipe/view/other/ingredient_unit_edit/ingredient_unit_edit_model.dart';
+import 'package:settings_ui/settings_ui.dart';
 
 class IngredientUnitEditPage extends ConsumerWidget {
   const IngredientUnitEditPage({Key? key}) : super(key: key);
@@ -27,149 +29,163 @@ class IngredientUnitEditPage extends ConsumerWidget {
             String? addedUnit;
             String? errorTextWhenAdding;
 
-            return ListView(
-              children: [
-                Center(
-                  child: TextButton(
-                    child: Text(
-                      '単位を追加',
-                    ),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Text('単位を追加'),
-                              content: TextField(
-                                onChanged: (value) {
-                                  addedUnit = value;
+            return SettingsList(sections: [
+              SettingsSection(title: Text('追加'), tiles: [
+                SettingsTile.navigation(
+                  title: Text('単位を追加'),
+                  trailing: Icon(Icons.chevron_right_rounded),
+                  onPressed: (context) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: Text('単位を追加'),
+
+                            ///TODO textField iOSっぽくする
+                            content: TextField(
+                              onChanged: (value) {
+                                addedUnit = value;
+                              },
+                            ),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                child: Text('キャンセル'),
+                                isDestructiveAction: true,
+                                onPressed: () {
+                                  Navigator.pop(context);
                                 },
                               ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text('キャンセル'),
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                TextButton(
-                                  child: Text('OK'),
-                                  onPressed: () {
-                                    EasyLoading.show(status: 'loading...');
-                                    errorTextWhenAdding =
-                                        ingredientUnitEditModel
-                                            .outputAddError(addedUnit);
-                                    if (errorTextWhenAdding == null) {
-                                      ingredientUnitEditModel
-                                          .addIngredientUnit(addedUnit!);
-                                      Navigator.of(context).pop();
-                                      EasyLoading.showSuccess(
-                                          '$addedUnitを追加しました');
-                                    } else {
-                                      EasyLoading.showError(
-                                          '$errorTextWhenAdding');
-                                    }
-                                  },
-                                ),
-                              ],
-                            );
-                          });
-                    },
-                  ),
-                ),
-                // Container(
-                //   margin: EdgeInsets.only(left: 16, right: 16),
-                //   child: Text(
-                //     '現在の単位一覧',
-                //     style: Theme.of(context).primaryTextTheme.headline6,
-                //   ),
-                // ),
-                ReorderableListView.builder(
-                  itemExtent: 40,
-                  onReorder: (oldIndex, newIndex) {
-                    ingredientUnitEditModel.reorderIngredientUnitList(
-                        oldIndex, newIndex);
-                  },
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: ingredientUnitList.length,
-                  itemBuilder: (context, index) {
-                    return Slidable(
-                      key: ValueKey(ingredientUnitList[index]),
-                      actionPane: SlidableDrawerActionPane(),
-                      secondaryActions: [
-                        IconSlideAction(
-                          color: Colors.red,
-                          iconWidget: Text('delete'),
-                          onTap: () {
-                            ingredientUnitEditModel.deleteIngredientUnit(
-                                ingredientUnitList[index]);
-                          },
-                        ),
-                      ],
-                      child: Container(
-                          margin: EdgeInsets.only(left: 16),
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  bottom: BorderSide(
-                            color: Theme.of(context).dividerColor,
-                          ))),
-                          child: ListTile(
-                            title: Text(
-                              '${ingredientUnitList[index]}',
-                              style:
-                                  Theme.of(context).primaryTextTheme.subtitle1,
-                            ),
-                            trailing: Icon(Icons.drag_handle),
-                          )),
-                    );
+                              CupertinoDialogAction(
+                                child: Text('OK'),
+                                onPressed: () {
+                                  EasyLoading.show(status: 'loading...');
+                                  errorTextWhenAdding = ingredientUnitEditModel
+                                      .outputAddError(addedUnit);
+                                  if (errorTextWhenAdding == null) {
+                                    ingredientUnitEditModel
+                                        .addIngredientUnit(addedUnit!);
+                                    Navigator.of(context).pop();
+                                    EasyLoading.showSuccess(
+                                        '$addedUnitを追加しました');
+                                  } else {
+                                    EasyLoading.showError(
+                                        '$errorTextWhenAdding');
+                                  }
+                                },
+                              ),
+                            ],
+                          );
+                        });
                   },
                 ),
-                Center(
-                  child: TextButton(
-                    child: Text(
-                      '単位を初期に戻す',
-                      style: TextStyle(color: Theme.of(context).errorColor),
+              ]),
+              SettingsSection(title: Text('一覧'), tiles: [
+                CustomSettingsTile(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      color: Theme.of(context).backgroundColor,
                     ),
-                    onPressed: () {
-                      showDialog<String>(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: Text('確認'),
-                          content: Text('本当に単位を初期に戻しますか？'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
+                    child: ReorderableListView.builder(
+                      onReorder: (oldIndex, newIndex) {
+                        ingredientUnitEditModel.reorderIngredientUnitList(
+                            oldIndex, newIndex);
+                      },
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: ingredientUnitList.length,
+                      itemBuilder: (context, index) {
+                        return Slidable(
+                          key: ValueKey(ingredientUnitList[index]),
+                          actionPane: SlidableDrawerActionPane(),
+                          secondaryActions: [
+                            IconSlideAction(
+                              color: Colors.red,
+                              iconWidget: Text('削除'),
+                              onTap: () {
+                                ingredientUnitEditModel.deleteIngredientUnit(
+                                    ingredientUnitList[index]);
                               },
-                              child: Text('いいえ'),
-                            ),
-                            TextButton(
-                              onPressed: () async {
-                                await ingredientUnitEditModel
-                                    .deleteIngredientUnitList();
-
-                                Navigator.of(context).pop();
-                                final snackBar = SnackBar(
-                                    content: Text(
-                                  '単位を初期に戻しました',
-                                  textAlign: TextAlign.center,
-                                ));
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
-                              },
-                              child: Text('はい',
-                                  style: TextStyle(
-                                      color: Theme.of(context).errorColor)),
                             ),
                           ],
-                        ),
-                      );
-                    },
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 40,
+                                margin: EdgeInsetsDirectional.only(
+                                  start: 17.25,
+                                  end: 15,
+                                ),
+                                child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '${ingredientUnitList[index]}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1,
+                                      ),
+                                      Icon(
+                                        Icons.drag_handle_rounded,
+                                        size: 21,
+                                      ),
+                                    ]),
+                              ),
+                              index + 1 < ingredientUnitList.length
+                                  ? Divider(
+                                      indent: 15,
+                                      height: 0.3,
+                                      color: Theme.of(context).dividerColor,
+                                    )
+                                  : Container(
+                                      height: 0,
+                                    ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ],
-            );
+              ]),
+              SettingsSection(title: Text('初期化'), tiles: [
+                SettingsTile.navigation(
+                  title: Text('単位を初期化'),
+                  trailing: Icon(Icons.chevron_right_rounded),
+                  onPressed: (context) {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: Text('注意'),
+                            content: Text('本当に単位を初期化しますか？'),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                child: Text('いいえ'),
+                                isDestructiveAction: true,
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              CupertinoDialogAction(
+                                child: Text('はい'),
+                                onPressed: () async {
+                                  EasyLoading.show(status: 'loading...');
+                                  await ingredientUnitEditModel
+                                      .deleteIngredientUnitList();
+
+                                  Navigator.of(context).pop();
+                                  EasyLoading.showSuccess('単位を初期化しました');
+                                },
+                              ),
+                            ],
+                          );
+                        });
+                  },
+                ),
+              ]),
+            ]);
           }),
     );
   }

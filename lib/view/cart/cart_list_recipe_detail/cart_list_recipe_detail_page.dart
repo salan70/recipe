@@ -25,7 +25,7 @@ class CartListRecipeDetailPage extends ConsumerWidget {
         children: [
           Container(
             width: double.infinity,
-            child: RecipeDetailWidget(recipeId, 'cart_list_recipe_detail_page'),
+            child: RecipeDetailWidget(recipeId),
           ),
         ],
       ),

@@ -24,7 +24,7 @@ class RecipeListPage extends ConsumerWidget {
       ),
       body: recipes.when(
           error: (error, stack) => Text('Error: $error'),
-          loading: () => const CircularProgressIndicator(),
+          loading: () => CircularProgressIndicator(),
           data: (recipes) {
             return Padding(
               padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
@@ -46,7 +46,7 @@ class RecipeListPage extends ConsumerWidget {
                                   recipe.recipeId!, 'recipe_list_page'),
                             ));
                       },
-                      child: RecipeCardWidget(recipe, 'recipe_list_page'),
+                      child: RecipeCardWidget(recipe),
                     );
                   }),
             );

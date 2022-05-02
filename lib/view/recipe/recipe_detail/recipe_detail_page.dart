@@ -71,7 +71,7 @@ class RecipeDetailPage extends ConsumerWidget {
           data: (recipe) {
             return ListView(
               children: [
-                RecipeDetailWidget(recipeId, fromPageName),
+                RecipeDetailWidget(recipeId),
                 Center(
                   child: TextButton(
                     child: Text(

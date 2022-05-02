@@ -86,6 +86,11 @@ class ProceduresListWidget extends ConsumerWidget {
                                 : null,
                             maxLength: 100,
                             maxLines: null,
+                            decoration: InputDecoration(
+                              contentPadding:
+                                  EdgeInsets.only(left: 4, top: 16, bottom: 4),
+                              isDense: true,
+                            ),
                             onChanged: (String value) {
                               procedureList[index] = Procedure(
                                   id: procedureList[index].id, content: value);

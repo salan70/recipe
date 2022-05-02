@@ -76,8 +76,7 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                     error: (error, stack) => Text('Error: $error'),
                     loading: () => const CircularProgressIndicator(),
                     data: (recipe) {
-                      return RecipeDetailWidget(
-                          recipeId, 'add_cart_recipe_detail_page');
+                      return RecipeDetailWidget(recipeId);
                     }),
               ),
             ),

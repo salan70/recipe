@@ -5,9 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/components/providers.dart';
 
 class RecipeDetailWidget extends ConsumerWidget {
-  RecipeDetailWidget(this.recipeId, this.pageName);
+  RecipeDetailWidget(this.recipeId);
   final String recipeId;
-  final String pageName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,17 +34,13 @@ class RecipeDetailWidget extends ConsumerWidget {
               child: Column(
                 children: [
                   SizedBox(height: 16),
-                  Hero(
-                    tag: 'recipeList recipeName' + recipe.recipeId! + pageName,
-                    child: Container(
-                      width: double.infinity,
-                      color: Theme.of(context).backgroundColor,
-                      child: Text(
-                        recipe.recipeName!,
-                        textAlign: TextAlign.left,
-                        style: Theme.of(context).primaryTextTheme.headline5,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                  Container(
+                    width: double.infinity,
+                    child: Text(
+                      recipe.recipeName!,
+                      textAlign: TextAlign.left,
+                      style: Theme.of(context).primaryTextTheme.headline5,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   // 画像
@@ -54,25 +49,22 @@ class RecipeDetailWidget extends ConsumerWidget {
                     child: SizedBox(
                       height: 240,
                       width: double.infinity,
-                      child: Hero(
-                        tag: 'recipeList recipeImage' + recipeId + pageName,
-                        child: recipe.imageUrl != ''
-                            ? Image.network(
-                                recipe.imageUrl!,
-                                errorBuilder: (c, o, s) {
-                                  return const Icon(
-                                    Icons.error,
-                                  );
-                                },
-                              )
-                            : Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  color: Colors.grey[400],
-                                ),
-                                child: Icon(Icons.add_photo_alternate_outlined),
+                      child: recipe.imageUrl != ''
+                          ? Image.network(
+                              recipe.imageUrl!,
+                              errorBuilder: (c, o, s) {
+                                return const Icon(
+                                  Icons.error,
+                                );
+                              },
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                color: Colors.grey[400],
                               ),
-                      ),
+                              child: Icon(Icons.add_photo_alternate_outlined),
+                            ),
                     ),
                   ),
                   SizedBox(height: 8),
