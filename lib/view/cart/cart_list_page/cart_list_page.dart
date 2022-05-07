@@ -150,16 +150,12 @@ class CartListPage extends ConsumerWidget {
   Widget _ingredientListCardWidget(BuildContext context, String listType,
       List<IngredientInCartPerRecipeList> ingredientList) {
     CartListModel cartListModel = CartListModel();
-    String _cardTitle = listType == 'buyList'
-        ? '買うリスト'
-        : listType == 'notBuyList'
-            ? '買わないリスト'
-            : '';
-    String _slidableActionText = listType == 'buyList'
-        ? '買わないリストへ'
-        : listType == 'notBuyList'
-            ? '買うリストへ'
-            : '';
+    String _cardTitle = listType == 'buyList' ? '買うリスト' : '買わないリスト';
+    String _slidableActionText = listType == 'buyList' ? '買わないリストへ' : '買うリストへ';
+    Color _cardColor = listType == 'buyList'
+        ? Theme.of(context).cardColor
+        : Theme.of(context).dividerColor;
+
     return Column(
       children: [
         Padding(
@@ -174,6 +170,7 @@ class CartListPage extends ConsumerWidget {
           ),
         ),
         Card(
+          color: _cardColor,
           child: ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hawk_fab_menu/hawk_fab_menu.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/view/recipe/add_recipe/add_recipe_page.dart';
+import 'package:recipe/view/recipe/search_recipe/search_recipe_page.dart';
 import 'package:recipe/view/setting/setting_top/setting_top_page.dart';
 
 import '../../../domain/recipe.dart';
@@ -49,10 +51,15 @@ class PageContainerPage extends ConsumerWidget {
             ),
           ),
           HawkFabMenuItem(
-            // color: Theme.of(context).primaryColorLight,
             color: Colors.white,
             label: 'レシピを検索',
-            ontap: () {},
+            ontap: () {
+              showCupertinoModalBottomSheet(
+                expand: true,
+                context: context,
+                builder: (context) => SearchRecipePage(),
+              );
+            },
             icon: Icon(
               Icons.search_rounded,
               color: Theme.of(context).primaryColorDark,

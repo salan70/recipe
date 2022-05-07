@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
@@ -93,7 +94,13 @@ class MyApp extends StatelessWidget {
       //   appBarElevation: 2,
       // ),
       // themeMode: themeMode,
-      home: PageContainerPage(),
+      onGenerateRoute: (settings) {
+        return MaterialWithModalsPageRoute(
+          settings: settings,
+          builder: (context) => PageContainerPage(),
+        );
+      },
+      debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
     );
   }

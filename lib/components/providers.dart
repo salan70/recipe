@@ -55,6 +55,8 @@ final recipeStreamProviderFamily =
   return recipeRepository.fetchRecipe(recipeId);
 });
 
+final searchFunctionProvider = StateProvider.autoDispose((ref) => false);
+
 /// reordarale_text_field
 final ingredientListNotifierProvider =
     StateNotifierProvider.autoDispose<IngredientListNotifier, List<Ingredient>>(

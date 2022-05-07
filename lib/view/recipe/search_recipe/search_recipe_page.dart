@@ -9,8 +9,8 @@ import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.
 import '../recipe_detail/recipe_detail_page.dart';
 
 // レシピ一覧画面
-class RecipeListPage extends ConsumerWidget {
-  const RecipeListPage({Key? key}) : super(key: key);
+class SearchRecipePage extends ConsumerWidget {
+  const SearchRecipePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -20,8 +20,16 @@ class RecipeListPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'レシピ一覧',
+        title: TextField(
+          decoration: InputDecoration(
+            fillColor: Theme.of(context).dividerColor,
+            filled: true,
+            // icon: Icon(Icons.search_rounded),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+            hintText: 'レシピ名、材料名で検索',
+          ),
         ),
       ),
       body: recipes.when(
