@@ -100,5 +100,8 @@ final recipeForInCartListNotifierProvider = StateNotifierProvider.autoDispose<
 
 final stateIsChangedProvider = StateProvider.autoDispose((ref) => false);
 
+final notBuyIngredientListIsOpenProvider =
+    StateProvider.autoDispose((ref) => false);
+
 // page_control
 final selectPageProvider = StateProvider.autoDispose((ref) => 0);

@@ -111,6 +111,40 @@ class RecipeRepository {
     return recipeStream;
   }
 
+  Stream<Recipe> fetchRecipeBySearchWord(String searchWord) {
+    final recipeDocument = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('recipes')
+        .doc(searchWord);
+
+    final recipeStream =
+        recipeDocument.snapshots().map((DocumentSnapshot document) {
+      Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+
+      final String? recipeId = document.id;
+      final String recipeName = data['recipeName'];
+      final double? recipeGrade = data['recipeGrade'];
+      final int? forHowManyPeople = data['forHowManyPeople'];
+      final int? countInCart = data['countInCart'];
+      final String? recipeMemo = data['recipeMemo'];
+      final String? imageUrl = data['imageUrl'];
+      final File? imageFile = null;
+
+      return Recipe(
+          recipeId: recipeId,
+          recipeName: recipeName,
+          recipeGrade: recipeGrade,
+          forHowManyPeople: forHowManyPeople,
+          countInCart: countInCart,
+          recipeMemo: recipeMemo,
+          imageUrl: imageUrl,
+          imageFile: imageFile);
+    });
+
+    return recipeStream;
+  }
+
   Stream<List<Recipe>> fetchRecipeList() {
     final recipeCollection = FirebaseFirestore.instance
         .collection('users')

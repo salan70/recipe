@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
@@ -20,17 +21,38 @@ class SearchRecipePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: TextField(
-          decoration: InputDecoration(
-            fillColor: Theme.of(context).dividerColor,
-            filled: true,
-            // icon: Icon(Icons.search_rounded),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
+        centerTitle: false,
+        titleSpacing: 0,
+        title: Row(
+          children: [
+            Expanded(
+              child: TextField(
+                textInputAction: TextInputAction.search,
+                decoration: InputDecoration(
+                  contentPadding: EdgeInsets.all(8),
+                  fillColor: Theme.of(context).dividerColor,
+                  filled: true,
+
+                  /// TODO 枠線消す
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  hintText: 'レシピ名、材料名で検索',
+                ),
+                onSubmitted: (searchWord) {
+                  print('searchWord is $searchWord');
+
+                  /// TODO searchWordを渡して検索処理
+                },
+              ),
             ),
-            hintText: 'レシピ名、材料名で検索',
-          ),
+          ],
         ),
+        actions: [
+          SizedBox(
+            width: 24,
+          )
+        ],
       ),
       body: recipes.when(
           error: (error, stack) => Text('Error: $error'),

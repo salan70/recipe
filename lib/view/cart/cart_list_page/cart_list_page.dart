@@ -21,6 +21,10 @@ class CartListPage extends ConsumerWidget {
     CartListModel cartListModel = CartListModel();
 
     final recipeListInCartStream = ref.watch(recipeListInCartStreamProvider);
+    final notBuyIngredientListIsOpen =
+        ref.watch(notBuyIngredientListIsOpenProvider);
+    final notBuyIngredientListIsOpenNotifier =
+        ref.watch(notBuyIngredientListIsOpenProvider.notifier);
 
     return DefaultTabController(
       length: 2,
@@ -93,10 +97,61 @@ class CartListPage extends ConsumerWidget {
                           return Container(
                             child: ListView(
                               children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, right: 8),
+                                  child: Container(
+                                    width: double.infinity,
+                                    child: Text(
+                                      '買う (${buyList.length})',
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .subtitle1,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                ),
                                 _ingredientListCardWidget(
                                     context, 'buyList', buyList),
-                                _ingredientListCardWidget(
-                                    context, 'notBuyList', notBuyList),
+                                Divider(
+                                  thickness: 1,
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 8, right: 8),
+                                  child: Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                          child: Text(
+                                            '買わない (${notBuyList.length})',
+                                            style: Theme.of(context)
+                                                .primaryTextTheme
+                                                .subtitle1,
+                                            textAlign: TextAlign.left,
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          child: notBuyIngredientListIsOpen ==
+                                                  true
+                                              ? Icon(Icons.expand_less_rounded)
+                                              : Icon(Icons.expand_more_rounded),
+                                          onTap: () {
+                                            notBuyIngredientListIsOpenNotifier
+                                                    .state =
+                                                !notBuyIngredientListIsOpen;
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                notBuyIngredientListIsOpen == true
+                                    ? _ingredientListCardWidget(
+                                        context, 'notBuyList', notBuyList)
+                                    : Container(),
                                 SizedBox(
                                   height: 48,
                                 ),
@@ -150,91 +205,72 @@ class CartListPage extends ConsumerWidget {
   Widget _ingredientListCardWidget(BuildContext context, String listType,
       List<IngredientInCartPerRecipeList> ingredientList) {
     CartListModel cartListModel = CartListModel();
-    String _cardTitle = listType == 'buyList' ? '買うリスト' : '買わないリスト';
     String _slidableActionText = listType == 'buyList' ? '買わないリストへ' : '買うリストへ';
     Color _cardColor = listType == 'buyList'
         ? Theme.of(context).cardColor
         : Theme.of(context).dividerColor;
 
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 8, right: 8),
-          child: Container(
-            width: double.infinity,
-            child: Text(
-              _cardTitle,
-              style: Theme.of(context).primaryTextTheme.subtitle1,
-              textAlign: TextAlign.left,
-            ),
-          ),
-        ),
-        Card(
-          color: _cardColor,
-          child: ListView.builder(
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              itemCount: ingredientList.length,
-              itemBuilder: (context, index) {
-                final ingredient = ingredientList[index];
-                final id = ingredient.ingredientInCart.ingredientName +
-                    ingredient.ingredientInCart.ingredientUnit;
-                return Slidable(
-                  key: ValueKey(id),
-                  actionPane: SlidableDrawerActionPane(),
-                  actions: [
-                    IconSlideAction(
-                      color: Theme.of(context).dividerColor,
-                      iconWidget: Text(
-                        _slidableActionText,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      onTap: () {
-                        cartListModel.toggleIsNeed(
-                          id,
-                        );
-                      },
-                    ),
-                  ],
-                  child: CheckboxListTile(
-                    title: Text(
-                      '${ingredient.ingredientInCart.ingredientName}',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          decoration: cartListModel.getCartItem(id).isBought
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none),
-                    ),
-                    subtitle: Text(
-                      '${ingredient.ingredientInCart.ingredientTotalAmount}${ingredient.ingredientInCart.ingredientUnit}',
-                      style: TextStyle(
-                          decoration: cartListModel.getCartItem(id).isBought
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none),
-                    ),
-                    controlAffinity: ListTileControlAffinity.leading,
-                    value: cartListModel.getCartItem(id).isBought,
-                    onChanged: (isBought) {
-                      cartListModel.toggleIsBought(id, isBought!);
+    return ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: ingredientList.length,
+        itemBuilder: (context, index) {
+          final ingredient = ingredientList[index];
+          final id = ingredient.ingredientInCart.ingredientName +
+              ingredient.ingredientInCart.ingredientUnit;
+          return Slidable(
+            key: ValueKey(id),
+            actionPane: SlidableDrawerActionPane(),
+            actions: [
+              IconSlideAction(
+                color: Theme.of(context).dividerColor,
+                iconWidget: Text(
+                  _slidableActionText,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                onTap: () {
+                  cartListModel.toggleIsNeed(
+                    id,
+                  );
+                },
+              ),
+            ],
+            child: CheckboxListTile(
+              title: Text(
+                '${ingredient.ingredientInCart.ingredientName}',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    decoration: cartListModel.getCartItem(id).isBought
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none),
+              ),
+              subtitle: Text(
+                '${ingredient.ingredientInCart.ingredientTotalAmount}${ingredient.ingredientInCart.ingredientUnit}',
+                style: TextStyle(
+                    decoration: cartListModel.getCartItem(id).isBought
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none),
+              ),
+              controlAffinity: ListTileControlAffinity.leading,
+              value: cartListModel.getCartItem(id).isBought,
+              onChanged: (isBought) {
+                cartListModel.toggleIsBought(id, isBought!);
+              },
+              secondary: IconButton(
+                icon: Icon(Icons.info_outline),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) {
+                      return _recipeListPerIngredientDialog(
+                          context, ingredient);
                     },
-                    secondary: IconButton(
-                      icon: Icon(Icons.info_outline),
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (_) {
-                            return _recipeListPerIngredientDialog(
-                                context, ingredient);
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                );
-              }),
-        ),
-      ],
-    );
+                  );
+                },
+              ),
+            ),
+          );
+        });
   }
 
   Widget _recipeListPerIngredientDialog(

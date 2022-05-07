@@ -10,26 +10,6 @@ class AddRecipeModel extends ChangeNotifier {
   AddRecipeModel({required this.user});
   final User user;
 
-  String? outputErrorText(Recipe recipe, List<Ingredient> ingredientList) {
-    Validations validation = Validations();
-
-    if (recipe.recipeName == null) {
-      return '料理名を入力してください';
-    } else if (recipe.forHowManyPeople == null) {
-      return '材料が何人分か入力してください';
-    } else if (recipe.forHowManyPeople! < 1) {
-      return '材料は1人分以上で入力してください';
-    } else {
-      for (int index = 0; index < ingredientList.length; index++) {
-        if (validation.outputAmountErrorText(ingredientList[index].amount) !=
-            null) {
-          return '材料の数量に不正な値があります';
-        }
-      }
-    }
-    return null;
-  }
-
   Future<bool> addRecipe(Recipe recipe) async {
     RecipeRepository _recipeRepository = RecipeRepository(user: user);
 
