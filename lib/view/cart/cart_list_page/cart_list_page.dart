@@ -65,21 +65,12 @@ class CartListPage extends ConsumerWidget {
                               ingredientPerInCartRecipeList = [];
 
                           for (var recipe in recipeListInCart) {
-                            final ingredientList = ref.watch(
-                                ingredientListStreamProviderFamily(
-                                    recipe.recipeId!));
-                            ingredientList.when(
-                              error: (error, stack) => Text('Error: $error'),
-                              loading: () => const CircularProgressIndicator(),
-                              data: (ingredientList) {
-                                List<IngredientPerInCartRecipe> addList =
-                                    cartListModel
-                                        .createIngredientPerInCartRecipeList(
-                                            recipe, ingredientList);
-                                for (var item in addList)
-                                  ingredientPerInCartRecipeList.add(item);
-                              },
-                            );
+                            List<IngredientPerInCartRecipe> addList =
+                                cartListModel
+                                    .createIngredientPerInCartRecipeList(
+                                        recipe);
+                            for (var item in addList)
+                              ingredientPerInCartRecipeList.add(item);
                           }
 
                           List<IngredientInCartPerRecipeList>

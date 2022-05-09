@@ -9,21 +9,23 @@ import '../../../domain/cart.dart';
 
 class CartListModel extends ChangeNotifier {
   List<IngredientPerInCartRecipe> createIngredientPerInCartRecipeList(
-      RecipeListInCart recipe, List<Ingredient> ingredientList) {
+      RecipeListInCart recipe) {
     List<IngredientPerInCartRecipe> ingredientPerInCartRecipeList = [];
 
-    for (var item in ingredientList) {
-      Ingredient ingredient = Ingredient(
-          id: item.id, name: item.name, amount: item.amount, unit: item.unit);
-      IngredientPerInCartRecipe ingredientPerInCartRecipe =
-          IngredientPerInCartRecipe(
-              recipeId: recipe.recipeId!,
-              recipeName: recipe.recipeName!,
-              forHowManyPeople: recipe.forHowManyPeople!,
-              countInCart: recipe.countInCart!,
-              ingredient: ingredient);
+    if (recipe.ingredientList != null) {
+      for (var item in recipe.ingredientList!) {
+        Ingredient ingredient = Ingredient(
+            id: item.id, name: item.name, amount: item.amount, unit: item.unit);
+        IngredientPerInCartRecipe ingredientPerInCartRecipe =
+            IngredientPerInCartRecipe(
+                recipeId: recipe.recipeId!,
+                recipeName: recipe.recipeName!,
+                forHowManyPeople: recipe.forHowManyPeople!,
+                countInCart: recipe.countInCart!,
+                ingredient: ingredient);
 
-      ingredientPerInCartRecipeList.add(ingredientPerInCartRecipe);
+        ingredientPerInCartRecipeList.add(ingredientPerInCartRecipe);
+      }
     }
 
     return ingredientPerInCartRecipeList;

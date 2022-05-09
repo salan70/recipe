@@ -28,24 +28,6 @@ final recipeListStreamProvider =
   return recipeRepository.fetchRecipeList();
 });
 
-final ingredientListStreamProviderFamily = StreamProvider.family
-    .autoDispose<List<Ingredient>, String>((ref, recipeId) {
-  final user = ref.watch(userStateNotifierProvider);
-
-  RecipeRepository recipeRepository = RecipeRepository(user: user!);
-
-  return recipeRepository.fetchIngredientList(recipeId);
-});
-
-final procedureListStreamProviderFamily =
-    StreamProvider.family.autoDispose<List<Procedure>, String>((ref, recipeId) {
-  final user = ref.watch(userStateNotifierProvider);
-
-  RecipeRepository recipeRepository = RecipeRepository(user: user!);
-
-  return recipeRepository.fetchProcedureList(recipeId);
-});
-
 final recipeStreamProviderFamily =
     StreamProvider.family.autoDispose<Recipe, String>((ref, recipeId) {
   final user = ref.watch(userStateNotifierProvider);

@@ -12,13 +12,9 @@ class RecipeDetailWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recipe = ref.watch(recipeStreamProviderFamily(recipeId));
 
-    // final ingredientList =
-    //     ref.watch(ingredientListStreamProviderFamily(recipeId));
     final ingredientListNotifier =
         ref.watch(ingredientListNotifierProvider.notifier);
 
-    final procedureList =
-        ref.watch(procedureListStreamProviderFamily(recipeId));
     final procedureListNotifier =
         ref.watch(procedureListNotifierProvider.notifier);
 
@@ -26,6 +22,20 @@ class RecipeDetailWidget extends ConsumerWidget {
         error: (error, stack) => Text('Error: $error'),
         loading: () => const CircularProgressIndicator(),
         data: (recipe) {
+          if (recipe.ingredientList != null) {
+            if (recipe.ingredientList!.isEmpty == false) {
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                ingredientListNotifier.getList(recipe.ingredientList!);
+              });
+            }
+          }
+          if (recipe.ingredientList != null) {
+            if (recipe.procedureList!.isEmpty == false) {
+              WidgetsBinding.instance!.addPostFrameCallback((_) {
+                procedureListNotifier.getList(recipe.procedureList!);
+              });
+            }
+          }
           return DefaultTextStyle(
             style: Theme.of(context).primaryTextTheme.bodyText1!,
             child: Container(
@@ -115,17 +125,6 @@ class RecipeDetailWidget extends ConsumerWidget {
                             Text('人分'),
                           ]),
                         ),
-                        // ingredientList.when(
-                        //   error: (error, stack) => Text('Error: $error'),
-                        //   loading: () => const CircularProgressIndicator(),
-                        //   data: (ingredientList) {
-                        //     if (ingredientList.isEmpty == false) {
-                        //       WidgetsBinding.instance!
-                        //           .addPostFrameCallback((_) {
-                        //         ingredientListNotifier.getList(ingredientList);
-                        //       });
-                        //     }
-                        //     return
                         ListView.builder(
                           itemCount: recipe.ingredientList == null
                               ? 0
@@ -165,56 +164,47 @@ class RecipeDetailWidget extends ConsumerWidget {
                   SizedBox(
                     height: 16,
                   ),
-                  procedureList.when(
-                      error: (error, stack) => Text('Error: $error'),
-                      loading: () => const CircularProgressIndicator(),
-                      data: (procedureList) {
-                        if (procedureList.isEmpty == false) {
-                          WidgetsBinding.instance!.addPostFrameCallback((_) {
-                            procedureListNotifier.getList(procedureList);
-                          });
-                        }
-                        return Container(
-                          width: double.infinity,
-                          child: Column(
-                            children: [
-                              Container(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  '手順',
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .subtitle2!,
-                                ),
-                              ),
-                              ListView.builder(
-                                itemCount: procedureList.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  var procedure = procedureList[index];
-                                  return Container(
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 8,
-                                        ),
-                                        Expanded(
-                                            flex: 1,
-                                            child: Text('${index + 1}')),
-                                        Expanded(
-                                            flex: 19,
-                                            child:
-                                                Text('${procedure.content}')),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                              ),
-                            ],
+                  Container(
+                    width: double.infinity,
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '手順',
+                            style:
+                                Theme.of(context).primaryTextTheme.subtitle2!,
                           ),
-                        );
-                      }),
+                        ),
+                        ListView.builder(
+                          itemCount: recipe.procedureList == null
+                              ? 0
+                              : recipe.procedureList!.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            var procedure = recipe.procedureList == null
+                                ? null
+                                : recipe.procedureList![index];
+                            return Container(
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  Expanded(
+                                      flex: 1, child: Text('${index + 1}')),
+                                  Expanded(
+                                      flex: 19,
+                                      child: Text('${procedure!.content}')),
+                                ],
+                              ),
+                            );
+                          },
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                        ),
+                      ],
+                    ),
+                  ),
                   // メモ
                   SizedBox(
                     height: 16,

@@ -15,8 +15,6 @@ class RecipeDetailModel extends ChangeNotifier {
     RecipeRepository _recipeRepository = RecipeRepository(user: user);
 
     try {
-      await _recipeRepository.deleteProcedures(recipe.recipeId!);
-      await _recipeRepository.deleteIngredients(recipe.recipeId!);
       if (recipe.imageUrl != '') {
         print('delete image: ${recipe.imageUrl}');
         await _recipeRepository.deleteImage(recipe);

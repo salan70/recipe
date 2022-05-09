@@ -83,7 +83,7 @@ class RecipeDetailPage extends ConsumerWidget {
                         context: context,
                         builder: (context) {
                           return CupertinoAlertDialog(
-                            title: Text('単位を追加'),
+                            title: Text('確認'),
                             content: Text('本当にこのレシピを削除しますか？'),
                             actions: <Widget>[
                               CupertinoDialogAction(

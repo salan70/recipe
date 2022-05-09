@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe/components/validation/validation.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
 
@@ -14,15 +13,15 @@ class AddRecipeModel extends ChangeNotifier {
     RecipeRepository _recipeRepository = RecipeRepository(user: user);
 
     Map<String, Map<String, dynamic>>? ingredientListMap =
-        _ingredientMapToList(recipe.ingredientList!);
+        _ingredientMapToList(recipe.ingredientList);
+    Map<String, Map<String, dynamic>>? procedureListMap =
+        _procedureMapToList(recipe.procedureList);
 
     try {
-      DocumentReference docRef =
-          await _recipeRepository.addRecipe(recipe, ingredientListMap);
+      DocumentReference docRef = await _recipeRepository.addRecipe(
+          recipe, ingredientListMap, procedureListMap);
       String recipeId = docRef.id;
       await _addImage(recipe, recipeId);
-      await _addIngredientList(recipe, recipeId);
-      await _addProcedureList(recipe, recipeId);
 
       return true;
     } catch (e) {
@@ -54,6 +53,27 @@ class AddRecipeModel extends ChangeNotifier {
     return ingredientListMap;
   }
 
+  Map<String, dynamic> _procedureToMap(Procedure procedure) {
+    return {
+      'content': procedure.content,
+    };
+  }
+
+  Map<String, Map<String, dynamic>> _procedureMapToList(
+      List<Procedure>? procedureList) {
+    Map<String, Map<String, dynamic>> procedureListMap = {};
+
+    if (procedureList != null) {
+      for (int index = 0; index < procedureList.length; index++) {
+        if (procedureList[index].content != '') {
+          procedureListMap[index.toString()] =
+              _procedureToMap(procedureList[index]);
+        }
+      }
+    }
+    return procedureListMap;
+  }
+
   Future _addImage(Recipe recipe, String recipeId) async {
     RecipeRepository _recipeRepository = RecipeRepository(user: user);
 
@@ -62,22 +82,6 @@ class AddRecipeModel extends ChangeNotifier {
     } else {
       print(recipe.imageFile);
       await _recipeRepository.addImage(recipe.imageFile!, recipeId);
-    }
-  }
-
-  Future _addIngredientList(Recipe recipe, String recipeId) async {
-    RecipeRepository _recipeRepository = RecipeRepository(user: user);
-
-    if (recipe.ingredientList != null) {
-      await _recipeRepository.addIngredient(recipe.ingredientList!, recipeId);
-    }
-  }
-
-  Future _addProcedureList(Recipe recipe, String recipeId) async {
-    RecipeRepository _recipeRepository = RecipeRepository(user: user);
-
-    if (recipe.procedureList != null) {
-      await _recipeRepository.addProcedure(recipe.procedureList!, recipeId);
     }
   }
 }

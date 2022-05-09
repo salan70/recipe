@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
 
@@ -13,17 +11,66 @@ class UpdateRecipeModel extends ChangeNotifier {
   Future<bool> updateRecipe(Recipe originalRecipe, Recipe recipe) async {
     RecipeRepository _recipeRepository = RecipeRepository(user: user);
 
+    Map<String, Map<String, dynamic>>? ingredientListMap =
+        _ingredientMapToList(recipe.ingredientList);
+    Map<String, Map<String, dynamic>>? procedureListMap =
+        _procedureMapToList(recipe.procedureList);
+
     try {
-      await _recipeRepository.updateRecipe(originalRecipe.recipeId!, recipe);
+      await _recipeRepository.updateRecipe(originalRecipe.recipeId!, recipe,
+          ingredientListMap, procedureListMap);
       await _updateImage(originalRecipe, recipe);
-      await _updateIngredientList(originalRecipe, recipe);
-      await _updateProcedureList(originalRecipe, recipe);
 
       return true;
     } catch (e) {
       print(e);
       return false;
     }
+  }
+
+  Map<String, dynamic> _ingredientToMap(Ingredient ingredient) {
+    return {
+      'ingredientName': ingredient.name,
+      'ingredientAmount': ingredient.amount,
+      'ingredientUnit': ingredient.unit
+    };
+  }
+
+  Map<String, Map<String, dynamic>> _ingredientMapToList(
+      List<Ingredient>? ingredientList) {
+    Map<String, Map<String, dynamic>> ingredientListMap = {};
+
+    if (ingredientList != null) {
+      for (int index = 0; index < ingredientList.length; index++) {
+        if (ingredientList[index].name != '') {
+          print('$index: ${ingredientList[index].name}');
+          ingredientListMap[index.toString()] =
+              _ingredientToMap(ingredientList[index]);
+        }
+      }
+    }
+    return ingredientListMap;
+  }
+
+  Map<String, dynamic> _procedureToMap(Procedure procedure) {
+    return {
+      'content': procedure.content,
+    };
+  }
+
+  Map<String, Map<String, dynamic>> _procedureMapToList(
+      List<Procedure>? procedureList) {
+    Map<String, Map<String, dynamic>> procedureListMap = {};
+
+    if (procedureList != null) {
+      for (int index = 0; index < procedureList.length; index++) {
+        if (procedureList[index].content != '') {
+          procedureListMap[index.toString()] =
+              _procedureToMap(procedureList[index]);
+        }
+      }
+    }
+    return procedureListMap;
   }
 
   Future _updateImage(Recipe originalRecipe, Recipe recipe) async {
@@ -38,26 +85,6 @@ class UpdateRecipeModel extends ChangeNotifier {
       }
       await _recipeRepository.addImage(
           recipe.imageFile!, originalRecipe.recipeId!);
-    }
-  }
-
-  Future _updateIngredientList(Recipe originalRecipe, Recipe recipe) async {
-    RecipeRepository _recipeRepository = RecipeRepository(user: user);
-
-    if (recipe.ingredientList != null) {
-      await _recipeRepository.deleteIngredients(originalRecipe.recipeId!);
-      await _recipeRepository.addIngredient(
-          recipe.ingredientList!, originalRecipe.recipeId!);
-    }
-  }
-
-  Future _updateProcedureList(Recipe originalRecipe, Recipe recipe) async {
-    RecipeRepository _recipeRepository = RecipeRepository(user: user);
-
-    if (recipe.procedureList != null) {
-      await _recipeRepository.deleteProcedures(originalRecipe.recipeId!);
-      await _recipeRepository.addProcedure(
-          recipe.procedureList!, originalRecipe.recipeId!);
     }
   }
 }
