@@ -12,8 +12,8 @@ class RecipeDetailWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final recipe = ref.watch(recipeStreamProviderFamily(recipeId));
 
-    final ingredientList =
-        ref.watch(ingredientListStreamProviderFamily(recipeId));
+    // final ingredientList =
+    //     ref.watch(ingredientListStreamProviderFamily(recipeId));
     final ingredientListNotifier =
         ref.watch(ingredientListNotifierProvider.notifier);
 
@@ -115,44 +115,48 @@ class RecipeDetailWidget extends ConsumerWidget {
                             Text('人分'),
                           ]),
                         ),
-                        ingredientList.when(
-                          error: (error, stack) => Text('Error: $error'),
-                          loading: () => const CircularProgressIndicator(),
-                          data: (ingredientList) {
-                            if (ingredientList.isEmpty == false) {
-                              WidgetsBinding.instance!
-                                  .addPostFrameCallback((_) {
-                                ingredientListNotifier.getList(ingredientList);
-                              });
-                            }
-                            return ListView.builder(
-                              itemCount: ingredientList.length,
-                              itemBuilder: (context, index) {
-                                var ingredient = ingredientList[index];
-                                return Container(
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Expanded(
-                                          flex: 3,
-                                          child:
-                                              Text(ingredient.name.toString())),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Text(
-                                            '${ingredient.amount}${ingredient.unit}'),
-                                      ),
-                                    ],
+                        // ingredientList.when(
+                        //   error: (error, stack) => Text('Error: $error'),
+                        //   loading: () => const CircularProgressIndicator(),
+                        //   data: (ingredientList) {
+                        //     if (ingredientList.isEmpty == false) {
+                        //       WidgetsBinding.instance!
+                        //           .addPostFrameCallback((_) {
+                        //         ingredientListNotifier.getList(ingredientList);
+                        //       });
+                        //     }
+                        //     return
+                        ListView.builder(
+                          itemCount: recipe.ingredientList == null
+                              ? 0
+                              : recipe.ingredientList!.length,
+                          itemBuilder: (context, index) {
+                            var ingredient = recipe.ingredientList == null
+                                ? null
+                                : recipe.ingredientList![index];
+                            return Container(
+                              child: Row(
+                                children: [
+                                  SizedBox(
+                                    width: 8,
                                   ),
-                                );
-                              },
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
+                                  Expanded(
+                                      flex: 3,
+                                      child: Text(ingredient!.name.toString())),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text(
+                                        '${ingredient.amount}${ingredient.unit}'),
+                                  ),
+                                ],
+                              ),
                             );
                           },
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
                         ),
+                        // },
+                        // ),
                       ],
                     ),
                   ),

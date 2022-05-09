@@ -13,8 +13,12 @@ class AddRecipeModel extends ChangeNotifier {
   Future<bool> addRecipe(Recipe recipe) async {
     RecipeRepository _recipeRepository = RecipeRepository(user: user);
 
+    Map<String, Map<String, dynamic>>? ingredientListMap =
+        _ingredientMapToList(recipe.ingredientList!);
+
     try {
-      DocumentReference docRef = await _recipeRepository.addRecipe(recipe);
+      DocumentReference docRef =
+          await _recipeRepository.addRecipe(recipe, ingredientListMap);
       String recipeId = docRef.id;
       await _addImage(recipe, recipeId);
       await _addIngredientList(recipe, recipeId);
@@ -25,6 +29,29 @@ class AddRecipeModel extends ChangeNotifier {
       print('error $e');
       return false;
     }
+  }
+
+  Map<String, dynamic> _ingredientToMap(Ingredient ingredient) {
+    return {
+      'ingredientName': ingredient.name,
+      'ingredientAmount': ingredient.amount,
+      'ingredientUnit': ingredient.unit
+    };
+  }
+
+  Map<String, Map<String, dynamic>> _ingredientMapToList(
+      List<Ingredient>? ingredientList) {
+    Map<String, Map<String, dynamic>> ingredientListMap = {};
+
+    if (ingredientList != null) {
+      for (int index = 0; index < ingredientList.length; index++) {
+        if (ingredientList[index].name != '') {
+          ingredientListMap[index.toString()] =
+              _ingredientToMap(ingredientList[index]);
+        }
+      }
+    }
+    return ingredientListMap;
   }
 
   Future _addImage(Recipe recipe, String recipeId) async {

@@ -97,16 +97,30 @@ class RecipeRepository {
       final String? recipeMemo = data['recipeMemo'];
       final String? imageUrl = data['imageUrl'];
       final File? imageFile = null;
+      // ingredient関連
+      final Map<String, Map<String, dynamic>> ingredientListMap =
+          Map<String, Map<String, dynamic>>.from(data['ingredientList']);
+      // print('ingredientListMap : $ingredientListMap');
+      final List<Ingredient> ingredientList = [];
+      ingredientListMap.forEach((key, value) {
+        ingredientList.add(Ingredient(
+            id: Uuid().v4(),
+            name: value['ingredientName'],
+            amount: value['ingredientAmount'],
+            unit: value['ingredientUnit']));
+      });
 
       return Recipe(
-          recipeId: recipeId,
-          recipeName: recipeName,
-          recipeGrade: recipeGrade,
-          forHowManyPeople: forHowManyPeople,
-          countInCart: countInCart,
-          recipeMemo: recipeMemo,
-          imageUrl: imageUrl,
-          imageFile: imageFile);
+        recipeId: recipeId,
+        recipeName: recipeName,
+        recipeGrade: recipeGrade,
+        forHowManyPeople: forHowManyPeople,
+        countInCart: countInCart,
+        recipeMemo: recipeMemo,
+        imageUrl: imageUrl,
+        imageFile: imageFile,
+        ingredientList: ingredientList,
+      );
     });
 
     return recipeStream;
@@ -159,34 +173,49 @@ class RecipeRepository {
         .orderBy('createdAt');
 
     // データ（Map型）を取得
-    final recipeListStream =
-        recipeCollection.snapshots().asBroadcastStream().map(
-              // CollectionのデータからItemクラスを生成する
-              (e) => e.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data =
-                    document.data()! as Map<String, dynamic>;
+    final recipeListStream = recipeCollection
+        .snapshots()
+        .asBroadcastStream()
+        .map(
+          (e) => e.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data =
+                document.data()! as Map<String, dynamic>;
 
-                final String? recipeId = document.id;
-                final String recipeName = data['recipeName'];
-                final double? recipeGrade = data['recipeGrade'];
-                final int? forHowManyPeople = data['forHowManyPeople'];
-                final int? countInCart = data['countInCart'];
-                final String? recipeMemo = data['recipeMemo'];
-                final String? imageUrl = data['imageUrl'];
-                final File? imageFile = null;
+            final String? recipeId = document.id;
+            final String recipeName = data['recipeName'];
+            final double? recipeGrade = data['recipeGrade'];
+            final int? forHowManyPeople = data['forHowManyPeople'];
+            final int? countInCart = data['countInCart'];
+            final String? recipeMemo = data['recipeMemo'];
+            final String? imageUrl = data['imageUrl'];
+            final File? imageFile = null;
+            // ingredient関連
+            final Map<String, Map<String, dynamic>> ingredientListMap =
+                Map<String, Map<String, dynamic>>.from(data['ingredientList']);
+            // print('ingredientListMap : $ingredientListMap');
+            final List<Ingredient> ingredientList = [];
+            ingredientListMap.forEach((key, value) {
+              ingredientList.add(Ingredient(
+                  id: Uuid().v4(),
+                  name: value['ingredientName'],
+                  amount: value['ingredientAmount'],
+                  unit: value['ingredientUnit']));
+            });
+            // print('ingredientList : $ingredientList');
 
-                return Recipe(
-                  recipeId: recipeId,
-                  recipeName: recipeName,
-                  recipeGrade: recipeGrade,
-                  forHowManyPeople: forHowManyPeople,
-                  countInCart: countInCart,
-                  recipeMemo: recipeMemo,
-                  imageUrl: imageUrl,
-                  imageFile: imageFile,
-                );
-              }).toList(),
+            return Recipe(
+              recipeId: recipeId,
+              recipeName: recipeName,
+              recipeGrade: recipeGrade,
+              forHowManyPeople: forHowManyPeople,
+              countInCart: countInCart,
+              recipeMemo: recipeMemo,
+              imageUrl: imageUrl,
+              imageFile: imageFile,
+              ingredientList: ingredientList,
             );
+          }).toList(),
+        );
 
     return recipeListStream;
   }
@@ -245,7 +274,8 @@ class RecipeRepository {
   }
 
   /// add
-  Future<DocumentReference> addRecipe(Recipe recipe) async {
+  Future<DocumentReference> addRecipe(Recipe recipe,
+      Map<String, Map<String, dynamic>>? ingredientListMap) async {
     //レシピを保存
     DocumentReference docRef = await FirebaseFirestore.instance
         .collection('users')
@@ -258,6 +288,7 @@ class RecipeRepository {
       'recipeMemo': recipe.recipeMemo,
       'createdAt': DateTime.now(),
       'imageUrl': '',
+      'ingredientList': ingredientListMap,
     });
     return docRef;
   }
@@ -283,6 +314,7 @@ class RecipeRepository {
         .update({'imageUrl': imageUrl});
   }
 
+  //TODO 不要になったら消す
   Future addIngredient(List<Ingredient> ingredientList, String recipeId) async {
     for (int i = 0; i < ingredientList.length; i++) {
       if (ingredientList[i].name != '') {
@@ -305,6 +337,7 @@ class RecipeRepository {
     }
   }
 
+  /// TODO不要になったら消す
   Future addProcedure(List<Procedure> procedureList, String recipeId) async {
     for (int i = 0; i < procedureList.length; i++) {
       if (procedureList[i].content != '') {
