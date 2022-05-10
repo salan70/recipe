@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -115,18 +114,16 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                                     if (counter == 0) {
                                       showDialog(
                                         context: context,
-                                        builder: (context) =>
-                                            CupertinoAlertDialog(
+                                        builder: (context) => AlertDialog(
                                           title: Text('確認'),
                                           content: Text('数量が0ですがよろしいですか？'),
                                           actions: <Widget>[
-                                            CupertinoDialogAction(
+                                            TextButton(
                                               onPressed: () => Navigator.pop(
                                                   context, 'Cancel'),
                                               child: Text('いいえ'),
-                                              isDestructiveAction: true,
                                             ),
-                                            CupertinoDialogAction(
+                                            TextButton(
                                               onPressed: () async {
                                                 EasyLoading.show(
                                                     status: 'loading...');

@@ -56,7 +56,6 @@ class SearchRecipePage extends ConsumerWidget {
                 onSubmitted: (searchWord) {
                   print('searchWord is $searchWord');
 
-                  /// TODO searchWordを渡して検索処理
                   recipeAndIngredientNameList.when(
                       error: (error, stack) => Text('Error: $error'),
                       loading: () => const CircularProgressIndicator(),

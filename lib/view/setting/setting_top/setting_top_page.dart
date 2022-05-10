@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
@@ -72,18 +71,17 @@ class SettingTopPage extends ConsumerWidget {
                         showDialog(
                           context: context,
                           builder: (context) {
-                            return CupertinoAlertDialog(
+                            return AlertDialog(
                               title: Text('確認'),
                               content: Text('本当にログアウトしますか？'),
                               actions: <Widget>[
-                                CupertinoDialogAction(
+                                TextButton(
                                   child: Text('いいえ'),
-                                  isDestructiveAction: true,
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
                                 ),
-                                CupertinoDialogAction(
+                                TextButton(
                                   child: Text('はい'),
                                   onPressed: () async {
                                     EasyLoading.show(status: 'loading...');

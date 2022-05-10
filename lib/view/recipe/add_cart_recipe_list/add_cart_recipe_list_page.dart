@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -276,17 +275,16 @@ class AddCartRecipeListPage extends ConsumerWidget {
                       if (zeroIsInclude) {
                         showDialog(
                           context: context,
-                          builder: (context) => CupertinoAlertDialog(
+                          builder: (context) => AlertDialog(
                             title: Text('確認'),
                             content: Text('数量が0のレシピがありますがよろしいですか？'),
                             actions: <Widget>[
-                              CupertinoDialogAction(
+                              TextButton(
                                 onPressed: () =>
                                     Navigator.pop(context, 'Cancel'),
                                 child: Text('いいえ'),
-                                isDestructiveAction: true,
                               ),
-                              CupertinoDialogAction(
+                              TextButton(
                                 onPressed: () async {
                                   print('はい');
                                   EasyLoading.show(status: 'loading...');

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,24 +37,21 @@ class IngredientUnitEditPage extends ConsumerWidget {
                     showDialog(
                         context: context,
                         builder: (context) {
-                          return CupertinoAlertDialog(
+                          return AlertDialog(
                             title: Text('単位を追加'),
-
-                            ///TODO textField iOSっぽくする
                             content: TextField(
                               onChanged: (value) {
                                 addedUnit = value;
                               },
                             ),
                             actions: <Widget>[
-                              CupertinoDialogAction(
+                              TextButton(
                                 child: Text('キャンセル'),
-                                isDestructiveAction: true,
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                               ),
-                              CupertinoDialogAction(
+                              TextButton(
                                 child: Text('OK'),
                                 onPressed: () {
                                   EasyLoading.show(status: 'loading...');
@@ -157,18 +153,17 @@ class IngredientUnitEditPage extends ConsumerWidget {
                     showDialog(
                         context: context,
                         builder: (context) {
-                          return CupertinoAlertDialog(
+                          return AlertDialog(
                             title: Text('注意'),
                             content: Text('本当に単位を初期化しますか？'),
                             actions: <Widget>[
-                              CupertinoDialogAction(
+                              TextButton(
                                 child: Text('いいえ'),
-                                isDestructiveAction: true,
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                               ),
-                              CupertinoDialogAction(
+                              TextButton(
                                 child: Text('はい'),
                                 onPressed: () async {
                                   EasyLoading.show(status: 'loading...');

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:form_validator/form_validator.dart';
@@ -93,7 +92,7 @@ class LoginPage extends ConsumerWidget {
                     width: 144,
                     child: ElevatedButton(
                       onPressed: () async {
-                        final yesAction = CupertinoDialogAction(
+                        final yesAction = TextButton(
                           child: Text('はい'),
                           onPressed: () async {
                             Navigator.pop(context);
@@ -105,12 +104,11 @@ class LoginPage extends ConsumerWidget {
                               EasyLoading.showSuccess('ログインしました');
                             } else {
                               EasyLoading.dismiss();
-                              _showCupertinoLoginErrorAlertDialog(
-                                  context, errorText);
+                              _showLoginErrorAlertDialog(context, errorText);
                             }
                           },
                         );
-                        _showCupertinoLoginAlertDialog(context, yesAction);
+                        _showLoginAlertDialog(context, yesAction);
                       },
                       child: Text(
                         'ログイン',
@@ -140,7 +138,7 @@ class LoginPage extends ConsumerWidget {
                         ),
                         elevation: 1,
                         onPressed: () async {
-                          final yesAction = CupertinoDialogAction(
+                          final yesWidget = TextButton(
                             child: Text('はい'),
                             onPressed: () async {
                               Navigator.pop(context);
@@ -152,12 +150,11 @@ class LoginPage extends ConsumerWidget {
                                 EasyLoading.showSuccess('ログインしました');
                               } else {
                                 EasyLoading.dismiss();
-                                _showCupertinoLoginErrorAlertDialog(
-                                    context, errorText);
+                                _showLoginErrorAlertDialog(context, errorText);
                               }
                             },
                           );
-                          _showCupertinoLoginAlertDialog(context, yesAction);
+                          _showLoginAlertDialog(context, yesWidget);
                         }),
                   ),
                 ),
@@ -174,7 +171,7 @@ class LoginPage extends ConsumerWidget {
                         ),
                         elevation: 1,
                         onPressed: () async {
-                          final yesAction = CupertinoDialogAction(
+                          final yesWidget = TextButton(
                             child: Text('はい'),
                             onPressed: () async {
                               Navigator.pop(context);
@@ -186,12 +183,11 @@ class LoginPage extends ConsumerWidget {
                                 EasyLoading.showSuccess('ログインしました');
                               } else {
                                 EasyLoading.dismiss();
-                                _showCupertinoLoginErrorAlertDialog(
-                                    context, errorText);
+                                _showLoginErrorAlertDialog(context, errorText);
                               }
                             },
                           );
-                          _showCupertinoLoginAlertDialog(context, yesAction);
+                          _showLoginAlertDialog(context, yesWidget);
                         }),
                   ),
                 ),
@@ -203,21 +199,19 @@ class LoginPage extends ConsumerWidget {
     );
   }
 
-  Future _showCupertinoLoginAlertDialog(
-      BuildContext context, CupertinoDialogAction yesAction) {
+  Future _showLoginAlertDialog(BuildContext context, Widget yesAction) {
     return showDialog(
       context: context,
       builder: (context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text('注意'),
           content: Text(
-            'このままログインすると現在登録されているレシピが消えてしまいますが、よろしいですか？\n※現在登録されているレシピを保存したい場合は「新規登録画面」より新規登録を行ってください。',
+            'このままログインする場合、現在登録されているレシピが消えてしまいますがよろしいですか？\n\n※現在登録されているレシピを保存したい場合、「新規登録画面」より新規登録を行ってください。',
             textAlign: TextAlign.left,
           ),
           actions: <Widget>[
-            CupertinoDialogAction(
+            TextButton(
               child: Text('いいえ'),
-              isDestructiveAction: true,
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -229,16 +223,15 @@ class LoginPage extends ConsumerWidget {
     );
   }
 
-  Future _showCupertinoLoginErrorAlertDialog(
-      BuildContext context, String errorText) {
+  Future _showLoginErrorAlertDialog(BuildContext context, String errorText) {
     return showDialog(
       context: context,
       builder: (context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text('ログイン失敗'),
           content: Text('$errorText'),
           actions: [
-            CupertinoDialogAction(
+            TextButton(
               child: Text('閉じる'),
               onPressed: () {
                 Navigator.pop(context);

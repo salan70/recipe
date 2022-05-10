@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,19 +81,18 @@ class RecipeDetailPage extends ConsumerWidget {
                     onPressed: () => showDialog(
                         context: context,
                         builder: (context) {
-                          return CupertinoAlertDialog(
+                          return AlertDialog(
                             title: Text('確認'),
                             content: Text('本当にこのレシピを削除しますか？'),
                             actions: <Widget>[
-                              CupertinoDialogAction(
+                              TextButton(
                                 child: Text('キャンセル'),
-                                isDestructiveAction: true,
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                               ),
-                              CupertinoDialogAction(
-                                child: Text('OK'),
+                              TextButton(
+                                child: Text('はい'),
                                 onPressed: () async {
                                   EasyLoading.show(status: 'loading...');
                                   //削除失敗
