@@ -6,6 +6,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
+import 'package:recipe/domain/recipe.dart';
+import 'package:recipe/view/recipe/search_recipe/search_recipe_model.dart';
 
 import '../recipe_detail/recipe_detail_page.dart';
 
@@ -15,9 +17,20 @@ class SearchRecipePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    SearchRecipeModel searchRecipeModel = SearchRecipeModel();
+
     final recipes = ref.watch(recipeListStreamProvider);
+    final recipeAndIngredientNameList =
+        ref.watch(recipeAndIngredientNameListStreamProvider);
+    final searchResultRecipeIdList =
+        ref.watch(searchResultRecipeIdListProvider);
+    final searchResultRecipeIdListNotifier =
+        ref.watch(searchResultRecipeIdListProvider.notifier);
+
     final searchFunction = ref.watch(searchFunctionProvider);
     final searchFunctionNotifier = ref.watch(searchFunctionProvider.notifier);
+
+    List<String> searchResultList = [];
 
     return Scaffold(
       appBar: AppBar(
@@ -27,6 +40,7 @@ class SearchRecipePage extends ConsumerWidget {
           children: [
             Expanded(
               child: TextField(
+                autofocus: true,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(8),
@@ -43,6 +57,14 @@ class SearchRecipePage extends ConsumerWidget {
                   print('searchWord is $searchWord');
 
                   /// TODO searchWordを渡して検索処理
+                  recipeAndIngredientNameList.when(
+                      error: (error, stack) => Text('Error: $error'),
+                      loading: () => const CircularProgressIndicator(),
+                      data: (recipeNameAndIngredientNameList) {
+                        searchResultRecipeIdListNotifier.state =
+                            searchRecipeModel.searchRecipe(
+                                searchWord, recipeNameAndIngredientNameList);
+                      });
                 },
               ),
             ),
@@ -58,30 +80,57 @@ class SearchRecipePage extends ConsumerWidget {
           error: (error, stack) => Text('Error: $error'),
           loading: () => CircularProgressIndicator(),
           data: (recipes) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
-              child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
-                  itemCount: recipes.length,
-                  itemBuilder: (context, index) {
-                    final recipe = recipes[index];
-                    return GestureDetector(
-                      ///画面遷移
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              fullscreenDialog: false,
-                              builder: (context) => RecipeDetailPage(
-                                  recipe.recipeId!, 'recipe_list_page'),
-                            ));
-                      },
-                      child: RecipeCardWidget(recipe),
-                    );
-                  }),
-            );
+            List<Recipe> outputRecipeList = [];
+            // 検索画面起動時に、全レシピが表示される
+            if (searchResultRecipeIdList == null) {
+              outputRecipeList = recipes;
+            } else {
+              outputRecipeList = [];
+              for (var searchResultRecipeId in searchResultRecipeIdList) {
+                for (var recipe in recipes) {
+                  if (recipe.recipeId == searchResultRecipeId) {
+                    outputRecipeList.add(recipe);
+                  }
+                }
+              }
+            }
+            return outputRecipeList.isEmpty == true
+                ? Container(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 32),
+                      child: Text(
+                        'レシピが見つかりませんでした。',
+                        style: Theme.of(context).primaryTextTheme.subtitle1,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+                    child: GridView.builder(
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                        ),
+                        itemCount: outputRecipeList.length,
+                        itemBuilder: (context, index) {
+                          final outputRecipe = outputRecipeList[index];
+                          return GestureDetector(
+                            ///画面遷移
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    fullscreenDialog: false,
+                                    builder: (context) => RecipeDetailPage(
+                                        outputRecipe.recipeId!,
+                                        'recipe_list_page'),
+                                  ));
+                            },
+                            child: RecipeCardWidget(outputRecipe),
+                          );
+                        }),
+                  );
           }),
     );
   }

@@ -37,7 +37,22 @@ final recipeStreamProviderFamily =
   return recipeRepository.fetchRecipe(recipeId);
 });
 
+/// search
 final searchFunctionProvider = StateProvider.autoDispose((ref) => false);
+
+final recipeAndIngredientNameListStreamProvider =
+    StreamProvider.autoDispose<List<RecipeAndIngredientName>>((ref) {
+  final user = ref.watch(userStateNotifierProvider);
+
+  RecipeRepository recipeRepository = RecipeRepository(user: user!);
+
+  return recipeRepository.fetchRecipeNameAndIngredientNameList();
+});
+
+final searchResultRecipeIdListProvider =
+    StateProvider.autoDispose<List<String>?>((ref) {
+  return null;
+});
 
 /// reordarale_text_field
 final ingredientListNotifierProvider =

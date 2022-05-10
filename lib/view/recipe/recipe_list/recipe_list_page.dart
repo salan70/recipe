@@ -15,8 +15,6 @@ class RecipeListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recipes = ref.watch(recipeListStreamProvider);
-    final searchFunction = ref.watch(searchFunctionProvider);
-    final searchFunctionNotifier = ref.watch(searchFunctionProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(

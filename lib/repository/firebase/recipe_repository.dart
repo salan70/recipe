@@ -101,43 +101,43 @@ class RecipeRepository {
     return recipeStream;
   }
 
-  Stream<List<Recipe>> fetchRecipeNameList(String searchWord) {
+  // search用
+  Stream<List<RecipeAndIngredientName>> fetchRecipeNameAndIngredientNameList() {
     final recipeCollection = FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .collection('recipes')
         .orderBy('createdAt');
 
-    final recipeListStream =
-        recipeCollection.snapshots().asBroadcastStream().map(
-              // CollectionのデータからItemクラスを生成する
-              (e) => e.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data =
-                    document.data()! as Map<String, dynamic>;
+    final recipeNameAndIngredientNameListStream = recipeCollection
+        .snapshots()
+        .asBroadcastStream()
+        .map(
+          (e) => e.docs.map((DocumentSnapshot document) {
+            Map<String, dynamic> data =
+                document.data()! as Map<String, dynamic>;
 
-                final String? recipeId = document.id;
-                final String recipeName = data['recipeName'];
-                final double? recipeGrade = data['recipeGrade'];
-                final int? forHowManyPeople = data['forHowManyPeople'];
-                final int? countInCart = data['countInCart'];
-                final String? recipeMemo = data['recipeMemo'];
-                final String? imageUrl = data['imageUrl'];
-                final File? imageFile = null;
+            final String recipeId = document.id;
+            final String recipeName = data['recipeName'];
+            // ingredient関連
+            final Map<String, Map<String, dynamic>> ingredientListMap =
+                Map<String, Map<String, dynamic>>.from(data['ingredientList']);
+            final sortedIngredientListMap = SplayTreeMap.from(ingredientListMap,
+                (String key, String value) => key.compareTo(value));
+            final List<String> ingredientNameList = [];
+            sortedIngredientListMap.forEach((key, value) {
+              ingredientNameList.add(value['ingredientName']);
+            });
 
-                return Recipe(
-                  recipeId: recipeId,
-                  recipeName: recipeName,
-                  recipeGrade: recipeGrade,
-                  forHowManyPeople: forHowManyPeople,
-                  countInCart: countInCart,
-                  recipeMemo: recipeMemo,
-                  imageUrl: imageUrl,
-                  imageFile: imageFile,
-                );
-              }).toList(),
+            return RecipeAndIngredientName(
+              recipeId: recipeId,
+              recipeName: recipeName,
+              ingredientNameList: ingredientNameList,
             );
+          }).toList(),
+        );
 
-    return recipeListStream;
+    return recipeNameAndIngredientNameListStream;
   }
 
   Stream<List<Recipe>> fetchRecipeList() {
@@ -162,17 +162,6 @@ class RecipeRepository {
                 final String? recipeMemo = data['recipeMemo'];
                 final String? imageUrl = data['imageUrl'];
                 final File? imageFile = null;
-                // ingredient関連 一旦不要と判断
-                // final Map<String, Map<String, dynamic>> ingredientListMap =
-                //     Map<String, Map<String, dynamic>>.from(data['ingredientList']);
-                // final List<Ingredient> ingredientList = [];
-                // ingredientListMap.forEach((key, value) {
-                //   ingredientList.add(Ingredient(
-                //       id: Uuid().v4(),
-                //       name: value['ingredientName'],
-                //       amount: value['ingredientAmount'],
-                //       unit: value['ingredientUnit']));
-                // });
 
                 return Recipe(
                   recipeId: recipeId,

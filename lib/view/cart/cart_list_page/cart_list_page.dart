@@ -197,9 +197,6 @@ class CartListPage extends ConsumerWidget {
       List<IngredientInCartPerRecipeList> ingredientList) {
     CartListModel cartListModel = CartListModel();
     String _slidableActionText = listType == 'buyList' ? '買わないリストへ' : '買うリストへ';
-    Color _cardColor = listType == 'buyList'
-        ? Theme.of(context).cardColor
-        : Theme.of(context).dividerColor;
 
     return ListView.builder(
         shrinkWrap: true,

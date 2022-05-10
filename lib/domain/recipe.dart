@@ -28,49 +28,6 @@ class Recipe {
 }
 
 @immutable
-class RecipeStream {
-  const RecipeStream(
-      {required this.recipeId,
-      required this.recipeName,
-      required this.recipeGrade,
-      required this.forHowManyPeople,
-      required this.recipeMemo,
-      required this.imageUrl,
-      required this.ingredientList,
-      required this.procedureList});
-
-  final String? recipeId;
-  final String? recipeName;
-  final double? recipeGrade;
-  final int? forHowManyPeople;
-  final String? recipeMemo;
-  final String? imageUrl;
-  final List<Ingredient>? ingredientList;
-  final List<Procedure>? procedureList;
-
-  RecipeStream copyWith({
-    String? recipeId,
-    String? recipeName,
-    double? recipeGrade,
-    int? forHowManyPeople,
-    String? recipeMemo,
-    String? imageUrl,
-    List<Ingredient>? ingredientList,
-    List<Procedure>? procedureList,
-  }) {
-    return RecipeStream(
-        recipeId: recipeId ?? this.recipeId,
-        recipeName: recipeName ?? this.recipeName,
-        recipeGrade: recipeGrade ?? this.recipeGrade,
-        forHowManyPeople: forHowManyPeople ?? this.forHowManyPeople,
-        recipeMemo: recipeMemo ?? this.recipeMemo,
-        imageUrl: imageUrl ?? this.imageUrl,
-        ingredientList: ingredientList ?? this.ingredientList,
-        procedureList: procedureList ?? this.procedureList);
-  }
-}
-
-@immutable
 class Ingredient {
   const Ingredient(
       {required this.id,
@@ -103,4 +60,15 @@ class Procedure {
   Procedure copyWith({String? id, String? content}) {
     return Procedure(id: id ?? this.id, content: content ?? this.content);
   }
+}
+
+class RecipeAndIngredientName {
+  RecipeAndIngredientName(
+      {required this.recipeId,
+      required this.recipeName,
+      required this.ingredientNameList});
+
+  String recipeId;
+  String recipeName;
+  List<String> ingredientNameList;
 }

@@ -3,28 +3,65 @@ import 'package:flutter/material.dart';
 import 'package:recipe/domain/recipe.dart';
 
 class SearchRecipeModel extends ChangeNotifier {
-  String toOutputIngredientText(List<Ingredient> ingredients) {
-    final List<String> ingredientTextList = List.filled(ingredients.length, '');
-    String outputIngredientText = '';
-    int ingredientIndex = 0;
+  List<String> searchRecipe(String searchWord,
+      List<RecipeAndIngredientName> recipeAndIngredientNameList) {
+    final searchWordList = _searchWordToList(searchWord);
+    List<String> searchResultList = [];
 
-    for (var ingredient in ingredients) {
-      String ingredientName = ingredient.name.toString();
-      String ingredientAmount = ingredient.amount.toString();
-      String ingredientUnit = ingredient.unit.toString();
-      String ingredientText =
-          ingredientName + ' ' + ingredientAmount + ingredientUnit;
-      ingredientTextList[ingredientIndex] = ingredientText;
-      // print(ingredientTextList[index]);
-      outputIngredientText += ingredientText;
-
-      if (ingredientIndex + 1 < ingredients.length) {
-        outputIngredientText += ', ';
+    // searchWordListが空の場合、全レシピを出力
+    if (searchWordList.isEmpty == true) {
+      for (var recipeAndIngredientName in recipeAndIngredientNameList) {
+        searchResultList.add(recipeAndIngredientName.recipeId);
       }
-
-      ingredientIndex += 1;
     }
+    // searchWordListが空でない場合の処理
+    else {
+      for (var recipeAndIngredientName in recipeAndIngredientNameList) {
+        if (_searchWordListFoundInRecipeAndIngredientName(
+                searchWordList, recipeAndIngredientName) ==
+            true) {
+          searchResultList.add(recipeAndIngredientName.recipeId);
+        }
+      }
+    }
+    return searchResultList;
+  }
 
-    return outputIngredientText;
+  bool _searchWordListFoundInRecipeAndIngredientName(
+      List<String> searchWordList,
+      RecipeAndIngredientName recipeAndIngredientName) {
+    for (var searchWord in searchWordList) {
+      if (!_searchWordFoundInRecipeAndIngredientName(
+          searchWord, recipeAndIngredientName)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool _searchWordFoundInRecipeAndIngredientName(
+      String searchWord, RecipeAndIngredientName recipeAndIngredientName) {
+    if (recipeAndIngredientName.recipeName.contains(searchWord)) {
+      return true;
+    } else {
+      if (_searchWordFoundInStringList(
+          searchWord, recipeAndIngredientName.ingredientNameList)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  bool _searchWordFoundInStringList(String searchWord, List<String> list) {
+    for (var item in list) {
+      if (item.contains(searchWord)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  List<String> _searchWordToList(String searchWord) {
+    return searchWord.split(' ');
   }
 }
