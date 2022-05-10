@@ -4,11 +4,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
-import 'package:recipe/view/other/ingredient_unit_edit/ingredient_unit_edit_model.dart';
+import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_model.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class IngredientUnitEditPage extends ConsumerWidget {
-  const IngredientUnitEditPage({Key? key}) : super(key: key);
+class EditIngredientUnitPage extends ConsumerWidget {
+  const EditIngredientUnitPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,8 +21,8 @@ class IngredientUnitEditPage extends ConsumerWidget {
       body: ValueListenableBuilder(
           valueListenable: IngredientUnitBoxes.getIngredientUnit().listenable(),
           builder: (context, Box box, widget) {
-            IngredientUnitEditModel ingredientUnitEditModel =
-                IngredientUnitEditModel();
+            EditIngredientUnitModel ingredientUnitEditModel =
+                EditIngredientUnitModel();
             final ingredientUnitList =
                 ingredientUnitEditModel.fetchIngredientUnitList();
             String? addedUnit;

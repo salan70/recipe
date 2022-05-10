@@ -1,7 +1,7 @@
 import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 import 'package:recipe/repository/hive/ingredient_unit_repository.dart';
 
-class IngredientUnitEditModel {
+class EditIngredientUnitModel {
   final List<String> defaultIngredientUnitList = [
     '個',
     '本',

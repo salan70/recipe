@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
-import 'package:recipe/view/other/ingredient_unit_edit/ingredient_unit_edit_page.dart';
+import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
 import 'package:recipe/view/recipe/add_cart_recipe_list/add_cart_recipe_list_page.dart';
 import 'package:recipe/view/setting/account/login/login_page.dart';
 import 'package:recipe/view/setting/account/sign_up/sign_up_page.dart';
@@ -108,7 +108,7 @@ class SettingTopPage extends ConsumerWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => IngredientUnitEditPage(),
+                        builder: (context) => EditIngredientUnitPage(),
                         fullscreenDialog: false,
                       ));
                 },

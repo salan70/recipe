@@ -10,7 +10,7 @@ import 'package:recipe/components/widgets/reordable_text_field/procedures.dart';
 import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/view/other/ingredient_unit_edit/ingredient_unit_edit_page.dart';
+import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
 
 class EditRecipeWidget extends ConsumerWidget {
   EditRecipeWidget(this.recipe);
@@ -162,7 +162,7 @@ class EditRecipeWidget extends ConsumerWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      IngredientUnitEditPage(),
+                                      EditIngredientUnitPage(),
                                   fullscreenDialog: false,
                                 ));
                           },

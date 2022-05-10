@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
-import 'package:recipe/view/other/ingredient_unit_edit/ingredient_unit_edit_model.dart';
+import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_model.dart';
 
 class IngredientUnitRepository {
-  IngredientUnitEditModel ingredientUnitEditModel = IngredientUnitEditModel();
+  EditIngredientUnitModel ingredientUnitEditModel = EditIngredientUnitModel();
 
   IngredientUnit getIngredientUnitList() {
     final defaultIngredientUnitList =
