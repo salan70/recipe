@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/domain/cart.dart';
@@ -102,3 +103,9 @@ final notBuyIngredientListIsOpenProvider =
 
 // page_control
 final selectPageProvider = StateProvider.autoDispose((ref) => 0);
+
+/// setting
+final selectedSchemeColorProvider =
+    StateProvider.autoDispose<FlexScheme>((ref) {
+  return FlexScheme.green;
+});

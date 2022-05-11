@@ -7,6 +7,7 @@ import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page
 import 'package:recipe/view/recipe/add_cart_recipe_list/add_cart_recipe_list_page.dart';
 import 'package:recipe/view/setting/account/login/login_page.dart';
 import 'package:recipe/view/setting/account/sign_up/sign_up_page.dart';
+import 'package:recipe/view/setting/customize/edit_theme_color/edit_theme_color_page.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -116,6 +117,14 @@ class SettingTopPage extends ConsumerWidget {
               SettingsTile.navigation(
                 title: Text('テーマカラーの変更'),
                 trailing: Icon(Icons.chevron_right_rounded),
+                onPressed: (context) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditThemeColorPage(),
+                        fullscreenDialog: false,
+                      ));
+                },
               ),
             ],
           ),
