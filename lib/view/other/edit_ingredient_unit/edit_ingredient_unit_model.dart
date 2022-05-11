@@ -52,12 +52,16 @@ class EditIngredientUnitModel {
     await _ingredientUnitRepository.putIngredientUnitList(ingredientUnitList);
   }
 
-  Future deleteIngredientUnit(String unitName) async {
+  Future<bool> deleteIngredientUnit(String unitName) async {
     IngredientUnitRepository _ingredientUnitRepository =
         IngredientUnitRepository();
     final List<String> ingredientUnitList =
         _ingredientUnitRepository.getIngredientUnitList().ingredientUnitList;
 
+    // 単位が1つしかない場合、削除できない
+    if (ingredientUnitList.length == 1) {
+      return false;
+    }
     for (int index = 0; index < ingredientUnitList.length; index++) {
       if (ingredientUnitList[index] == unitName) {
         ingredientUnitList.removeAt(index);
@@ -65,7 +69,7 @@ class EditIngredientUnitModel {
       }
     }
     await _ingredientUnitRepository.putIngredientUnitList(ingredientUnitList);
-    // print('after delete:$ingredientUnitList');
+    return true;
   }
 
   Future deleteIngredientUnitList() async {

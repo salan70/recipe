@@ -75,7 +75,7 @@ class EditIngredientUnitPage extends ConsumerWidget {
                   },
                 ),
               ]),
-              SettingsSection(title: Text('一覧'), tiles: [
+              SettingsSection(title: Text('単位'), tiles: [
                 CustomSettingsTile(
                   child: Container(
                     decoration: BoxDecoration(
@@ -98,9 +98,16 @@ class EditIngredientUnitPage extends ConsumerWidget {
                             IconSlideAction(
                               color: Colors.red,
                               iconWidget: Text('削除'),
-                              onTap: () {
-                                ingredientUnitEditModel.deleteIngredientUnit(
-                                    ingredientUnitList[index]);
+                              onTap: () async {
+                                EasyLoading.show(status: 'loading...');
+                                if (await ingredientUnitEditModel
+                                    .deleteIngredientUnit(
+                                        ingredientUnitList[index])) {
+                                  EasyLoading.showSuccess(
+                                      '${ingredientUnitList[index]}を削除しました');
+                                } else {
+                                  EasyLoading.showError('単位を1個未満にすることはできません。');
+                                }
                               },
                             ),
                           ],

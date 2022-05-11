@@ -5,12 +5,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:recipe/components/providers.dart';
 
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 import 'package:recipe/domain/type_adapter/selected_flex_scheme_index/selected_flex_scheme_index.dart';
-import 'package:recipe/repository/hive/selected_scheme_color_repository.dart';
 import 'package:recipe/view/other/page_container/page_container_page.dart';
 import 'package:recipe/view/setting/customize/edit_theme_color/edit_theme_color_model.dart';
 
