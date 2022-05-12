@@ -16,6 +16,7 @@ class EditThemeColorPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ThemeMode themeMode = ThemeMode.system;
     EditThemeColorModel editThemeColorModel = EditThemeColorModel();
 
     return Scaffold(
@@ -37,13 +38,14 @@ class EditThemeColorPage extends ConsumerWidget {
                 for (var flexScheme in editThemeColorModel.flexSchemeList)
                   flexScheme.index == usedSchemeIndex
                       ? SettingsTile(
-                          title: _settingTileTitle(flexScheme, true),
+                          title: _settingTileTitle(themeMode, flexScheme, true),
                           trailing: Icon(
                             Icons.check_rounded,
                             color: Theme.of(context).primaryColor,
                           ))
                       : SettingsTile(
-                          title: _settingTileTitle(flexScheme, false),
+                          title:
+                              _settingTileTitle(themeMode, flexScheme, false),
                           onPressed: (context) {
                             editThemeColorModel
                                 .editSelectedFlexScheme(flexScheme.index);
@@ -55,14 +57,17 @@ class EditThemeColorPage extends ConsumerWidget {
     );
   }
 
-  Row _settingTileTitle(FlexScheme flexScheme, bool isUsed) {
+  Row _settingTileTitle(
+      ThemeMode themeMode, FlexScheme flexScheme, bool isUsed) {
     return Row(
       children: [
         Container(
           width: 24,
           height: 24,
           decoration: BoxDecoration(
-            color: FlexThemeData.light(scheme: flexScheme).primaryColor,
+            color: themeMode == ThemeMode.light
+                ? FlexThemeData.light(scheme: flexScheme).primaryColor
+                : FlexThemeData.dark(scheme: flexScheme).primaryColor,
             shape: BoxShape.circle,
           ),
         ),
@@ -73,7 +78,9 @@ class EditThemeColorPage extends ConsumerWidget {
           width: 24,
           height: 24,
           decoration: BoxDecoration(
-            color: FlexThemeData.light(scheme: flexScheme).primaryColorDark,
+            color: themeMode == ThemeMode.light
+                ? FlexThemeData.light(scheme: flexScheme).primaryColorDark
+                : FlexThemeData.dark(scheme: flexScheme).primaryColorDark,
             shape: BoxShape.circle,
           ),
         ),
@@ -84,8 +91,9 @@ class EditThemeColorPage extends ConsumerWidget {
           width: 24,
           height: 24,
           decoration: BoxDecoration(
-            color:
-                FlexThemeData.light(scheme: flexScheme).colorScheme.secondary,
+            color: themeMode == ThemeMode.light
+                ? FlexThemeData.light(scheme: flexScheme).colorScheme.secondary
+                : FlexThemeData.dark(scheme: flexScheme).colorScheme.secondary,
             shape: BoxShape.circle,
           ),
         ),

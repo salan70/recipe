@@ -18,8 +18,20 @@ class PageContainerPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ThemeMode themeMode = ThemeMode.system;
+
     final selectedPage = ref.watch(selectPageProvider);
     final selectedPageNotifier = ref.watch(selectPageProvider.notifier);
+
+    final iconBackgroundColor = themeMode == ThemeMode.light
+        ? Colors.white
+        : Theme.of(context).bottomAppBarColor;
+    final labelBackgroundColor = themeMode == ThemeMode.light
+        ? Colors.white
+        : Theme.of(context).bottomAppBarColor;
+    final labelColor = themeMode == ThemeMode.light
+        ? Colors.white
+        : Theme.of(context).bottomAppBarColor;
 
     final _pages = [
       RecipeListPage(),
@@ -30,13 +42,15 @@ class PageContainerPage extends ConsumerWidget {
       body: HawkFabMenu(
         /// HawkFab関連
         icon: AnimatedIcons.list_view,
-        fabColor: Colors.white,
+        fabColor: iconBackgroundColor,
         iconColor: Theme.of(context).primaryColorDark,
         items: [
           HawkFabMenuItem(
             // color: Theme.of(context).primaryColorLight,
-            color: Colors.white,
+            color: iconBackgroundColor,
             label: 'カートの中身を変更',
+            labelBackgroundColor: iconBackgroundColor,
+            labelColor: Theme.of(context).primaryColorDark,
             ontap: () {
               Navigator.push(
                   context,
@@ -51,8 +65,10 @@ class PageContainerPage extends ConsumerWidget {
             ),
           ),
           HawkFabMenuItem(
-            color: Colors.white,
+            color: iconBackgroundColor,
             label: 'レシピを検索',
+            labelBackgroundColor: labelBackgroundColor,
+            labelColor: Theme.of(context).primaryColorDark,
             ontap: () {
               showCupertinoModalBottomSheet(
                 expand: true,
@@ -66,9 +82,10 @@ class PageContainerPage extends ConsumerWidget {
             ),
           ),
           HawkFabMenuItem(
-            // color: Theme.of(context).primaryColorLight,
-            color: Colors.white,
+            color: iconBackgroundColor,
             label: '設定',
+            labelBackgroundColor: labelBackgroundColor,
+            labelColor: Theme.of(context).primaryColorDark,
             ontap: () {
               print(2);
               Navigator.push(

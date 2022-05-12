@@ -30,8 +30,6 @@ void main() async {
 }
 
 class MyApp extends ConsumerWidget {
-  // final ThemeMode themeMode = ThemeMode.system;
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// TODO 他のフォルダのmodelを呼んでいるのなんとかしたい(main_modelを作る？)
@@ -47,16 +45,22 @@ class MyApp extends ConsumerWidget {
           FlexScheme usedScheme =
               editThemeColorModel.flexSchemeList[usedSchemeIndex];
 
-          Color usedSchemePrimaryColor =
+          Color usedSchemePrimaryColorLight =
               FlexThemeData.light(scheme: usedScheme).primaryColorDark;
-          Color usedSchemeBackGroundColor =
+          Color usedSchemeBackGroundColorLight =
               FlexThemeData.light(scheme: usedScheme).backgroundColor;
 
+          Color usedSchemePrimaryColorDark =
+              FlexThemeData.dark(scheme: usedScheme).primaryColorDark;
+          Color usedSchemeBackGroundColorDark =
+              FlexThemeData.dark(scheme: usedScheme).backgroundColor;
+
           return MaterialApp(
+            themeMode: ThemeMode.system,
             title: 'Recipe App',
             theme: FlexThemeData.light(
               scheme: usedScheme,
-              background: usedSchemeBackGroundColor,
+              background: usedSchemeBackGroundColorLight,
               bottomAppBarElevation: 10,
             ).copyWith(
               /// textField
@@ -91,12 +95,12 @@ class MyApp extends ConsumerWidget {
               /// appBar
               appBarTheme: AppBarTheme(
                 elevation: 1,
-                iconTheme: IconThemeData(color: usedSchemePrimaryColor),
+                iconTheme: IconThemeData(color: usedSchemePrimaryColorLight),
                 backgroundColor: Colors.white,
                 titleTextStyle: TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
-                    color: usedSchemePrimaryColor),
+                    color: usedSchemePrimaryColorLight),
               ),
 
               /// card
@@ -105,11 +109,57 @@ class MyApp extends ConsumerWidget {
                 elevation: 3,
               ),
             ),
-            // darkTheme: FlexThemeData.dark(
-            //   scheme: usedScheme,
-            //   appBarElevation: 2,
-            // ),
-            // themeMode: themeMode,
+            darkTheme: FlexThemeData.dark(
+              scheme: usedScheme,
+              background: usedSchemeBackGroundColorDark,
+              bottomAppBarElevation: 10,
+            ).copyWith(
+              /// textField
+              inputDecorationTheme: InputDecorationTheme(
+                contentPadding: EdgeInsets.only(left: 4, bottom: 4),
+                isDense: true,
+              ),
+
+              /// text
+              primaryTextTheme: TextTheme(
+                headline5: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                headline6: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                subtitle1: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                subtitle2: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+                bodyText1: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+
+              /// appBar
+              appBarTheme: AppBarTheme(
+                elevation: 1,
+                iconTheme: IconThemeData(color: usedSchemePrimaryColorDark),
+                backgroundColor: Colors.black,
+                titleTextStyle: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                    color: usedSchemePrimaryColorDark),
+              ),
+
+              /// card
+              cardTheme: CardTheme(
+                margin: EdgeInsets.all(8),
+                elevation: 3,
+              ),
+            ),
             onGenerateRoute: (settings) {
               return MaterialWithModalsPageRoute(
                 settings: settings,
