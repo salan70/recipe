@@ -6,16 +6,12 @@ import 'package:sign_button/sign_button.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
-import 'package:recipe/view/setting/account/sign_up/sign_up_model.dart';
 
 class SignUpPage extends ConsumerWidget {
   const SignUpPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    SignUpModel signUpModel = SignUpModel();
-
-    final user = ref.watch(userStateNotifierProvider);
     final userNotifier = ref.watch(userStateNotifierProvider.notifier);
 
     final passwordIsObscure = ref.watch(passwordIsObscureProvider);

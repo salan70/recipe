@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:recipe/repository/firebase/user_repository.dart';
-import 'package:recipe/view/setting/account/sign_up/sign_up_model.dart';
 
 class AuthStateNotifier extends StateNotifier<User?> {
   AuthStateNotifier() : super(null);
