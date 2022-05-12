@@ -9,9 +9,9 @@ class AuthStateNotifier extends StateNotifier<User?> {
   AuthStateNotifier() : super(null);
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final SignUpModel _signUpModel = SignUpModel();
+  UserRepository _userRepository = UserRepository();
 
-  ///TODO SignUp login時、userInfoをfireStoreに保存する
+  ///TODO login時、userInfoをfireStoreに保存する
   ///TODO login時、currentUserを削除する
 
   // アプリ開始
@@ -44,11 +44,14 @@ class AuthStateNotifier extends StateNotifier<User?> {
       if (currentUser!.isAnonymous) {
         await currentUser.linkWithCredential(credential);
         state = _firebaseAuth.currentUser;
+        await _userRepository.addUser(state!);
         print(state!.email.toString());
-      } else {
-        await FirebaseAuth.instance.signInWithCredential(credential);
+        return null;
       }
-      return null;
+      // このelseには行かない想定
+      else {
+        return 'サインアップ失敗';
+      }
     } catch (e) {
       //TODO errorTextを日本語にする
       return e.toString();
@@ -82,13 +85,15 @@ class AuthStateNotifier extends StateNotifier<User?> {
       );
       if (currentUser!.isAnonymous) {
         await currentUser.linkWithCredential(credential);
+        state = _firebaseAuth.currentUser;
+        await _userRepository.addUser(state!);
         print('a');
-      } else {
-        await FirebaseAuth.instance.signInWithCredential(credential);
-        print('b');
+        return null;
       }
-      state = _firebaseAuth.currentUser;
-      return null;
+      // このelseは行かない想定
+      else {
+        return 'サインアップ失敗';
+      }
     } catch (e) {
       return e.toString();
     }
@@ -129,11 +134,14 @@ class AuthStateNotifier extends StateNotifier<User?> {
       );
       if (currentUser!.isAnonymous) {
         await currentUser.linkWithCredential(credential);
-      } else {
-        await FirebaseAuth.instance.signInWithCredential(credential);
+        state = _firebaseAuth.currentUser;
+        await _userRepository.addUser(state!);
+        return null;
       }
-      state = _firebaseAuth.currentUser;
-      return null;
+      // このelseは行かない想定
+      else {
+        return 'サインアップ失敗';
+      }
     } catch (e) {
       return e.toString();
     }

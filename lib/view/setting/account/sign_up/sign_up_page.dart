@@ -97,13 +97,14 @@ class SignUpPage extends ConsumerWidget {
                     child: ElevatedButton(
                       onPressed: () async {
                         EasyLoading.show(status: 'loading...');
-                        final signUpErrorText =
+                        final errorText =
                             await userNotifier.signUpWithEmail(email, password);
-                        if (signUpErrorText == null) {
+                        if (errorText == null) {
                           Navigator.pop(context);
                           EasyLoading.showSuccess('登録しました');
                         } else {
-                          EasyLoading.showError('登録に失敗しました\n$signUpErrorText');
+                          EasyLoading.dismiss();
+                          _showLoginErrorAlertDialog(context, errorText);
                         }
                       },
                       child: Text(
@@ -136,14 +137,14 @@ class SignUpPage extends ConsumerWidget {
                         onPressed: () async {
                           print('google');
                           EasyLoading.show(status: 'loading...');
-                          final signUpErrorText =
+                          final errorText =
                               await userNotifier.signUpWithGoogle();
-                          if (signUpErrorText == null) {
+                          if (errorText == null) {
                             Navigator.pop(context);
                             EasyLoading.showSuccess('登録しました');
                           } else {
-                            EasyLoading.showError(
-                                '登録に失敗しました\n$signUpErrorText');
+                            EasyLoading.dismiss();
+                            _showLoginErrorAlertDialog(context, errorText);
                           }
                         }),
                   ),
@@ -169,7 +170,8 @@ class SignUpPage extends ConsumerWidget {
                             Navigator.pop(context);
                             EasyLoading.showSuccess('登録しました');
                           } else {
-                            EasyLoading.showError('登録に失敗しました\n$errorText');
+                            EasyLoading.dismiss();
+                            _showLoginErrorAlertDialog(context, errorText);
                           }
                         }),
                   ),
@@ -179,6 +181,26 @@ class SignUpPage extends ConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Future _showLoginErrorAlertDialog(BuildContext context, String errorText) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('登録失敗'),
+          content: Text('$errorText'),
+          actions: [
+            TextButton(
+              child: Text('閉じる'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
