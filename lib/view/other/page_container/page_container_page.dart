@@ -23,16 +23,6 @@ class PageContainerPage extends ConsumerWidget {
     final selectedPage = ref.watch(selectPageProvider);
     final selectedPageNotifier = ref.watch(selectPageProvider.notifier);
 
-    final iconBackgroundColor = themeMode == ThemeMode.light
-        ? Colors.white
-        : Theme.of(context).bottomAppBarColor;
-    final labelBackgroundColor = themeMode == ThemeMode.light
-        ? Colors.white
-        : Theme.of(context).bottomAppBarColor;
-    final labelColor = themeMode == ThemeMode.light
-        ? Colors.white
-        : Theme.of(context).bottomAppBarColor;
-
     final _pages = [
       RecipeListPage(),
       CartListPage(),
@@ -42,14 +32,13 @@ class PageContainerPage extends ConsumerWidget {
       body: HawkFabMenu(
         /// HawkFab関連
         icon: AnimatedIcons.list_view,
-        fabColor: iconBackgroundColor,
+        fabColor: Theme.of(context).bottomAppBarColor,
         iconColor: Theme.of(context).primaryColorDark,
         items: [
           HawkFabMenuItem(
-            // color: Theme.of(context).primaryColorLight,
-            color: iconBackgroundColor,
+            color: Theme.of(context).bottomAppBarColor,
             label: 'カートの中身を変更',
-            labelBackgroundColor: iconBackgroundColor,
+            labelBackgroundColor: Theme.of(context).bottomAppBarColor,
             labelColor: Theme.of(context).primaryColorDark,
             ontap: () {
               Navigator.push(
@@ -65,9 +54,9 @@ class PageContainerPage extends ConsumerWidget {
             ),
           ),
           HawkFabMenuItem(
-            color: iconBackgroundColor,
+            color: Theme.of(context).bottomAppBarColor,
             label: 'レシピを検索',
-            labelBackgroundColor: labelBackgroundColor,
+            labelBackgroundColor: Theme.of(context).bottomAppBarColor,
             labelColor: Theme.of(context).primaryColorDark,
             ontap: () {
               showCupertinoModalBottomSheet(
@@ -82,9 +71,9 @@ class PageContainerPage extends ConsumerWidget {
             ),
           ),
           HawkFabMenuItem(
-            color: iconBackgroundColor,
+            color: Theme.of(context).bottomAppBarColor,
             label: '設定',
-            labelBackgroundColor: labelBackgroundColor,
+            labelBackgroundColor: Theme.of(context).bottomAppBarColor,
             labelColor: Theme.of(context).primaryColorDark,
             ontap: () {
               print(2);

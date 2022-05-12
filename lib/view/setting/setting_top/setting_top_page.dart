@@ -164,10 +164,6 @@ class SettingTopPage extends ConsumerWidget {
                 title: Text('プライバシーポリシー'),
                 trailing: Icon(Icons.chevron_right_rounded),
               ),
-              SettingsTile.navigation(
-                title: Text('コピーライト'),
-                trailing: Icon(Icons.chevron_right_rounded),
-              ),
             ],
           ),
         ],
