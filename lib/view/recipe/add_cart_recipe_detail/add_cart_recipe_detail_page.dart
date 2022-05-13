@@ -127,16 +127,39 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                                               onPressed: () async {
                                                 EasyLoading.show(
                                                     status: 'loading...');
-                                                await addCartRecipeDetailModel
-                                                    .updateCount(
-                                                        recipeId, counter);
-                                                int popInt = 0;
-                                                Navigator.popUntil(context,
-                                                    (_) => popInt++ >= 2);
+                                                final errorText =
+                                                    await addCartRecipeDetailModel
+                                                        .updateCount(
+                                                            recipeId, counter);
+                                                if (errorText == null) {
+                                                  int popInt = 0;
+                                                  Navigator.popUntil(context,
+                                                      (_) => popInt++ >= 2);
 
-                                                /// TODO error時の処理も書く
-                                                EasyLoading.showSuccess(
-                                                    'カートを更新しました');
+                                                  EasyLoading.showSuccess(
+                                                      'カートを更新しました');
+                                                } else {
+                                                  EasyLoading.dismiss();
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (context) {
+                                                      return AlertDialog(
+                                                        title: Text('カート更新失敗'),
+                                                        content:
+                                                            Text('$errorText'),
+                                                        actions: [
+                                                          TextButton(
+                                                            child: Text('閉じる'),
+                                                            onPressed: () {
+                                                              Navigator.pop(
+                                                                  context);
+                                                            },
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  );
+                                                }
                                               },
                                               child: Text('はい'),
                                             ),
@@ -145,13 +168,35 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                                       );
                                     } else {
                                       EasyLoading.show(status: 'loading...');
-                                      await addCartRecipeDetailModel
-                                          .updateCount(recipeId, counter);
-                                      Navigator.pop(context);
+                                      final errorText =
+                                          await addCartRecipeDetailModel
+                                              .updateCount(recipeId, counter);
 
-                                      /// TODO error時の処理も書く
-                                      EasyLoading.showSuccess(
-                                          '${recipe.recipeName}をカートに追加しました');
+                                      if (errorText == null) {
+                                        Navigator.pop(context);
+
+                                        EasyLoading.showSuccess(
+                                            '${recipe.recipeName}をカートに追加しました');
+                                      } else {
+                                        EasyLoading.dismiss();
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text('カート更新失敗'),
+                                              content: Text('$errorText'),
+                                              actions: [
+                                                TextButton(
+                                                  child: Text('閉じる'),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
                                     }
                                   },
                                   child: Text(
