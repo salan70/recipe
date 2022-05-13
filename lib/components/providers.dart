@@ -8,6 +8,7 @@ import 'package:recipe/domain/cart.dart';
 import 'package:recipe/repository/firebase/cart_repository.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
+import 'package:recipe/state/ingredient_list/ingredient_list_state.dart';
 import 'package:recipe/state/recipe/recipe_stream_state.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/widgets/reordable_text_field/procedures.dart';
