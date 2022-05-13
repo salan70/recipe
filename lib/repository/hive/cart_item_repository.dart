@@ -13,8 +13,6 @@ class CartItemRepository {
   Future putIsBought(CartItem item, bool isBought) async {
     final cartItem =
         CartItem(id: item.id, isNeed: item.isNeed, isBought: isBought);
-    print(
-        '${cartItem.id}, isNeed:${cartItem.isNeed}, isBought:${cartItem.isBought}');
     final box = CartItemBoxes.getCartItems();
     await box.put(item.id, cartItem);
   }
@@ -26,8 +24,9 @@ class CartItemRepository {
     return getBox;
   }
 
-  void deleteAll() {
+  Future deleteAllCartItem() async {
     final box = CartItemBoxes.getCartItems();
-    box.delete('cartItems');
+    await box.deleteFromDisk();
+    await Hive.openBox<CartItem>('cartItems');
   }
 }

@@ -4,16 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
-import 'package:recipe/view/recipe/add_cart_recipe_list/add_cart_recipe_list_page.dart';
 import 'package:recipe/view/setting/account/login/login_page.dart';
 import 'package:recipe/view/setting/account/sign_up/sign_up_page.dart';
 import 'package:recipe/view/setting/customize/edit_theme_color/edit_theme_color_page.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:recipe/components/providers.dart';
-
-// レシピ一覧画面
+/// TODO 「退会(アカウント削除)」実装
 class SettingTopPage extends ConsumerWidget {
   const SettingTopPage({Key? key}) : super(key: key);
 

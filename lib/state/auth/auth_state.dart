@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:recipe/repository/hive/cart_item_repository.dart';
+import 'package:recipe/repository/hive/ingredient_unit_repository.dart';
+import 'package:recipe/repository/hive/selected_scheme_color_repository.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:recipe/repository/firebase/user_repository.dart';
 
@@ -11,7 +14,6 @@ class AuthStateNotifier extends StateNotifier<User?> {
   UserRepository _userRepository = UserRepository();
 
   ///TODO login時、userInfoをfireStoreに保存する
-  ///TODO login時、currentUserを削除する
 
   // アプリ開始
   Future appStarted() async {
@@ -30,7 +32,21 @@ class AuthStateNotifier extends StateNotifier<User?> {
     final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     await firebaseAuth.signOut();
     await firebaseAuth.signInAnonymously();
+    await _deleteAllHiveBoxes();
     state = firebaseAuth.currentUser;
+  }
+
+  // すべてのhiveのboxを削除
+  Future _deleteAllHiveBoxes() async {
+    CartItemRepository cartItemRepository = CartItemRepository();
+    IngredientUnitRepository ingredientUnitRepository =
+        IngredientUnitRepository();
+    SelectedSchemeColorRepository selectedSchemeColorRepository =
+        SelectedSchemeColorRepository();
+
+    await cartItemRepository.deleteAllCartItem();
+    await ingredientUnitRepository.deleteIngredientUnitList();
+    await selectedSchemeColorRepository.deleteSelectedFlexScheme();
   }
 
   /// Email
@@ -64,6 +80,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
         password: password,
       );
       state = _firebaseAuth.currentUser;
+      await _deleteAllHiveBoxes();
       return null;
     } catch (e) {
       return e.toString();
@@ -110,6 +127,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
       state = _firebaseAuth.currentUser;
+      await _deleteAllHiveBoxes();
       return null;
     } catch (e) {
       return e.toString();
@@ -161,6 +179,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
       );
       await FirebaseAuth.instance.signInWithCredential(credential);
       state = _firebaseAuth.currentUser;
+      await _deleteAllHiveBoxes();
       return null;
     } catch (e) {
       return e.toString();

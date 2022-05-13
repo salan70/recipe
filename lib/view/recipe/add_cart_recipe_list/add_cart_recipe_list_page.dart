@@ -286,18 +286,34 @@ class AddCartRecipeListPage extends ConsumerWidget {
                               ),
                               TextButton(
                                 onPressed: () async {
-                                  print('はい');
                                   EasyLoading.show(status: 'loading...');
-                                  if (await addCartRecipeListModel
+                                  final errorText = await addCartRecipeListModel
                                       .updateCountsInCart(
-                                          recipeForInCartListState)) {
+                                          recipeForInCartListState);
+                                  if (errorText == null) {
                                     int popInt = 0;
                                     Navigator.popUntil(
                                         context, (_) => popInt++ >= 2);
                                     EasyLoading.showSuccess('カートを更新しました');
                                   } else {
-                                    ///TODO errorText出力するようにする？
-                                    EasyLoading.showError('カートの更新に失敗しました');
+                                    EasyLoading.dismiss();
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text('カート更新失敗'),
+                                          content: Text('$errorText'),
+                                          actions: [
+                                            TextButton(
+                                              child: Text('閉じる'),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   }
                                 },
                                 child: Text('はい'),
@@ -307,13 +323,30 @@ class AddCartRecipeListPage extends ConsumerWidget {
                         );
                       } else {
                         EasyLoading.show(status: 'loading...');
-                        if (await addCartRecipeListModel
-                            .updateCountsInCart(recipeForInCartListState)) {
+                        final errorText = await addCartRecipeListModel
+                            .updateCountsInCart(recipeForInCartListState);
+                        if (errorText == null) {
                           Navigator.pop(context);
                           EasyLoading.showSuccess('カートを更新しました');
                         } else {
-                          ///TODO errorText出力するようにする？
-                          EasyLoading.showError('カートの更新に失敗しました');
+                          EasyLoading.dismiss();
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('カート更新失敗'),
+                                content: Text('$errorText'),
+                                actions: [
+                                  TextButton(
+                                    child: Text('閉じる'),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         }
                       }
                     }

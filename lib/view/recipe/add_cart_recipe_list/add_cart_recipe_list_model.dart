@@ -19,24 +19,19 @@ class AddCartRecipeListModel extends ChangeNotifier {
     return zeroIsInclude;
   }
 
-  Future<bool> updateCountsInCart(
+  Future<String?> updateCountsInCart(
       List<RecipeListInCart> recipeForInCartList) async {
     CartRepository cartRepository = CartRepository(user: user);
-
-    print('in updateCountsInCart');
-
-    bool updateIsSuccess = true;
 
     for (var recipeForInCart in recipeForInCartList) {
       try {
         cartRepository.updateCount(
             recipeForInCart.recipeId!, recipeForInCart.countInCart!);
+        return null;
       } catch (e) {
-        updateIsSuccess = false;
-        print('${recipeForInCart.recipeId} でエラー: $e');
+        return e.toString();
       }
     }
-
-    return updateIsSuccess;
+    return null;
   }
 }

@@ -25,7 +25,6 @@ class SelectedSchemeColorRepository {
 
   Future deleteSelectedFlexScheme() async {
     final box = SelectedFlexSchemeIndexBoxes.getSelectedFlexSchemeIndex();
-    print('repo delete');
     await box.delete('selectedFlexSchemeIndex');
   }
 }
