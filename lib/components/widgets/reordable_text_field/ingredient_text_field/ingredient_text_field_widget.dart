@@ -14,6 +14,7 @@ import 'package:recipe/components/validation/validation.dart';
 
 import '../../../../domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 
+/// TODO このclassをstateフォルダに移す
 class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
   IngredientListNotifier()
       : super([
@@ -195,7 +196,8 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                                             builder: (context) {
                                               return Container(
                                                 height: 250,
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .backgroundColor,
                                                 child: Column(
                                                   children: [
                                                     Row(
@@ -229,13 +231,23 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                                                     const Divider(),
                                                     Expanded(
                                                       child: CupertinoPicker(
+                                                        backgroundColor: Theme
+                                                                .of(context)
+                                                            .backgroundColor,
                                                         looping: false,
                                                         itemExtent: 30,
                                                         children:
                                                             _ingredientUnitList
                                                                 .map((unitName) =>
                                                                     new Text(
-                                                                        unitName))
+                                                                      unitName,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Theme.of(context)
+                                                                            .colorScheme
+                                                                            .onBackground,
+                                                                      ),
+                                                                    ))
                                                                 .toList(),
                                                         onSelectedItemChanged:
                                                             (index) {
