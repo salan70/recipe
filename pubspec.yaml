@@ -39,6 +39,7 @@ dependencies:
   google_fonts: ^2.3.1
   flex_color_scheme: ^4.2.0
   snapping_sheet: ^3.1.0
+  sliding_up_panel: ^2.0.0+1
   adaptive_action_sheet: ^2.0.1
   modal_bottom_sheet: ^2.0.1
   badges: ^2.0.2

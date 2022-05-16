@@ -142,9 +142,12 @@ class CartListPage extends ConsumerWidget {
                                 notBuyIngredientListIsOpen == true
                                     ? _ingredientListCardWidget(
                                         context, 'notBuyList', notBuyList)
-                                    : Container(),
+                                    : SizedBox(
+                                        height:
+                                            (72 * notBuyList.length).toDouble(),
+                                      ),
                                 SizedBox(
-                                  height: 48,
+                                  height: 100,
                                 ),
                               ],
                             ),

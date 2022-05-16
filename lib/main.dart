@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -15,6 +16,11 @@ import 'package:recipe/view/setting/customize/edit_theme_color/edit_theme_color_
 //main()を非同期を制御する
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // 画面の向きを固定
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+
   await Firebase.initializeApp();
 
   await Hive.initFlutter();

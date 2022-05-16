@@ -84,6 +84,9 @@ final recipeNumCountProviderFamily =
   return count;
 });
 
+final recipeListInCartPanelIsOpenProvider =
+    StateProvider.autoDispose((ref) => false);
+
 final recipeListInCartStreamProvider =
     StreamProvider.autoDispose<List<RecipeListInCart>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
