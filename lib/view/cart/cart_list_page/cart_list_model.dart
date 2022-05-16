@@ -147,7 +147,7 @@ class CartListModel extends ChangeNotifier {
     for (var ingredient in list) {
       String id = ingredient.ingredientInCart.ingredientName +
           ingredient.ingredientInCart.ingredientUnit;
-      CartItem cartItem = cartItemRepository.getItem(id);
+      CartItem cartItem = cartItemRepository.fetchItem(id);
       if (cartItem.isNeed == true) {
         buyList.add(ingredient);
       }
@@ -164,7 +164,7 @@ class CartListModel extends ChangeNotifier {
     for (var ingredient in list) {
       String id = ingredient.ingredientInCart.ingredientName +
           ingredient.ingredientInCart.ingredientUnit;
-      CartItem cartItem = cartItemRepository.getItem(id);
+      CartItem cartItem = cartItemRepository.fetchItem(id);
       if (cartItem.isNeed == false) {
         notBuyList.add(ingredient);
       }
@@ -175,19 +175,19 @@ class CartListModel extends ChangeNotifier {
 
   CartItem getCartItem(String id) {
     CartItemRepository cartItemRepository = CartItemRepository();
-    final cartItem = cartItemRepository.getItem(id);
+    final cartItem = cartItemRepository.fetchItem(id);
     return cartItem;
   }
 
   Future toggleIsBought(String id, bool isBought) async {
     CartItemRepository cartItemRepository = CartItemRepository();
-    final item = cartItemRepository.getItem(id);
+    final item = cartItemRepository.fetchItem(id);
     cartItemRepository.putIsBought(item, isBought);
   }
 
   Future toggleIsNeed(String id) async {
     CartItemRepository cartItemRepository = CartItemRepository();
-    final item = cartItemRepository.getItem(id);
+    final item = cartItemRepository.fetchItem(id);
     final isNeed = !item.isNeed;
     cartItemRepository.putIsNeed(item, isNeed);
   }

@@ -17,7 +17,7 @@ class CartItemRepository {
     await box.put(item.id, cartItem);
   }
 
-  CartItem getItem(String id) {
+  CartItem fetchItem(String id) {
     final box = CartItemBoxes.getCartItems();
     final CartItem getBox = box.get(id,
         defaultValue: CartItem(id: id, isNeed: true, isBought: false))!;

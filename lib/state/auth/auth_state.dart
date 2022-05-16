@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:recipe/repository/hive/cart_item_repository.dart';
 import 'package:recipe/repository/hive/ingredient_unit_repository.dart';
-import 'package:recipe/repository/hive/selected_scheme_color_repository.dart';
+import 'package:recipe/repository/hive/customizations_repository.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:recipe/repository/firebase/user_repository.dart';
 
@@ -41,8 +41,8 @@ class AuthStateNotifier extends StateNotifier<User?> {
     CartItemRepository cartItemRepository = CartItemRepository();
     IngredientUnitRepository ingredientUnitRepository =
         IngredientUnitRepository();
-    SelectedSchemeColorRepository selectedSchemeColorRepository =
-        SelectedSchemeColorRepository();
+    CustomizationsRepository selectedSchemeColorRepository =
+        CustomizationsRepository();
 
     await cartItemRepository.deleteAllCartItem();
     await ingredientUnitRepository.deleteIngredientUnitList();

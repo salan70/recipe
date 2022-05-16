@@ -2,50 +2,74 @@ import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:recipe/domain/type_adapter/customizations/customizations.dart';
 
-import 'package:recipe/domain/type_adapter/selected_flex_scheme_index/selected_flex_scheme_index.dart';
-import 'package:recipe/view/setting/customize/edit_theme_color/edit_theme_color_model.dart';
+import 'package:recipe/view/setting/customize/edit_theme/edit_theme_model.dart';
 import 'package:settings_ui/settings_ui.dart';
 
-class EditThemeColorPage extends ConsumerWidget {
-  const EditThemeColorPage({Key? key}) : super(key: key);
+class EditThemePage extends ConsumerWidget {
+  const EditThemePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ThemeMode themeMode = ThemeMode.system;
-    EditThemeColorModel editThemeColorModel = EditThemeColorModel();
+    EditThemeModel editThemeModel = EditThemeModel();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'テーマカラーを変更',
+          'テーマを変更',
         ),
       ),
       body: ValueListenableBuilder(
-          valueListenable:
-              SelectedFlexSchemeIndexBoxes.getSelectedFlexSchemeIndex()
-                  .listenable(),
+          valueListenable: CustomizationsBoxes.getCustomizations().listenable(),
           builder: (context, Box box, widget) {
-            int usedSchemeIndex =
-                editThemeColorModel.fetchSelectedFlexSchemeIndex();
+            int usedSchemeIndex = editThemeModel.fetchSelectedFlexSchemeIndex();
+            int usedThemeModeIndex =
+                editThemeModel.fetchSelectedThemeModeIndex();
+
+            ThemeMode themeMode =
+                editThemeModel.themeModeList[usedThemeModeIndex].themeMode;
 
             return SettingsList(sections: [
+              SettingsSection(title: Text('テーマモード'), tiles: [
+                for (int index = 0;
+                    index < editThemeModel.themeModeList.length;
+                    index++)
+                  index == usedThemeModeIndex
+                      ? SettingsTile(
+                          title: Text(
+                            editThemeModel.themeModeList[index].themeModeName,
+                            style: TextStyle(
+                                color: Theme.of(context).primaryColor),
+                          ),
+                          trailing: Icon(
+                            Icons.check_rounded,
+                            color: Theme.of(context).primaryColor,
+                          ))
+                      : SettingsTile(
+                          title: Text(editThemeModel
+                              .themeModeList[index].themeModeName),
+                          onPressed: (context) {
+                            editThemeModel.editSelectedThemeModeIndex(index);
+                          },
+                        ),
+              ]),
               SettingsSection(title: Text('テーマカラー'), tiles: [
-                for (var flexScheme in editThemeColorModel.flexSchemeList)
+                for (var flexScheme in editThemeModel.flexSchemeList)
                   flexScheme.index == usedSchemeIndex
                       ? SettingsTile(
-                          title: _settingTileTitle(
+                          title: _settingFlexSchemeTileTitle(
                               context, themeMode, flexScheme, true),
                           trailing: Icon(
                             Icons.check_rounded,
                             color: Theme.of(context).primaryColor,
                           ))
                       : SettingsTile(
-                          title: _settingTileTitle(
+                          title: _settingFlexSchemeTileTitle(
                               context, themeMode, flexScheme, false),
                           onPressed: (context) {
-                            editThemeColorModel
-                                .editSelectedFlexScheme(flexScheme.index);
+                            editThemeModel
+                                .editSelectedFlexSchemeIndex(flexScheme.index);
                           },
                         )
               ]),
@@ -54,7 +78,7 @@ class EditThemeColorPage extends ConsumerWidget {
     );
   }
 
-  Row _settingTileTitle(BuildContext context, ThemeMode themeMode,
+  Row _settingFlexSchemeTileTitle(BuildContext context, ThemeMode themeMode,
       FlexScheme flexScheme, bool isUsed) {
     final brightness = Theme.of(context).brightness;
     return Row(

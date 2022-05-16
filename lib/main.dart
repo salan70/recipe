@@ -8,10 +8,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
+import 'package:recipe/domain/type_adapter/customizations/customizations.dart';
 import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
-import 'package:recipe/domain/type_adapter/selected_flex_scheme_index/selected_flex_scheme_index.dart';
 import 'package:recipe/view/other/page_container/page_container_page.dart';
-import 'package:recipe/view/setting/customize/edit_theme_color/edit_theme_color_model.dart';
+
+import 'view/setting/customize/edit_theme/edit_theme_model.dart';
 
 //main()を非同期を制御する
 void main() async {
@@ -26,11 +27,11 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CartItemAdapter());
   Hive.registerAdapter(IngredientUnitAdapter());
-  Hive.registerAdapter(SelectedFlexSchemeIndexAdapter());
+  Hive.registerAdapter(CustomizationsAdapter());
 
   await Hive.openBox<CartItem>('cartItems');
   await Hive.openBox<IngredientUnit>('ingredientUnits');
-  await Hive.openBox<SelectedFlexSchemeIndex>('selectedFlexSchemeIndex');
+  await Hive.openBox<Customizations>('customizations');
 
   runApp(ProviderScope(child: MyApp()));
 }
@@ -39,17 +40,18 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     /// TODO 他のフォルダのmodelを呼んでいるのなんとかしたい(main_modelを作る？)
-    EditThemeColorModel editThemeColorModel = EditThemeColorModel();
+    EditThemeModel editThemeModel = EditThemeModel();
 
     return ValueListenableBuilder(
-        valueListenable:
-            SelectedFlexSchemeIndexBoxes.getSelectedFlexSchemeIndex()
-                .listenable(),
+        valueListenable: CustomizationsBoxes.getCustomizations().listenable(),
         builder: (context, Box box, widget) {
-          int usedSchemeIndex =
-              editThemeColorModel.fetchSelectedFlexSchemeIndex();
+          int usedSchemeIndex = editThemeModel.fetchSelectedFlexSchemeIndex();
+          int usedThemeModeIndex = editThemeModel.fetchSelectedThemeModeIndex();
+          ThemeMode usedThemeMode =
+              editThemeModel.themeModeList[usedThemeModeIndex].themeMode;
+
           FlexScheme usedScheme =
-              editThemeColorModel.flexSchemeList[usedSchemeIndex];
+              editThemeModel.flexSchemeList[usedSchemeIndex];
 
           Color usedSchemePrimaryColorLight =
               FlexThemeData.light(scheme: usedScheme).primaryColorDark;
@@ -62,7 +64,7 @@ class MyApp extends ConsumerWidget {
               FlexThemeData.dark(scheme: usedScheme).backgroundColor;
 
           return MaterialApp(
-            themeMode: ThemeMode.system,
+            themeMode: usedThemeMode,
             title: 'Recipe App',
             theme: FlexThemeData.light(
               scheme: usedScheme,
