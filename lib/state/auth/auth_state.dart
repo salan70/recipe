@@ -54,27 +54,12 @@ class AuthStateNotifier extends StateNotifier<User?> {
     return _firebaseAuth.currentUser!.providerData[0].email!;
   }
 
-  Future<ReAuth> reAuthWithEmail(
-      WidgetRef ref, String email, String password) async {
-    try {
-      await _firebaseAuth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      final credential = EmailAuthProvider.credential(
-        email: email,
-        password: password,
-      );
-      print('ok $credential');
-      return ReAuth(null, credential);
-    } catch (e) {
-      print(e);
-      return ReAuth(e.toString(), null);
-    }
-  }
-
   Future<String?> deleteUser(WidgetRef ref, AuthCredential credential) async {
-    await _firebaseAuth.currentUser!.reauthenticateWithCredential(credential);
+    try {
+      await _firebaseAuth.currentUser!.reauthenticateWithCredential(credential);
+    } catch (e) {
+      return e.toString();
+    }
 
     final deleteErrorText = await _deleteAllUserInfo(ref);
     if (deleteErrorText != null) {
@@ -271,6 +256,61 @@ class AuthStateNotifier extends StateNotifier<User?> {
       return null;
     } catch (e) {
       return e.toString();
+    }
+  }
+
+  /// reAuth (退会するために必要)
+  Future<ReAuth> reAuthWithEmail(
+      WidgetRef ref, String email, String password) async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final credential = EmailAuthProvider.credential(
+        email: email,
+        password: password,
+      );
+      print('ok $credential');
+      return ReAuth(null, credential);
+    } catch (e) {
+      print(e);
+      return ReAuth(e.toString(), null);
+    }
+  }
+
+  Future<ReAuth> reAuthWithGoogle(WidgetRef ref) async {
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
+
+    try {
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+      return ReAuth(null, credential);
+    } catch (e) {
+      return ReAuth(e.toString(), null);
+    }
+  }
+
+  Future<ReAuth> reAuthWithApple(WidgetRef ref) async {
+    try {
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+      OAuthProvider oauthProvider = OAuthProvider('apple.com');
+      final credential = oauthProvider.credential(
+        idToken: appleCredential.identityToken,
+        accessToken: appleCredential.authorizationCode,
+      );
+      return ReAuth(null, credential);
+    } catch (e) {
+      return ReAuth(e.toString(), null);
     }
   }
 }

@@ -187,7 +187,7 @@ class SettingTopPage extends ConsumerWidget {
                       return AlertDialog(
                         title: Text('確認'),
                         content: Text(
-                            '本当に退会しますか？\n\n※退会した場合、登録したアカウントやレシピの情報全てが削除され、二度とログインすることができなくなります。'),
+                            '本当に退会しますか？\n\n※退会するには、再度認証が必要です。\n※退会した場合、登録したアカウントやレシピの情報全てが削除され、二度とログインすることができなくなります。'),
                         actions: <Widget>[
                           TextButton(
                             child: Text('いいえ'),
@@ -196,11 +196,13 @@ class SettingTopPage extends ConsumerWidget {
                             },
                           ),
                           TextButton(
-                            child: Text('はい'),
+                            child: Text('はい（認証へ進む）'),
                             onPressed: () async {
                               final providerId = userNotifier.fetchProviderId();
+                              print(providerId);
 
-                              /// TODO 匿名、google、appleの処理を追加する
+                              /// TODO 匿名、appleの処理を追加する
+                              /// email
                               if (providerId == 'password') {
                                 final email = userNotifier.fetchEmail();
                                 showDialog(
@@ -209,6 +211,122 @@ class SettingTopPage extends ConsumerWidget {
                                     return ReAuthWithEmailDialog(email);
                                   },
                                 );
+                              }
+
+                              /// google
+                              else if (providerId == 'google.com') {
+                                EasyLoading.show(status: 'loading...');
+                                final reAuth =
+                                    await userNotifier.reAuthWithGoogle(ref);
+                                final loginErrorText = reAuth.errorText;
+
+                                if (loginErrorText == null) {
+                                  final deleteUserErrorText = await userNotifier
+                                      .deleteUser(ref, reAuth.credential!);
+
+                                  if (deleteUserErrorText == null) {
+                                    EasyLoading.showSuccess('退会しました');
+                                    int popInt = 0;
+                                    Navigator.popUntil(
+                                        context, (_) => popInt++ >= 2);
+                                  } else {
+                                    EasyLoading.dismiss();
+                                    return showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text('退会失敗'),
+                                          content: Text('$deleteUserErrorText'),
+                                          actions: [
+                                            TextButton(
+                                              child: Text('閉じる'),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                } else {
+                                  EasyLoading.dismiss();
+                                  return showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text('認証失敗'),
+                                        content: Text('$loginErrorText'),
+                                        actions: [
+                                          TextButton(
+                                            child: Text('閉じる'),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              }
+
+                              /// apple
+                              else if (providerId == 'apple.com') {
+                                EasyLoading.show(status: 'loading...');
+                                final reAuth =
+                                    await userNotifier.reAuthWithApple(ref);
+                                final loginErrorText = reAuth.errorText;
+
+                                if (loginErrorText == null) {
+                                  final deleteUserErrorText = await userNotifier
+                                      .deleteUser(ref, reAuth.credential!);
+
+                                  if (deleteUserErrorText == null) {
+                                    EasyLoading.showSuccess('退会しました');
+                                    int popInt = 0;
+                                    Navigator.popUntil(
+                                        context, (_) => popInt++ >= 2);
+                                  } else {
+                                    EasyLoading.dismiss();
+                                    return showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: Text('退会失敗'),
+                                          content: Text('$deleteUserErrorText'),
+                                          actions: [
+                                            TextButton(
+                                              child: Text('閉じる'),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                } else {
+                                  EasyLoading.dismiss();
+                                  return showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text('認証失敗'),
+                                        content: Text('$loginErrorText'),
+                                        actions: [
+                                          TextButton(
+                                            child: Text('閉じる'),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
                               }
                             },
                           ),

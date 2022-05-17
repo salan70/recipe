@@ -43,7 +43,7 @@ class UserRepository {
         .collection('user_info')
         .doc(user.uid)
         .set({
-      'email': user.email,
+      'uid': user.uid,
       'deletedAt': DateTime.now(),
     });
   }
