@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:form_validator/form_validator.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'package:recipe/components/validation/validation.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
@@ -187,7 +188,7 @@ class SettingTopPage extends ConsumerWidget {
                       return AlertDialog(
                         title: Text('確認'),
                         content: Text(
-                            '本当に退会しますか？\n\n※退会するには、再度認証が必要です。\n※退会した場合、登録したアカウントやレシピの情報全てが削除され、二度とログインすることができなくなります。'),
+                            '本当に退会しますか？\n\n※ログインしている場合、退会するには再度認証が必要です。\n※退会した場合、登録したアカウントやレシピの情報全てが削除され、二度とログインすることができなくなります。'),
                         actions: <Widget>[
                           TextButton(
                             child: Text('いいえ'),
@@ -201,9 +202,42 @@ class SettingTopPage extends ConsumerWidget {
                               final providerId = userNotifier.fetchProviderId();
                               print(providerId);
 
-                              /// TODO 匿名、appleの処理を追加する
+                              /// TODO 匿名の処理を追加する
+                              /// 匿名
+                              if (providerId == null) {
+                                EasyLoading.show(status: 'loading...');
+                                final deleteUserErrorText =
+                                    await userNotifier.deleteUser(ref, null);
+
+                                if (deleteUserErrorText == null) {
+                                  EasyLoading.showSuccess('退会しました');
+                                  int popInt = 0;
+                                  Navigator.popUntil(
+                                      context, (_) => popInt++ >= 2);
+                                } else {
+                                  EasyLoading.dismiss();
+                                  return showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return AlertDialog(
+                                        title: Text('退会失敗'),
+                                        content: Text('$deleteUserErrorText'),
+                                        actions: [
+                                          TextButton(
+                                            child: Text('閉じる'),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                }
+                              }
+
                               /// email
-                              if (providerId == 'password') {
+                              else if (providerId == 'password') {
                                 final email = userNotifier.fetchEmail();
                                 showDialog(
                                   context: context,
@@ -222,7 +256,7 @@ class SettingTopPage extends ConsumerWidget {
 
                                 if (loginErrorText == null) {
                                   final deleteUserErrorText = await userNotifier
-                                      .deleteUser(ref, reAuth.credential!);
+                                      .deleteUser(ref, reAuth.credential);
 
                                   if (deleteUserErrorText == null) {
                                     EasyLoading.showSuccess('退会しました');
@@ -280,7 +314,7 @@ class SettingTopPage extends ConsumerWidget {
 
                                 if (loginErrorText == null) {
                                   final deleteUserErrorText = await userNotifier
-                                      .deleteUser(ref, reAuth.credential!);
+                                      .deleteUser(ref, reAuth.credential);
 
                                   if (deleteUserErrorText == null) {
                                     EasyLoading.showSuccess('退会しました');
@@ -424,7 +458,7 @@ class ReAuthWithEmailDialog extends ConsumerWidget {
 
             if (loginErrorText == null) {
               final deleteUserErrorText =
-                  await userNotifier.deleteUser(ref, reAuth.credential!);
+                  await userNotifier.deleteUser(ref, reAuth.credential);
 
               if (deleteUserErrorText == null) {
                 EasyLoading.showSuccess('退会しました');

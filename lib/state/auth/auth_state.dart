@@ -54,11 +54,15 @@ class AuthStateNotifier extends StateNotifier<User?> {
     return _firebaseAuth.currentUser!.providerData[0].email!;
   }
 
-  Future<String?> deleteUser(WidgetRef ref, AuthCredential credential) async {
-    try {
-      await _firebaseAuth.currentUser!.reauthenticateWithCredential(credential);
-    } catch (e) {
-      return e.toString();
+  Future<String?> deleteUser(WidgetRef ref, AuthCredential? credential) async {
+    // 匿名ユーザー以外
+    if (credential != null) {
+      try {
+        await _firebaseAuth.currentUser!
+            .reauthenticateWithCredential(credential);
+      } catch (e) {
+        return e.toString();
+      }
     }
 
     final deleteErrorText = await _deleteAllUserInfo(ref);
