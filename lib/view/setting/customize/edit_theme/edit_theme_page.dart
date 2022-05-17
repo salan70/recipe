@@ -126,7 +126,14 @@ class EditThemePage extends ConsumerWidget {
           flexScheme.name,
           style: isUsed == true
               ? TextStyle(
-                  color: FlexThemeData.light(scheme: flexScheme).primaryColor)
+                  color: brightness == Brightness.light
+                      ? FlexThemeData.light(scheme: flexScheme)
+                          .colorScheme
+                          .secondary
+                      : FlexThemeData.dark(scheme: flexScheme)
+                          .colorScheme
+                          .secondary,
+                )
               : null,
         ),
       ],
