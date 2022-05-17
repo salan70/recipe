@@ -50,6 +50,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                       recipe.recipeName!,
                       textAlign: TextAlign.left,
                       style: Theme.of(context).primaryTextTheme.headline5,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),

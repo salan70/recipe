@@ -4,8 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 // 認証系の処理
 class UserRepository {
   /// auth関係
-  Future fetchCurrentUser() async {}
-
   Future<User> login(String email, String password) async {
     UserCredential firebaseUser =
         await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -26,14 +24,36 @@ class UserRepository {
   }
 
   /// その他
-  Future addUser(User user) async {
+  Future addUserInfo(User user) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .collection('user_info')
-        .add({
+        .doc(user.uid)
+        .set({
       'email': user.email,
       'createdAt': DateTime.now(),
     });
+  }
+
+  Future addDeletedUserInfo(User user) async {
+    await FirebaseFirestore.instance
+        .collection('deletedUsers')
+        .doc(user.uid)
+        .collection('user_info')
+        .doc(user.uid)
+        .set({
+      'email': user.email,
+      'deletedAt': DateTime.now(),
+    });
+  }
+
+  Future deleteUserInfo(User user) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('user_info')
+        .doc(user.uid)
+        .delete();
   }
 }

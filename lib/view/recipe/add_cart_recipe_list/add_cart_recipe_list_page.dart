@@ -415,14 +415,18 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                       SizedBox(
                                         width: 16,
                                       ),
-                                      Text(
-                                        recipeForInCartListState[index]
-                                            .recipeName
-                                            .toString(),
-                                        overflow: TextOverflow.ellipsis,
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .subtitle1,
+                                      SizedBox(
+                                        width: 160,
+                                        child: Text(
+                                          recipeForInCartListState[index]
+                                              .recipeName
+                                              .toString(),
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: Theme.of(context)
+                                              .primaryTextTheme
+                                              .subtitle1,
+                                        ),
                                       ),
                                     ],
                                   ),

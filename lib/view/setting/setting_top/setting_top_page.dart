@@ -2,6 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:form_validator/form_validator.dart';
+
+import 'package:recipe/components/validation/validation.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
 import 'package:recipe/view/setting/account/login/login_page.dart';
@@ -18,6 +21,8 @@ class SettingTopPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userStateNotifierProvider);
     final userNotifier = ref.watch(userStateNotifierProvider.notifier);
+
+    print('build');
 
     return Scaffold(
       appBar: AppBar(
@@ -64,7 +69,7 @@ class SettingTopPage extends ConsumerWidget {
                     )
                   : SettingsTile.navigation(
                       title: Text('ログアウト'),
-                      trailing: Icon(Icons.chevron_right_rounded),
+                      trailing: Icon(Icons.logout_rounded),
                       onPressed: (context) {
                         showDialog(
                           context: context,
@@ -164,8 +169,173 @@ class SettingTopPage extends ConsumerWidget {
               ),
             ],
           ),
+          CustomSettingsSection(
+              child: Column(
+            children: [
+              SizedBox(
+                height: 48,
+              ),
+              TextButton(
+                child: Text(
+                  '退会する',
+                  style: TextStyle(color: Theme.of(context).errorColor),
+                ),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('確認'),
+                        content: Text(
+                            '本当に退会しますか？\n\n※退会した場合、登録したアカウントやレシピの情報全てが削除され、二度とログインすることができなくなります。'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text('いいえ'),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          TextButton(
+                            child: Text('はい'),
+                            onPressed: () async {
+                              final providerId = userNotifier.fetchProviderId();
+
+                              /// TODO 匿名、google、appleの処理を追加する
+                              if (providerId == 'password') {
+                                final email = userNotifier.fetchEmail();
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return ReAuthWithEmailDialog(email);
+                                  },
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
+          ))
         ],
       ),
+    );
+  }
+}
+
+class ReAuthWithEmailDialog extends ConsumerWidget {
+  ReAuthWithEmailDialog(this.email);
+
+  final email;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userNotifier = ref.watch(userStateNotifierProvider.notifier);
+
+    final password = ref.watch(passwordProvider);
+    final passwordNotifier = ref.watch(passwordProvider.notifier);
+
+    final passwordIsObscure = ref.watch(passwordIsObscureProvider);
+    final passwordIsObscureNotifier =
+        ref.watch(passwordIsObscureProvider.notifier);
+
+    return AlertDialog(
+      title: Text('退会するために再度認証をお願いします。'),
+      content: SizedBox(
+        height: 140,
+        child: Column(
+          children: [
+            Padding(
+                padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                child: Row(
+                  children: [
+                    Icon(Icons.mail_outline_rounded),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    Text(
+                      email,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  ],
+                )),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                onChanged: (password) {
+                  passwordNotifier.update((state) => password);
+                },
+                obscureText: passwordIsObscure,
+                decoration: InputDecoration(
+                  labelText: 'パスワード',
+                  prefixIcon: Icon(Icons.lock_open_rounded),
+                  suffixIcon: IconButton(
+                    icon: Icon(passwordIsObscure
+                        ? Icons.visibility_off_rounded
+                        : Icons.visibility_rounded),
+                    onPressed: () {
+                      passwordIsObscureNotifier
+                          .update((state) => !passwordIsObscure);
+                    },
+                  ),
+                  border: OutlineInputBorder(),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text('キャンセル'),
+          onPressed: () {
+            int popInt = 0;
+            Navigator.popUntil(context, (_) => popInt++ >= 2);
+          },
+        ),
+        TextButton(
+          child: Text('再認証して退会'),
+          onPressed: () async {
+            EasyLoading.show(status: 'loading...');
+            final reAuth =
+                await userNotifier.reAuthWithEmail(ref, email, password);
+            final loginErrorText = reAuth.errorText;
+
+            if (loginErrorText == null) {
+              final deleteUserErrorText =
+                  await userNotifier.deleteUser(ref, reAuth.credential!);
+
+              if (deleteUserErrorText == null) {
+                EasyLoading.showSuccess('退会しました');
+                int popInt = 0;
+                Navigator.popUntil(context, (_) => popInt++ >= 3);
+              }
+            } else {
+              EasyLoading.dismiss();
+              return showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('認証失敗'),
+                    content: Text('$loginErrorText'),
+                    actions: [
+                      TextButton(
+                        child: Text('閉じる'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+          },
+        ),
+      ],
     );
   }
 }

@@ -26,6 +26,7 @@ class RecipeRepository {
         .delete();
   }
 
+  // deleteRecipeの前にdeleteImageをする
   Future deleteImage(Recipe recipe) async {
     final imageRef = FirebaseStorage.instance.refFromURL(recipe.imageUrl!);
 

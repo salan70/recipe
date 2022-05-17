@@ -26,10 +26,6 @@ class LoginPage extends ConsumerWidget {
 
     final emailValidate =
         ValidationBuilder().email('有効なメールアドレスを入力してください').build();
-    final passwordValidate = ValidationBuilder()
-        .minLength(8, '8文字以上で入力してください')
-        .maxLength(20, '20文字以下で入力してください')
-        .build();
 
     return Scaffold(
       appBar: AppBar(
@@ -71,8 +67,6 @@ class LoginPage extends ConsumerWidget {
                     obscureText: passwordIsObscure,
                     decoration: InputDecoration(
                       labelText: 'パスワード',
-                      errorText:
-                          password == '' ? null : passwordValidate(password),
                       prefixIcon: Icon(Icons.lock_open_rounded),
                       suffixIcon: IconButton(
                         icon: Icon(passwordIsObscure
