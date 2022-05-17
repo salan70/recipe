@@ -155,7 +155,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                       size: 32,
                     ),
                   ),
-                  position: BadgePosition.topEnd(top: 5, end: -10),
+                  position: BadgePosition.topEnd(top: 5, end: -5),
                 )),
               ),
               SizedBox(
@@ -163,10 +163,8 @@ class AddCartRecipeListPage extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (recipeForInCartListState.isEmpty != true) {
-                      bool zeroIsInclude = addCartRecipeListModel
-                          .checkCart(recipeForInCartListState);
-
-                      if (zeroIsInclude) {
+                      if (addCartRecipeListModel
+                          .zeroIsIncludeInCart(recipeForInCartListState)) {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
@@ -261,6 +259,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
 
   Widget _recipeListInCartPanel(ScrollController sc, PanelController pc,
       BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userStateNotifierProvider);
     final recipeListInCartStream = ref.watch(recipeListInCartStreamProvider);
 
     final recipeForInCartListState =
@@ -268,13 +267,11 @@ class AddCartRecipeListPage extends ConsumerWidget {
     final recipeForInCartListStateNotifier =
         ref.watch(recipeForInCartListNotifierProvider.notifier);
 
-    final recipeListInCartPanelIsOpen =
-        ref.watch(recipeListInCartPanelIsOpenProvider);
-    final recipeListInCartPanelIsOpenNotifier =
-        ref.watch(recipeListInCartPanelIsOpenProvider.notifier);
-
     final stateIsChanged = ref.watch(stateIsChangedProvider);
     final stateIsChangedNotifier = ref.watch(stateIsChangedProvider.notifier);
+
+    AddCartRecipeListModel addCartRecipeListModel =
+        AddCartRecipeListModel(user: user!);
 
     return MediaQuery.removePadding(
         context: context,
@@ -313,10 +310,71 @@ class AddCartRecipeListPage extends ConsumerWidget {
                       height: 8,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
                           'カートに入っているレシピ',
                           style: Theme.of(context).primaryTextTheme.headline5,
+                        ),
+                        TextButton.icon(
+                          icon: Icon(
+                            Icons.delete_rounded,
+                            color: Theme.of(context).errorColor,
+                          ),
+                          label: Text(
+                            '空にする',
+                            style:
+                                TextStyle(color: Theme.of(context).errorColor),
+                          ),
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: Text('確認'),
+                                content: Text('本当にカートを空にしてよろしいですか？'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
+                                    child: Text('いいえ'),
+                                  ),
+                                  TextButton(
+                                    onPressed: () async {
+                                      EasyLoading.show(status: 'loading...');
+                                      final errorText =
+                                          await addCartRecipeListModel
+                                              .deleteAllRecipeFromCart(
+                                                  recipeForInCartListState);
+                                      if (errorText == null) {
+                                        Navigator.pop(context);
+                                        EasyLoading.showSuccess('カートを空にしました');
+                                      } else {
+                                        EasyLoading.dismiss();
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: Text('カート更新失敗'),
+                                              content: Text('$errorText'),
+                                              actions: [
+                                                TextButton(
+                                                  child: Text('閉じる'),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                    child: Text('はい'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         )
                       ],
                     ),

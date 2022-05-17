@@ -64,16 +64,12 @@ class CartListModel extends ChangeNotifier {
         String addTotalAmount = calculation.executeMultiply(
             ingredientPerInCartRecipeList[i].countInCart,
             ingredientPerInCartRecipeList[i].ingredient.amount);
-        // print(
-        //     '------${ingredientPerInCartRecipeList[i].ingredient.name!}-----');
 
         // totalAmountの計算
         String totalAmount =
             calculation.executeAdd(previousTotalAmount, addTotalAmount);
 
-        // print(
-        //     '${ingredientPerInCartRecipeList[i].ingredient.name!} $totalAmount');
-
+        // totalAmountを更新
         ingredientListInCartPerRecipeList[returnListIndex - 1]
             .ingredientInCart
             .ingredientTotalAmount = totalAmount;
@@ -97,14 +93,10 @@ class CartListModel extends ChangeNotifier {
             ingredientPerInCartRecipeList[i].ingredient.name!;
         previousIngredientUnit =
             ingredientPerInCartRecipeList[i].ingredient.unit!;
-        // print(
-        //     '------${ingredientPerInCartRecipeList[i].ingredient.name!}-----');
 
         String totalAmount = calculation.executeMultiply(
             ingredientPerInCartRecipeList[i].countInCart,
             ingredientPerInCartRecipeList[i].ingredient.amount);
-        // print(
-        //     '${ingredientPerInCartRecipeList[i].ingredient.name!} $totalAmount');
 
         // ingredient系
         IngredientInCart ingredientInCart = IngredientInCart(
@@ -138,7 +130,8 @@ class CartListModel extends ChangeNotifier {
     return ingredientListInCartPerRecipeList;
   }
 
-  ///
+  /// cart_listでの処理
+
   List<IngredientInCartPerRecipeList> createBuyList(
       List<IngredientInCartPerRecipeList> list) {
     CartItemRepository cartItemRepository = CartItemRepository();

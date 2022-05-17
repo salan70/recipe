@@ -8,7 +8,7 @@ class AddCartRecipeListModel extends ChangeNotifier {
   AddCartRecipeListModel({required this.user});
   final User user;
 
-  bool checkCart(List<RecipeListInCart> recipeForInCartList) {
+  bool zeroIsIncludeInCart(List<RecipeListInCart> recipeForInCartList) {
     bool zeroIsInclude = false;
 
     for (var recipeForInCart in recipeForInCartList)
@@ -27,7 +27,20 @@ class AddCartRecipeListModel extends ChangeNotifier {
       try {
         cartRepository.updateCount(
             recipeForInCart.recipeId!, recipeForInCart.countInCart!);
-        return null;
+      } catch (e) {
+        return e.toString();
+      }
+    }
+    return null;
+  }
+
+  Future<String?> deleteAllRecipeFromCart(
+      List<RecipeListInCart> recipeForInCartList) async {
+    CartRepository cartRepository = CartRepository(user: user);
+
+    for (var recipeForInCart in recipeForInCartList) {
+      try {
+        cartRepository.updateCount(recipeForInCart.recipeId!, 0);
       } catch (e) {
         return e.toString();
       }

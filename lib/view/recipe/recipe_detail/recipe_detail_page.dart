@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -73,8 +74,12 @@ class RecipeDetailPage extends ConsumerWidget {
               children: [
                 RecipeDetailWidget(recipeId),
                 Center(
-                  child: TextButton(
-                    child: Text(
+                  child: TextButton.icon(
+                    icon: Icon(
+                      Icons.delete_rounded,
+                      color: Theme.of(context).errorColor,
+                    ),
+                    label: Text(
                       'レシピを削除',
                       style: TextStyle(color: Theme.of(context).errorColor),
                     ),
