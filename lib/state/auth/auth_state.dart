@@ -55,7 +55,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
   }
 
   Future<String?> deleteUser(WidgetRef ref, AuthCredential? credential) async {
-    // 匿名ユーザー以外
+    // 匿名ユーザー以外は再認証時のcredentialでreAuthする
     if (credential != null) {
       try {
         await _firebaseAuth.currentUser!
@@ -202,8 +202,16 @@ class AuthStateNotifier extends StateNotifier<User?> {
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      final loginUser =
+          await FirebaseAuth.instance.signInWithCredential(credential);
       state = _firebaseAuth.currentUser;
+
+      // 初回ログインの場合、userInfoをFireStoreに保存
+      if (loginUser.additionalUserInfo!.isNewUser) {
+        print('google first login');
+        await _userRepository.addUserInfo(state!);
+      }
+
       await _deleteAllHiveBoxes();
       return null;
     } catch (e) {
@@ -254,8 +262,15 @@ class AuthStateNotifier extends StateNotifier<User?> {
         idToken: appleCredential.identityToken,
         accessToken: appleCredential.authorizationCode,
       );
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      final loginUser =
+          await FirebaseAuth.instance.signInWithCredential(credential);
       state = _firebaseAuth.currentUser;
+
+      if (loginUser.additionalUserInfo!.isNewUser) {
+        print('apple first login');
+        await _userRepository.addUserInfo(state!);
+      }
+
       await _deleteAllHiveBoxes();
       return null;
     } catch (e) {
