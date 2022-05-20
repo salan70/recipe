@@ -14,7 +14,6 @@ import 'package:recipe/repository/hive/customizations_repository.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:recipe/repository/firebase/user_repository.dart';
 
-///TODO login時、userInfoをfireStoreに保存する
 class AuthStateNotifier extends StateNotifier<User?> {
   AuthStateNotifier() : super(null);
 

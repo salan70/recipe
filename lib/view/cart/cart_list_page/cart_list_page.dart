@@ -60,7 +60,6 @@ class CartListPage extends ConsumerWidget {
                   builder: (context, box, widget) {
                     return recipeListInCartStream.when(
                         error: (error, stack) => Text('Error: $error'),
-                        // loading: () => const CircularProgressIndicator(),
                         loading: () => const CircularProgressIndicator(),
                         data: (recipeListInCart) {
                           List<IngredientPerInCartRecipe>

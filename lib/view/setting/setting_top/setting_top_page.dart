@@ -14,7 +14,6 @@ import 'package:recipe/view/setting/customize/edit_theme/edit_theme_page.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// TODO 「退会(アカウント削除)」実装
 class SettingTopPage extends ConsumerWidget {
   const SettingTopPage({Key? key}) : super(key: key);
 
@@ -139,10 +138,11 @@ class SettingTopPage extends ConsumerWidget {
               //   title: Text('お知らせ'),
               //   trailing: Icon(Icons.chevron_right_rounded),
               // ),
-              SettingsTile.navigation(
-                title: Text('使い方'),
-                trailing: Icon(Icons.chevron_right_rounded),
-              ),
+              /// (after release)TODO
+              // SettingsTile.navigation(
+              //   title: Text('使い方'),
+              //   trailing: Icon(Icons.chevron_right_rounded),
+              // ),
               SettingsTile.navigation(
                 title: Text('ご意見・ご要望'),
                 trailing: Icon(Icons.chevron_right_rounded),
@@ -202,7 +202,6 @@ class SettingTopPage extends ConsumerWidget {
                               final providerId = userNotifier.fetchProviderId();
                               print(providerId);
 
-                              /// TODO 匿名の処理を追加する
                               /// 匿名
                               if (providerId == null) {
                                 EasyLoading.show(status: 'loading...');
