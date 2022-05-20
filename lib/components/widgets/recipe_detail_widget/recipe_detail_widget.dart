@@ -72,9 +72,9 @@ class RecipeDetailWidget extends ConsumerWidget {
                           : Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0),
-                                color: Colors.grey[400],
+                                color: Theme.of(context).dividerColor,
                               ),
-                              child: Icon(Icons.add_photo_alternate_outlined),
+                              child: Icon(Icons.restaurant_outlined),
                             ),
                     ),
                   ),

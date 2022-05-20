@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,6 +60,7 @@ class CartListPage extends ConsumerWidget {
                   builder: (context, box, widget) {
                     return recipeListInCartStream.when(
                         error: (error, stack) => Text('Error: $error'),
+                        // loading: () => const CircularProgressIndicator(),
                         loading: () => const CircularProgressIndicator(),
                         data: (recipeListInCart) {
                           List<IngredientPerInCartRecipe>
