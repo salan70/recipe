@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:fraction/fraction.dart';
 import 'package:recipe/domain/recipe.dart';
 

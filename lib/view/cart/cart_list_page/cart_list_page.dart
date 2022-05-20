@@ -1,19 +1,14 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
+import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/view/cart/cart_list_recipe_detail/cart_list_recipe_detail_page.dart';
-
-import '../../../domain/cart.dart';
 import 'cart_list_model.dart';
 
-// レシピ一覧画面
 class CartListPage extends ConsumerWidget {
   const CartListPage({Key? key}) : super(key: key);
 

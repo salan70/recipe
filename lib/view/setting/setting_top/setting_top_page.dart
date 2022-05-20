@@ -1,18 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:form_validator/form_validator.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:settings_ui/settings_ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:recipe/components/validation/validation.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
 import 'package:recipe/view/setting/account/login/login_page.dart';
 import 'package:recipe/view/setting/account/sign_up/sign_up_page.dart';
 import 'package:recipe/view/setting/customize/edit_theme/edit_theme_page.dart';
-import 'package:settings_ui/settings_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SettingTopPage extends ConsumerWidget {
   const SettingTopPage({Key? key}) : super(key: key);
@@ -199,6 +194,7 @@ class SettingTopPage extends ConsumerWidget {
                           TextButton(
                             child: Text('はい（認証へ進む）'),
                             onPressed: () async {
+                              // providerId : 認証(ログイン)種別
                               final providerId = userNotifier.fetchProviderId();
                               print(providerId);
 

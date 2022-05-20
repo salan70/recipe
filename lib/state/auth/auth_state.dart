@@ -1,17 +1,14 @@
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/re_auth.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
 import 'package:recipe/repository/hive/cart_item_repository.dart';
 import 'package:recipe/repository/hive/ingredient_unit_repository.dart';
 import 'package:recipe/repository/hive/customizations_repository.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:recipe/repository/firebase/user_repository.dart';
 
 class AuthStateNotifier extends StateNotifier<User?> {
@@ -42,7 +39,6 @@ class AuthStateNotifier extends StateNotifier<User?> {
   // 現在ログインしているユーザーの認証方法を返す
   String? fetchProviderId() {
     try {
-      final userInfo = _firebaseAuth.currentUser!.providerData[0];
       return _firebaseAuth.currentUser!.providerData[0].providerId;
     } catch (e) {
       return null;

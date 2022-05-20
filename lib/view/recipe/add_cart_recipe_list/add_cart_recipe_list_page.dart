@@ -1,26 +1,20 @@
-import 'dart:io';
-
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:badges/badges.dart';
+import 'package:recipe/view/recipe/add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import 'package:recipe/components/providers.dart';
-
-import '../add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
 import 'add_cart_recipe_list_model.dart';
 
 // レシピ一覧画面
 class AddCartRecipeListPage extends ConsumerWidget {
   AddCartRecipeListPage({Key? key}) : super(key: key);
 
-  final PanelController pc = PanelController();
+  final PanelController pageController = PanelController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,7 +48,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
         alignment: Alignment.topCenter,
         children: [
           SlidingUpPanel(
-            controller: pc,
+            controller: pageController,
             maxHeight: MediaQuery.of(context).size.height * 0.6,
             minHeight: 20,
             borderRadius: BorderRadius.only(
@@ -104,7 +98,8 @@ class AddCartRecipeListPage extends ConsumerWidget {
                 )
               ],
             ),
-            panelBuilder: (sc) => _recipeListInCartPanel(sc, pc, context, ref),
+            panelBuilder: (sc) =>
+                _recipeListInCartPanel(sc, pageController, context, ref),
           ),
         ],
       ),
@@ -143,9 +138,9 @@ class AddCartRecipeListPage extends ConsumerWidget {
                   child: IconButton(
                     onPressed: () {
                       if (recipeListInCartPanelIsOpen) {
-                        pc.close();
+                        pageController.close();
                       } else {
-                        pc.open();
+                        pageController.open();
                       }
                       recipeListInCartPanelIsOpenNotifier.state =
                           !recipeListInCartPanelIsOpen;

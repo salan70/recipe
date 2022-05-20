@@ -1,16 +1,12 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
 import 'package:recipe/domain/recipe.dart';
+import 'package:recipe/view/recipe/recipe_detail/recipe_detail_page.dart';
 import 'package:recipe/view/recipe/search_recipe/search_recipe_model.dart';
 
-import '../recipe_detail/recipe_detail_page.dart';
-
-// レシピ一覧画面
 class SearchRecipePage extends ConsumerWidget {
   const SearchRecipePage({Key? key}) : super(key: key);
 
@@ -25,11 +21,6 @@ class SearchRecipePage extends ConsumerWidget {
         ref.watch(searchResultRecipeIdListProvider);
     final searchResultRecipeIdListNotifier =
         ref.watch(searchResultRecipeIdListProvider.notifier);
-
-    final searchFunction = ref.watch(searchFunctionProvider);
-    final searchFunctionNotifier = ref.watch(searchFunctionProvider.notifier);
-
-    List<String> searchResultList = [];
 
     return Scaffold(
       appBar: AppBar(

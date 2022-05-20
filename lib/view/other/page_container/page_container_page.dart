@@ -4,22 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import 'package:recipe/components/providers.dart';
+import 'package:recipe/view/cart/cart_list_page/cart_list_page.dart';
+import 'package:recipe/view/recipe/add_cart_recipe_list/add_cart_recipe_list_page.dart';
 import 'package:recipe/view/recipe/add_recipe/add_recipe_page.dart';
+import 'package:recipe/view/recipe/recipe_list/recipe_list_page.dart';
 import 'package:recipe/view/recipe/search_recipe/search_recipe_page.dart';
 import 'package:recipe/view/setting/setting_top/setting_top_page.dart';
-
-import '../../../domain/recipe.dart';
-import '../../cart/cart_list_page/cart_list_page.dart';
-import '../../recipe/add_cart_recipe_list/add_cart_recipe_list_page.dart';
-import '../../recipe/recipe_list/recipe_list_page.dart';
 
 class PageContainerPage extends ConsumerWidget {
   const PageContainerPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ThemeMode themeMode = ThemeMode.system;
-
     final selectedPage = ref.watch(selectPageProvider);
     final selectedPageNotifier = ref.watch(selectPageProvider.notifier);
 

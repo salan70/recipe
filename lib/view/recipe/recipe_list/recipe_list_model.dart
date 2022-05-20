@@ -1,9 +1,6 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe/domain/recipe.dart';
 
-import '../../../components/providers.dart';
+import 'package:recipe/domain/recipe.dart';
 
 class RecipeListModel extends ChangeNotifier {
   String toOutputIngredientText(List<Ingredient> ingredients) {
@@ -18,7 +15,6 @@ class RecipeListModel extends ChangeNotifier {
       String ingredientText =
           ingredientName + ' ' + ingredientAmount + ingredientUnit;
       ingredientTextList[ingredientIndex] = ingredientText;
-      // print(ingredientTextList[index]);
       outputIngredientText += ingredientText;
 
       if (ingredientIndex + 1 < ingredients.length) {

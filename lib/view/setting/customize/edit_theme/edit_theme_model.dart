@@ -1,8 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+
 import 'package:recipe/domain/custom_theme_mode.dart';
-import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
-import 'package:recipe/repository/hive/ingredient_unit_repository.dart';
 import 'package:recipe/repository/hive/customizations_repository.dart';
 
 class EditThemeModel {

@@ -1,15 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
+import 'package:recipe/view/recipe/recipe_detail/recipe_detail_page.dart';
 
-import '../recipe_detail/recipe_detail_page.dart';
-
-// レシピ一覧画面
 class RecipeListPage extends ConsumerWidget {
   const RecipeListPage({Key? key}) : super(key: key);
 

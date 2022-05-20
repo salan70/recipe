@@ -11,10 +11,8 @@ import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/domain/type_adapter/customizations/customizations.dart';
 import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 import 'package:recipe/view/other/page_container/page_container_page.dart';
-
 import 'view/setting/customize/edit_theme/edit_theme_model.dart';
 
-//main()を非同期を制御する
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // 画面の向きを固定

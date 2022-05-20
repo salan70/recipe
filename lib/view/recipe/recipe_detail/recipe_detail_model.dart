@@ -1,10 +1,8 @@
-import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe/domain/recipe.dart';
 
-import '../../../repository/firebase/recipe_repository.dart';
+import 'package:recipe/domain/recipe.dart';
+import 'package:recipe/repository/firebase/recipe_repository.dart';
 
 class RecipeDetailModel extends ChangeNotifier {
   RecipeDetailModel({required this.user});
