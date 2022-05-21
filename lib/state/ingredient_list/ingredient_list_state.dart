@@ -13,8 +13,13 @@ class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
           ),
         ]);
 
-  void add(Ingredient ingredient) {
-    state = [...state, ingredient];
+  bool add(Ingredient ingredient) {
+    if (state.length < 30) {
+      state = [...state, ingredient];
+      return true;
+    } else {
+      return false;
+    }
   }
 
   void remove(String id) {

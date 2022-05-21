@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:recipe/components/widgets/reordable_text_field/procedures.dart';
+import 'package:recipe/components/widgets/reordable_text_field/procedure_text_field/procedure_text_field_widget.dart';
 import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
@@ -189,7 +189,7 @@ class EditRecipeWidget extends ConsumerWidget {
                 ),
               ),
               SizedBox(height: 8),
-              ProceduresListWidget(),
+              ProcedureTextFieldWidget(),
             ],
           ),
           // メモ
@@ -213,6 +213,7 @@ class EditRecipeWidget extends ConsumerWidget {
                     recipe.recipeMemo = value;
                   },
                 ),
+                SizedBox(height: 48),
               ],
             ),
           ),

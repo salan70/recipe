@@ -5,14 +5,13 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_model.dart';
+import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 import 'package:uuid/uuid.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/components/validation/validation.dart';
-
-import '../../../../domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 
 class IngredientTextFieldWidget extends ConsumerWidget {
   const IngredientTextFieldWidget({Key? key, this.recipe}) : super(key: key);
@@ -61,11 +60,11 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                           Expanded(
                               flex: 7,
                               child: TextField(
-                                maxLength: 20,
                                 controller: nameIsChanged == false
                                     ? TextEditingController(
                                         text: ingredientList[index].name)
                                     : null,
+                                maxLength: 20,
                                 decoration: InputDecoration(
                                   hintText: '材料名',
                                   counterText: '',
@@ -222,7 +221,24 @@ class IngredientTextFieldWidget extends ConsumerWidget {
               amount: '',
               unit: null,
             );
-            ingredientListNotifier.add(ingredient);
+            if (!ingredientListNotifier.add(ingredient)) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text('登録できる材料は30個までです。'),
+                    actions: [
+                      TextButton(
+                        child: Text('閉じる'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
           },
           child: Text('追加'),
         )

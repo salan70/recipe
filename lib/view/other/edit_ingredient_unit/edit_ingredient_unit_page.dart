@@ -103,9 +103,12 @@ class EditIngredientUnitPage extends ConsumerWidget {
                               iconWidget: Text('削除'),
                               onTap: () async {
                                 EasyLoading.show(status: 'loading...');
+
+                                /// TODO 追加したunitを削除できない事象を解決する
                                 if (await ingredientUnitEditModel
                                     .deleteIngredientUnit(
                                         ingredientUnitList[index])) {
+                                  /// TODO 実際に削除されるunitと表示されるunitが異なる事象を解決する
                                   EasyLoading.showSuccess(
                                       '${ingredientUnitList[index]}を削除しました');
                                 } else {
