@@ -24,10 +24,8 @@ class SignUpPage extends ConsumerWidget {
 
     final emailValidate =
         ValidationBuilder().email('有効なメールアドレスを入力してください').build();
-    final passwordValidate = ValidationBuilder()
-        .minLength(8, '8文字以上で入力してください')
-        .maxLength(20, '20文字以下で入力してください')
-        .build();
+    final passwordValidate =
+        ValidationBuilder().minLength(6, '6文字以上で入力してください').build();
 
     return Scaffold(
       appBar: AppBar(
@@ -91,6 +89,11 @@ class SignUpPage extends ConsumerWidget {
                     child: ElevatedButton(
                       onPressed: () async {
                         EasyLoading.show(status: 'loading...');
+
+                        if (passwordValidate(password) == '8文字以上で入力してください') {
+                          _showLoginErrorAlertDialog(context, '8文字以上で入力してください');
+                        }
+
                         final errorText =
                             await userNotifier.signUpWithEmail(email, password);
                         if (errorText == null) {

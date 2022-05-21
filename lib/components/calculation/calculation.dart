@@ -106,7 +106,8 @@ class Calculation {
     else if (num.contains('/')) {
       try {
         num.toFraction();
-        // (after release)TODO castableいらない？
+
+        /// (after release)TODO castableいらない？
         if (num.toFraction().toDouble() >= 1) {
           amountType = 'castable fraction';
         } else {

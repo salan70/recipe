@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:recipe/components/auth_exception.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'package:recipe/components/providers.dart';
@@ -55,8 +56,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
       try {
         await _firebaseAuth.currentUser!
             .reauthenticateWithCredential(credential);
-      } catch (e) {
-        return e.toString();
+      } on FirebaseAuthException catch (e) {
+        AuthException authException = AuthException();
+
+        return authException.outputAuthErrorText(e);
       }
     }
 
@@ -132,16 +135,16 @@ class AuthStateNotifier extends StateNotifier<User?> {
         await currentUser.linkWithCredential(credential);
         state = _firebaseAuth.currentUser;
         await _userRepository.addUserInfo(state!);
-        print(state!.email.toString());
         return null;
       }
       // このelseには行かない想定
       else {
         return 'サインアップ失敗';
       }
-    } catch (e) {
-      //TODO errorTextを日本語にする
-      return e.toString();
+    } on FirebaseAuthException catch (e) {
+      AuthException authException = AuthException();
+
+      return authException.outputAuthErrorText(e);
     }
   }
 
@@ -154,8 +157,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
       state = _firebaseAuth.currentUser;
       await _deleteAllHiveBoxes();
       return null;
-    } catch (e) {
-      return e.toString();
+    } on FirebaseAuthException catch (e) {
+      AuthException authException = AuthException();
+
+      return authException.outputAuthErrorText(e);
     }
   }
 
@@ -182,8 +187,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
       else {
         return 'サインアップ失敗';
       }
-    } catch (e) {
-      return e.toString();
+    } on FirebaseAuthException catch (e) {
+      AuthException authException = AuthException();
+
+      return authException.outputAuthErrorText(e);
     }
   }
 
@@ -209,8 +216,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
 
       await _deleteAllHiveBoxes();
       return null;
-    } catch (e) {
-      return e.toString();
+    } on FirebaseAuthException catch (e) {
+      AuthException authException = AuthException();
+
+      return authException.outputAuthErrorText(e);
     }
   }
 
@@ -239,8 +248,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
       else {
         return 'サインアップ失敗';
       }
-    } catch (e) {
-      return e.toString();
+    } on FirebaseAuthException catch (e) {
+      AuthException authException = AuthException();
+
+      return authException.outputAuthErrorText(e);
     }
   }
 
@@ -268,8 +279,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
 
       await _deleteAllHiveBoxes();
       return null;
-    } catch (e) {
-      return e.toString();
+    } on FirebaseAuthException catch (e) {
+      AuthException authException = AuthException();
+
+      return authException.outputAuthErrorText(e);
     }
   }
 
@@ -287,9 +300,11 @@ class AuthStateNotifier extends StateNotifier<User?> {
       );
       print('ok $credential');
       return ReAuth(null, credential);
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       print(e);
-      return ReAuth(e.toString(), null);
+      AuthException authException = AuthException();
+
+      return ReAuth(authException.outputAuthErrorText(e), null);
     }
   }
 
@@ -304,8 +319,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
         idToken: googleAuth.idToken,
       );
       return ReAuth(null, credential);
-    } catch (e) {
-      return ReAuth(e.toString(), null);
+    } on FirebaseAuthException catch (e) {
+      AuthException authException = AuthException();
+
+      return ReAuth(authException.outputAuthErrorText(e), null);
     }
   }
 
@@ -323,8 +340,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
         accessToken: appleCredential.authorizationCode,
       );
       return ReAuth(null, credential);
-    } catch (e) {
-      return ReAuth(e.toString(), null);
+    } on FirebaseAuthException catch (e) {
+      AuthException authException = AuthException();
+
+      return ReAuth(authException.outputAuthErrorText(e), null);
     }
   }
 }
