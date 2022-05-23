@@ -408,9 +408,6 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                   Row(
                                     children: [
                                       SizedBox(
-                                        width: 16,
-                                      ),
-                                      SizedBox(
                                         width: 160,
                                         child: Text(
                                           recipeForInCartListState[index]

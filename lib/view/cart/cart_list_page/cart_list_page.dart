@@ -233,6 +233,7 @@ class CartListPage extends ConsumerWidget {
               ),
               subtitle: Text(
                 '${ingredient.ingredientInCart.ingredientTotalAmount}${ingredient.ingredientInCart.ingredientUnit}',
+                overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     decoration: cartListModel.getCartItem(id).isBought
                         ? TextDecoration.lineThrough
@@ -288,7 +289,9 @@ class CartListPage extends ConsumerWidget {
                     width: 16,
                   ),
                   Text(
-                      '${recipe.ingredientAmount}${ingredient.ingredientInCart.ingredientUnit}'),
+                    '${recipe.ingredientAmount}${ingredient.ingredientInCart.ingredientUnit}',
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
               trailing: IconButton(

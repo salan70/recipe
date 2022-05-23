@@ -128,6 +128,9 @@ class RecipeDetailWidget extends ConsumerWidget {
                             Text('人分'),
                           ]),
                         ),
+                        SizedBox(
+                          height: 8,
+                        ),
                         ListView.builder(
                           itemCount: recipe.ingredientList == null
                               ? 0
@@ -136,22 +139,28 @@ class RecipeDetailWidget extends ConsumerWidget {
                             var ingredient = recipe.ingredientList == null
                                 ? null
                                 : recipe.ingredientList![index];
-                            return Container(
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 8,
+                            return Column(
+                              children: [
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Expanded(
+                                          flex: 3,
+                                          child: Text(
+                                              ingredient!.name.toString())),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                            '${ingredient.amount}${ingredient.unit}'),
+                                      ),
+                                    ],
                                   ),
-                                  Expanded(
-                                      flex: 3,
-                                      child: Text(ingredient!.name.toString())),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text(
-                                        '${ingredient.amount}${ingredient.unit}'),
-                                  ),
-                                ],
-                              ),
+                                ),
+                                Divider(),
+                              ],
                             );
                           },
                           shrinkWrap: true,
@@ -179,6 +188,9 @@ class RecipeDetailWidget extends ConsumerWidget {
                                 Theme.of(context).primaryTextTheme.subtitle2!,
                           ),
                         ),
+                        SizedBox(
+                          height: 8,
+                        ),
                         ListView.builder(
                           itemCount: recipe.procedureList == null
                               ? 0
@@ -187,19 +199,24 @@ class RecipeDetailWidget extends ConsumerWidget {
                             var procedure = recipe.procedureList == null
                                 ? null
                                 : recipe.procedureList![index];
-                            return Container(
-                              child: Row(
-                                children: [
-                                  SizedBox(
-                                    width: 8,
+                            return Column(
+                              children: [
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        width: 8,
+                                      ),
+                                      Expanded(
+                                          flex: 1, child: Text('${index + 1}')),
+                                      Expanded(
+                                          flex: 19,
+                                          child: Text('${procedure!.content}')),
+                                    ],
                                   ),
-                                  Expanded(
-                                      flex: 1, child: Text('${index + 1}')),
-                                  Expanded(
-                                      flex: 19,
-                                      child: Text('${procedure!.content}')),
-                                ],
-                              ),
+                                ),
+                                Divider(),
+                              ],
                             );
                           },
                           shrinkWrap: true,
@@ -224,16 +241,23 @@ class RecipeDetailWidget extends ConsumerWidget {
                                 Theme.of(context).primaryTextTheme.subtitle2!,
                           ),
                         ),
+                        SizedBox(
+                          height: 8,
+                        ),
                         Row(
                           children: [
                             SizedBox(
                               width: 8,
                             ),
-                            Container(
-                                alignment: Alignment.centerLeft,
-                                child: recipe.recipeMemo != null
-                                    ? Text(recipe.recipeMemo!)
-                                    : Text('')),
+                            Flexible(
+                              child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: recipe.recipeMemo != null
+                                      ? Text(
+                                          recipe.recipeMemo!,
+                                        )
+                                      : Text('')),
+                            ),
                           ],
                         ),
                       ],

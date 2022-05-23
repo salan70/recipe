@@ -28,6 +28,7 @@ class EditRecipeWidget extends ConsumerWidget {
           SizedBox(height: 16),
           TextField(
             maxLength: 30,
+            maxLines: 2,
             style: Theme.of(context).primaryTextTheme.headline5,
             controller: TextEditingController(text: recipe.recipeName),
             decoration: InputDecoration.collapsed(hintText: 'レシピ名'),

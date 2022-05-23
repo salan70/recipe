@@ -66,6 +66,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                                         text: ingredientList[index].name)
                                     : null,
                                 maxLength: 20,
+                                maxLines: 2,
                                 decoration: InputDecoration(
                                   hintText: '材料名',
                                   counterText: '',
