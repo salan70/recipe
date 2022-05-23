@@ -7,6 +7,8 @@ import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/validation/validation.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
+import 'package:recipe/state/ingredient_list/ingredient_list_provider.dart';
+import 'package:recipe/state/procedure_list/procedure_list_provider.dart';
 import 'add_recipe_model.dart';
 
 class AddRecipePage extends ConsumerWidget {

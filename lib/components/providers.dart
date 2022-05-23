@@ -7,10 +7,8 @@ import 'package:recipe/domain/cart.dart';
 import 'package:recipe/repository/firebase/cart_repository.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
-import 'package:recipe/state/ingredient_list/ingredient_list_state.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/state/image_file/image_file_state.dart';
-import 'package:recipe/state/procedure_list/procedure_list_state.dart';
 import 'package:recipe/state/recipe_in_cart/recipe_in_cart_list_state.dart';
 
 final imageFileNotifierProvider =
@@ -52,17 +50,6 @@ final searchResultRecipeIdListProvider =
     StateProvider.autoDispose<List<String>?>((ref) {
   return null;
 });
-
-/// reordarale_text_field
-final ingredientListNotifierProvider =
-    StateNotifierProvider.autoDispose<IngredientListNotifier, List<Ingredient>>(
-  (ref) => IngredientListNotifier(),
-);
-
-final procedureListNotifierProvider =
-    StateNotifierProvider.autoDispose<ProcedureListNotifier, List<Procedure>>(
-  (ref) => ProcedureListNotifier(),
-);
 
 // ingredient
 final nameIsChangedProvider = StateProvider.autoDispose((ref) => false);

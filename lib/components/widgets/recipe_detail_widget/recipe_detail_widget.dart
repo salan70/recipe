@@ -3,6 +3,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/providers.dart';
+import 'package:recipe/state/ingredient_list/ingredient_list_provider.dart';
+import 'package:recipe/state/procedure_list/procedure_list_provider.dart';
 
 class RecipeDetailWidget extends ConsumerWidget {
   RecipeDetailWidget(this.recipeId);

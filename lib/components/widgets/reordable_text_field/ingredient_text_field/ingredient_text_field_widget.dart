@@ -4,14 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_model.dart';
-import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 import 'package:uuid/uuid.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/providers.dart';
 import 'package:recipe/components/validation/validation.dart';
+import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_model.dart';
+import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
+import 'package:recipe/state/ingredient_list/ingredient_list_provider.dart';
 
 class IngredientTextFieldWidget extends ConsumerWidget {
   const IngredientTextFieldWidget({Key? key, this.recipe}) : super(key: key);
