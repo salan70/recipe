@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// 認証系の処理
 class UserRepository {
   /// auth関係
   Future<User> login(String email, String password) async {

@@ -97,3 +97,7 @@ final selectedSchemeColorProvider =
     StateProvider.autoDispose<FlexScheme>((ref) {
   return FlexScheme.green;
 });
+
+final feedbackProvider = StateProvider.autoDispose<String>((ref) {
+  return '';
+});

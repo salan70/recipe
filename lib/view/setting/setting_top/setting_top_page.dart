@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:recipe/view/setting/send_feedback/send_feedback_page.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -141,6 +142,14 @@ class SettingTopPage extends ConsumerWidget {
               SettingsTile.navigation(
                 title: Text('ご意見・ご要望'),
                 trailing: Icon(Icons.chevron_right_rounded),
+                onPressed: (context) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SendFeedbackPage(),
+                        fullscreenDialog: false,
+                      ));
+                },
               ),
               SettingsTile.navigation(
                 title: Text('お問い合わせ'),
