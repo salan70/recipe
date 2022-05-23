@@ -27,7 +27,7 @@ class EditIngredientUnitModel {
     IngredientUnitRepository _ingredientUnitRepository =
         IngredientUnitRepository();
     final ingredientUnitList =
-        _ingredientUnitRepository.getIngredientUnitList().ingredientUnitList;
+        _ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
     return ingredientUnitList;
   }
 
@@ -45,7 +45,7 @@ class EditIngredientUnitModel {
     IngredientUnitRepository _ingredientUnitRepository =
         IngredientUnitRepository();
     final List<String> ingredientUnitList =
-        _ingredientUnitRepository.getIngredientUnitList().ingredientUnitList;
+        _ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
 
     ingredientUnitList.add(unitName);
     await _ingredientUnitRepository.putIngredientUnitList(ingredientUnitList);
@@ -55,7 +55,7 @@ class EditIngredientUnitModel {
     IngredientUnitRepository _ingredientUnitRepository =
         IngredientUnitRepository();
     final List<String> ingredientUnitList =
-        _ingredientUnitRepository.getIngredientUnitList().ingredientUnitList;
+        _ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
 
     // 単位が1つしかない場合、削除できない
     if (ingredientUnitList.length == 1) {
@@ -81,7 +81,7 @@ class EditIngredientUnitModel {
     IngredientUnitRepository _ingredientUnitRepository =
         IngredientUnitRepository();
     final List<String> ingredientUnitList =
-        _ingredientUnitRepository.getIngredientUnitList().ingredientUnitList;
+        _ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
 
     if (oldIndex < newIndex) {
       newIndex -= 1;
@@ -96,7 +96,7 @@ class EditIngredientUnitModel {
     IngredientUnitRepository _ingredientUnitRepository =
         IngredientUnitRepository();
     final List<String> ingredientUnitList =
-        _ingredientUnitRepository.getIngredientUnitList().ingredientUnitList;
+        _ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
 
     for (var ingredientUnit in ingredientUnitList) {
       if (ingredientUnit == unitName) {

@@ -5,7 +5,7 @@ class IngredientTextFieldModel {
     IngredientUnitRepository _ingredientUnitRepository =
         IngredientUnitRepository();
     final ingredientUnitList =
-        _ingredientUnitRepository.getIngredientUnitList().ingredientUnitList;
+        _ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
 
     return ingredientUnitList;
   }

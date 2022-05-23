@@ -4,7 +4,7 @@ import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_mode
 class IngredientUnitRepository {
   EditIngredientUnitModel ingredientUnitEditModel = EditIngredientUnitModel();
 
-  IngredientUnit getIngredientUnitList() {
+  IngredientUnit fetchIngredientUnitList() {
     final defaultIngredientUnitList =
         ingredientUnitEditModel.defaultIngredientUnitList;
 
