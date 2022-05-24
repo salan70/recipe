@@ -101,3 +101,6 @@ final selectedSchemeColorProvider =
 final feedbackProvider = StateProvider.autoDispose<String>((ref) {
   return '';
 });
+
+// 汎用
+final isLoadingProvider = StateProvider.autoDispose((ref) => false);

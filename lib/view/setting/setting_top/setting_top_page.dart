@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:recipe/view/setting/send_feedback/send_feedback_page.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,6 +8,8 @@ import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page
 import 'package:recipe/view/setting/account/login/login_page.dart';
 import 'package:recipe/view/setting/account/sign_up/sign_up_page.dart';
 import 'package:recipe/view/setting/customize/edit_theme/edit_theme_page.dart';
+import 'package:recipe/view/setting/send_feedback/send_feedback_page.dart';
+import 'package:recipe/view/setting/terms/terms_page.dart';
 
 class SettingTopPage extends ConsumerWidget {
   const SettingTopPage({Key? key}) : super(key: key);
@@ -17,8 +18,6 @@ class SettingTopPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userStateNotifierProvider);
     final userNotifier = ref.watch(userStateNotifierProvider.notifier);
-
-    print('build');
 
     return Scaffold(
       appBar: AppBar(
@@ -167,10 +166,26 @@ class SettingTopPage extends ConsumerWidget {
               SettingsTile.navigation(
                 title: Text('利用規約'),
                 trailing: Icon(Icons.chevron_right_rounded),
+                onPressed: (context) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TermsPage(),
+                        fullscreenDialog: false,
+                      ));
+                },
               ),
               SettingsTile.navigation(
                 title: Text('プライバシーポリシー'),
                 trailing: Icon(Icons.chevron_right_rounded),
+                onPressed: (context) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TermsPage(),
+                        fullscreenDialog: false,
+                      ));
+                },
               ),
             ],
           ),
