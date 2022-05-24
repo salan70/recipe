@@ -31,7 +31,9 @@ class SendFeedbackPage extends ConsumerWidget {
         ),
       ),
       body: Container(
-        color: CupertinoColors.extraLightBackgroundGray,
+        color: Theme.of(context).brightness == Brightness.light
+            ? CupertinoColors.extraLightBackgroundGray
+            : Theme.of(context).backgroundColor,
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
