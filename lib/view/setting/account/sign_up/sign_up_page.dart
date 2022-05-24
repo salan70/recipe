@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:recipe/view/other/introduction_take_over/introduction_take_over_page.dart';
 import 'package:sign_button/sign_button.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -172,6 +173,21 @@ class SignUpPage extends ConsumerWidget {
                           }
                         }),
                   ),
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                TextButton.icon(
+                  icon: Icon(Icons.info_outline),
+                  label: Text('ログインで引き継がれる/引き継がれない要素について'),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => IntroductionTakeOverPage(),
+                          fullscreenDialog: false,
+                        ));
+                  },
                 ),
               ],
             ),

@@ -17,7 +17,7 @@ class RecipeCardWidget extends ConsumerWidget {
             Expanded(
               flex: 6,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(16),
                 child: SizedBox(
                   width: 200,
                   height: 120,
