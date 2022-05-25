@@ -32,15 +32,19 @@ class ProcedureTextFieldWidget extends ConsumerWidget {
               for (int index = 0; index < procedureList.length; index++)
                 Slidable(
                   key: ValueKey(procedureList[index].id),
-                  actionPane: SlidableDrawerActionPane(),
-                  secondaryActions: [
-                    IconSlideAction(
-                      color: Colors.red,
-                      iconWidget: Text('delete'),
-                      onTap: () => procedureListNotifier
-                          .remove(procedureList[index].id!),
-                    ),
-                  ],
+                  endActionPane: ActionPane(
+                    extentRatio: 0.3,
+                    motion: ScrollMotion(),
+                    children: [
+                      SlidableAction(
+                          label: '削除',
+                          backgroundColor: Theme.of(context).errorColor,
+                          onPressed: (context) {
+                            procedureListNotifier
+                                .remove(procedureList[index].id!);
+                          })
+                    ],
+                  ),
                   child: Row(
                     children: [
                       Expanded(

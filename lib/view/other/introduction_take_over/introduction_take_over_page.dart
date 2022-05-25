@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:sign_button/sign_button.dart';
-
-import 'package:recipe/state/auth/auth_provider.dart';
 
 class IntroductionTakeOverPage extends ConsumerWidget {
   const IntroductionTakeOverPage({Key? key}) : super(key: key);

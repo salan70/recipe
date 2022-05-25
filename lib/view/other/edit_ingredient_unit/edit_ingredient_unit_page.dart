@@ -98,26 +98,30 @@ class EditIngredientUnitPage extends ConsumerWidget {
                       itemBuilder: (context, index) {
                         return Slidable(
                           key: ValueKey(ingredientUnitList[index]),
-                          actionPane: SlidableDrawerActionPane(),
-                          secondaryActions: [
-                            IconSlideAction(
-                              color: Colors.red,
-                              iconWidget: Text('削除'),
-                              onTap: () async {
-                                EasyLoading.show(status: 'loading...');
-                                final deletedUnit = ingredientUnitList[index];
+                          endActionPane: ActionPane(
+                            extentRatio: 0.3,
+                            motion: ScrollMotion(),
+                            children: [
+                              SlidableAction(
+                                  label: '削除',
+                                  backgroundColor: Theme.of(context).errorColor,
+                                  onPressed: (context) async {
+                                    EasyLoading.show(status: 'loading...');
+                                    final deletedUnit =
+                                        ingredientUnitList[index];
 
-                                if (await ingredientUnitEditModel
-                                    .deleteIngredientUnit(
-                                        ingredientUnitList[index])) {
-                                  EasyLoading.showSuccess(
-                                      '$deletedUnitを削除しました。');
-                                } else {
-                                  EasyLoading.showError('単位を1個未満にすることはできません。');
-                                }
-                              },
-                            ),
-                          ],
+                                    if (await ingredientUnitEditModel
+                                        .deleteIngredientUnit(
+                                            ingredientUnitList[index])) {
+                                      EasyLoading.showSuccess(
+                                          '$deletedUnitを削除しました。');
+                                    } else {
+                                      EasyLoading.showError(
+                                          '単位を1個未満にすることはできません。');
+                                    }
+                                  })
+                            ],
+                          ),
                           child: Column(
                             children: [
                               Container(

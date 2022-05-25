@@ -390,7 +390,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                     loading: () => const CircularProgressIndicator(),
                     data: (recipesForInCartList) {
                       if (stateIsChanged == false) {
-                        WidgetsBinding.instance!.addPostFrameCallback((_) {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
                           recipeForInCartListStateNotifier
                               .getList(recipesForInCartList);
                         });

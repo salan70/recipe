@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:recipe/view/setting/privacy_policy/privacy_policy_page.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:in_app_review/in_app_review.dart';
 
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
@@ -157,6 +159,13 @@ class SettingTopPage extends ConsumerWidget {
               SettingsTile.navigation(
                 title: Text('レビューを書く'),
                 trailing: Icon(Icons.chevron_right_rounded),
+                onPressed: (context) async {
+                  final InAppReview inAppReview = InAppReview.instance;
+
+                  if (await inAppReview.isAvailable()) {
+                    inAppReview.requestReview();
+                  }
+                },
               ),
             ],
           ),
@@ -166,7 +175,7 @@ class SettingTopPage extends ConsumerWidget {
               SettingsTile.navigation(
                 title: Text('利用規約'),
                 trailing: Icon(Icons.chevron_right_rounded),
-                onPressed: (context) {
+                onPressed: (context) async {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -182,7 +191,7 @@ class SettingTopPage extends ConsumerWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TermsPage(),
+                        builder: (context) => PrivacyPolicyPage(),
                         fullscreenDialog: false,
                       ));
                 },

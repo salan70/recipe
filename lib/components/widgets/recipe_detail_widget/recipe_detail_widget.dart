@@ -26,14 +26,14 @@ class RecipeDetailWidget extends ConsumerWidget {
         data: (recipe) {
           if (recipe.ingredientList != null) {
             if (recipe.ingredientList!.isEmpty == false) {
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 ingredientListNotifier.getList(recipe.ingredientList!);
               });
             }
           }
           if (recipe.ingredientList != null) {
             if (recipe.procedureList!.isEmpty == false) {
-              WidgetsBinding.instance!.addPostFrameCallback((_) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
                 procedureListNotifier.getList(recipe.procedureList!);
               });
             }

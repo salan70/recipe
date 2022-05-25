@@ -45,15 +45,19 @@ class IngredientTextFieldWidget extends ConsumerWidget {
               for (int index = 0; index < ingredientList.length; index++)
                 Slidable(
                   key: ValueKey(ingredientList[index].id),
-                  actionPane: SlidableDrawerActionPane(),
-                  secondaryActions: [
-                    IconSlideAction(
-                      color: Colors.red,
-                      iconWidget: Text('delete'),
-                      onTap: () => ingredientListNotifier
-                          .remove(ingredientList[index].id),
-                    ),
-                  ],
+                  endActionPane: ActionPane(
+                    extentRatio: 0.3,
+                    motion: ScrollMotion(),
+                    children: [
+                      SlidableAction(
+                          label: '削除',
+                          backgroundColor: Theme.of(context).errorColor,
+                          onPressed: (context) {
+                            ingredientListNotifier
+                                .remove(ingredientList[index].id);
+                          })
+                    ],
+                  ),
                   child: Column(
                     children: [
                       Row(

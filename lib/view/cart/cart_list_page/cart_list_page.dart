@@ -207,21 +207,21 @@ class CartListPage extends ConsumerWidget {
               ingredient.ingredientInCart.ingredientUnit;
           return Slidable(
             key: ValueKey(id),
-            actionPane: SlidableDrawerActionPane(),
-            actions: [
-              IconSlideAction(
-                color: Theme.of(context).dividerColor,
-                iconWidget: Text(
-                  _slidableActionText,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                onTap: () {
-                  cartListModel.toggleIsNeed(
-                    id,
-                  );
-                },
-              ),
-            ],
+            startActionPane: ActionPane(
+              extentRatio: 0.4,
+              motion: ScrollMotion(),
+              children: [
+                SlidableAction(
+                  label: _slidableActionText,
+                  backgroundColor: Theme.of(context).primaryColor,
+                  onPressed: (context) {
+                    cartListModel.toggleIsNeed(
+                      id,
+                    );
+                  },
+                )
+              ],
+            ),
             child: CheckboxListTile(
               title: Text(
                 '${ingredient.ingredientInCart.ingredientName}',
