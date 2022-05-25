@@ -25,6 +25,7 @@ dependencies:
   sign_in_with_apple: ^3.3.0
   firebase_storage: ^10.0.2
 
+  flutter_email_sender: ^5.1.0
   webview_flutter: ^3.0.4
   in_app_review: ^2.0.4
   sign_button: ^2.0.2

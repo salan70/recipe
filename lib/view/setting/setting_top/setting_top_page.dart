@@ -4,6 +4,7 @@ import 'package:recipe/view/setting/privacy_policy/privacy_policy_page.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
@@ -155,6 +156,9 @@ class SettingTopPage extends ConsumerWidget {
               SettingsTile.navigation(
                 title: Text('お問い合わせ'),
                 trailing: Icon(Icons.chevron_right_rounded),
+                onPressed: (context) {
+                  sendInquiry();
+                },
               ),
               SettingsTile.navigation(
                 title: Text('レビューを書く'),
@@ -403,6 +407,16 @@ class SettingTopPage extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  sendInquiry() async {
+    final Email email = Email(
+      body:
+          'お困りの状況について、以下のフォーマットを参考にお問い合わせいただけますと幸いです。\n\n■お問い合わせフォーマット\n1.発生した事象やお困りの状況の詳細(画面の表示や挙動など)\n\n2.事象が発生した日時\n\n3.事象発生時に行った操作\n\n4.その他',
+      subject: '',
+      recipients: ['toda.myrecipe@gmail.com'],
+    );
+    await FlutterEmailSender.send(email);
   }
 }
 
