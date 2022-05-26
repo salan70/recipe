@@ -156,8 +156,27 @@ class SettingTopPage extends ConsumerWidget {
               SettingsTile.navigation(
                 title: Text('お問い合わせ'),
                 trailing: Icon(Icons.chevron_right_rounded),
-                onPressed: (context) {
-                  sendInquiry();
+                onPressed: (context) async {
+                  if (!await sendInquiry()) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('エラー'),
+                          content: Text('エラーが発生しました。\n再度お試しください。'
+                              '\n\n何度かお試しいただいても解決されない場合、お手数ではございますが次の宛先までお問い合わせ内容をお送りください。\n\ntoda.myrecipe@gmail.com'),
+                          actions: [
+                            TextButton(
+                              child: Text('閉じる'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
               ),
               SettingsTile.navigation(
@@ -409,14 +428,19 @@ class SettingTopPage extends ConsumerWidget {
     );
   }
 
-  sendInquiry() async {
-    final Email email = Email(
-      body:
-          'お困りの状況について、以下のフォーマットを参考にお問い合わせいただけますと幸いです。\n\n■お問い合わせフォーマット\n1.発生した事象やお困りの状況の詳細(画面の表示や挙動など)\n\n2.事象が発生した日時\n\n3.事象発生時に行った操作\n\n4.その他',
-      subject: '',
-      recipients: ['toda.myrecipe@gmail.com'],
-    );
-    await FlutterEmailSender.send(email);
+  Future<bool> sendInquiry() async {
+    try {
+      final Email email = Email(
+        body:
+            'お困りの状況について、以下のフォーマットを参考にお問い合わせいただけますと幸いです。\n\n■お問い合わせフォーマット\n1.発生した事象やお困りの状況の詳細(画面の表示や挙動など)\n\n2.事象が発生した日時\n\n3.事象発生時に行った操作\n\n4.その他',
+        subject: '',
+        recipients: ['toda.myrecipe@gmail.com'],
+      );
+      await FlutterEmailSender.send(email);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }
 
