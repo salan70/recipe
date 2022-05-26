@@ -37,7 +37,6 @@ void main() async {
 class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    /// TODO 他のフォルダのmodelを呼んでいるのなんとかしたい(main_modelを作る？)
     EditThemeModel editThemeModel = EditThemeModel();
 
     return ValueListenableBuilder(

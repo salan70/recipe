@@ -83,8 +83,6 @@ class EditIngredientUnitPage extends ConsumerWidget {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(12)),
-
-                      /// (after release)TODO backgroundColorがpackageのdefaultと微妙に異なるが、一旦許容（後でできたら修正する）
                       color: Theme.of(context).backgroundColor,
                     ),
                     child: ReorderableListView.builder(

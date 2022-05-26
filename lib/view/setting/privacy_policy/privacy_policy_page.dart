@@ -4,7 +4,6 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 import 'package:recipe/state/other_provider/providers.dart';
 
-/// (after release) TODO 起動時、デバイスがdarkで、アプリがlightの場合、一瞬黒い画面が表示されるの修正
 class PrivacyPolicyPage extends ConsumerWidget {
   const PrivacyPolicyPage({Key? key}) : super(key: key);
 

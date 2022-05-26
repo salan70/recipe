@@ -36,8 +36,6 @@ class SearchRecipePage extends ConsumerWidget {
                   contentPadding: EdgeInsets.all(8),
                   fillColor: Theme.of(context).dividerColor,
                   filled: true,
-
-                  ///(after release) TODO 枠線消す
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),

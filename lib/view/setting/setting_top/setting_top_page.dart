@@ -131,12 +131,10 @@ class SettingTopPage extends ConsumerWidget {
           SettingsSection(
             title: Text('サポート'),
             tiles: [
-              /// (after release)TODO
               // SettingsTile.navigation(
               //   title: Text('お知らせ'),
               //   trailing: Icon(Icons.chevron_right_rounded),
               // ),
-              /// (after release)TODO
               // SettingsTile.navigation(
               //   title: Text('使い方'),
               //   trailing: Icon(Icons.chevron_right_rounded),
