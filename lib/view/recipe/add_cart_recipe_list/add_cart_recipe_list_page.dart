@@ -10,7 +10,6 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:recipe/state/other_provider/providers.dart';
 import 'add_cart_recipe_list_model.dart';
 
-// レシピ一覧画面
 class AddCartRecipeListPage extends ConsumerWidget {
   AddCartRecipeListPage({Key? key}) : super(key: key);
 
@@ -41,7 +40,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
       appBar: AppBar(
         elevation: 1,
         title: Text(
-          'かごに追加するレシピを選択',
+          'カートに追加するレシピを選択',
         ),
       ),
       body: Stack(
