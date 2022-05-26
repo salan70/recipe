@@ -166,7 +166,9 @@ class EditRecipeWidget extends ConsumerWidget {
                                   fullscreenDialog: false,
                                 ));
                           },
-                          child: Text('単位を編集')),
+                          child: Text(
+                            '単位を編集',
+                          )),
                     ]),
               ),
               SizedBox(height: 8),

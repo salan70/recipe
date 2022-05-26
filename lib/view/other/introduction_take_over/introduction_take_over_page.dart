@@ -24,14 +24,14 @@ class IntroductionTakeOverPage extends ConsumerWidget {
                 SizedBox(
                   height: 24,
                 ),
-                Text(
-                  '引き継がれる要素',
-                  style: Theme.of(context).primaryTextTheme.subtitle1,
-                ),
                 // 引き継がれる要素
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      '引き継がれる要素',
+                      style: Theme.of(context).primaryTextTheme.subtitle1,
+                    ),
                     SizedBox(
                       height: 8,
                     ),
@@ -49,15 +49,15 @@ class IntroductionTakeOverPage extends ConsumerWidget {
                 SizedBox(
                   height: 40,
                 ),
-                Text(
-                  '引き継がれない要素',
-                  style: Theme.of(context).primaryTextTheme.subtitle1,
-                  textAlign: TextAlign.left,
-                ),
                 // 引き継がれない要素
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      '引き継がれない要素',
+                      style: Theme.of(context).primaryTextTheme.subtitle1,
+                      textAlign: TextAlign.left,
+                    ),
                     SizedBox(
                       height: 8,
                     ),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:recipe/view/other/introduction_ingredient_amount/introduction_ingredient_amount_page.dart';
 import 'package:uuid/uuid.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -219,34 +220,65 @@ class IngredientTextFieldWidget extends ConsumerWidget {
             ],
           );
         }),
-        TextButton(
-          onPressed: () {
-            final Ingredient ingredient = Ingredient(
-              id: Uuid().v4(),
-              name: '',
-              amount: '',
-              unit: null,
-            );
-            if (!ingredientListNotifier.add(ingredient)) {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: Text('登録できる材料は30個までです。'),
-                    actions: [
-                      TextButton(
-                        child: Text('閉じる'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(flex: 1, child: Container()),
+            Expanded(
+              flex: 1,
+              child: TextButton(
+                onPressed: () {
+                  final Ingredient ingredient = Ingredient(
+                    id: Uuid().v4(),
+                    name: '',
+                    amount: '',
+                    unit: null,
                   );
+                  if (!ingredientListNotifier.add(ingredient)) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('登録できる材料は30個までです。'),
+                          actions: [
+                            TextButton(
+                              child: Text('閉じる'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
-              );
-            }
-          },
-          child: Text('追加'),
+                child: Text('追加'),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: TextButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              IntroductionIngredientAmountPage(),
+                          fullscreenDialog: false,
+                        ));
+                  },
+                  icon: Icon(
+                    Icons.info_outline,
+                    size: 20,
+                    color: Theme.of(context).hintColor,
+                  ),
+                  label: Text(
+                    '数量について',
+                    style: TextStyle(color: Theme.of(context).hintColor),
+                  )),
+            ),
+          ],
         )
       ],
     );
