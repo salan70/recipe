@@ -7,7 +7,7 @@ import 'package:badges/badges.dart';
 import 'package:recipe/view/recipe/add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
-import 'package:recipe/components/providers.dart';
+import 'package:recipe/state/other_provider/providers.dart';
 import 'add_cart_recipe_list_model.dart';
 
 // レシピ一覧画面

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import 'package:recipe/components/providers.dart';
+import 'package:recipe/state/other_provider/providers.dart';
 
 /// (after release) TODO 起動時、デバイスがdarkで、アプリがlightの場合、一瞬黒い画面が表示されるの修正
 class TermsPage extends ConsumerWidget {

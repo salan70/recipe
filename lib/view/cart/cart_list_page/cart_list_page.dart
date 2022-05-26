@@ -3,7 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:recipe/components/providers.dart';
+import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/view/cart/cart_list_recipe_detail/cart_list_recipe_detail_page.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:recipe/components/providers.dart';
+import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/components/widgets/recipe_detail_widget/recipe_detail_widget.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/view/recipe/update_recipe/update_recipe_page.dart';

@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/domain/cart.dart';
@@ -8,13 +6,7 @@ import 'package:recipe/repository/firebase/cart_repository.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/state/image_file/image_file_state.dart';
 import 'package:recipe/state/recipe_in_cart/recipe_in_cart_list_state.dart';
-
-final imageFileNotifierProvider =
-    StateNotifierProvider.autoDispose<ImageFileNotifier, File?>((ref) {
-  return ImageFileNotifier();
-});
 
 final recipeListStreamProvider =
     StreamProvider.autoDispose<List<Recipe>>((ref) {

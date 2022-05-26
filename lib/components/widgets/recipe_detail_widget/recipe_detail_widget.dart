@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:recipe/components/providers.dart';
+import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/state/ingredient_list/ingredient_list_provider.dart';
 import 'package:recipe/state/procedure_list/procedure_list_provider.dart';
 
@@ -151,8 +151,11 @@ class RecipeDetailWidget extends ConsumerWidget {
                                           flex: 3,
                                           child: Text(
                                               ingredient!.name.toString())),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
                                       Expanded(
-                                        flex: 1,
+                                        flex: 2,
                                         child: Text(
                                             '${ingredient.amount}${ingredient.unit}'),
                                       ),

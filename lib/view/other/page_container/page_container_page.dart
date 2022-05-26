@@ -3,7 +3,7 @@ import 'package:hawk_fab_menu/hawk_fab_menu.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import 'package:recipe/components/providers.dart';
+import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/view/cart/cart_list_page/cart_list_page.dart';
 import 'package:recipe/view/recipe/add_cart_recipe_list/add_cart_recipe_list_page.dart';
 import 'package:recipe/view/recipe/add_recipe/add_recipe_page.dart';

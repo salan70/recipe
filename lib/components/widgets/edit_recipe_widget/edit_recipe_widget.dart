@@ -7,8 +7,8 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:recipe/components/widgets/reordable_text_field/procedure_text_field/procedure_text_field_widget.dart';
 import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
-import 'package:recipe/components/providers.dart';
 import 'package:recipe/domain/recipe.dart';
+import 'package:recipe/state/image_file/image_file_provider.dart';
 import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
 
 class EditRecipeWidget extends ConsumerWidget {

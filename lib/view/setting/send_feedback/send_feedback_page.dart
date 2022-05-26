@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:recipe/components/providers.dart';
+import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/view/setting/send_feedback/send_feedback_model.dart';
 

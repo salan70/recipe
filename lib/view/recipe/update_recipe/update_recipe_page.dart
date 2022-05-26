@@ -3,7 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/widgets/edit_recipe_widget/edit_recipe_widget.dart';
-import 'package:recipe/components/providers.dart';
+import 'package:recipe/state/image_file/image_file_provider.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/components/validation/validation.dart';
 import 'package:recipe/state/auth/auth_provider.dart';

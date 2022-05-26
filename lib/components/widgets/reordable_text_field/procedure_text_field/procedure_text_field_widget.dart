@@ -5,7 +5,7 @@ import 'package:uuid/uuid.dart';
 
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/state/procedure_list/procedure_list_provider.dart';
-import 'package:recipe/components/providers.dart';
+import 'package:recipe/state/other_provider/providers.dart';
 
 class ProcedureTextFieldWidget extends ConsumerWidget {
   const ProcedureTextFieldWidget({Key? key}) : super(key: key);
