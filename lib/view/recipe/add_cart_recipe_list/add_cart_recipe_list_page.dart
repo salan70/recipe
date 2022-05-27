@@ -10,6 +10,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:recipe/state/other_provider/providers.dart';
 import 'add_cart_recipe_list_model.dart';
 
+// レシピ一覧画面
 class AddCartRecipeListPage extends ConsumerWidget {
   AddCartRecipeListPage({Key? key}) : super(key: key);
 
