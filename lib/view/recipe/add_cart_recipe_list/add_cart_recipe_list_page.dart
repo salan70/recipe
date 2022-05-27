@@ -41,7 +41,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
       appBar: AppBar(
         elevation: 1,
         title: Text(
-          'かごに追加するレシピを選択',
+          'カートに追加するレシピを選択',
         ),
       ),
       body: Stack(
