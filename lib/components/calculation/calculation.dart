@@ -31,19 +31,16 @@ class Calculation {
   }
 
   String executeAdd(String? previousAmount, String? addAmount) {
-    // print('in exe add');
     String totalAmount = '';
     String previousAmountType = checkNumType(previousAmount);
     String addAmountType = checkNumType(addAmount);
-    // print(previousAmountType);
-    // print(addAmountType);
 
     // totalAmount = ''
-    if (previousAmountType == '' && addAmountType == '') {
+    if (previousAmountType == 'blank' && addAmountType == 'blank') {
       totalAmount = '';
-    } else if (previousAmountType == '') {
+    } else if (previousAmountType == 'blank') {
       totalAmount = addAmount!;
-    } else if (addAmountType == '') {
+    } else if (addAmountType == 'blank') {
       totalAmount = previousAmount!;
     }
     // totalAmount = double
@@ -95,12 +92,10 @@ class Calculation {
 
   /// check
   String checkNumType(String? num) {
-    String amountType = '';
-
     if (num == null) {
-      amountType = 'null';
+      return 'null';
     } else if (num == '') {
-      amountType = 'blank';
+      return 'blank';
     }
     // fraction or mixedFraction
     else if (num.contains('/')) {
@@ -108,16 +103,16 @@ class Calculation {
         num.toFraction();
 
         if (num.toFraction().toDouble() >= 1) {
-          amountType = 'castable fraction';
+          return 'castable fraction';
         } else {
-          amountType = 'fraction';
+          return 'fraction';
         }
       } catch (e) {
         try {
           num.toMixedFraction();
-          amountType = 'mixed fraction';
+          return 'mixed fraction';
         } catch (e) {
-          amountType = 'error';
+          return 'error';
         }
       }
     }
@@ -125,16 +120,15 @@ class Calculation {
     else {
       try {
         String doubleNum = double.tryParse(num).toString();
-        amountType = 'double';
         if (doubleNum.endsWith('.0')) {
-          amountType = 'int';
+          return 'int';
+        } else {
+          return 'double';
         }
       } catch (e) {
-        amountType = 'error';
+        return 'error';
       }
     }
-
-    return amountType;
   }
 
   /// add
