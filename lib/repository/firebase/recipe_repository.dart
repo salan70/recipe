@@ -200,6 +200,7 @@ class RecipeRepository {
       'imageUrl': '',
       'ingredientList': ingredientListMap,
       'procedureList': procedureListMap,
+      'countInCart': 0,
     });
     return docRef;
   }

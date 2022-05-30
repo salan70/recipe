@@ -11,8 +11,6 @@ class CartRepository {
   final User user;
   final Recipe? recipe;
 
-  /// delete
-
   /// fetch
   Stream<List<RecipeListInCart>> fetchRecipeListInCart() {
     final recipeCollection = FirebaseFirestore.instance
@@ -56,10 +54,8 @@ class CartRepository {
     return recipeStream;
   }
 
-  /// add
-
   /// update
-  Future<void> updateCount(String recipeId, int count) async {
+  Future updateCount(String recipeId, int count) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)

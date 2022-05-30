@@ -24,12 +24,7 @@ class UserRepository {
 
   /// その他
   Future addUserInfo(User user) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('user_info')
-        .doc(user.uid)
-        .set({
+    await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
       'email': user.email,
       'createdAt': DateTime.now(),
     });
@@ -39,20 +34,12 @@ class UserRepository {
     await FirebaseFirestore.instance
         .collection('deletedUsers')
         .doc(user.uid)
-        .collection('user_info')
-        .doc(user.uid)
         .set({
-      'uid': user.uid,
       'deletedAt': DateTime.now(),
     });
   }
 
   Future deleteUserInfo(User user) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('user_info')
-        .doc(user.uid)
-        .delete();
+    await FirebaseFirestore.instance.collection('users').doc(user.uid).delete();
   }
 }
