@@ -3,21 +3,21 @@ body {
 }
 
 article {
-  padding: 0 16px;
+  padding: 0 8px;
 }
 
 article h1 {
-  font-size: 1.4em;
+  font-size: 0.8em;
 }
 
 article h2 {
-  font-size: 1.2em;
+  font-size: 0.8em;
 }
 
 article p {
-  font-size: 1em;
+  font-size: 0.8em;
 }
 
 article li {
-  font-size: 1em;
+  font-size: 0.8em;
 }
