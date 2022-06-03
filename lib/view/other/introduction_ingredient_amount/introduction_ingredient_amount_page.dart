@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IntroductionIngredientAmountPage extends ConsumerWidget {
   const IntroductionIngredientAmountPage({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class IntroductionIngredientAmountPage extends ConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0).r,
           child: Container(
             width: double.infinity,
             child: Column(
@@ -22,7 +23,7 @@ class IntroductionIngredientAmountPage extends ConsumerWidget {
                   '材料の数量について、以下のような仕様となっております。',
                 ),
                 SizedBox(
-                  height: 24,
+                  height: 24.h,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,7 +33,7 @@ class IntroductionIngredientAmountPage extends ConsumerWidget {
                       style: Theme.of(context).primaryTextTheme.subtitle1,
                     ),
                     SizedBox(
-                      height: 8,
+                      height: 8.h,
                     ),
                     Text(
                       '数量は、整数、少数、分数（帯分数含む）のいずれかで入力できます。\n帯分数で入力する際は「1 1/3」のように整数部分と小数部分の間に「スペース」を入力してください。'
@@ -41,7 +42,7 @@ class IntroductionIngredientAmountPage extends ConsumerWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 40.h,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +53,7 @@ class IntroductionIngredientAmountPage extends ConsumerWidget {
                       textAlign: TextAlign.left,
                     ),
                     SizedBox(
-                      height: 8,
+                      height: 8.h,
                     ),
                     Text(
                       '各材料は、材料名と単位がどちらも同じ場合に合算されます。\n合算時の計算は次のような優先順位で行われます。\n\n少数 > 分数 > 整数'
@@ -61,7 +62,7 @@ class IntroductionIngredientAmountPage extends ConsumerWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 40.h,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +73,7 @@ class IntroductionIngredientAmountPage extends ConsumerWidget {
                       textAlign: TextAlign.left,
                     ),
                     SizedBox(
-                      height: 8,
+                      height: 8.h,
                     ),
                     Text(
                       '数量は未入力（空欄）も可能となっております。'

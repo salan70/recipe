@@ -3,6 +3,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:recipe/domain/type_adapter/customizations/customizations.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/view/setting/customize/edit_theme/edit_theme_model.dart';
 import 'package:settings_ui/settings_ui.dart';
@@ -84,8 +85,8 @@ class EditThemePage extends ConsumerWidget {
     return Row(
       children: [
         Container(
-          width: 24,
-          height: 24,
+          width: 24.w,
+          height: 24.h,
           decoration: BoxDecoration(
             color: brightness == Brightness.light
                 ? FlexThemeData.light(scheme: flexScheme).primaryColor
@@ -94,11 +95,11 @@ class EditThemePage extends ConsumerWidget {
           ),
         ),
         SizedBox(
-          width: 4,
+          width: 4.w,
         ),
         Container(
-          width: 24,
-          height: 24,
+          width: 24.w,
+          height: 24.h,
           decoration: BoxDecoration(
             color: brightness == Brightness.light
                 ? FlexThemeData.light(scheme: flexScheme).primaryColorDark
@@ -107,11 +108,11 @@ class EditThemePage extends ConsumerWidget {
           ),
         ),
         SizedBox(
-          width: 4,
+          width: 4.w,
         ),
         Container(
-          width: 24,
-          height: 24,
+          width: 24.w,
+          height: 24.h,
           decoration: BoxDecoration(
             color: brightness == Brightness.light
                 ? FlexThemeData.light(scheme: flexScheme).colorScheme.secondary
@@ -120,7 +121,7 @@ class EditThemePage extends ConsumerWidget {
           ),
         ),
         SizedBox(
-          width: 8,
+          width: 8.w,
         ),
         Text(
           flexScheme.name,

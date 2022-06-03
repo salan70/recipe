@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/domain/recipe.dart';
 
@@ -11,16 +12,16 @@ class RecipeCardWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0).r,
         child: Column(
           children: [
             Expanded(
-              flex: 6,
+              flex: 8,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: SizedBox(
-                  width: 200,
-                  height: 120,
+                  width: 200.w,
+                  height: 120.h,
                   child: recipe.imageUrl != null
                       ? recipe.imageUrl != ''
                           ? Image.network(
@@ -33,7 +34,7 @@ class RecipeCardWidget extends ConsumerWidget {
                             )
                           : Container(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.0),
+                                borderRadius: BorderRadius.circular(8.0).r,
                                 color: Theme.of(context).dividerColor,
                               ),
                               child: Icon(Icons.restaurant_rounded),
@@ -43,7 +44,7 @@ class RecipeCardWidget extends ConsumerWidget {
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Container(
                 width: double.infinity,
                 child: Text(

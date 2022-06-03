@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:recipe/view/other/introduction_take_over/introduction_take_over_page.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sign_button/sign_button.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'package:recipe/view/other/introduction_take_over/introduction_take_over_page.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 
 class SignUpPage extends ConsumerWidget {
@@ -34,7 +36,7 @@ class SignUpPage extends ConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0).r,
           child: Container(
             width: double.infinity,
             child: Column(
@@ -46,7 +48,7 @@ class SignUpPage extends ConsumerWidget {
                   textAlign: TextAlign.left,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0).r,
                   child: TextField(
                     onChanged: (email) {
                       emailNotifier.update((state) => email);
@@ -60,7 +62,7 @@ class SignUpPage extends ConsumerWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0).r,
                   child: TextField(
                     onChanged: (password) {
                       passwordNotifier.update((state) => password);
@@ -86,7 +88,7 @@ class SignUpPage extends ConsumerWidget {
                 ),
                 Center(
                   child: SizedBox(
-                    width: 144,
+                    width: 144.w,
                     child: ElevatedButton(
                       onPressed: () async {
                         EasyLoading.show(status: 'loading...');
@@ -107,13 +109,13 @@ class SignUpPage extends ConsumerWidget {
                       },
                       child: Text(
                         '登録',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 20.sp),
                       ),
                     ),
                   ),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 40.h,
                 ),
                 Text(
                   '他のアカウントで登録',
@@ -121,7 +123,7 @@ class SignUpPage extends ConsumerWidget {
                   textAlign: TextAlign.left,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0).r,
                   child: Center(
                     child: SignInButton(
                         buttonType: ButtonType.google,
@@ -148,7 +150,7 @@ class SignUpPage extends ConsumerWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0).r,
                   child: Center(
                     child: SignInButton(
                         buttonType: ButtonType.apple,
@@ -175,7 +177,7 @@ class SignUpPage extends ConsumerWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 40.h,
                 ),
                 TextButton.icon(
                   icon: Icon(Icons.info_outline),

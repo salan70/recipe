@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/state/ingredient_list/ingredient_list_provider.dart';
@@ -41,11 +42,11 @@ class RecipeDetailWidget extends ConsumerWidget {
           return DefaultTextStyle(
             style: Theme.of(context).primaryTextTheme.bodyText1!,
             child: Container(
-              margin: EdgeInsets.only(left: 16, right: 16),
+              margin: EdgeInsets.only(left: 16, right: 16).r,
               width: double.infinity,
               child: Column(
                 children: [
-                  SizedBox(height: 16),
+                  SizedBox(height: 16.h),
                   Container(
                     width: double.infinity,
                     child: Text(
@@ -57,10 +58,10 @@ class RecipeDetailWidget extends ConsumerWidget {
                     ),
                   ),
                   // 画像
-                  SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Container(
                     child: SizedBox(
-                      height: 240,
+                      height: 240.h,
                       width: double.infinity,
                       child: recipe.imageUrl != ''
                           ? Image.network(
@@ -80,7 +81,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                             ),
                     ),
                   ),
-                  SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   // 評価
                   Container(
                     width: double.infinity,
@@ -94,7 +95,8 @@ class RecipeDetailWidget extends ConsumerWidget {
                             direction: Axis.horizontal,
                             allowHalfRating: true,
                             itemCount: 5,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                            itemPadding:
+                                EdgeInsets.symmetric(horizontal: 4.0).r,
                             itemBuilder: (context, _) => Icon(
                               Icons.star_rounded,
                               color: Colors.amber,
@@ -108,7 +110,7 @@ class RecipeDetailWidget extends ConsumerWidget {
 
                   // 材料
                   SizedBox(
-                    height: 16,
+                    height: 16.h,
                   ),
                   Container(
                     width: double.infinity,
@@ -120,7 +122,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                             Text(
                               '材料',
                             ),
-                            SizedBox(width: 4),
+                            SizedBox(width: 4.w),
                             Text(
                               recipe.forHowManyPeople.toString(),
                               overflow: TextOverflow.ellipsis,
@@ -129,7 +131,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                           ]),
                         ),
                         SizedBox(
-                          height: 8,
+                          height: 8.h,
                         ),
                         ListView.builder(
                           itemCount: recipe.ingredientList == null
@@ -152,7 +154,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                                           child: Text(
                                               ingredient!.name.toString())),
                                       SizedBox(
-                                        width: 8,
+                                        width: 8.w,
                                       ),
                                       Expanded(
                                         flex: 2,

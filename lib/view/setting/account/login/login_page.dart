@@ -4,6 +4,7 @@ import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/view/other/introduction_take_over/introduction_take_over_page.dart';
 import 'package:sign_button/sign_button.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/state/auth/auth_provider.dart';
 
@@ -33,7 +34,7 @@ class LoginPage extends ConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0).r,
           child: Container(
             width: double.infinity,
             child: Column(
@@ -45,7 +46,7 @@ class LoginPage extends ConsumerWidget {
                   textAlign: TextAlign.left,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0).r,
                   child: TextField(
                     onChanged: (email) {
                       emailNotifier.update((state) => email);
@@ -59,7 +60,7 @@ class LoginPage extends ConsumerWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0).r,
                   child: TextField(
                     onChanged: (password) {
                       passwordNotifier.update((state) => password);
@@ -83,7 +84,7 @@ class LoginPage extends ConsumerWidget {
                 ),
                 Center(
                   child: SizedBox(
-                    width: 144,
+                    width: 144.w,
                     child: ElevatedButton(
                       onPressed: () async {
                         final yesAction = TextButton(
@@ -106,7 +107,7 @@ class LoginPage extends ConsumerWidget {
                       },
                       child: Text(
                         'ログイン',
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: 20.sp),
                       ),
                     ),
                   ),
@@ -120,7 +121,7 @@ class LoginPage extends ConsumerWidget {
                   textAlign: TextAlign.left,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0).r,
                   child: Center(
                     child: SignInButton(
                         buttonType: ButtonType.google,
@@ -153,7 +154,7 @@ class LoginPage extends ConsumerWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0).r,
                   child: Center(
                     child: SignInButton(
                         buttonType: ButtonType.apple,
@@ -186,7 +187,7 @@ class LoginPage extends ConsumerWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 40.h,
                 ),
                 TextButton.icon(
                   icon: Icon(Icons.info_outline),

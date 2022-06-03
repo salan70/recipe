@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/components/widgets/recipe_detail_widget/recipe_detail_widget.dart';
@@ -97,8 +98,9 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                       color: Theme.of(context).dividerColor,
                     ))),
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                          left: 16, right: 16, bottom: 48),
+                      padding:
+                          const EdgeInsets.only(left: 16, right: 16, bottom: 48)
+                              .r,
                       child: Column(
                         children: [
                           _counterWidget(context, recipe.forHowManyPeople!,
@@ -106,9 +108,9 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                           Align(
                             alignment: Alignment.centerRight,
                             child: Container(
-                              margin: EdgeInsets.only(right: 14),
+                              margin: EdgeInsets.only(right: 14).r,
                               child: SizedBox(
-                                width: 144,
+                                width: 144.w,
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     if (counter == 0) {
@@ -201,7 +203,7 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                                   },
                                   child: Text(
                                     '確定',
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: 20.sp),
                                   ),
                                 ),
                               ),
@@ -221,12 +223,12 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
   Widget _counterWidget(BuildContext context, int fowHowManyPeople, int counter,
       StateController<int> counterNotifier) {
     return SizedBox(
-        height: 40,
+        height: 40.h,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '合計${fowHowManyPeople * counter}人分',
+              '計${fowHowManyPeople * counter}人分',
               style: Theme.of(context).primaryTextTheme.headline6,
             ),
             Row(

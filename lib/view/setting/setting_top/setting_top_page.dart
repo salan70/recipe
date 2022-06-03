@@ -5,6 +5,7 @@ import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
@@ -223,7 +224,7 @@ class SettingTopPage extends ConsumerWidget {
               child: Column(
             children: [
               SizedBox(
-                height: 48,
+                height: 48.h,
               ),
               TextButton(
                 child: Text(
@@ -461,16 +462,16 @@ class ReAuthWithEmailDialog extends ConsumerWidget {
     return AlertDialog(
       title: Text('退会するために再度認証をお願いします。'),
       content: SizedBox(
-        height: 140,
+        height: 140.h,
         child: Column(
           children: [
             Padding(
-                padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
+                padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8).r,
                 child: Row(
                   children: [
                     Icon(Icons.mail_outline_rounded),
                     SizedBox(
-                      width: 8,
+                      width: 8.w,
                     ),
                     Text(
                       email,
@@ -479,7 +480,7 @@ class ReAuthWithEmailDialog extends ConsumerWidget {
                   ],
                 )),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0).r,
               child: TextField(
                 onChanged: (password) {
                   passwordNotifier.update((state) => password);

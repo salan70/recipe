@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_model.dart';
@@ -123,7 +124,7 @@ class EditIngredientUnitPage extends ConsumerWidget {
                           child: Column(
                             children: [
                               Container(
-                                height: 40,
+                                height: 40.h,
                                 margin: EdgeInsetsDirectional.only(
                                   start: 17.25,
                                   end: 15,
@@ -140,18 +141,18 @@ class EditIngredientUnitPage extends ConsumerWidget {
                                       ),
                                       Icon(
                                         Icons.drag_handle_rounded,
-                                        size: 21,
+                                        size: 21.sp,
                                       ),
                                     ]),
                               ),
                               index + 1 < ingredientUnitList.length
                                   ? Divider(
-                                      indent: 15,
-                                      height: 0.3,
+                                      indent: 15.w,
+                                      height: 0.3.h,
                                       color: Theme.of(context).dividerColor,
                                     )
                                   : Container(
-                                      height: 0,
+                                      height: 0.h,
                                     ),
                             ],
                           ),

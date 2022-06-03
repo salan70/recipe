@@ -4,12 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/services.dart';
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/components/widgets/reordable_text_field/procedure_text_field/procedure_text_field_widget.dart';
 import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/state/image_file/image_file_provider.dart';
-import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
+import 'package:recipe/view/other/introduction_ingredient_amount/introduction_ingredient_amount_page.dart';
 
 class EditRecipeWidget extends ConsumerWidget {
   EditRecipeWidget(this.recipe);
@@ -21,11 +22,11 @@ class EditRecipeWidget extends ConsumerWidget {
     final imageFileNotifier = ref.watch(imageFileNotifierProvider.notifier);
 
     return Container(
-      margin: EdgeInsets.only(left: 20.0, right: 20.0),
+      margin: EdgeInsets.only(left: 20.0, right: 20.0).r,
       width: double.infinity,
       child: ListView(
         children: [
-          SizedBox(height: 16),
+          SizedBox(height: 16.h),
           TextField(
             maxLength: 30,
             maxLines: 2,
@@ -37,10 +38,10 @@ class EditRecipeWidget extends ConsumerWidget {
             },
           ),
           // 画像
-          SizedBox(height: 8),
+          SizedBox(height: 8.h),
           GestureDetector(
             child: SizedBox(
-              height: 250,
+              height: 250.h,
               child: imageFile != null
                   ? imageFile.path != ''
                       ? ClipRRect(
@@ -98,7 +99,7 @@ class EditRecipeWidget extends ConsumerWidget {
             },
           ),
           // 評価
-          SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Center(
               child: RatingBar.builder(
             initialRating: recipe.recipeGrade!,
@@ -106,7 +107,7 @@ class EditRecipeWidget extends ConsumerWidget {
             direction: Axis.horizontal,
             allowHalfRating: true,
             itemCount: 5,
-            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+            itemPadding: EdgeInsets.symmetric(horizontal: 4.0).r,
             itemBuilder: (context, _) => Icon(
               Icons.star_rounded,
               color: Colors.amber,
@@ -117,7 +118,7 @@ class EditRecipeWidget extends ConsumerWidget {
           )),
 
           // 材料
-          SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Column(
             children: [
               DefaultTextStyle(
@@ -128,13 +129,14 @@ class EditRecipeWidget extends ConsumerWidget {
                       Row(
                         children: [
                           Text('材料'),
-                          SizedBox(width: 8),
+                          SizedBox(width: 8.w),
                           SizedBox(
-                              width: 24,
+                              width: 24.w,
                               child: TextField(
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(
-                                      left: 2, top: 4, bottom: 4),
+                                          left: 2, top: 4, bottom: 4)
+                                      .r,
                                   isDense: true,
                                 ),
                                 controller: recipe.forHowManyPeople == null
@@ -156,22 +158,29 @@ class EditRecipeWidget extends ConsumerWidget {
                           Text('人分'),
                         ],
                       ),
-                      TextButton(
+                      TextButton.icon(
                           onPressed: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      EditIngredientUnitPage(),
+                                      IntroductionIngredientAmountPage(),
                                   fullscreenDialog: false,
                                 ));
                           },
-                          child: Text(
-                            '単位を編集',
+                          icon: Icon(
+                            Icons.info_outline,
+                            size: 20.sp,
+                            color: Theme.of(context).hintColor,
+                          ),
+                          label: Text(
+                            '数量について',
+                            style:
+                                TextStyle(color: Theme.of(context).hintColor),
                           )),
                     ]),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 8.h),
               Container(
                 child: IngredientTextFieldWidget(
                   recipe: recipe,
@@ -181,7 +190,7 @@ class EditRecipeWidget extends ConsumerWidget {
           ),
 
           // 手順
-          SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Column(
             children: [
               Container(
@@ -191,12 +200,12 @@ class EditRecipeWidget extends ConsumerWidget {
                   style: Theme.of(context).primaryTextTheme.subtitle2,
                 ),
               ),
-              SizedBox(height: 8),
+              SizedBox(height: 8.h),
               ProcedureTextFieldWidget(),
             ],
           ),
           // メモ
-          SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Container(
             child: Column(
               children: [
@@ -207,7 +216,7 @@ class EditRecipeWidget extends ConsumerWidget {
                     style: Theme.of(context).primaryTextTheme.subtitle2,
                   ),
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 TextField(
                   controller: TextEditingController(text: recipe.recipeMemo),
                   maxLength: 500,
@@ -216,7 +225,7 @@ class EditRecipeWidget extends ConsumerWidget {
                     recipe.recipeMemo = value;
                   },
                 ),
-                SizedBox(height: 48),
+                SizedBox(height: 48.h),
               ],
             ),
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/state/procedure_list/procedure_list_provider.dart';
@@ -51,7 +52,7 @@ class ProcedureTextFieldWidget extends ConsumerWidget {
                           flex: 1,
                           child: Text(
                             '${index + 1}',
-                            style: TextStyle(fontSize: 16),
+                            style: TextStyle(fontSize: 16.sp),
                           )),
                       Expanded(
                           flex: 15,
@@ -64,7 +65,8 @@ class ProcedureTextFieldWidget extends ConsumerWidget {
                             maxLines: null,
                             decoration: InputDecoration(
                               contentPadding:
-                                  EdgeInsets.only(left: 4, top: 16, bottom: 4),
+                                  EdgeInsets.only(left: 4, top: 16, bottom: 4)
+                                      .r,
                               isDense: true,
                             ),
                             onChanged: (String value) {

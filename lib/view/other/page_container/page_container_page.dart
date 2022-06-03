@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hawk_fab_menu/hawk_fab_menu.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/view/cart/cart_list_page/cart_list_page.dart';
@@ -72,7 +73,6 @@ class PageContainerPage extends ConsumerWidget {
             labelBackgroundColor: Theme.of(context).bottomAppBarColor,
             labelColor: Theme.of(context).primaryColorDark,
             ontap: () {
-              print(2);
               Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -94,7 +94,7 @@ class PageContainerPage extends ConsumerWidget {
           ? FloatingActionButton(
               child: Icon(
                 Icons.add_rounded,
-                size: 32.0,
+                size: 32.0.sp,
               ),
               onPressed: () {
                 if (selectedPage == 0) {

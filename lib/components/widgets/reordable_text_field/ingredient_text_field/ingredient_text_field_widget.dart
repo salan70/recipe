@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:recipe/view/other/introduction_ingredient_amount/introduction_ingredient_amount_page.dart';
+import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
 import 'package:uuid/uuid.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/state/other_provider/providers.dart';
@@ -64,7 +64,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                       Row(
                         children: [
                           Expanded(
-                              flex: 7,
+                              flex: 6,
                               child: TextField(
                                 controller: nameIsChanged == false
                                     ? TextEditingController(
@@ -83,7 +83,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                                 },
                               )),
                           SizedBox(
-                            width: 8,
+                            width: 8.w,
                           ),
                           Expanded(
                               flex: 2,
@@ -135,7 +135,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                                             context: context,
                                             builder: (context) {
                                               return Container(
-                                                height: 250,
+                                                height: 250.h,
                                                 color: Theme.of(context)
                                                     .backgroundColor,
                                                 child: Column(
@@ -212,7 +212,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                         ],
                       ),
                       SizedBox(
-                        height: 8,
+                        height: 8.h,
                       )
                     ],
                   ),
@@ -258,23 +258,17 @@ class IngredientTextFieldWidget extends ConsumerWidget {
             ),
             Expanded(
               flex: 1,
-              child: TextButton.icon(
+              child: TextButton(
                   onPressed: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              IntroductionIngredientAmountPage(),
+                          builder: (context) => EditIngredientUnitPage(),
                           fullscreenDialog: false,
                         ));
                   },
-                  icon: Icon(
-                    Icons.info_outline,
-                    size: 20,
-                    color: Theme.of(context).hintColor,
-                  ),
-                  label: Text(
-                    '数量について',
+                  child: Text(
+                    '単位を編集',
                     style: TextStyle(color: Theme.of(context).hintColor),
                   )),
             ),

@@ -6,6 +6,7 @@ import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:badges/badges.dart';
 import 'package:recipe/view/recipe/add_cart_recipe_detail/add_cart_recipe_detail_page.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/state/other_provider/providers.dart';
 import 'add_cart_recipe_list_model.dart';
@@ -49,11 +50,12 @@ class AddCartRecipeListPage extends ConsumerWidget {
         children: [
           SlidingUpPanel(
             controller: pageController,
-            maxHeight: MediaQuery.of(context).size.height * 0.6,
-            minHeight: 20,
+            maxHeight: MediaQuery.of(context).size.height * 0.6.h,
+            minHeight: 20.h,
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(18.0),
-                topRight: Radius.circular(18.0)),
+                    topLeft: Radius.circular(18.0),
+                    topRight: Radius.circular(18.0))
+                .r,
             body: ListView(
               children: [
                 recipes.when(
@@ -61,7 +63,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                     loading: () => const CircularProgressIndicator(),
                     data: (recipes) {
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(8.0).r,
                         child: GridView.builder(
                             shrinkWrap: true,
                             physics: NeverScrollableScrollPhysics(),
@@ -94,7 +96,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                       );
                     }),
                 SizedBox(
-                  height: 240,
+                  height: 240.h,
                 )
               ],
             ),
@@ -105,16 +107,16 @@ class AddCartRecipeListPage extends ConsumerWidget {
       ),
       bottomNavigationBar: BottomAppBar(
         child: Container(
-          margin: EdgeInsets.only(left: 64, right: 24),
-          height: 64.0,
+          margin: EdgeInsets.only(left: 64, right: 24).r,
+          height: 64.0.h,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                height: 64,
+                height: 64.h,
                 child: Container(
                     child: Badge(
-                  padding: EdgeInsets.all(6),
+                  padding: EdgeInsets.all(6).r,
                   badgeContent: SizedBox(
                       child: recipeForInCartListStateNotifier
                                   .calculateCountSum() >=
@@ -147,14 +149,14 @@ class AddCartRecipeListPage extends ConsumerWidget {
                     },
                     icon: Icon(
                       Icons.shopping_cart_rounded,
-                      size: 32,
+                      size: 32.sp,
                     ),
                   ),
                   position: BadgePosition.topEnd(top: 5, end: -5),
                 )),
               ),
               SizedBox(
-                width: 144,
+                width: 144.w,
                 child: ElevatedButton(
                   onPressed: () async {
                     if (recipeForInCartListState.isEmpty != true) {
@@ -240,7 +242,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                   },
                   child: Text(
                     '確定',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(fontSize: 20.sp),
                   ),
                 ),
               )
@@ -309,7 +311,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                       children: [
                         Text(
                           'カートに入っているレシピ',
-                          style: Theme.of(context).primaryTextTheme.headline5,
+                          style: Theme.of(context).primaryTextTheme.headline6,
                         ),
                         TextButton.icon(
                           icon: Icon(
@@ -408,7 +410,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                   Row(
                                     children: [
                                       SizedBox(
-                                        width: 160,
+                                        width: 160.w,
                                         child: Text(
                                           recipeForInCartListState[index]
                                               .recipeName
@@ -426,7 +428,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                     children: [
                                       Container(
                                         child: Text(
-                                          '合計${recipeForInCartListState[index].forHowManyPeople! * recipeForInCartListState[index].countInCart!}人分',
+                                          '計${recipeForInCartListState[index].forHowManyPeople! * recipeForInCartListState[index].countInCart!}人分',
                                           style: Theme.of(context)
                                               .primaryTextTheme
                                               .subtitle2,

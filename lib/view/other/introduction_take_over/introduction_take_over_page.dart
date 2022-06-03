@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class IntroductionTakeOverPage extends ConsumerWidget {
   const IntroductionTakeOverPage({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class IntroductionTakeOverPage extends ConsumerWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0).r,
           child: Container(
             width: double.infinity,
             child: Column(
@@ -22,7 +23,7 @@ class IntroductionTakeOverPage extends ConsumerWidget {
                   'ログインによって引き継がれる/引き継がれない要素は以下のとおりです。',
                 ),
                 SizedBox(
-                  height: 24,
+                  height: 24.h,
                 ),
                 // 引き継がれる要素
                 Column(
@@ -33,13 +34,13 @@ class IntroductionTakeOverPage extends ConsumerWidget {
                       style: Theme.of(context).primaryTextTheme.subtitle1,
                     ),
                     SizedBox(
-                      height: 8,
+                      height: 8.h,
                     ),
                     Text(
                       '・登録しているレシピの情報（名前、画像、材料、メモ etc...）',
                     ),
                     SizedBox(
-                      height: 8,
+                      height: 8.h,
                     ),
                     Text(
                       '・カートに入っているレシピの数',
@@ -47,7 +48,7 @@ class IntroductionTakeOverPage extends ConsumerWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 40,
+                  height: 40.h,
                 ),
                 // 引き継がれない要素
                 Column(
@@ -59,31 +60,31 @@ class IntroductionTakeOverPage extends ConsumerWidget {
                       textAlign: TextAlign.left,
                     ),
                     SizedBox(
-                      height: 8,
+                      height: 8.h,
                     ),
                     Text(
                       '・カートの材料のチェック状況\n※全てのチェックが外されます。',
                     ),
                     SizedBox(
-                      height: 8,
+                      height: 8.h,
                     ),
                     Text(
                       '・カートの材料の「買わないリスト」への移動\n※全ての材料が「買うリスト」に入っている状態になります。',
                     ),
                     SizedBox(
-                      height: 8,
+                      height: 8.h,
                     ),
                     Text(
                       '・カスタマイズした材料の単位\n※追加、削除、順番入れ替え、全てが初期化されます。',
                     ),
                     SizedBox(
-                      height: 8,
+                      height: 8.h,
                     ),
                     Text(
                       '・カスタマイズしたテーマモード\n※「デバイスに合わせる」になります。',
                     ),
                     SizedBox(
-                      height: 8,
+                      height: 8.h,
                     ),
                     Text(
                       '・カスタマイズしたテーマカラー\n※「green」になります。',

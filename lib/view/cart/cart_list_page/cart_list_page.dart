@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/domain/cart.dart';
@@ -49,7 +50,7 @@ class CartListPage extends ConsumerWidget {
           children: [
             /// 材料タブ
             Padding(
-              padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
+              padding: const EdgeInsets.only(top: 8, left: 8, right: 8).r,
               child: ValueListenableBuilder(
                   valueListenable: CartItemBoxes.getCartItems().listenable(),
                   builder: (context, box, widget) {
@@ -86,7 +87,8 @@ class CartListPage extends ConsumerWidget {
                               children: [
                                 Padding(
                                   padding:
-                                      const EdgeInsets.only(left: 8, right: 8),
+                                      const EdgeInsets.only(left: 8, right: 8)
+                                          .r,
                                   child: Container(
                                     width: double.infinity,
                                     child: Text(
@@ -105,7 +107,8 @@ class CartListPage extends ConsumerWidget {
                                 ),
                                 Padding(
                                   padding:
-                                      const EdgeInsets.only(left: 8, right: 8),
+                                      const EdgeInsets.only(left: 8, right: 8)
+                                          .r,
                                   child: Container(
                                     child: Row(
                                       mainAxisAlignment:
@@ -139,11 +142,12 @@ class CartListPage extends ConsumerWidget {
                                     ? _ingredientListCardWidget(
                                         context, 'notBuyList', notBuyList)
                                     : SizedBox(
-                                        height:
-                                            (72 * notBuyList.length).toDouble(),
+                                        height: (72 * notBuyList.length)
+                                            .toDouble()
+                                            .h,
                                       ),
                                 SizedBox(
-                                  height: 100,
+                                  height: 100.h,
                                 ),
                               ],
                             ),
@@ -168,7 +172,9 @@ class CartListPage extends ConsumerWidget {
                           style: Theme.of(context).primaryTextTheme.subtitle1,
                         ),
                         subtitle: Text(
-                            '${_recipe.countInCart! * _recipe.forHowManyPeople!}人分'),
+                          '${_recipe.countInCart! * _recipe.forHowManyPeople!}人分',
+                          style: Theme.of(context).primaryTextTheme.caption,
+                        ),
                         trailing: IconButton(
                           icon: Icon(Icons.chevron_right_rounded),
                           onPressed: () {
@@ -234,7 +240,7 @@ class CartListPage extends ConsumerWidget {
               subtitle: Text(
                 '${ingredient.ingredientInCart.ingredientTotalAmount}${ingredient.ingredientInCart.ingredientUnit}',
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
+                style: Theme.of(context).primaryTextTheme.caption!.copyWith(
                     decoration: cartListModel.getCartItem(id).isBought
                         ? TextDecoration.lineThrough
                         : TextDecoration.none),
@@ -271,7 +277,7 @@ class CartListPage extends ConsumerWidget {
       contentPadding: EdgeInsets.zero,
       content: Container(
         width: double.maxFinite,
-        height: 200,
+        height: 200.h,
         child: ListView.builder(
           itemCount: ingredient.recipeForIngredientInCartList.length,
           itemBuilder: (context, recipeIndex) {
@@ -282,17 +288,10 @@ class CartListPage extends ConsumerWidget {
                 '${recipe.recipeName}',
                 style: Theme.of(context).primaryTextTheme.subtitle1,
               ),
-              subtitle: Row(
-                children: [
-                  Text('${recipe.forHowManyPeople * recipe.countInCart}人分'),
-                  SizedBox(
-                    width: 16,
-                  ),
-                  Text(
-                    '${recipe.ingredientAmount}${ingredient.ingredientInCart.ingredientUnit}',
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
+              subtitle: Text(
+                '${recipe.forHowManyPeople * recipe.countInCart}人分  ${recipe.ingredientAmount}${ingredient.ingredientInCart.ingredientUnit}',
+                style: Theme.of(context).primaryTextTheme.caption,
+                overflow: TextOverflow.ellipsis,
               ),
               trailing: IconButton(
                 icon: Icon(Icons.chevron_right_rounded),

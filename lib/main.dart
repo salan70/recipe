@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/domain/type_adapter/customizations/customizations.dart';
@@ -54,126 +55,154 @@ class MyApp extends ConsumerWidget {
               FlexThemeData.light(scheme: usedScheme).primaryColorDark;
           Color usedSchemeBackGroundColorLight =
               FlexThemeData.light(scheme: usedScheme).backgroundColor;
+          Color usedSchemeHintColorLight =
+              FlexThemeData.light(scheme: usedScheme).hintColor;
 
           Color usedSchemePrimaryColorDark =
               FlexThemeData.dark(scheme: usedScheme).primaryColorDark;
           Color usedSchemeBackGroundColorDark =
               FlexThemeData.dark(scheme: usedScheme).backgroundColor;
+          Color usedSchemeHintColorDark =
+              FlexThemeData.dark(scheme: usedScheme).hintColor;
 
-          return MaterialApp(
-            themeMode: usedThemeMode,
-            title: 'Recipe App',
-            theme: FlexThemeData.light(
-              scheme: usedScheme,
-              background: usedSchemeBackGroundColorLight,
-              bottomAppBarElevation: 10,
-            ).copyWith(
-              /// textField
-              inputDecorationTheme: InputDecorationTheme(
-                contentPadding: EdgeInsets.only(left: 4, bottom: 4),
-                isDense: true,
-              ),
+          return ScreenUtilInit(
+              designSize: const Size(414, 896),
+              builder: (context, child) {
+                return MaterialApp(
+                  themeMode: usedThemeMode,
+                  title: 'Recipe App',
+                  theme: FlexThemeData.light(
+                    scheme: usedScheme,
+                    background: usedSchemeBackGroundColorLight,
+                    bottomAppBarElevation: 10,
+                  ).copyWith(
+                    /// textField
+                    inputDecorationTheme: InputDecorationTheme(
+                      contentPadding: EdgeInsets.only(left: 4, bottom: 4).r,
+                      isDense: true,
+                    ),
 
-              /// text
-              primaryTextTheme: TextTheme(
-                headline5: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                headline6: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                subtitle1: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                subtitle2: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                bodyText1: TextStyle(
-                  color: Colors.black87,
-                ),
-              ),
+                    /// text
+                    primaryTextTheme: TextTheme(
+                      headline5: TextStyle(
+                        fontSize: 24.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      headline6: TextStyle(
+                        fontSize: 20.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      subtitle1: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      subtitle2: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      bodyText1: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.black87,
+                      ),
+                      caption: TextStyle(
+                        fontSize: 12.sp,
+                        color: usedSchemeHintColorLight,
+                      ),
+                    ),
 
-              /// appBar
-              appBarTheme: AppBarTheme(
-                elevation: 1,
-                iconTheme: IconThemeData(color: usedSchemePrimaryColorLight),
-                backgroundColor: Colors.white,
-                titleTextStyle: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: usedSchemePrimaryColorLight),
-              ),
+                    /// appBar
+                    appBarTheme: AppBarTheme(
+                      elevation: 1,
+                      iconTheme:
+                          IconThemeData(color: usedSchemePrimaryColorLight),
+                      backgroundColor: Colors.white,
+                      titleTextStyle: TextStyle(
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.bold,
+                          color: usedSchemePrimaryColorLight),
+                    ),
 
-              /// card
-              cardTheme: CardTheme(
-                margin: EdgeInsets.all(8),
-                elevation: 3,
-              ),
-            ),
-            darkTheme: FlexThemeData.dark(
-              scheme: usedScheme,
-              background: usedSchemeBackGroundColorDark,
-              bottomAppBarElevation: 10,
-            ).copyWith(
-              /// textField
-              inputDecorationTheme: InputDecorationTheme(
-                contentPadding: EdgeInsets.only(left: 4, bottom: 4),
-                isDense: true,
-              ),
+                    /// card
+                    cardTheme: CardTheme(
+                      margin: EdgeInsets.all(8).r,
+                      elevation: 3,
+                    ),
+                  ),
+                  darkTheme: FlexThemeData.dark(
+                    scheme: usedScheme,
+                    background: usedSchemeBackGroundColorDark,
+                    bottomAppBarElevation: 10,
+                  ).copyWith(
+                    /// textField
+                    inputDecorationTheme: InputDecorationTheme(
+                      contentPadding: EdgeInsets.only(left: 4, bottom: 4).r,
+                      isDense: true,
+                    ),
 
-              /// text
-              primaryTextTheme: TextTheme(
-                headline5: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-                headline6: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-                subtitle1: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-                subtitle2: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-                bodyText1: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
+                    /// text
+                    primaryTextTheme: TextTheme(
+                      headline5: TextStyle(
+                        fontSize: 24.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      headline6: TextStyle(
+                        fontSize: 20.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      subtitle1: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      subtitle2: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      bodyText1: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.white,
+                      ),
+                      caption: TextStyle(
+                        fontSize: 12.sp,
+                        color: usedSchemeHintColorDark,
+                      ),
+                    ),
 
-              /// appBar
-              appBarTheme: AppBarTheme(
-                elevation: 1,
-                iconTheme: IconThemeData(color: usedSchemePrimaryColorDark),
-                backgroundColor: Colors.black,
-                titleTextStyle: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: usedSchemePrimaryColorDark),
-              ),
+                    /// appBar
+                    appBarTheme: AppBarTheme(
+                      elevation: 1,
+                      iconTheme:
+                          IconThemeData(color: usedSchemePrimaryColorDark),
+                      backgroundColor: Colors.black,
+                      titleTextStyle: TextStyle(
+                          fontSize: 22.sp,
+                          fontWeight: FontWeight.bold,
+                          color: usedSchemePrimaryColorDark),
+                    ),
 
-              /// card
-              cardTheme: CardTheme(
-                margin: EdgeInsets.all(8),
-                elevation: 3,
-              ),
-            ),
-            onGenerateRoute: (settings) {
-              return MaterialWithModalsPageRoute(
-                settings: settings,
-                builder: (context) => PageContainerPage(),
-              );
-            },
-            debugShowCheckedModeBanner: false,
-            builder: EasyLoading.init(),
-          );
+                    /// card
+                    cardTheme: CardTheme(
+                      margin: EdgeInsets.all(8).r,
+                      elevation: 3,
+                    ),
+                  ),
+                  onGenerateRoute: (settings) {
+                    return MaterialWithModalsPageRoute(
+                      settings: settings,
+                      builder: (context) => PageContainerPage(),
+                    );
+                  },
+                  debugShowCheckedModeBanner: false,
+                  builder: EasyLoading.init(),
+                );
+              });
         });
   }
 }
