@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:recipe/components/widgets/reordable_text_field/procedure_text_field/procedure_text_field_widget.dart';
 import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
@@ -80,14 +82,63 @@ class EditRecipeWidget extends ConsumerWidget {
                   BottomSheetAction(
                       title: const Text('アルバムから選択'),
                       onPressed: () async {
-                        await imageFileNotifier.pickImage(ImageSource.gallery);
-                        Navigator.pop(context);
+                        if (await Permission.photos.status.isGranted ||
+                            await Permission.photos.request().isGranted) {
+                          await imageFileNotifier
+                              .pickImage(ImageSource.gallery);
+                          Navigator.pop(context);
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                title: Text('写真へのアクセスが許可されていません'),
+                                content:
+                                    Text('端末内の画像をレシピに保存するためには、アクセスの許可が必要です。'),
+                                actions: <Widget>[
+                                  CupertinoDialogAction(
+                                    child: Text('キャンセル'),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                  CupertinoDialogAction(
+                                    child: Text('設定へ'),
+                                    onPressed: () => openAppSettings(),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
                       }),
                   BottomSheetAction(
                       title: const Text('カメラで撮影'),
                       onPressed: () async {
-                        await imageFileNotifier.pickImage(ImageSource.camera);
-                        Navigator.pop(context);
+                        if (await Permission.camera.status.isGranted ||
+                            await Permission.camera.request().isGranted) {
+                          await imageFileNotifier.pickImage(ImageSource.camera);
+                          Navigator.pop(context);
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return CupertinoAlertDialog(
+                                title: Text('カメラへのアクセスが許可されていません'),
+                                content: Text(
+                                    'カメラで撮影した画像をレシピに保存するためには、アクセスの許可が必要です。'),
+                                actions: <Widget>[
+                                  CupertinoDialogAction(
+                                    child: Text('キャンセル'),
+                                    onPressed: () => Navigator.pop(context),
+                                  ),
+                                  CupertinoDialogAction(
+                                    child: Text('設定へ'),
+                                    onPressed: () => openAppSettings(),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }
                       }),
                 ],
                 cancelAction: CancelAction(
