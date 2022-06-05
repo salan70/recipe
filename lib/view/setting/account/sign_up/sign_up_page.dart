@@ -162,7 +162,6 @@ class SignUpPage extends ConsumerWidget {
                         ),
                         elevation: 1,
                         onPressed: () async {
-                          print('apple');
                           EasyLoading.show(status: 'loading...');
                           final errorText =
                               await userNotifier.signUpWithApple();
