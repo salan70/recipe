@@ -35,7 +35,16 @@ task copySources(type: Copy) {
     from "src/${dartEnvironmentVariables.FLAVOR}/res"
     into 'src/main/res'
 }
+
+task selectGoogleServicesJson(type: Copy) {
+    from "src/${dartEnvironmentVariables.FLAVOR}/google-services.json"
+    into './'
+}
+
 tasks.whenTaskAdded { task ->
+    if (task.name == 'processDebugGoogleServices' || task.name == 'processReleaseGoogleServices') {
+        task.dependsOn selectGoogleServicesJson
+    }
     task.dependsOn copySources
 }
 
@@ -51,7 +60,7 @@ android {
 // ...
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'

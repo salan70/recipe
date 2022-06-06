@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>646270885310-g923nn1mfqic33j7u69ol4f4jkj3ra9c.apps.googleusercontent.com</string>
+	<string>601576837842-pjs8k6t7mqfauphq7qph5gf6bd3l4ipi.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.646270885310-g923nn1mfqic33j7u69ol4f4jkj3ra9c</string>
+	<string>com.googleusercontent.apps.601576837842-pjs8k6t7mqfauphq7qph5gf6bd3l4ipi</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAXRUAb1rTTT1TYd6aDv48OaEEmUxas434</string>
+	<string>AIzaSyAIAgQbocOivzudoIAB9rst1TfS6QcICJY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>646270885310</string>
+	<string>601576837842</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.toda.recipe</string>
+	<string>com.toda.recipe.stg</string>
 	<key>PROJECT_ID</key>
-	<string>recipe-app-74426</string>
+	<string>myrecipe-stg</string>
 	<key>STORAGE_BUCKET</key>
-	<string>recipe-app-74426.appspot.com</string>
+	<string>myrecipe-stg.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +29,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:646270885310:ios:c2a77aa9224f49f7fa6def</string>
+	<string>1:601576837842:ios:0b653ea244d6dfffc6530b</string>
 </dict>
 </plist>

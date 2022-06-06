@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "601576837842",
+    "project_id": "myrecipe-stg",
+    "storage_bucket": "myrecipe-stg.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:601576837842:android:515f8d3cad7dd6ccc6530b",
+        "android_client_info": {
+          "package_name": "com.toda.recipe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "601576837842-i30a45ahbcsmnre01s7rr4tlb4qmnoki.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmmgp1jVOBYsvWfdDJMHKAZkdHIeR56r8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "601576837842-i30a45ahbcsmnre01s7rr4tlb4qmnoki.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "601576837842-p3eu078lt0tg8a64fhe4pq203qabu9vm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.toda.recipe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
