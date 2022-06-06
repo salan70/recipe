@@ -3,33 +3,33 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/state/auth/auth_provider.dart';
 
-class SignUpModel extends ChangeNotifier {
-  Future<String?> signUpWithEmail(
+class LoginModel extends ChangeNotifier {
+  Future<String?> loginWithEmail(
       WidgetRef ref, String email, String password) async {
     final userNotifier = ref.watch(userStateNotifierProvider.notifier);
 
     try {
-      return await userNotifier.signUpWithEmail(email, password);
+      return await userNotifier.loginWithEmail(email, password);
     } catch (e) {
       return e.toString();
     }
   }
 
-  Future<String?> signUpWithGoogle(WidgetRef ref) async {
+  Future<String?> loginWithGoogle(WidgetRef ref) async {
     final userNotifier = ref.watch(userStateNotifierProvider.notifier);
 
     try {
-      return await userNotifier.signUpWithGoogle();
+      return await userNotifier.loginWithGoogle();
     } catch (e) {
       return e.toString();
     }
   }
 
-  Future<String?> signUpWithApple(WidgetRef ref) async {
+  Future<String?> loginWithApple(WidgetRef ref) async {
     final userNotifier = ref.watch(userStateNotifierProvider.notifier);
 
     try {
-      return await userNotifier.signUpWithApple();
+      return await userNotifier.loginWithApple();
     } catch (e) {
       return e.toString();
     }

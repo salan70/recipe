@@ -3,6 +3,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/view/other/introduction_take_over/introduction_take_over_page.dart';
+import 'package:recipe/view/setting/account/login/login_model.dart';
 import 'package:sign_button/sign_button.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -13,7 +14,7 @@ class LoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userNotifier = ref.watch(userStateNotifierProvider.notifier);
+    final LoginModel loginModel = LoginModel();
 
     final passwordIsObscure = ref.watch(passwordIsObscureProvider);
     final passwordIsObscureNotifier =
@@ -92,8 +93,8 @@ class LoginPage extends ConsumerWidget {
                           onPressed: () async {
                             Navigator.pop(context);
                             EasyLoading.show(status: 'loading...');
-                            String? errorText = await userNotifier
-                                .loginWithEmail(email, password);
+                            String? errorText = await loginModel.loginWithEmail(
+                                ref, email, password);
                             if (errorText == null) {
                               Navigator.pop(context);
                               EasyLoading.showSuccess('ログインしました');
@@ -139,7 +140,7 @@ class LoginPage extends ConsumerWidget {
                               Navigator.pop(context);
                               EasyLoading.show(status: 'loading...');
                               final errorText =
-                                  await userNotifier.loginWithGoogle();
+                                  await loginModel.loginWithGoogle(ref);
                               if (errorText == null) {
                                 Navigator.pop(context);
                                 EasyLoading.showSuccess('ログインしました');
@@ -172,7 +173,7 @@ class LoginPage extends ConsumerWidget {
                               Navigator.pop(context);
                               EasyLoading.show(status: 'loading...');
                               final errorText =
-                                  await userNotifier.loginWithApple();
+                                  await loginModel.loginWithApple(ref);
                               if (errorText == null) {
                                 Navigator.pop(context);
                                 EasyLoading.showSuccess('ログインしました');

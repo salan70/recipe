@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:recipe/view/setting/account/sign_up/sign_up_model.dart';
 import 'package:sign_button/sign_button.dart';
 import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +14,7 @@ class SignUpPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userNotifier = ref.watch(userStateNotifierProvider.notifier);
+    final SignUpModel signUpModel = SignUpModel();
 
     final passwordIsObscure = ref.watch(passwordIsObscureProvider);
     final passwordIsObscureNotifier =
@@ -97,8 +98,8 @@ class SignUpPage extends ConsumerWidget {
                           _showLoginErrorAlertDialog(context, '8文字以上で入力してください');
                         }
 
-                        final errorText =
-                            await userNotifier.signUpWithEmail(email, password);
+                        final errorText = await signUpModel.signUpWithEmail(
+                            ref, email, password);
                         if (errorText == null) {
                           Navigator.pop(context);
                           EasyLoading.showSuccess('登録しました');
@@ -135,10 +136,9 @@ class SignUpPage extends ConsumerWidget {
                         ),
                         elevation: 1,
                         onPressed: () async {
-                          print('google');
                           EasyLoading.show(status: 'loading...');
                           final errorText =
-                              await userNotifier.signUpWithGoogle();
+                              await signUpModel.signUpWithGoogle(ref);
                           if (errorText == null) {
                             Navigator.pop(context);
                             EasyLoading.showSuccess('登録しました');
@@ -164,7 +164,7 @@ class SignUpPage extends ConsumerWidget {
                         onPressed: () async {
                           EasyLoading.show(status: 'loading...');
                           final errorText =
-                              await userNotifier.signUpWithApple();
+                              await signUpModel.signUpWithApple(ref);
                           if (errorText == null) {
                             Navigator.pop(context);
                             EasyLoading.showSuccess('登録しました');

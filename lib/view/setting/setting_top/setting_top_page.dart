@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:recipe/view/setting/privacy_policy/privacy_policy_page.dart';
+import 'package:recipe/view/setting/setting_top/setting_top_model.dart';
 import 'package:settings_ui/settings_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:in_app_review/in_app_review.dart';
@@ -22,6 +23,8 @@ class SettingTopPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userStateNotifierProvider);
     final userNotifier = ref.watch(userStateNotifierProvider.notifier);
+
+    final SettingTopModel settingTopModel = SettingTopModel();
 
     return Scaffold(
       appBar: AppBar(
@@ -301,7 +304,7 @@ class SettingTopPage extends ConsumerWidget {
                               else if (providerId == 'google.com') {
                                 EasyLoading.show(status: 'loading...');
                                 final reAuth =
-                                    await userNotifier.reAuthWithGoogle(ref);
+                                    await settingTopModel.reAuthWithGoogle(ref);
                                 final loginErrorText = reAuth.errorText;
 
                                 if (loginErrorText == null) {
@@ -359,7 +362,7 @@ class SettingTopPage extends ConsumerWidget {
                               else if (providerId == 'apple.com') {
                                 EasyLoading.show(status: 'loading...');
                                 final reAuth =
-                                    await userNotifier.reAuthWithApple(ref);
+                                    await settingTopModel.reAuthWithApple(ref);
                                 final loginErrorText = reAuth.errorText;
 
                                 if (loginErrorText == null) {

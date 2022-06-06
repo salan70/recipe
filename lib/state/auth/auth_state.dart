@@ -122,6 +122,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
     await cartItemRepository.deleteAllCartItem();
     await ingredientUnitRepository.deleteIngredientUnitList();
     await selectedSchemeColorRepository.deleteSelectedFlexScheme();
+    await selectedSchemeColorRepository.deleteSelectedThemeModeIndex();
   }
 
   /// Email
@@ -180,7 +181,6 @@ class AuthStateNotifier extends StateNotifier<User?> {
         await currentUser.linkWithCredential(credential);
         state = _firebaseAuth.currentUser;
         await _userRepository.addUserInfo(state!);
-        print('a');
         return null;
       }
       // このelseは行かない想定
@@ -210,7 +210,6 @@ class AuthStateNotifier extends StateNotifier<User?> {
 
       // 初回ログインの場合、userInfoをFireStoreに保存
       if (loginUser.additionalUserInfo!.isNewUser) {
-        print('google first login');
         await _userRepository.addUserInfo(state!);
       }
 
