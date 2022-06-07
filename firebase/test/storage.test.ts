@@ -110,7 +110,7 @@ describe('【create】', () => {
       })
       describe('NG: 20MiB', () => {
         const ngSizeFile = () => fs.readFileSync('./20MiB.img')
-        test('OK', async () => {
+        test('NG', async () => {
           await assertFails(recipeImageRef(
             testEnv.authenticatedContext(userId).storage(), userId, recipeId, 'test.jpeg')
             .put(ngSizeFile(), { contentType })
