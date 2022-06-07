@@ -51,6 +51,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                     motion: ScrollMotion(),
                     children: [
                       SlidableAction(
+                          borderRadius: BorderRadius.circular(10),
                           label: '削除',
                           backgroundColor: Theme.of(context).errorColor,
                           onPressed: (context) {
@@ -96,6 +97,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                                     : null,
                                 keyboardType: TextInputType.datetime,
                                 maxLength: 5,
+                                maxLines: 2,
                                 decoration: InputDecoration(
                                   hintText: '数量',
                                   counterText: '',
