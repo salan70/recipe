@@ -128,7 +128,6 @@ class SignUpPage extends ConsumerWidget {
                   child: Center(
                     child: SignInButton(
                         buttonType: ButtonType.google,
-                        btnText: 'Google',
                         buttonSize: ButtonSize.large,
                         width: double.infinity,
                         shape: RoundedRectangleBorder(
@@ -154,7 +153,6 @@ class SignUpPage extends ConsumerWidget {
                   child: Center(
                     child: SignInButton(
                         buttonType: ButtonType.apple,
-                        btnText: 'Apple',
                         buttonSize: ButtonSize.large,
                         width: double.infinity,
                         shape: RoundedRectangleBorder(

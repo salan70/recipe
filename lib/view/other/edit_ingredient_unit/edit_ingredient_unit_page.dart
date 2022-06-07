@@ -102,6 +102,7 @@ class EditIngredientUnitPage extends ConsumerWidget {
                             motion: ScrollMotion(),
                             children: [
                               SlidableAction(
+                                  borderRadius: BorderRadius.circular(10),
                                   label: '削除',
                                   backgroundColor: Theme.of(context).errorColor,
                                   onPressed: (context) async {
