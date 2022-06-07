@@ -218,6 +218,7 @@ class CartListPage extends ConsumerWidget {
               motion: ScrollMotion(),
               children: [
                 SlidableAction(
+                  borderRadius: BorderRadius.circular(10),
                   label: _slidableActionText,
                   backgroundColor: Theme.of(context).primaryColor,
                   onPressed: (context) {
