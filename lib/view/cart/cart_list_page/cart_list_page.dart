@@ -89,15 +89,39 @@ class CartListPage extends ConsumerWidget {
                                   padding:
                                       const EdgeInsets.only(left: 8, right: 8)
                                           .r,
-                                  child: Container(
-                                    width: double.infinity,
-                                    child: Text(
-                                      '買う (${buyList.length})',
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .subtitle1,
-                                      textAlign: TextAlign.left,
-                                    ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '買う (${buyList.length})',
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .subtitle1,
+                                        textAlign: TextAlign.left,
+                                      ),
+                                      TextButton.icon(
+                                          onPressed: () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (_) {
+                                                return _introductionOfMoveListDialog(
+                                                    context);
+                                              },
+                                            );
+                                          },
+                                          icon: Icon(
+                                            Icons.help_outline_rounded,
+                                            color: Theme.of(context).hintColor,
+                                            size: 20.sp,
+                                          ),
+                                          label: Text(
+                                            '移動のやり方',
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .hintColor),
+                                          ))
+                                    ],
                                   ),
                                 ),
                                 _ingredientListCardWidget(
@@ -308,6 +332,37 @@ class CartListPage extends ConsumerWidget {
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+
+  Widget _introductionOfMoveListDialog(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        '移動のやり方',
+        style: Theme.of(context).primaryTextTheme.headline5,
+      ),
+      contentPadding: EdgeInsets.zero,
+      content: Container(
+        width: double.maxFinite,
+        height: 400.h,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 16, right: 16, top: 8).r,
+          child: Column(
+            children: [
+              Text('移動したい材料を右へスクロールし、「買わない(買う)リストへ」をタップすると移動することができます'),
+              SizedBox(
+                height: 16.h,
+              ),
+              Image(
+                width: double.infinity,
+                image: AssetImage(
+                    'lib/assets/introductions/intro_move_cart_list.gif'),
+                fit: BoxFit.cover,
+              ),
+            ],
+          ),
         ),
       ),
     );
