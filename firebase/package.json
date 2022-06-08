@@ -1,0 +1,37 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "firebase emulators:exec 'jest'",
+    "test:watch": "yarn firebase emulators:exec 'jest --watch'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "firebase": "^9.1.2"
+  },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^2.0.1",
+    "@types/jest": "^27.0.2",
+    "firebase-tools": "^9.19.0",
+    "jest": "^27.5.1",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.4.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "testMatch": [
+      "**/*.test.ts"
+    ]
+  }
+}
