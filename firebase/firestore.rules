@@ -1,0 +1,161 @@
+rules_version = '2';
+service cloud.firestore {
+	match /databases/{database}/documents{
+
+    function isAuthenticated() { // 条件 1
+       return request.auth != null;
+    }
+
+    function isUserAuthenticated(userId) { // 条件 1 かつ 条件 2
+    		return isAuthenticated() && userId == request.auth.uid;
+    }
+
+    // create時のuserデータのスキーマ検証
+    function isValidAddUser(user) {
+        return user.size() == 2
+        && 'createdAt' in user && user.createdAt is timestamp
+        && 'email' in user && user.email is string;
+    }
+
+    // delete時のuserデータのスキーマ検証
+    function isValidDeleteUser(user) {
+        return user.size() == 1
+        && 'deletedAt' in user && user.deletedAt is timestamp
+    }
+
+    // feadbackのスキーマ検証
+    function isValidFeedback(feedback) {
+        return feedback.size() == 3
+        && 'uid' in feedback && feedback.uid is string
+        && 'feedback' in feedback && feedback.feedback is string
+        && 'createdAt' in feedback && feedback.createdAt is timestamp
+    }
+
+    // create時のrecipeデータのスキーマ検証
+    function isValidRecipeForCreate(recipe) {
+        return recipe.size() == 9
+        && 'recipeName' in recipe && recipe.recipeName is string
+        && 'recipeGrade' in recipe && recipe.recipeGrade is number
+        && 'forHowManyPeople' in recipe && recipe.forHowManyPeople is number
+        && ('recipeMemo' in recipe && (recipe.recipeMemo is string || recipe.recipeMemo == null))
+        && 'createdAt' in recipe && recipe.createdAt is timestamp
+        && 'imageUrl' in recipe && recipe.imageUrl is string
+        && 'ingredientList' in recipe && recipe.ingredientList is map
+        && 'procedureList' in recipe && recipe.procedureList is map
+        && 'countInCart' in recipe && recipe.countInCart is number;
+    }
+
+    // update時のrecipeデータのスキーマ検証
+    function isValidRecipeForUpdate(recipe) {
+        return recipe.size() == 9
+        && 'recipeName' in recipe && recipe.recipeName is string
+        && 'recipeGrade' in recipe && recipe.recipeGrade is number
+        && 'forHowManyPeople' in recipe && recipe.forHowManyPeople is number
+        && ('recipeMemo' in recipe && (recipe.recipeMemo is string || recipe.recipeMemo == null))
+        && 'imageUrl' in recipe && recipe.imageUrl is string
+        && 'ingredientList' in recipe && recipe.ingredientList is map
+        && 'procedureList' in recipe && recipe.procedureList is map;
+    }
+
+    // 画像追加時(recipeを保存する際、画像データは別で保存するため)
+    function isValidRecipeImageUrlForUpdate(recipe) {
+      return recipe.size() == 9 && 'imageUrl' in recipe && recipe.imageUrl is string;
+    }
+
+    // カートに入れる数更新時
+    function isValidRecipeCountInCartForUpdate(recipe) {
+      return recipe.size() == 9 && 'countInCart' in recipe && recipe.countInCart is number;
+    }
+
+    // ルールの記述
+    match /users/{userId} {
+        // read, updateは認可しない(現時点で該当の処理なし)
+        allow delete: if isUserAuthenticated(userId);
+
+        allow create: if isUserAuthenticated(userId)
+        // スキーマ
+        && isValidAddUser(request.resource.data)
+        
+        match /recipes/{recipeId} {
+        	allow read, delete: if isUserAuthenticated(userId);
+
+          allow create: if isUserAuthenticated(userId)
+          // スキーマ
+          && isValidRecipeForCreate(request.resource.data)
+          // バリデーション
+          && (request.resource.data.recipeName.size() >= 1 &&request.resource.data.recipeName.size() <= 30)
+          && (request.resource.data.recipeGrade >= 0.5 && request.resource.data.recipeGrade <= 5)
+          && (request.resource.data.forHowManyPeople >= 1 && request.resource.data.forHowManyPeople <= 99)
+          && (request.resource.data.recipeMemo.size() <= 500 || request.resource.data.recipeMemo == null)
+          && request.resource.data.ingredientList.size() <= 30
+          && request.resource.data.procedureList.size() <= 30
+          && request.resource.data.imageUrl.size() <= 1000
+          && request.resource.data.countInCart == 0;
+
+          allow update: if isUserAuthenticated(userId)
+          &&
+          // レシピ更新
+          (
+            isValidRecipeForUpdate(request.resource.data) // スキーマ
+            // バリデーション
+            && (request.resource.data.recipeName.size() >= 1 &&request.resource.data.recipeName.size() <= 30)
+            && (request.resource.data.recipeGrade >= 0.5 && request.resource.data.recipeGrade <= 5)
+            && (request.resource.data.forHowManyPeople >= 1 && request.resource.data.forHowManyPeople <= 99)
+            && (request.resource.data.recipeMemo.size() <= 500 || request.resource.data.recipeMemo == null)
+            && request.resource.data.ingredientList.size() <= 30
+            && request.resource.data.procedureList.size() <= 30
+            && request.resource.data.imageUrl.size() <= 1000
+            && resource.data.createdAt == request.resource.data.createdAt
+            && resource.data.countInCart == request.resource.data.countInCart
+          )
+          ||
+          // 画像追加
+          (
+            isValidRecipeImageUrlForUpdate(request.resource.data) // スキーマ
+            // バリデーション
+            && resource.data.recipeName == request.resource.data.recipeName
+            && resource.data.recipeGrade == request.resource.data.recipeGrade
+            && resource.data.forHowManyPeople == request.resource.data.forHowManyPeople
+            && resource.data.recipeMemo == request.resource.data.recipeMemo
+            && resource.data.ingredientList == request.resource.data.ingredientList
+            && resource.data.procedureList == request.resource.data.procedureList
+            && request.resource.data.imageUrl.size() <= 1000
+            && resource.data.createdAt == request.resource.data.createdAt
+            && resource.data.countInCart == request.resource.data.countInCart
+          )
+          ||
+          // カート内の数更新
+          (
+            isValidRecipeCountInCartForUpdate(request.resource.data) // スキーマ
+            // バリデーション
+            && resource.data.recipeName == request.resource.data.recipeName
+            && resource.data.recipeGrade == request.resource.data.recipeGrade
+            && resource.data.forHowManyPeople == request.resource.data.forHowManyPeople
+            && resource.data.recipeMemo == request.resource.data.recipeMemo
+            && resource.data.ingredientList == request.resource.data.ingredientList
+            && resource.data.procedureList == request.resource.data.procedureList
+            && resource.data.imageUrl == request.resource.data.imageUrl
+            && resource.data.createdAt == request.resource.data.createdAt
+            && (request.resource.data.countInCart >= 0 && request.resource.data.countInCart <= 99)
+          );
+        }
+    }
+
+    match /deletedUsers/{userId} {
+      // read, update, deleteは認可しない(現時点で該当の処理なし)
+      allow create: if isUserAuthenticated(userId)
+      // スキーマ
+      && isValidDeleteUser(request.resource.data);
+    }
+
+      match /feedbacks/{documents} {
+      // read, update, deleteは認可しない(現時点で該当の処理なし)
+      allow create: if isAuthenticated()
+      // スキーマ
+      && isValidFeedback(request.resource.data)
+      // バリデーション
+      && request.resource.data.uid == request.auth.uid
+      && (request.resource.data.feedback.size() >= 1 && request.resource.data.feedback.size() <= 500);
+    }
+  }
+}

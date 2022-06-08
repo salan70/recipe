@@ -1,0 +1,10 @@
+rules_version = '2';
+service firebase.storage {
+
+  match /b/{bucket}/o {
+    match /users/{userId}/recipeImages/{allPaths=**} {
+      allow read, delete: if request.auth.uid == userId;
+      allow create: if request.auth.uid == userId && request.resource.size < 20 * 1024 * 1024;
+    }
+  }
+}
