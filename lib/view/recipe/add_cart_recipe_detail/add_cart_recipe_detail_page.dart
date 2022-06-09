@@ -68,7 +68,7 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
               ],
             );
           }),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         child: Column(
           children: [
@@ -92,125 +92,121 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                       recipeNumCountProviderFamily(recipe.countInCart)
                           .notifier);
                   return Container(
+                    padding: EdgeInsets.only(left: 16, right: 16, bottom: 48).r,
                     decoration: BoxDecoration(
                         border: Border(
                             top: BorderSide(
                       color: Theme.of(context).dividerColor,
                     ))),
-                    child: Padding(
-                      padding:
-                          const EdgeInsets.only(left: 16, right: 16, bottom: 48)
-                              .r,
-                      child: Column(
-                        children: [
-                          _counterWidget(context, recipe.forHowManyPeople!,
-                              counter, counterNotifier),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Container(
-                              margin: EdgeInsets.only(right: 14).r,
-                              child: SizedBox(
-                                width: 144.w,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    if (counter == 0) {
+                    child: Column(
+                      children: [
+                        _counterWidget(context, recipe.forHowManyPeople!,
+                            counter, counterNotifier),
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Container(
+                            padding: EdgeInsets.only(right: 14).r,
+                            child: SizedBox(
+                              width: 144.w,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  if (counter == 0) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: Text('確認'),
+                                        content: Text('数量が0ですがよろしいですか？'),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                                context, 'Cancel'),
+                                            child: Text('いいえ'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () async {
+                                              EasyLoading.show(
+                                                  status: 'loading...');
+                                              final errorText =
+                                                  await addCartRecipeDetailModel
+                                                      .updateCount(
+                                                          recipeId, counter);
+                                              if (errorText == null) {
+                                                int popInt = 0;
+                                                Navigator.popUntil(context,
+                                                    (_) => popInt++ >= 2);
+
+                                                EasyLoading.showSuccess(
+                                                    'カートを更新しました');
+                                              } else {
+                                                EasyLoading.dismiss();
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return AlertDialog(
+                                                      title: Text('カート更新失敗'),
+                                                      content:
+                                                          Text('$errorText'),
+                                                      actions: [
+                                                        TextButton(
+                                                          child: Text('閉じる'),
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                              }
+                                            },
+                                            child: Text('はい'),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  } else {
+                                    EasyLoading.show(status: 'loading...');
+                                    final errorText =
+                                        await addCartRecipeDetailModel
+                                            .updateCount(recipeId, counter);
+
+                                    if (errorText == null) {
+                                      Navigator.pop(context);
+
+                                      EasyLoading.showSuccess(
+                                          '${recipe.recipeName}をカートに追加しました');
+                                    } else {
+                                      EasyLoading.dismiss();
                                       showDialog(
                                         context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: Text('確認'),
-                                          content: Text('数量が0ですがよろしいですか？'),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () => Navigator.pop(
-                                                  context, 'Cancel'),
-                                              child: Text('いいえ'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () async {
-                                                EasyLoading.show(
-                                                    status: 'loading...');
-                                                final errorText =
-                                                    await addCartRecipeDetailModel
-                                                        .updateCount(
-                                                            recipeId, counter);
-                                                if (errorText == null) {
-                                                  int popInt = 0;
-                                                  Navigator.popUntil(context,
-                                                      (_) => popInt++ >= 2);
-
-                                                  EasyLoading.showSuccess(
-                                                      'カートを更新しました');
-                                                } else {
-                                                  EasyLoading.dismiss();
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return AlertDialog(
-                                                        title: Text('カート更新失敗'),
-                                                        content:
-                                                            Text('$errorText'),
-                                                        actions: [
-                                                          TextButton(
-                                                            child: Text('閉じる'),
-                                                            onPressed: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                          ),
-                                                        ],
-                                                      );
-                                                    },
-                                                  );
-                                                }
-                                              },
-                                              child: Text('はい'),
-                                            ),
-                                          ],
-                                        ),
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: Text('カート更新失敗'),
+                                            content: Text('$errorText'),
+                                            actions: [
+                                              TextButton(
+                                                child: Text('閉じる'),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
                                       );
-                                    } else {
-                                      EasyLoading.show(status: 'loading...');
-                                      final errorText =
-                                          await addCartRecipeDetailModel
-                                              .updateCount(recipeId, counter);
-
-                                      if (errorText == null) {
-                                        Navigator.pop(context);
-
-                                        EasyLoading.showSuccess(
-                                            '${recipe.recipeName}をカートに追加しました');
-                                      } else {
-                                        EasyLoading.dismiss();
-                                        showDialog(
-                                          context: context,
-                                          builder: (context) {
-                                            return AlertDialog(
-                                              title: Text('カート更新失敗'),
-                                              content: Text('$errorText'),
-                                              actions: [
-                                                TextButton(
-                                                  child: Text('閉じる'),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      }
                                     }
-                                  },
-                                  child: Text(
-                                    '確定',
-                                    style: TextStyle(fontSize: 20.sp),
-                                  ),
+                                  }
+                                },
+                                child: Text(
+                                  '確定',
+                                  style: TextStyle(fontSize: 20.sp),
                                 ),
                               ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   );
                 }),

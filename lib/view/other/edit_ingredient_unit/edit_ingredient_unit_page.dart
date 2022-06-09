@@ -81,7 +81,7 @@ class EditIngredientUnitPage extends ConsumerWidget {
               ]),
               SettingsSection(title: Text('単位'), tiles: [
                 CustomSettingsTile(
-                  child: Container(
+                  child: DecoratedBox(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(12)),
                       color: Theme.of(context).backgroundColor,

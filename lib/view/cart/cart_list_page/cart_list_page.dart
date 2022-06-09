@@ -132,33 +132,29 @@ class CartListPage extends ConsumerWidget {
                                   padding:
                                       const EdgeInsets.only(left: 8, right: 8)
                                           .r,
-                                  child: Container(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                          child: Text(
-                                            '買わない (${notBuyList.length})',
-                                            style: Theme.of(context)
-                                                .primaryTextTheme
-                                                .subtitle1,
-                                            textAlign: TextAlign.left,
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          child: notBuyIngredientListIsOpen ==
-                                                  true
-                                              ? Icon(Icons.expand_less_rounded)
-                                              : Icon(Icons.expand_more_rounded),
-                                          onTap: () {
-                                            notBuyIngredientListIsOpenNotifier
-                                                    .state =
-                                                !notBuyIngredientListIsOpen;
-                                          },
-                                        ),
-                                      ],
-                                    ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        '買わない (${notBuyList.length})',
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .subtitle1,
+                                        textAlign: TextAlign.left,
+                                      ),
+                                      GestureDetector(
+                                        child: notBuyIngredientListIsOpen ==
+                                                true
+                                            ? Icon(Icons.expand_less_rounded)
+                                            : Icon(Icons.expand_more_rounded),
+                                        onTap: () {
+                                          notBuyIngredientListIsOpenNotifier
+                                                  .state =
+                                              !notBuyIngredientListIsOpen;
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 notBuyIngredientListIsOpen == true
@@ -300,7 +296,7 @@ class CartListPage extends ConsumerWidget {
         style: Theme.of(context).primaryTextTheme.headline5,
       ),
       contentPadding: EdgeInsets.zero,
-      content: Container(
+      content: SizedBox(
         width: double.maxFinite,
         height: 200.h,
         child: ListView.builder(

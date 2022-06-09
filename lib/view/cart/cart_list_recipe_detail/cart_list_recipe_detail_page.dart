@@ -23,7 +23,7 @@ class CartListRecipeDetailPage extends ConsumerWidget {
       ),
       body: ListView(
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             child: RecipeDetailWidget(recipeId),
           ),

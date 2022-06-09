@@ -34,174 +34,180 @@ class LoginPage extends ConsumerWidget {
         title: Text('ログイン'),
       ),
       body: SingleChildScrollView(
-        child: Padding(
+        child: Container(
           padding: const EdgeInsets.all(16.0).r,
-          child: Container(
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'メールアドレスでログイン',
-                  style: Theme.of(context).primaryTextTheme.subtitle1,
-                  textAlign: TextAlign.left,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0).r,
-                  child: TextField(
-                    onChanged: (email) {
-                      emailNotifier.update((state) => email);
-                    },
-                    decoration: InputDecoration(
-                      labelText: 'メールアドレス',
-                      errorText: email == '' ? null : emailValidate(email),
-                      prefixIcon: Icon(Icons.mail_outline_rounded),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0).r,
-                  child: TextField(
-                    onChanged: (password) {
-                      passwordNotifier.update((state) => password);
-                    },
-                    obscureText: passwordIsObscure,
-                    decoration: InputDecoration(
-                      labelText: 'パスワード',
-                      prefixIcon: Icon(Icons.lock_open_rounded),
-                      suffixIcon: IconButton(
-                        icon: Icon(passwordIsObscure
-                            ? Icons.visibility_off_rounded
-                            : Icons.visibility_rounded),
-                        onPressed: () {
-                          passwordIsObscureNotifier
-                              .update((state) => !passwordIsObscure);
-                        },
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                ),
-                Center(
-                  child: SizedBox(
-                    width: 144.w,
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final yesAction = TextButton(
-                          child: Text('はい'),
-                          onPressed: () async {
-                            Navigator.pop(context);
-                            EasyLoading.show(status: 'loading...');
-                            String? errorText = await loginModel.loginWithEmail(
-                                ref, email, password);
-                            if (errorText == null) {
-                              Navigator.pop(context);
-                              EasyLoading.showSuccess('ログインしました');
-                            } else {
-                              EasyLoading.dismiss();
-                              _showLoginErrorAlertDialog(context, errorText);
-                            }
-                          },
-                        );
-                        _showLoginAlertDialog(context, yesAction);
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'メールアドレスでログイン',
+                style: Theme.of(context).primaryTextTheme.subtitle1,
+                textAlign: TextAlign.left,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0).r,
+                child: Column(
+                  children: [
+                    TextField(
+                      onChanged: (email) {
+                        emailNotifier.update((state) => email);
                       },
-                      child: Text(
-                        'ログイン',
-                        style: TextStyle(fontSize: 20.sp),
+                      decoration: InputDecoration(
+                        labelText: 'メールアドレス',
+                        errorText: email == '' ? null : emailValidate(email),
+                        prefixIcon: Icon(Icons.mail_outline_rounded),
+                        border: OutlineInputBorder(),
                       ),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    TextField(
+                      onChanged: (password) {
+                        passwordNotifier.update((state) => password);
+                      },
+                      obscureText: passwordIsObscure,
+                      decoration: InputDecoration(
+                        labelText: 'パスワード',
+                        prefixIcon: Icon(Icons.lock_open_rounded),
+                        suffixIcon: IconButton(
+                          icon: Icon(passwordIsObscure
+                              ? Icons.visibility_off_rounded
+                              : Icons.visibility_rounded),
+                          onPressed: () {
+                            passwordIsObscureNotifier
+                                .update((state) => !passwordIsObscure);
+                          },
+                        ),
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Center(
+                child: SizedBox(
+                  width: 144.w,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      final yesAction = TextButton(
+                        child: Text('はい'),
+                        onPressed: () async {
+                          Navigator.pop(context);
+                          EasyLoading.show(status: 'loading...');
+                          String? errorText = await loginModel.loginWithEmail(
+                              ref, email, password);
+                          if (errorText == null) {
+                            Navigator.pop(context);
+                            EasyLoading.showSuccess('ログインしました');
+                          } else {
+                            EasyLoading.dismiss();
+                            _showLoginErrorAlertDialog(context, errorText);
+                          }
+                        },
+                      );
+                      _showLoginAlertDialog(context, yesAction);
+                    },
+                    child: Text(
+                      'ログイン',
+                      style: TextStyle(fontSize: 20.sp),
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 40,
-                ),
-                Text(
-                  '他のアカウントでログイン',
-                  style: Theme.of(context).primaryTextTheme.subtitle1,
-                  textAlign: TextAlign.left,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0).r,
-                  child: Center(
-                    child: SignInButton(
-                        buttonType: ButtonType.google,
-                        buttonSize: ButtonSize.large,
-                        width: double.infinity,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        elevation: 1,
-                        onPressed: () async {
-                          final yesWidget = TextButton(
-                            child: Text('はい'),
-                            onPressed: () async {
-                              Navigator.pop(context);
-                              EasyLoading.show(status: 'loading...');
-                              final errorText =
-                                  await loginModel.loginWithGoogle(ref);
-                              if (errorText == null) {
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              Text(
+                '他のアカウントでログイン',
+                style: Theme.of(context).primaryTextTheme.subtitle1,
+                textAlign: TextAlign.left,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0).r,
+                child: Center(
+                  child: Column(
+                    children: [
+                      SignInButton(
+                          buttonType: ButtonType.google,
+                          buttonSize: ButtonSize.large,
+                          width: double.infinity,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          elevation: 1,
+                          onPressed: () async {
+                            final yesWidget = TextButton(
+                              child: Text('はい'),
+                              onPressed: () async {
                                 Navigator.pop(context);
-                                EasyLoading.showSuccess('ログインしました');
-                              } else {
-                                EasyLoading.dismiss();
-                                _showLoginErrorAlertDialog(context, errorText);
-                              }
-                            },
-                          );
-                          _showLoginAlertDialog(context, yesWidget);
-                        }),
+                                EasyLoading.show(status: 'loading...');
+                                final errorText =
+                                    await loginModel.loginWithGoogle(ref);
+                                if (errorText == null) {
+                                  Navigator.pop(context);
+                                  EasyLoading.showSuccess('ログインしました');
+                                } else {
+                                  EasyLoading.dismiss();
+                                  _showLoginErrorAlertDialog(
+                                      context, errorText);
+                                }
+                              },
+                            );
+                            _showLoginAlertDialog(context, yesWidget);
+                          }),
+                      SizedBox(
+                        height: 8.h,
+                      ),
+                      SignInButton(
+                          buttonType: ButtonType.apple,
+                          buttonSize: ButtonSize.large,
+                          width: double.infinity,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          elevation: 1,
+                          onPressed: () async {
+                            final yesWidget = TextButton(
+                              child: Text('はい'),
+                              onPressed: () async {
+                                Navigator.pop(context);
+                                EasyLoading.show(status: 'loading...');
+                                final errorText =
+                                    await loginModel.loginWithApple(ref);
+                                if (errorText == null) {
+                                  Navigator.pop(context);
+                                  EasyLoading.showSuccess('ログインしました');
+                                } else {
+                                  EasyLoading.dismiss();
+                                  _showLoginErrorAlertDialog(
+                                      context, errorText);
+                                }
+                              },
+                            );
+                            _showLoginAlertDialog(context, yesWidget);
+                          }),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0).r,
-                  child: Center(
-                    child: SignInButton(
-                        buttonType: ButtonType.apple,
-                        buttonSize: ButtonSize.large,
-                        width: double.infinity,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                        elevation: 1,
-                        onPressed: () async {
-                          final yesWidget = TextButton(
-                            child: Text('はい'),
-                            onPressed: () async {
-                              Navigator.pop(context);
-                              EasyLoading.show(status: 'loading...');
-                              final errorText =
-                                  await loginModel.loginWithApple(ref);
-                              if (errorText == null) {
-                                Navigator.pop(context);
-                                EasyLoading.showSuccess('ログインしました');
-                              } else {
-                                EasyLoading.dismiss();
-                                _showLoginErrorAlertDialog(context, errorText);
-                              }
-                            },
-                          );
-                          _showLoginAlertDialog(context, yesWidget);
-                        }),
-                  ),
-                ),
-                SizedBox(
-                  height: 40.h,
-                ),
-                TextButton.icon(
-                  icon: Icon(Icons.info_outline),
-                  label: Text('ログインで引き継がれる/引き継がれない要素について'),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => IntroductionTakeOverPage(),
-                          fullscreenDialog: false,
-                        ));
-                  },
-                ),
-              ],
-            ),
+              ),
+              SizedBox(
+                height: 40.h,
+              ),
+              TextButton.icon(
+                icon: Icon(Icons.info_outline),
+                label: Text('ログインで引き継がれる/引き継がれない要素について'),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => IntroductionTakeOverPage(),
+                        fullscreenDialog: false,
+                      ));
+                },
+              ),
+            ],
           ),
         ),
       ),

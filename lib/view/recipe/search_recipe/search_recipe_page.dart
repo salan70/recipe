@@ -85,13 +85,11 @@ class SearchRecipePage extends ConsumerWidget {
             return outputRecipeList.isEmpty == true
                 ? Container(
                     width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 32).r,
-                      child: Text(
-                        'レシピが見つかりませんでした。',
-                        style: Theme.of(context).primaryTextTheme.subtitle1,
-                        textAlign: TextAlign.center,
-                      ),
+                    padding: const EdgeInsets.only(top: 32).r,
+                    child: Text(
+                      'レシピが見つかりませんでした。',
+                      style: Theme.of(context).primaryTextTheme.subtitle1,
+                      textAlign: TextAlign.center,
                     ),
                   )
                 : Padding(
