@@ -18,8 +18,8 @@ class CartItemAdapter extends TypeAdapter<CartItem> {
     };
     return CartItem(
       id: fields[0] as String,
-      isNeed: fields[1] as bool,
-      isBought: fields[2] as bool,
+      isInBuyList: fields[1] as bool,
+      isChecked: fields[2] as bool,
     );
   }
 
@@ -30,9 +30,9 @@ class CartItemAdapter extends TypeAdapter<CartItem> {
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.isNeed)
+      ..write(obj.isInBuyList)
       ..writeByte(2)
-      ..write(obj.isBought);
+      ..write(obj.isChecked);
   }
 
   @override

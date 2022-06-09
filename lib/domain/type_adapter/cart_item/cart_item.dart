@@ -8,12 +8,13 @@ class CartItem {
   String id;
 
   @HiveField(1)
-  bool isNeed;
+  bool isInBuyList;
 
   @HiveField(2)
-  bool isBought;
+  bool isChecked;
 
-  CartItem({required this.id, required this.isNeed, required this.isBought});
+  CartItem(
+      {required this.id, required this.isInBuyList, required this.isChecked});
 }
 
 class CartItemBoxes {

@@ -58,27 +58,26 @@ class CartListPage extends ConsumerWidget {
                         error: (error, stack) => Text('Error: $error'),
                         loading: () => const CircularProgressIndicator(),
                         data: (recipeListInCart) {
-                          List<IngredientPerInCartRecipe>
+                          List<IngredientByRecipeInCart>
                               ingredientPerInCartRecipeList = [];
 
                           for (var recipe in recipeListInCart) {
-                            List<IngredientPerInCartRecipe> addList =
+                            List<IngredientByRecipeInCart> addList =
                                 cartListModel
-                                    .createIngredientPerInCartRecipeList(
-                                        recipe);
+                                    .createIngredientListByRecipeInCart(recipe);
                             for (var item in addList)
                               ingredientPerInCartRecipeList.add(item);
                           }
 
-                          List<IngredientInCartPerRecipeList>
+                          List<TotaledIngredientListInCart>
                               ingredientListInCartPerRecipeList = cartListModel
                                   .createIngredientListInCartPerRecipeList(
                                       ingredientPerInCartRecipeList);
 
-                          List<IngredientInCartPerRecipeList> buyList =
+                          List<TotaledIngredientListInCart> buyList =
                               cartListModel.createBuyList(
                                   ingredientListInCartPerRecipeList);
-                          List<IngredientInCartPerRecipeList> notBuyList =
+                          List<TotaledIngredientListInCart> notBuyList =
                               cartListModel.createNotBuyList(
                                   ingredientListInCartPerRecipeList);
 
@@ -223,20 +222,21 @@ class CartListPage extends ConsumerWidget {
   }
 
   Widget _ingredientListCardWidget(BuildContext context, String listType,
-      List<IngredientInCartPerRecipeList> ingredientList) {
+      List<TotaledIngredientListInCart> ingredientList) {
     CartListModel cartListModel = CartListModel();
-    String _slidableActionText = listType == 'buyList' ? '買わないリストへ' : '買うリストへ';
+    String _slidableActionText = listType == 'buyList' ? '買わないへ' : '買うへ';
 
     return ListView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
         itemCount: ingredientList.length,
         itemBuilder: (context, index) {
-          final ingredient = ingredientList[index];
-          final id = ingredient.ingredientInCart.ingredientName +
-              ingredient.ingredientInCart.ingredientUnit;
+          final _ingredient = ingredientList[index];
+          final _ingredientInCart = _ingredient.ingredientInCart;
+          final _id = _ingredient.ingredientInCart.ingredientName +
+              _ingredient.ingredientInCart.ingredientUnit;
           return Slidable(
-            key: ValueKey(id),
+            key: ValueKey(_id),
             startActionPane: ActionPane(
               extentRatio: 0.4,
               motion: ScrollMotion(),
@@ -246,8 +246,8 @@ class CartListPage extends ConsumerWidget {
                   label: _slidableActionText,
                   backgroundColor: Theme.of(context).primaryColor,
                   onPressed: (context) {
-                    cartListModel.toggleIsNeed(
-                      id,
+                    cartListModel.toggleIsInBuyList(
+                      _id,
                     );
                   },
                 )
@@ -255,25 +255,25 @@ class CartListPage extends ConsumerWidget {
             ),
             child: CheckboxListTile(
               title: Text(
-                '${ingredient.ingredientInCart.ingredientName}',
+                '${_ingredientInCart.ingredientName}',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    decoration: cartListModel.getCartItem(id).isBought
+                    decoration: cartListModel.getCartItem(_id).isChecked
                         ? TextDecoration.lineThrough
                         : TextDecoration.none),
               ),
               subtitle: Text(
-                '${ingredient.ingredientInCart.ingredientTotalAmount}${ingredient.ingredientInCart.ingredientUnit}',
+                '${_ingredientInCart.ingredientTotalAmount}${_ingredientInCart.ingredientUnit}',
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).primaryTextTheme.caption!.copyWith(
-                    decoration: cartListModel.getCartItem(id).isBought
+                    decoration: cartListModel.getCartItem(_id).isChecked
                         ? TextDecoration.lineThrough
                         : TextDecoration.none),
               ),
               controlAffinity: ListTileControlAffinity.leading,
-              value: cartListModel.getCartItem(id).isBought,
-              onChanged: (isBought) {
-                cartListModel.toggleIsBought(id, isBought!);
+              value: cartListModel.getCartItem(_id).isChecked,
+              onChanged: (isChecked) {
+                cartListModel.toggleIsChecked(_id, isChecked!);
               },
               secondary: IconButton(
                 icon: Icon(Icons.info_outline),
@@ -282,7 +282,7 @@ class CartListPage extends ConsumerWidget {
                     context: context,
                     builder: (_) {
                       return _recipeListPerIngredientDialog(
-                          context, ingredient);
+                          context, _ingredient);
                     },
                   );
                 },
@@ -293,7 +293,7 @@ class CartListPage extends ConsumerWidget {
   }
 
   Widget _recipeListPerIngredientDialog(
-      BuildContext context, IngredientInCartPerRecipeList ingredient) {
+      BuildContext context, TotaledIngredientListInCart ingredient) {
     return AlertDialog(
       title: Text(
         '${ingredient.ingredientInCart.ingredientName}を使うレシピ',
@@ -304,10 +304,9 @@ class CartListPage extends ConsumerWidget {
         width: double.maxFinite,
         height: 200.h,
         child: ListView.builder(
-          itemCount: ingredient.recipeForIngredientInCartList.length,
+          itemCount: ingredient.recipeListByIngredientInCart.length,
           itemBuilder: (context, recipeIndex) {
-            final recipe =
-                ingredient.recipeForIngredientInCartList[recipeIndex];
+            final recipe = ingredient.recipeListByIngredientInCart[recipeIndex];
             return ListTile(
               title: Text(
                 '${recipe.recipeName}',
@@ -344,14 +343,14 @@ class CartListPage extends ConsumerWidget {
         style: Theme.of(context).primaryTextTheme.headline5,
       ),
       contentPadding: EdgeInsets.zero,
-      content: Container(
+      content: SizedBox(
         width: double.maxFinite,
         height: 400.h,
         child: Padding(
           padding: const EdgeInsets.only(left: 16, right: 16, top: 8).r,
           child: Column(
             children: [
-              Text('移動したい材料を右へスクロールし、「買わない(買う)リストへ」をタップすると移動することができます'),
+              Text('移動したい材料を右へスクロールし、「買わない(買う)へ」をタップすると移動することができます'),
               SizedBox(
                 height: 16.h,
               ),

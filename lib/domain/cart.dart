@@ -33,15 +33,8 @@ class RecipeListInCart {
   }
 }
 
-class RecipeCount {
-  RecipeCount({required this.id, required this.count});
-
-  String id;
-  int count;
-}
-
-class IngredientPerInCartRecipe {
-  IngredientPerInCartRecipe(
+class IngredientByRecipeInCart {
+  IngredientByRecipeInCart(
       {required this.recipeId,
       required this.recipeName,
       required this.forHowManyPeople,
@@ -55,13 +48,13 @@ class IngredientPerInCartRecipe {
   Ingredient ingredient;
 }
 
-class IngredientInCartPerRecipeList {
-  IngredientInCartPerRecipeList(
+class TotaledIngredientListInCart {
+  TotaledIngredientListInCart(
       {required this.ingredientInCart,
-      required this.recipeForIngredientInCartList});
+      required this.recipeListByIngredientInCart});
 
   IngredientInCart ingredientInCart;
-  List<RecipeForIngredientInCart> recipeForIngredientInCartList;
+  List<RecipeByIngredientInCart> recipeListByIngredientInCart;
 }
 
 class IngredientInCart {
@@ -75,8 +68,8 @@ class IngredientInCart {
   String ingredientUnit;
 }
 
-class RecipeForIngredientInCart {
-  RecipeForIngredientInCart(
+class RecipeByIngredientInCart {
+  RecipeByIngredientInCart(
       {required this.recipeId,
       required this.recipeName,
       required this.forHowManyPeople,
