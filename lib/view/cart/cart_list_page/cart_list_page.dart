@@ -69,15 +69,14 @@ class CartListPage extends ConsumerWidget {
                               ingredientPerInCartRecipeList.add(item);
                           }
 
-                          List<TotaledIngredientListInCart>
+                          List<TotaledIngredientInCart>
                               ingredientListInCartPerRecipeList = cartListModel
-                                  .createIngredientListInCartPerRecipeList(
+                                  .createTotaledIngredientListInCart(
                                       ingredientPerInCartRecipeList);
 
-                          List<TotaledIngredientListInCart> buyList =
-                              cartListModel.createBuyList(
-                                  ingredientListInCartPerRecipeList);
-                          List<TotaledIngredientListInCart> notBuyList =
+                          List<TotaledIngredientInCart> buyList = cartListModel
+                              .createBuyList(ingredientListInCartPerRecipeList);
+                          List<TotaledIngredientInCart> notBuyList =
                               cartListModel.createNotBuyList(
                                   ingredientListInCartPerRecipeList);
 
@@ -218,7 +217,7 @@ class CartListPage extends ConsumerWidget {
   }
 
   Widget _ingredientListCardWidget(BuildContext context, String listType,
-      List<TotaledIngredientListInCart> ingredientList) {
+      List<TotaledIngredientInCart> ingredientList) {
     CartListModel cartListModel = CartListModel();
     String _slidableActionText = listType == 'buyList' ? '買わないへ' : '買うへ';
 
@@ -289,7 +288,7 @@ class CartListPage extends ConsumerWidget {
   }
 
   Widget _recipeListPerIngredientDialog(
-      BuildContext context, TotaledIngredientListInCart ingredient) {
+      BuildContext context, TotaledIngredientInCart ingredient) {
     return AlertDialog(
       title: Text(
         '${ingredient.ingredientInCart.ingredientName}を使うレシピ',

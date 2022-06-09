@@ -48,8 +48,8 @@ class IngredientByRecipeInCart {
   Ingredient ingredient;
 }
 
-class TotaledIngredientListInCart {
-  TotaledIngredientListInCart(
+class TotaledIngredientInCart {
+  TotaledIngredientInCart(
       {required this.ingredientInCart,
       required this.recipeListByIngredientInCart});
 
