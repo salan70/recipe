@@ -24,7 +24,7 @@ class EditRecipeWidget extends ConsumerWidget {
     final imageFileNotifier = ref.watch(imageFileNotifierProvider.notifier);
 
     return Container(
-      margin: EdgeInsets.only(left: 20.0, right: 20.0).r,
+      margin: const EdgeInsets.only(left: 20.0, right: 20.0).r,
       width: double.infinity,
       child: ListView(
         children: [
@@ -92,16 +92,16 @@ class EditRecipeWidget extends ConsumerWidget {
                             context: context,
                             builder: (context) {
                               return CupertinoAlertDialog(
-                                title: Text('写真へのアクセスが許可されていません'),
-                                content:
-                                    Text('端末内の画像をレシピに保存するためには、アクセスの許可が必要です。'),
+                                title: const Text('写真へのアクセスが許可されていません'),
+                                content: const Text(
+                                    '端末内の画像をレシピに保存するためには、アクセスの許可が必要です。'),
                                 actions: <Widget>[
                                   CupertinoDialogAction(
-                                    child: Text('キャンセル'),
+                                    child: const Text('キャンセル'),
                                     onPressed: () => Navigator.pop(context),
                                   ),
                                   CupertinoDialogAction(
-                                    child: Text('設定へ'),
+                                    child: const Text('設定へ'),
                                     onPressed: () => openAppSettings(),
                                   ),
                                 ],
@@ -122,16 +122,16 @@ class EditRecipeWidget extends ConsumerWidget {
                             context: context,
                             builder: (context) {
                               return CupertinoAlertDialog(
-                                title: Text('カメラへのアクセスが許可されていません'),
-                                content: Text(
+                                title: const Text('カメラへのアクセスが許可されていません'),
+                                content: const Text(
                                     'カメラで撮影した画像をレシピに保存するためには、アクセスの許可が必要です。'),
                                 actions: <Widget>[
                                   CupertinoDialogAction(
-                                    child: Text('キャンセル'),
+                                    child: const Text('キャンセル'),
                                     onPressed: () => Navigator.pop(context),
                                   ),
                                   CupertinoDialogAction(
-                                    child: Text('設定へ'),
+                                    child: const Text('設定へ'),
                                     onPressed: () => openAppSettings(),
                                   ),
                                 ],
@@ -158,8 +158,8 @@ class EditRecipeWidget extends ConsumerWidget {
             direction: Axis.horizontal,
             allowHalfRating: true,
             itemCount: 5,
-            itemPadding: EdgeInsets.symmetric(horizontal: 4.0).r,
-            itemBuilder: (context, _) => Icon(
+            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0).r,
+            itemBuilder: (context, _) => const Icon(
               Icons.star_rounded,
               color: Colors.amber,
             ),
@@ -179,7 +179,7 @@ class EditRecipeWidget extends ConsumerWidget {
                     children: [
                       Row(
                         children: [
-                          Text('材料'),
+                          const Text('材料'),
                           SizedBox(width: 8.w),
                           SizedBox(
                               width: 24.w,
@@ -206,7 +206,7 @@ class EditRecipeWidget extends ConsumerWidget {
                                   }
                                 },
                               )),
-                          Text('人分'),
+                          const Text('人分'),
                         ],
                       ),
                       TextButton.icon(

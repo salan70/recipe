@@ -41,14 +41,14 @@ class IngredientTextFieldWidget extends ConsumerWidget {
             onReorder: (oldIndex, newIndex) =>
                 ingredientListNotifier.reorder(oldIndex, newIndex),
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             children: [
               for (int index = 0; index < ingredientList.length; index++)
                 Slidable(
                   key: ValueKey(ingredientList[index].id),
                   endActionPane: ActionPane(
                     extentRatio: 0.3,
-                    motion: ScrollMotion(),
+                    motion: const ScrollMotion(),
                     children: [
                       SlidableAction(
                           borderRadius: BorderRadius.circular(10),
@@ -73,7 +73,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                                     : null,
                                 maxLength: 20,
                                 maxLines: 2,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: '材料名',
                                   counterText: '',
                                 ),
@@ -118,17 +118,20 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                                     IngredientUnitBoxes.getIngredientUnit()
                                         .listenable(),
                                 builder: (context, box, widget) {
-                                  IngredientTextFieldModel
+                                  final IngredientTextFieldModel
                                       _ingredientTextFieldModel =
                                       IngredientTextFieldModel();
+
                                   final _ingredientUnitList =
                                       _ingredientTextFieldModel
                                           .fetchIngredientUnitList();
-                                  String unitNameForTextButton =
+
+                                  final String unitNameForTextButton =
                                       ingredientList[index].unit == null ||
                                               ingredientList[index].unit == ''
                                           ? '単位'
                                           : ingredientList[index].unit!;
+
                                   String _tmpUnitName = _ingredientUnitList[0];
 
                                   return TextButton(
@@ -241,10 +244,10 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text('登録できる材料は30個までです。'),
+                          title: const Text('登録できる材料は30個までです。'),
                           actions: [
                             TextButton(
-                              child: Text('閉じる'),
+                              child: const Text('閉じる'),
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -255,7 +258,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                     );
                   }
                 },
-                child: Text('追加'),
+                child: const Text('追加'),
               ),
             ),
             Expanded(

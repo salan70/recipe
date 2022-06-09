@@ -35,7 +35,7 @@ class ProcedureTextFieldWidget extends ConsumerWidget {
                   key: ValueKey(procedureList[index].id),
                   endActionPane: ActionPane(
                     extentRatio: 0.3,
-                    motion: ScrollMotion(),
+                    motion: const ScrollMotion(),
                     children: [
                       SlidableAction(
                           borderRadius: BorderRadius.circular(10),
@@ -76,7 +76,7 @@ class ProcedureTextFieldWidget extends ConsumerWidget {
                               contentIsChangedNotifier.update((state) => true);
                             },
                           )),
-                      Icon(Icons.drag_handle),
+                      const Icon(Icons.drag_handle),
                     ],
                   ),
                 ),
@@ -85,17 +85,17 @@ class ProcedureTextFieldWidget extends ConsumerWidget {
         }),
         TextButton(
           onPressed: () {
-            String id = Uuid().v4();
+            final String id = Uuid().v4();
             final Procedure procedures = Procedure(id: id, content: '');
             if (!procedureListNotifier.add(procedures)) {
               showDialog(
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text('登録できる手順は30個までです。'),
+                    title: const Text('登録できる手順は30個までです。'),
                     actions: [
                       TextButton(
-                        child: Text('閉じる'),
+                        child: const Text('閉じる'),
                         onPressed: () {
                           Navigator.pop(context);
                         },
@@ -106,7 +106,7 @@ class ProcedureTextFieldWidget extends ConsumerWidget {
               );
             }
           },
-          child: Text('追加'),
+          child: const Text('追加'),
         )
       ],
     );

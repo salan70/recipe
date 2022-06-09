@@ -37,9 +37,9 @@ class RecipeCardWidget extends ConsumerWidget {
                                 borderRadius: BorderRadius.circular(8.0).r,
                                 color: Theme.of(context).dividerColor,
                               ),
-                              child: Icon(Icons.restaurant_rounded),
+                              child: const Icon(Icons.restaurant_rounded),
                             )
-                      : CircularProgressIndicator(),
+                      : const CircularProgressIndicator(),
                 ),
               ),
             ),

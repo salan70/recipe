@@ -78,16 +78,16 @@ class Validations {
   // 0以上かつ、fraction型かmixedFraction型にキャストできるか検証
   bool _isPositiveFraction(String ingredientAmount) {
     try {
-      var fraction = Fraction.fromString(ingredientAmount);
-      if (fraction.toDouble() >= 0) {
+      final _fraction = Fraction.fromString(ingredientAmount);
+      if (_fraction.toDouble() >= 0) {
         return true;
       } else {
         return false;
       }
     } catch (e) {
       try {
-        var mixedFraction = MixedFraction.fromString(ingredientAmount);
-        if (mixedFraction.toDouble() >= 0) {
+        final _mixedFraction = MixedFraction.fromString(ingredientAmount);
+        if (_mixedFraction.toDouble() >= 0) {
           return true;
         } else {
           return false;

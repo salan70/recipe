@@ -42,7 +42,7 @@ class RecipeDetailWidget extends ConsumerWidget {
           return DefaultTextStyle(
             style: Theme.of(context).primaryTextTheme.bodyText1!,
             child: Container(
-              margin: EdgeInsets.only(left: 16, right: 16).r,
+              margin: const EdgeInsets.only(left: 16, right: 16).r,
               width: double.infinity,
               child: Column(
                 children: [
@@ -76,7 +76,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(8.0),
                               color: Theme.of(context).dividerColor,
                             ),
-                            child: Icon(Icons.restaurant_outlined),
+                            child: const Icon(Icons.restaurant_outlined),
                           ),
                   ),
                   SizedBox(height: 8.h),
@@ -94,8 +94,8 @@ class RecipeDetailWidget extends ConsumerWidget {
                             allowHalfRating: true,
                             itemCount: 5,
                             itemPadding:
-                                EdgeInsets.symmetric(horizontal: 4.0).r,
-                            itemBuilder: (context, _) => Icon(
+                                const EdgeInsets.symmetric(horizontal: 4.0).r,
+                            itemBuilder: (context, _) => const Icon(
                               Icons.star_rounded,
                               color: Colors.amber,
                             ),
@@ -117,7 +117,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                         DefaultTextStyle(
                           style: Theme.of(context).primaryTextTheme.subtitle2!,
                           child: Row(children: [
-                            Text(
+                            const Text(
                               '材料',
                             ),
                             SizedBox(width: 4.w),
@@ -125,7 +125,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                               recipe.forHowManyPeople.toString(),
                               overflow: TextOverflow.ellipsis,
                             ),
-                            Text('人分'),
+                            const Text('人分'),
                           ]),
                         ),
                         SizedBox(
@@ -144,7 +144,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: 8,
+                                      width: 8.w,
                                     ),
                                     Expanded(
                                         flex: 3,
@@ -160,12 +160,12 @@ class RecipeDetailWidget extends ConsumerWidget {
                                     ),
                                   ],
                                 ),
-                                Divider(),
+                                const Divider(),
                               ],
                             );
                           },
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                         ),
                         // },
                         // ),
@@ -175,7 +175,7 @@ class RecipeDetailWidget extends ConsumerWidget {
 
                   // 手順
                   SizedBox(
-                    height: 16,
+                    height: 16.h,
                   ),
                   SizedBox(
                     width: double.infinity,
@@ -190,7 +190,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                           ),
                         ),
                         SizedBox(
-                          height: 8,
+                          height: 8.h,
                         ),
                         ListView.builder(
                           itemCount: recipe.procedureList == null
@@ -205,7 +205,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                                 Row(
                                   children: [
                                     SizedBox(
-                                      width: 8,
+                                      width: 8.w,
                                     ),
                                     Expanded(
                                         flex: 1, child: Text('${index + 1}')),
@@ -214,19 +214,19 @@ class RecipeDetailWidget extends ConsumerWidget {
                                         child: Text('${procedure!.content}')),
                                   ],
                                 ),
-                                Divider(),
+                                const Divider(),
                               ],
                             );
                           },
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                         ),
                       ],
                     ),
                   ),
                   // メモ
                   SizedBox(
-                    height: 16,
+                    height: 16.h,
                   ),
                   SizedBox(
                     width: double.infinity,
@@ -241,12 +241,12 @@ class RecipeDetailWidget extends ConsumerWidget {
                           ),
                         ),
                         SizedBox(
-                          height: 8,
+                          height: 8.h,
                         ),
                         Row(
                           children: [
                             SizedBox(
-                              width: 8,
+                              width: 8.w,
                             ),
                             Flexible(
                               child: Container(
