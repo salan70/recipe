@@ -70,9 +70,9 @@ class CartListPage extends ConsumerWidget {
                           }
 
                           List<TotaledIngredientInCart>
-                              ingredientListInCartPerRecipeList = cartListModel
-                                  .createTotaledIngredientListInCart(
-                                      ingredientPerInCartRecipeList);
+                              ingredientListInCartPerRecipeList =
+                              cartListModel.createTotaledIngredientListInCart(
+                                  ingredientPerInCartRecipeList);
 
                           List<TotaledIngredientInCart> buyList = cartListModel
                               .createBuyList(ingredientListInCartPerRecipeList);
