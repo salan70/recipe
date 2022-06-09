@@ -47,7 +47,7 @@ class RecipeDetailWidget extends ConsumerWidget {
               child: Column(
                 children: [
                   SizedBox(height: 16.h),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: Text(
                       recipe.recipeName!,
@@ -59,31 +59,29 @@ class RecipeDetailWidget extends ConsumerWidget {
                   ),
                   // 画像
                   SizedBox(height: 8.h),
-                  Container(
-                    child: SizedBox(
-                      height: 240.h,
-                      width: double.infinity,
-                      child: recipe.imageUrl != ''
-                          ? Image.network(
-                              recipe.imageUrl!,
-                              errorBuilder: (c, o, s) {
-                                return const Icon(
-                                  Icons.error,
-                                );
-                              },
-                            )
-                          : Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.0),
-                                color: Theme.of(context).dividerColor,
-                              ),
-                              child: Icon(Icons.restaurant_outlined),
+                  SizedBox(
+                    height: 240.h,
+                    width: double.infinity,
+                    child: recipe.imageUrl != ''
+                        ? Image.network(
+                            recipe.imageUrl!,
+                            errorBuilder: (c, o, s) {
+                              return const Icon(
+                                Icons.error,
+                              );
+                            },
+                          )
+                        : DecoratedBox(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              color: Theme.of(context).dividerColor,
                             ),
-                    ),
+                            child: Icon(Icons.restaurant_outlined),
+                          ),
                   ),
                   SizedBox(height: 8.h),
                   // 評価
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: Column(
                       children: [
@@ -112,7 +110,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                   SizedBox(
                     height: 16.h,
                   ),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: Column(
                       children: [
@@ -143,26 +141,24 @@ class RecipeDetailWidget extends ConsumerWidget {
                                 : recipe.ingredientList![index];
                             return Column(
                               children: [
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Expanded(
-                                          flex: 3,
-                                          child: Text(
-                                              ingredient!.name.toString())),
-                                      SizedBox(
-                                        width: 8.w,
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                            '${ingredient.amount}${ingredient.unit}'),
-                                      ),
-                                    ],
-                                  ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Expanded(
+                                        flex: 3,
+                                        child:
+                                            Text(ingredient!.name.toString())),
+                                    SizedBox(
+                                      width: 8.w,
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                          '${ingredient.amount}${ingredient.unit}'),
+                                    ),
+                                  ],
                                 ),
                                 Divider(),
                               ],
@@ -181,11 +177,11 @@ class RecipeDetailWidget extends ConsumerWidget {
                   SizedBox(
                     height: 16,
                   ),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: Column(
                       children: [
-                        Container(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             '手順',
@@ -206,19 +202,17 @@ class RecipeDetailWidget extends ConsumerWidget {
                                 : recipe.procedureList![index];
                             return Column(
                               children: [
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Expanded(
-                                          flex: 1, child: Text('${index + 1}')),
-                                      Expanded(
-                                          flex: 19,
-                                          child: Text('${procedure!.content}')),
-                                    ],
-                                  ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    Expanded(
+                                        flex: 1, child: Text('${index + 1}')),
+                                    Expanded(
+                                        flex: 19,
+                                        child: Text('${procedure!.content}')),
+                                  ],
                                 ),
                                 Divider(),
                               ],
@@ -234,11 +228,11 @@ class RecipeDetailWidget extends ConsumerWidget {
                   SizedBox(
                     height: 16,
                   ),
-                  Container(
+                  SizedBox(
                     width: double.infinity,
                     child: Column(
                       children: [
-                        Container(
+                        Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'メモ',

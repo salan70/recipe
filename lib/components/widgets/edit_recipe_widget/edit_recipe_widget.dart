@@ -49,7 +49,7 @@ class EditRecipeWidget extends ConsumerWidget {
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(20),
                           child: Image.file(imageFile))
-                      : Container(
+                      : DecoratedBox(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
                             color: Theme.of(context).dividerColor,
@@ -65,7 +65,7 @@ class EditRecipeWidget extends ConsumerWidget {
                             );
                           },
                         )
-                      : Container(
+                      : DecoratedBox(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8.0),
                             color: Theme.of(context).dividerColor,
@@ -232,10 +232,8 @@ class EditRecipeWidget extends ConsumerWidget {
                     ]),
               ),
               SizedBox(height: 8.h),
-              Container(
-                child: IngredientTextFieldWidget(
-                  recipe: recipe,
-                ),
+              IngredientTextFieldWidget(
+                recipe: recipe,
               ),
             ],
           ),
@@ -244,7 +242,7 @@ class EditRecipeWidget extends ConsumerWidget {
           SizedBox(height: 8.h),
           Column(
             children: [
-              Container(
+              Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
                   '手順',
@@ -257,28 +255,26 @@ class EditRecipeWidget extends ConsumerWidget {
           ),
           // メモ
           SizedBox(height: 8.h),
-          Container(
-            child: Column(
-              children: [
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'メモ',
-                    style: Theme.of(context).primaryTextTheme.subtitle2,
-                  ),
+          Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'メモ',
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
                 ),
-                SizedBox(height: 8.h),
-                TextField(
-                  controller: TextEditingController(text: recipe.recipeMemo),
-                  maxLength: 500,
-                  maxLines: null,
-                  onChanged: (value) {
-                    recipe.recipeMemo = value;
-                  },
-                ),
-                SizedBox(height: 48.h),
-              ],
-            ),
+              ),
+              SizedBox(height: 8.h),
+              TextField(
+                controller: TextEditingController(text: recipe.recipeMemo),
+                maxLength: 500,
+                maxLines: null,
+                onChanged: (value) {
+                  recipe.recipeMemo = value;
+                },
+              ),
+              SizedBox(height: 48.h),
+            ],
           ),
         ],
       ),

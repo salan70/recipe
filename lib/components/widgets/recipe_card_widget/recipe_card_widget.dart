@@ -32,7 +32,7 @@ class RecipeCardWidget extends ConsumerWidget {
                                 );
                               },
                             )
-                          : Container(
+                          : DecoratedBox(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8.0).r,
                                 color: Theme.of(context).dividerColor,
@@ -45,7 +45,7 @@ class RecipeCardWidget extends ConsumerWidget {
             ),
             Expanded(
               flex: 3,
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 child: Text(
                   recipe.recipeName.toString(),
