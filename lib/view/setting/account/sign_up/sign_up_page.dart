@@ -14,7 +14,7 @@ class SignUpPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final SignUpModel signUpModel = SignUpModel();
+    final signUpModel = SignUpModel();
 
     final passwordIsObscure = ref.watch(passwordIsObscureProvider);
     final passwordIsObscureNotifier =
@@ -33,12 +33,12 @@ class SignUpPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('新規登録'),
+        title: const Text('新規登録'),
       ),
       body: SingleChildScrollView(
         child: Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(16.0).r,
+          padding: const EdgeInsets.all(16).r,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -48,7 +48,7 @@ class SignUpPage extends ConsumerWidget {
                 textAlign: TextAlign.left,
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0).r,
+                padding: const EdgeInsets.all(8).r,
                 child: Column(
                   children: [
                     TextField(
@@ -58,8 +58,8 @@ class SignUpPage extends ConsumerWidget {
                       decoration: InputDecoration(
                         labelText: 'メールアドレス',
                         errorText: email == '' ? null : emailValidate(email),
-                        prefixIcon: Icon(Icons.mail_outline_rounded),
-                        border: OutlineInputBorder(),
+                        prefixIcon: const Icon(Icons.mail_outline_rounded),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                     SizedBox(
@@ -74,7 +74,7 @@ class SignUpPage extends ConsumerWidget {
                         labelText: 'パスワード',
                         errorText:
                             password == '' ? null : passwordValidate(password),
-                        prefixIcon: Icon(Icons.lock_open_rounded),
+                        prefixIcon: const Icon(Icons.lock_open_rounded),
                         suffixIcon: IconButton(
                           icon: Icon(passwordIsObscure
                               ? Icons.visibility_off_rounded
@@ -84,7 +84,7 @@ class SignUpPage extends ConsumerWidget {
                                 .update((state) => !passwordIsObscure);
                           },
                         ),
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                   ],
@@ -182,14 +182,13 @@ class SignUpPage extends ConsumerWidget {
                 height: 40.h,
               ),
               TextButton.icon(
-                icon: Icon(Icons.info_outline),
-                label: Text('ログインで引き継がれる/引き継がれない要素について'),
+                icon: const Icon(Icons.info_outline),
+                label: const Text('ログインで引き継がれる/引き継がれない要素について'),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.push<MaterialPageRoute>(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => IntroductionTakeOverPage(),
-                        fullscreenDialog: false,
+                        builder: (context) => const IntroductionTakeOverPage(),
                       ));
                 },
               ),
@@ -200,16 +199,17 @@ class SignUpPage extends ConsumerWidget {
     );
   }
 
-  Future _showLoginErrorAlertDialog(BuildContext context, String errorText) {
-    return showDialog(
+  Future<void> _showLoginErrorAlertDialog(
+      BuildContext context, String errorText) {
+    return showDialog<AlertDialog>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('登録失敗'),
-          content: Text('$errorText'),
+          title: const Text('登録失敗'),
+          content: Text(errorText),
           actions: [
             TextButton(
-              child: Text('閉じる'),
+              child: const Text('閉じる'),
               onPressed: () {
                 Navigator.pop(context);
               },

@@ -24,70 +24,68 @@ class SettingTopPage extends ConsumerWidget {
     final user = ref.watch(userStateNotifierProvider);
     final userNotifier = ref.watch(userStateNotifierProvider.notifier);
 
-    final SettingTopModel settingTopModel = SettingTopModel();
+    final settingTopModel = SettingTopModel();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           '設定',
         ),
       ),
       body: SettingsList(
         sections: [
           SettingsSection(
-            title: Text(
+            title: const Text(
               'アカウント',
             ),
             tiles: [
               user!.isAnonymous
                   ? SettingsTile.navigation(
-                      title: Text('ログイン'),
-                      trailing: Icon(Icons.chevron_right_rounded),
+                      title: const Text('ログイン'),
+                      trailing: const Icon(Icons.chevron_right_rounded),
                       onPressed: (context) {
-                        Navigator.push(
+                        Navigator.push<MaterialPageRoute>(
                             context,
                             MaterialPageRoute(
-                              fullscreenDialog: false,
-                              builder: (context) => LoginPage(),
+                              builder: (context) => const LoginPage(),
                             ));
                       },
                     )
                   : SettingsTile.navigation(
                       title: Text('${user.email}'),
-                      trailing: Text(''),
+                      trailing: const Text(''),
                     ),
               user.isAnonymous
                   ? SettingsTile.navigation(
-                      title: Text('新規登録'),
-                      trailing: Icon(Icons.chevron_right_rounded),
+                      title: const Text('新規登録'),
+                      trailing: const Icon(Icons.chevron_right_rounded),
                       onPressed: (context) {
-                        Navigator.push(
+                        Navigator.push<MaterialPageRoute>(
                             context,
                             MaterialPageRoute(
-                              fullscreenDialog: false,
-                              builder: (context) => SignUpPage(),
+                              builder: (context) => const SignUpPage(),
                             ));
                       },
                     )
                   : SettingsTile.navigation(
-                      title: Text('ログアウト'),
-                      trailing: Icon(Icons.logout_rounded),
+                      title: const Text('ログアウト'),
+                      trailing: const Icon(Icons.logout_rounded),
                       onPressed: (context) {
-                        showDialog(
+                        showDialog<AlertDialog>(
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: Text('確認'),
-                              content: Text('本当にログアウトしますか？'),
+                              title: const Text('確認'),
+                              content: const Text('本当にログアウトしますか？'),
                               actions: <Widget>[
                                 TextButton(
-                                  child: Text('いいえ'),
+                                  child: const Text('いいえ'),
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
                                 ),
                                 TextButton(
-                                  child: Text('はい'),
+                                  child: const Text('はい'),
                                   onPressed: () async {
                                     EasyLoading.show(status: 'loading...');
                                     await userNotifier.signOut();
@@ -104,36 +102,34 @@ class SettingTopPage extends ConsumerWidget {
             ],
           ),
           SettingsSection(
-            title: Text('カスタマイズ'),
+            title: const Text('カスタマイズ'),
             tiles: [
               SettingsTile.navigation(
                 title: Text('材料の単位を編集'),
                 trailing: Icon(Icons.chevron_right_rounded),
                 onPressed: (context) {
-                  Navigator.push(
+                  Navigator.push<MaterialPageRoute>(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EditIngredientUnitPage(),
-                        fullscreenDialog: false,
+                        builder: (context) => const EditIngredientUnitPage(),
                       ));
                 },
               ),
               SettingsTile.navigation(
-                title: Text('テーマの変更'),
-                trailing: Icon(Icons.chevron_right_rounded),
+                title: const Text('テーマの変更'),
+                trailing: const Icon(Icons.chevron_right_rounded),
                 onPressed: (context) {
-                  Navigator.push(
+                  Navigator.push<MaterialPageRoute>(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EditThemePage(),
-                        fullscreenDialog: false,
+                        builder: (context) => const EditThemePage(),
                       ));
                 },
               ),
             ],
           ),
           SettingsSection(
-            title: Text('サポート'),
+            title: const Text('サポート'),
             tiles: [
               // SettingsTile.navigation(
               //   title: Text('お知らせ'),
@@ -144,32 +140,31 @@ class SettingTopPage extends ConsumerWidget {
               //   trailing: Icon(Icons.chevron_right_rounded),
               // ),
               SettingsTile.navigation(
-                title: Text('ご意見・ご要望'),
-                trailing: Icon(Icons.chevron_right_rounded),
+                title: const Text('ご意見・ご要望'),
+                trailing: const Icon(Icons.chevron_right_rounded),
                 onPressed: (context) {
-                  Navigator.push(
+                  Navigator.push<MaterialPageRoute>(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => SendFeedbackPage(),
-                        fullscreenDialog: false,
+                        builder: (context) => const SendFeedbackPage(),
                       ));
                 },
               ),
               SettingsTile.navigation(
-                title: Text('お問い合わせ'),
-                trailing: Icon(Icons.chevron_right_rounded),
+                title: const Text('お問い合わせ'),
+                trailing: const Icon(Icons.chevron_right_rounded),
                 onPressed: (context) async {
                   if (!await sendInquiry()) {
-                    showDialog(
+                    showDialog<AlertDialog>(
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: Text('エラー'),
-                          content: Text('エラーが発生しました。\n再度お試しください。'
+                          title: const Text('エラー'),
+                          content: const Text('エラーが発生しました。\n再度お試しください。'
                               '\n\n何度かお試しいただいても解決されない場合、お手数ではございますが次の宛先までお問い合わせ内容をお送りください。\n\ntoda.myrecipe@gmail.com'),
                           actions: [
                             TextButton(
-                              child: Text('閉じる'),
+                              child: const Text('閉じる'),
                               onPressed: () {
                                 Navigator.pop(context);
                               },
@@ -182,10 +177,10 @@ class SettingTopPage extends ConsumerWidget {
                 },
               ),
               SettingsTile.navigation(
-                title: Text('レビューを書く'),
-                trailing: Icon(Icons.chevron_right_rounded),
+                title: const Text('レビューを書く'),
+                trailing: const Icon(Icons.chevron_right_rounded),
                 onPressed: (context) async {
-                  final InAppReview inAppReview = InAppReview.instance;
+                  final inAppReview = InAppReview.instance;
 
                   if (await inAppReview.isAvailable()) {
                     inAppReview.requestReview();
@@ -195,29 +190,27 @@ class SettingTopPage extends ConsumerWidget {
             ],
           ),
           SettingsSection(
-            title: Text('アプリについて'),
+            title: const Text('アプリについて'),
             tiles: [
               SettingsTile.navigation(
-                title: Text('利用規約'),
-                trailing: Icon(Icons.chevron_right_rounded),
+                title: const Text('利用規約'),
+                trailing: const Icon(Icons.chevron_right_rounded),
                 onPressed: (context) async {
-                  Navigator.push(
+                  Navigator.push<MaterialPageRoute>(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TermsPage(),
-                        fullscreenDialog: false,
+                        builder: (context) => const TermsPage(),
                       ));
                 },
               ),
               SettingsTile.navigation(
-                title: Text('プライバシーポリシー'),
-                trailing: Icon(Icons.chevron_right_rounded),
+                title: const Text('プライバシーポリシー'),
+                trailing: const Icon(Icons.chevron_right_rounded),
                 onPressed: (context) {
-                  Navigator.push(
+                  Navigator.push<MaterialPageRoute>(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PrivacyPolicyPage(),
-                        fullscreenDialog: false,
+                        builder: (context) => const PrivacyPolicyPage(),
                       ));
                 },
               ),
@@ -235,22 +228,22 @@ class SettingTopPage extends ConsumerWidget {
                   style: TextStyle(color: Theme.of(context).errorColor),
                 ),
                 onPressed: () {
-                  showDialog(
+                  showDialog<AlertDialog>(
                     context: context,
                     builder: (context) {
                       return AlertDialog(
-                        title: Text('確認'),
-                        content: Text(
+                        title: const Text('確認'),
+                        content: const Text(
                             '本当に退会しますか？\n\n※ログインしている場合、退会するには再度認証が必要です。\n※退会した場合、登録したアカウントやレシピの情報全てが削除され、二度とログインすることができなくなります。'),
                         actions: <Widget>[
                           TextButton(
-                            child: Text('いいえ'),
+                            child: const Text('いいえ'),
                             onPressed: () {
                               Navigator.pop(context);
                             },
                           ),
                           TextButton(
-                            child: Text('はい（認証へ進む）'),
+                            child: const Text('はい（認証へ進む）'),
                             onPressed: () async {
                               // providerId : 認証(ログイン)種別
                               final providerId = userNotifier.fetchProviderId();
@@ -273,11 +266,11 @@ class SettingTopPage extends ConsumerWidget {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: Text('退会失敗'),
-                                        content: Text('$deleteUserErrorText'),
+                                        title: const Text('退会失敗'),
+                                        content: Text(deleteUserErrorText),
                                         actions: [
                                           TextButton(
-                                            child: Text('閉じる'),
+                                            child: const Text('閉じる'),
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
@@ -292,7 +285,7 @@ class SettingTopPage extends ConsumerWidget {
                               /// email
                               else if (providerId == 'password') {
                                 final email = userNotifier.fetchEmail();
-                                showDialog(
+                                showDialog<ReAuthWithEmailDialog>(
                                   context: context,
                                   builder: (context) {
                                     return ReAuthWithEmailDialog(email);
@@ -313,7 +306,7 @@ class SettingTopPage extends ConsumerWidget {
 
                                   if (deleteUserErrorText == null) {
                                     EasyLoading.showSuccess('退会しました');
-                                    int popInt = 0;
+                                    var popInt = 0;
                                     Navigator.popUntil(
                                         context, (_) => popInt++ >= 2);
                                   } else {
@@ -322,11 +315,11 @@ class SettingTopPage extends ConsumerWidget {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          title: Text('退会失敗'),
-                                          content: Text('$deleteUserErrorText'),
+                                          title: const Text('退会失敗'),
+                                          content: Text(deleteUserErrorText),
                                           actions: [
                                             TextButton(
-                                              child: Text('閉じる'),
+                                              child: const Text('閉じる'),
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
@@ -342,11 +335,11 @@ class SettingTopPage extends ConsumerWidget {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: Text('認証失敗'),
-                                        content: Text('$loginErrorText'),
+                                        title: const Text('認証失敗'),
+                                        content: Text(loginErrorText),
                                         actions: [
                                           TextButton(
-                                            child: Text('閉じる'),
+                                            child: const Text('閉じる'),
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
@@ -371,7 +364,7 @@ class SettingTopPage extends ConsumerWidget {
 
                                   if (deleteUserErrorText == null) {
                                     EasyLoading.showSuccess('退会しました');
-                                    int popInt = 0;
+                                    var popInt = 0;
                                     Navigator.popUntil(
                                         context, (_) => popInt++ >= 2);
                                   } else {
@@ -380,11 +373,11 @@ class SettingTopPage extends ConsumerWidget {
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          title: Text('退会失敗'),
-                                          content: Text('$deleteUserErrorText'),
+                                          title: const Text('退会失敗'),
+                                          content: Text(deleteUserErrorText),
                                           actions: [
                                             TextButton(
-                                              child: Text('閉じる'),
+                                              child: const Text('閉じる'),
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
@@ -400,11 +393,11 @@ class SettingTopPage extends ConsumerWidget {
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: Text('認証失敗'),
-                                        content: Text('$loginErrorText'),
+                                        title: const Text('認証失敗'),
+                                        content: Text(loginErrorText),
                                         actions: [
                                           TextButton(
-                                            child: Text('閉じる'),
+                                            child: const Text('閉じる'),
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
@@ -432,10 +425,9 @@ class SettingTopPage extends ConsumerWidget {
 
   Future<bool> sendInquiry() async {
     try {
-      final Email email = Email(
+      final email = Email(
         body:
             'お困りの状況について、以下のフォーマットを参考にお問い合わせいただけますと幸いです。\n\n■お問い合わせフォーマット\n1.発生した事象やお困りの状況の詳細(画面の表示や挙動など)\n\n2.事象が発生した日時\n\n3.事象発生時に行った操作\n\n4.その他',
-        subject: '',
         recipients: ['toda.myrecipe@gmail.com'],
       );
       await FlutterEmailSender.send(email);
@@ -449,7 +441,7 @@ class SettingTopPage extends ConsumerWidget {
 class ReAuthWithEmailDialog extends ConsumerWidget {
   ReAuthWithEmailDialog(this.email);
 
-  final email;
+  final String email;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -463,7 +455,7 @@ class ReAuthWithEmailDialog extends ConsumerWidget {
         ref.watch(passwordIsObscureProvider.notifier);
 
     return AlertDialog(
-      title: Text('退会するために再度認証をお願いします。'),
+      title: const Text('退会するために再度認証をお願いします。'),
       content: SizedBox(
         height: 140.h,
         child: Column(
@@ -472,7 +464,7 @@ class ReAuthWithEmailDialog extends ConsumerWidget {
                 padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8).r,
                 child: Row(
                   children: [
-                    Icon(Icons.mail_outline_rounded),
+                    const Icon(Icons.mail_outline_rounded),
                     SizedBox(
                       width: 8.w,
                     ),
@@ -483,7 +475,7 @@ class ReAuthWithEmailDialog extends ConsumerWidget {
                   ],
                 )),
             Padding(
-              padding: const EdgeInsets.all(8.0).r,
+              padding: const EdgeInsets.all(8).r,
               child: TextField(
                 onChanged: (password) {
                   passwordNotifier.update((state) => password);
@@ -491,17 +483,19 @@ class ReAuthWithEmailDialog extends ConsumerWidget {
                 obscureText: passwordIsObscure,
                 decoration: InputDecoration(
                   labelText: 'パスワード',
-                  prefixIcon: Icon(Icons.lock_open_rounded),
+                  prefixIcon: const Icon(Icons.lock_open_rounded),
                   suffixIcon: IconButton(
-                    icon: Icon(passwordIsObscure
-                        ? Icons.visibility_off_rounded
-                        : Icons.visibility_rounded),
+                    icon: Icon(
+                      passwordIsObscure
+                          ? Icons.visibility_off_rounded
+                          : Icons.visibility_rounded,
+                    ),
                     onPressed: () {
                       passwordIsObscureNotifier
                           .update((state) => !passwordIsObscure);
                     },
                   ),
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                 ),
               ),
             ),
@@ -510,14 +504,14 @@ class ReAuthWithEmailDialog extends ConsumerWidget {
       ),
       actions: <Widget>[
         TextButton(
-          child: Text('キャンセル'),
+          child: const Text('キャンセル'),
           onPressed: () {
-            int popInt = 0;
+            var popInt = 0;
             Navigator.popUntil(context, (_) => popInt++ >= 2);
           },
         ),
         TextButton(
-          child: Text('再認証して退会'),
+          child: const Text('再認証して退会'),
           onPressed: () async {
             EasyLoading.show(status: 'loading...');
             final reAuth =
@@ -539,11 +533,11 @@ class ReAuthWithEmailDialog extends ConsumerWidget {
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text('認証失敗'),
-                    content: Text('$loginErrorText'),
+                    title: const Text('認証失敗'),
+                    content: Text(loginErrorText),
                     actions: [
                       TextButton(
-                        child: Text('閉じる'),
+                        child: const Text('閉じる'),
                         onPressed: () {
                           Navigator.pop(context);
                         },

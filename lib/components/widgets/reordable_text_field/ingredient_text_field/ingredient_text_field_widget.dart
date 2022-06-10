@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
-import 'package:uuid/uuid.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/state/other_provider/providers.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:recipe/components/validation/validation.dart';
 import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_model.dart';
+import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 import 'package:recipe/state/ingredient_list/ingredient_list_provider.dart';
+import 'package:recipe/state/other_provider/providers.dart';
+import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
+import 'package:uuid/uuid.dart';
 
 class IngredientTextFieldWidget extends ConsumerWidget {
   const IngredientTextFieldWidget({Key? key, this.recipe}) : super(key: key);
@@ -136,7 +135,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
 
                                   return TextButton(
                                       onPressed: () {
-                                        showCupertinoModalPopup(
+                                        showCupertinoModalPopup<Container>(
                                             context: context,
                                             builder: (context) {
                                               return Container(
@@ -240,7 +239,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                     unit: null,
                   );
                   if (!ingredientListNotifier.add(ingredient)) {
-                    showDialog(
+                    showDialog<AlertDialog>(
                       context: context,
                       builder: (context) {
                         return AlertDialog(
@@ -262,15 +261,14 @@ class IngredientTextFieldWidget extends ConsumerWidget {
               ),
             ),
             Expanded(
-              flex: 1,
               child: TextButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditIngredientUnitPage(),
-                          fullscreenDialog: false,
-                        ));
+                    Navigator.push<MaterialPageRoute>(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const EditIngredientUnitPage(),
+                      ),
+                    );
                   },
                   child: Text(
                     '単位を編集',

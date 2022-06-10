@@ -16,15 +16,14 @@ class EditIngredientUnitPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           '材料の単位を編集',
         ),
       ),
       body: ValueListenableBuilder(
           valueListenable: IngredientUnitBoxes.getIngredientUnit().listenable(),
-          builder: (context, Box box, widget) {
-            EditIngredientUnitModel ingredientUnitEditModel =
-                EditIngredientUnitModel();
+          builder: (context, box, widget) {
+            final ingredientUnitEditModel = EditIngredientUnitModel();
             final ingredientUnitList =
                 ingredientUnitEditModel.fetchIngredientUnitList();
 
@@ -32,16 +31,16 @@ class EditIngredientUnitPage extends ConsumerWidget {
             String? errorTextWhenAdding;
 
             return SettingsList(sections: [
-              SettingsSection(title: Text('追加'), tiles: [
+              SettingsSection(title: const Text('追加'), tiles: [
                 SettingsTile.navigation(
-                  title: Text('単位を追加'),
-                  trailing: Icon(Icons.chevron_right_rounded),
+                  title: const Text('単位を追加'),
+                  trailing: const Icon(Icons.chevron_right_rounded),
                   onPressed: (context) {
-                    showDialog(
+                    showDialog<AlertDialog>(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text('単位を追加'),
+                            title: const Text('単位を追加'),
                             content: TextField(
                               maxLength: 10,
                               onChanged: (value) {
@@ -50,13 +49,13 @@ class EditIngredientUnitPage extends ConsumerWidget {
                             ),
                             actions: <Widget>[
                               TextButton(
-                                child: Text('キャンセル'),
+                                child: const Text('キャンセル'),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                               ),
                               TextButton(
-                                child: Text('OK'),
+                                child: const Text('OK'),
                                 onPressed: () {
                                   EasyLoading.show(status: 'loading...');
                                   errorTextWhenAdding = ingredientUnitEditModel
@@ -66,10 +65,12 @@ class EditIngredientUnitPage extends ConsumerWidget {
                                         .addIngredientUnit(addedUnit!);
                                     Navigator.of(context).pop();
                                     EasyLoading.showSuccess(
-                                        '$addedUnitを追加しました');
+                                      '$addedUnitを追加しました',
+                                    );
                                   } else {
                                     EasyLoading.showError(
-                                        '$errorTextWhenAdding');
+                                      '$errorTextWhenAdding',
+                                    );
                                   }
                                 },
                               ),
@@ -79,11 +80,11 @@ class EditIngredientUnitPage extends ConsumerWidget {
                   },
                 ),
               ]),
-              SettingsSection(title: Text('単位'), tiles: [
+              SettingsSection(title: const Text('単位'), tiles: [
                 CustomSettingsTile(
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
                       color: Theme.of(context).backgroundColor,
                     ),
                     child: ReorderableListView.builder(
@@ -92,14 +93,14 @@ class EditIngredientUnitPage extends ConsumerWidget {
                             oldIndex, newIndex);
                       },
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: ingredientUnitList.length,
                       itemBuilder: (context, index) {
                         return Slidable(
                           key: ValueKey(ingredientUnitList[index]),
                           endActionPane: ActionPane(
                             extentRatio: 0.3,
-                            motion: ScrollMotion(),
+                            motion: const ScrollMotion(),
                             children: [
                               SlidableAction(
                                   borderRadius: BorderRadius.circular(10),
@@ -126,7 +127,7 @@ class EditIngredientUnitPage extends ConsumerWidget {
                             children: [
                               Container(
                                 height: 40.h,
-                                margin: EdgeInsetsDirectional.only(
+                                margin: const EdgeInsetsDirectional.only(
                                   start: 17.25,
                                   end: 15,
                                 ),
@@ -135,7 +136,7 @@ class EditIngredientUnitPage extends ConsumerWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        '${ingredientUnitList[index]}',
+                                        ingredientUnitList[index],
                                         style: Theme.of(context)
                                             .textTheme
                                             .subtitle1,
@@ -163,26 +164,26 @@ class EditIngredientUnitPage extends ConsumerWidget {
                   ),
                 ),
               ]),
-              SettingsSection(title: Text('初期化'), tiles: [
+              SettingsSection(title: const Text('初期化'), tiles: [
                 SettingsTile.navigation(
-                  title: Text('単位を初期化'),
-                  trailing: Icon(Icons.chevron_right_rounded),
+                  title: const Text('単位を初期化'),
+                  trailing: const Icon(Icons.chevron_right_rounded),
                   onPressed: (context) {
-                    showDialog(
+                    showDialog<AlertDialog>(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text('注意'),
-                            content: Text('本当に単位を初期化しますか？'),
+                            title: const Text('注意'),
+                            content: const Text('本当に単位を初期化しますか？'),
                             actions: <Widget>[
                               TextButton(
-                                child: Text('いいえ'),
+                                child: const Text('いいえ'),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                               ),
                               TextButton(
-                                child: Text('はい'),
+                                child: const Text('はい'),
                                 onPressed: () async {
                                   EasyLoading.show(status: 'loading...');
                                   await ingredientUnitEditModel

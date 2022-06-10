@@ -54,14 +54,14 @@ class RecipeDetailPage extends ConsumerWidget {
               actions: <Widget>[
                 IconButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.push<MaterialPageRoute>(
                           context,
                           MaterialPageRoute(
                             builder: (context) => UpdateRecipePage(recipe),
                             fullscreenDialog: true,
                           ));
                     },
-                    icon: Icon(Icons.edit))
+                    icon: const Icon(Icons.edit))
               ],
             );
           }),
@@ -82,21 +82,21 @@ class RecipeDetailPage extends ConsumerWidget {
                       'レシピを削除',
                       style: TextStyle(color: Theme.of(context).errorColor),
                     ),
-                    onPressed: () => showDialog(
+                    onPressed: () => showDialog<AlertDialog>(
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: Text('確認'),
-                            content: Text('本当にこのレシピを削除しますか？'),
+                            title: const Text('確認'),
+                            content: const Text('本当にこのレシピを削除しますか？'),
                             actions: <Widget>[
                               TextButton(
-                                child: Text('キャンセル'),
+                                child: const Text('キャンセル'),
                                 onPressed: () {
                                   Navigator.pop(context);
                                 },
                               ),
                               TextButton(
-                                child: Text('はい'),
+                                child: const Text('はい'),
                                 onPressed: () async {
                                   EasyLoading.show(status: 'loading...');
                                   //削除失敗

@@ -15,18 +15,18 @@ class RecipeListPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'レシピ一覧',
         ),
       ),
       body: recipes.when(
           error: (error, stack) => Text('Error: $error'),
-          loading: () => CircularProgressIndicator(),
+          loading: () => const CircularProgressIndicator(),
           data: (recipes) {
             return Padding(
               padding: const EdgeInsets.only(top: 8, left: 8, right: 8).r,
               child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                   ),
                   itemCount: recipes.length,
@@ -35,10 +35,9 @@ class RecipeListPage extends ConsumerWidget {
                     return GestureDetector(
                       ///画面遷移
                       onTap: () {
-                        Navigator.push(
+                        Navigator.push<MaterialPageRoute>(
                             context,
                             MaterialPageRoute(
-                              fullscreenDialog: false,
                               builder: (context) => RecipeDetailPage(
                                   recipe.recipeId!, 'recipe_list_page'),
                             ));

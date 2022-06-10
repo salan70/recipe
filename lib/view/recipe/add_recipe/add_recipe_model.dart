@@ -10,17 +10,15 @@ class AddRecipeModel extends ChangeNotifier {
   final User user;
 
   Future<bool> addRecipe(Recipe recipe) async {
-    RecipeRepository _recipeRepository = RecipeRepository(user: user);
+    final recipeRepository = RecipeRepository(user: user);
 
-    Map<String, Map<String, dynamic>>? ingredientListMap =
-        _ingredientMapToList(recipe.ingredientList);
-    Map<String, Map<String, dynamic>>? procedureListMap =
-        _procedureMapToList(recipe.procedureList);
+    final ingredientListMap = _ingredientMapToList(recipe.ingredientList);
+    final procedureListMap = _procedureMapToList(recipe.procedureList);
 
     try {
-      DocumentReference docRef = await _recipeRepository.addRecipe(
+      final docRef = await recipeRepository.addRecipe(
           recipe, ingredientListMap, procedureListMap);
-      String recipeId = docRef.id;
+      final recipeId = docRef.id;
       await _addImage(recipe, recipeId);
 
       return true;
@@ -31,7 +29,7 @@ class AddRecipeModel extends ChangeNotifier {
   }
 
   Map<String, dynamic> _ingredientToMap(Ingredient ingredient) {
-    return {
+    return <String, dynamic>{
       'ingredientName': ingredient.name,
       'ingredientAmount': ingredient.amount,
       'ingredientUnit': ingredient.unit
@@ -40,10 +38,10 @@ class AddRecipeModel extends ChangeNotifier {
 
   Map<String, Map<String, dynamic>> _ingredientMapToList(
       List<Ingredient>? ingredientList) {
-    Map<String, Map<String, dynamic>> ingredientListMap = {};
+    final Map<String, Map<String, dynamic>> ingredientListMap = {};
 
     if (ingredientList != null) {
-      for (int index = 0; index < ingredientList.length; index++) {
+      for (var index = 0; index < ingredientList.length; index++) {
         if (ingredientList[index].name != '') {
           ingredientListMap[index.toString()] =
               _ingredientToMap(ingredientList[index]);
@@ -54,7 +52,7 @@ class AddRecipeModel extends ChangeNotifier {
   }
 
   Map<String, dynamic> _procedureToMap(Procedure procedure) {
-    return {
+    return <String, dynamic>{
       'content': procedure.content,
     };
   }
@@ -64,7 +62,7 @@ class AddRecipeModel extends ChangeNotifier {
     Map<String, Map<String, dynamic>> procedureListMap = {};
 
     if (procedureList != null) {
-      for (int index = 0; index < procedureList.length; index++) {
+      for (var index = 0; index < procedureList.length; index++) {
         if (procedureList[index].content != '') {
           procedureListMap[index.toString()] =
               _procedureToMap(procedureList[index]);
@@ -74,14 +72,14 @@ class AddRecipeModel extends ChangeNotifier {
     return procedureListMap;
   }
 
-  Future _addImage(Recipe recipe, String recipeId) async {
-    RecipeRepository _recipeRepository = RecipeRepository(user: user);
+  Future<void> _addImage(Recipe recipe, String recipeId) async {
+    final recipeRepository = RecipeRepository(user: user);
 
     if (recipe.imageFile == null || recipe.imageFile!.path == '') {
       print('imageFile is Null or empty');
     } else {
       print(recipe.imageFile);
-      await _recipeRepository.addImage(recipe.imageFile!, recipeId);
+      await recipeRepository.addImage(recipe.imageFile!, recipeId);
     }
   }
 }

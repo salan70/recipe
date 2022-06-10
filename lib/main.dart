@@ -38,31 +38,31 @@ void main() async {
 class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    EditThemeModel editThemeModel = EditThemeModel();
+    final editThemeModel = EditThemeModel();
 
     return ValueListenableBuilder(
         valueListenable: CustomizationsBoxes.getCustomizations().listenable(),
         builder: (context, Box box, widget) {
-          int usedSchemeIndex = editThemeModel.fetchSelectedFlexSchemeIndex();
-          int usedThemeModeIndex = editThemeModel.fetchSelectedThemeModeIndex();
-          ThemeMode usedThemeMode =
+          final usedSchemeIndex = editThemeModel.fetchSelectedFlexSchemeIndex();
+          final usedThemeModeIndex =
+              editThemeModel.fetchSelectedThemeModeIndex();
+          final usedThemeMode =
               editThemeModel.themeModeList[usedThemeModeIndex].themeMode;
 
-          FlexScheme usedScheme =
-              editThemeModel.flexSchemeList[usedSchemeIndex];
+          final usedScheme = editThemeModel.flexSchemeList[usedSchemeIndex];
 
-          Color usedSchemePrimaryColorLight =
+          final usedSchemePrimaryColorLight =
               FlexThemeData.light(scheme: usedScheme).primaryColorDark;
-          Color usedSchemeBackGroundColorLight =
+          final usedSchemeBackGroundColorLight =
               FlexThemeData.light(scheme: usedScheme).backgroundColor;
-          Color usedSchemeHintColorLight =
+          final usedSchemeHintColorLight =
               FlexThemeData.light(scheme: usedScheme).hintColor;
 
-          Color usedSchemePrimaryColorDark =
+          final usedSchemePrimaryColorDark =
               FlexThemeData.dark(scheme: usedScheme).primaryColorDark;
-          Color usedSchemeBackGroundColorDark =
+          final usedSchemeBackGroundColorDark =
               FlexThemeData.dark(scheme: usedScheme).backgroundColor;
-          Color usedSchemeHintColorDark =
+          final usedSchemeHintColorDark =
               FlexThemeData.dark(scheme: usedScheme).hintColor;
 
           return ScreenUtilInit(
@@ -78,7 +78,8 @@ class MyApp extends ConsumerWidget {
                   ).copyWith(
                     /// textField
                     inputDecorationTheme: InputDecorationTheme(
-                      contentPadding: EdgeInsets.only(left: 4, bottom: 4).r,
+                      contentPadding:
+                          const EdgeInsets.only(left: 4, bottom: 4).r,
                       isDense: true,
                     ),
 
@@ -128,7 +129,7 @@ class MyApp extends ConsumerWidget {
 
                     /// card
                     cardTheme: CardTheme(
-                      margin: EdgeInsets.all(8).r,
+                      margin: const EdgeInsets.all(8).r,
                       elevation: 3,
                     ),
                   ),
@@ -139,7 +140,8 @@ class MyApp extends ConsumerWidget {
                   ).copyWith(
                     /// textField
                     inputDecorationTheme: InputDecorationTheme(
-                      contentPadding: EdgeInsets.only(left: 4, bottom: 4).r,
+                      contentPadding:
+                          const EdgeInsets.only(left: 4, bottom: 4).r,
                       isDense: true,
                     ),
 
@@ -189,14 +191,14 @@ class MyApp extends ConsumerWidget {
 
                     /// card
                     cardTheme: CardTheme(
-                      margin: EdgeInsets.all(8).r,
+                      margin: const EdgeInsets.all(8).r,
                       elevation: 3,
                     ),
                   ),
                   onGenerateRoute: (settings) {
-                    return MaterialWithModalsPageRoute(
+                    return MaterialWithModalsPageRoute<PageContainerPage>(
                       settings: settings,
-                      builder: (context) => PageContainerPage(),
+                      builder: (context) => const PageContainerPage(),
                     );
                   },
                   debugShowCheckedModeBanner: false,

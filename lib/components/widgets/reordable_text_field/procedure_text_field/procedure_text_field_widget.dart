@@ -88,7 +88,7 @@ class ProcedureTextFieldWidget extends ConsumerWidget {
             final String id = Uuid().v4();
             final Procedure procedures = Procedure(id: id, content: '');
             if (!procedureListNotifier.add(procedures)) {
-              showDialog(
+              showDialog<AlertDialog>(
                 context: context,
                 builder: (context) {
                   return AlertDialog(

@@ -6,8 +6,10 @@ class FeedbackRepository {
 
   final User user;
 
-  Future sendFeedback(String feedback) async {
-    await FirebaseFirestore.instance.collection('feedbacks').add({
+  Future<void> sendFeedback(String feedback) async {
+    await FirebaseFirestore.instance
+        .collection('feedbacks')
+        .add(<String, dynamic>{
       'uid': user.uid,
       'createdAt': DateTime.now(),
       'feedback': feedback,

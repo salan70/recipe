@@ -29,7 +29,7 @@ class UpdateRecipeModel extends ChangeNotifier {
   }
 
   Map<String, dynamic> _ingredientToMap(Ingredient ingredient) {
-    return {
+    return <String, dynamic>{
       'ingredientName': ingredient.name,
       'ingredientAmount': ingredient.amount,
       'ingredientUnit': ingredient.unit
@@ -53,7 +53,7 @@ class UpdateRecipeModel extends ChangeNotifier {
   }
 
   Map<String, dynamic> _procedureToMap(Procedure procedure) {
-    return {
+    return <String, dynamic>{
       'content': procedure.content,
     };
   }
@@ -63,7 +63,7 @@ class UpdateRecipeModel extends ChangeNotifier {
     Map<String, Map<String, dynamic>> procedureListMap = {};
 
     if (procedureList != null) {
-      for (int index = 0; index < procedureList.length; index++) {
+      for (var index = 0; index < procedureList.length; index++) {
         if (procedureList[index].content != '') {
           procedureListMap[index.toString()] =
               _procedureToMap(procedureList[index]);
@@ -73,17 +73,17 @@ class UpdateRecipeModel extends ChangeNotifier {
     return procedureListMap;
   }
 
-  Future _updateImage(Recipe originalRecipe, Recipe recipe) async {
-    RecipeRepository _recipeRepository = RecipeRepository(user: user);
+  Future<void> _updateImage(Recipe originalRecipe, Recipe recipe) async {
+    final recipeRepository = RecipeRepository(user: user);
 
     // 元の画像がある & 画像を変更する場合、元の画像を削除して新たに画像を保存する
     if (recipe.imageFile == null || recipe.imageFile!.path == '') {
       print('imageFile is Null or empty');
     } else {
       if (originalRecipe.imageUrl != '') {
-        await _recipeRepository.deleteImage(originalRecipe);
+        await recipeRepository.deleteImage(originalRecipe);
       }
-      await _recipeRepository.addImage(
+      await recipeRepository.addImage(
           recipe.imageFile!, originalRecipe.recipeId!);
     }
   }

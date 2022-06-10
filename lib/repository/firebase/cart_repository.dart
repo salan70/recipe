@@ -21,24 +21,27 @@ class CartRepository {
 
     final recipeStream = recipeCollection.snapshots().map(
           (e) => e.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data =
-                document.data()! as Map<String, dynamic>;
+            final data = document.data()! as Map<String, dynamic>;
 
-            final String recipeId = document.id;
-            final String recipeName = data['recipeName'];
-            final int forHowManyPeople = data['forHowManyPeople'];
-            final int? countInCart = data['countInCart'];
+            final recipeId = document.id;
+            final recipeName = data['recipeName'] as String;
+            final forHowManyPeople = data['forHowManyPeople'] as int;
+            final countInCart = data['countInCart'] as int?;
             // ingredient関連
-            final Map<String, Map<String, dynamic>> ingredientListMap =
-                Map<String, Map<String, dynamic>>.from(data['ingredientList']);
+            final ingredientListMap = Map<String, Map<String, dynamic>>.from(
+              data['ingredientList'] as Map<String, Map<String, dynamic>>,
+            );
             // print('ingredientListMap : $ingredientListMap');
-            final List<Ingredient> ingredientList = [];
+            final ingredientList = <Ingredient>[];
             ingredientListMap.forEach((key, value) {
-              ingredientList.add(Ingredient(
-                  id: Uuid().v4(),
-                  name: value['ingredientName'],
-                  amount: value['ingredientAmount'],
-                  unit: value['ingredientUnit']));
+              ingredientList.add(
+                Ingredient(
+                  id: const Uuid().v4(),
+                  name: value['ingredientName'] as String,
+                  amount: value['ingredientAmount'] as String,
+                  unit: value['ingredientUnit'] as String,
+                ),
+              );
             });
 
             return RecipeListInCart(
@@ -55,7 +58,7 @@ class CartRepository {
   }
 
   /// update
-  Future updateCount(String recipeId, int count) async {
+  Future<void> updateCount(String recipeId, int count) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)

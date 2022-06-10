@@ -13,7 +13,7 @@ class SearchRecipePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    SearchRecipeModel searchRecipeModel = SearchRecipeModel();
+    final searchRecipeModel = SearchRecipeModel();
 
     final recipes = ref.watch(recipeListStreamProvider);
     final recipeAndIngredientNameList =
@@ -34,7 +34,7 @@ class SearchRecipePage extends ConsumerWidget {
                 autofocus: true,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
-                  contentPadding: EdgeInsets.all(8),
+                  contentPadding: const EdgeInsets.all(8),
                   fillColor: Theme.of(context).dividerColor,
                   filled: true,
                   border: OutlineInputBorder(
@@ -66,16 +66,16 @@ class SearchRecipePage extends ConsumerWidget {
       ),
       body: recipes.when(
           error: (error, stack) => Text('Error: $error'),
-          loading: () => CircularProgressIndicator(),
+          loading: () => const CircularProgressIndicator(),
           data: (recipes) {
-            List<Recipe> outputRecipeList = [];
+            var outputRecipeList = <Recipe>[];
             // 検索画面起動時に、全レシピが表示される
             if (searchResultRecipeIdList == null) {
               outputRecipeList = recipes;
             } else {
               outputRecipeList = [];
-              for (var searchResultRecipeId in searchResultRecipeIdList) {
-                for (var recipe in recipes) {
+              for (final searchResultRecipeId in searchResultRecipeIdList) {
+                for (final recipe in recipes) {
                   if (recipe.recipeId == searchResultRecipeId) {
                     outputRecipeList.add(recipe);
                   }
@@ -95,7 +95,8 @@ class SearchRecipePage extends ConsumerWidget {
                 : Padding(
                     padding: const EdgeInsets.only(top: 8, left: 8, right: 8).r,
                     child: GridView.builder(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
                         ),
                         itemCount: outputRecipeList.length,
@@ -104,13 +105,13 @@ class SearchRecipePage extends ConsumerWidget {
                           return GestureDetector(
                             ///画面遷移
                             onTap: () {
-                              Navigator.push(
+                              Navigator.push<MaterialPageRoute>(
                                   context,
                                   MaterialPageRoute(
-                                    fullscreenDialog: false,
                                     builder: (context) => RecipeDetailPage(
-                                        outputRecipe.recipeId!,
-                                        'recipe_list_page'),
+                                      outputRecipe.recipeId!,
+                                      'recipe_list_page',
+                                    ),
                                   ));
                             },
                             child: RecipeCardWidget(outputRecipe),

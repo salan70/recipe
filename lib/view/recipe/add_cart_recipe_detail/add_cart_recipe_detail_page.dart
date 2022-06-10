@@ -30,16 +30,16 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.arrow_back_ios),
+                  icon: const Icon(Icons.arrow_back_ios),
                 ),
-                title: Text('エラー'),
+                title: const Text('エラー'),
               ),
           loading: () => AppBar(
                 leading: IconButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.arrow_back_ios),
+                  icon: const Icon(Icons.arrow_back_ios),
                 ),
               ),
           data: (recipe) {
@@ -49,22 +49,22 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.arrow_back_ios),
+                icon: const Icon(Icons.arrow_back_ios),
               ),
-              title: Text(
+              title: const Text(
                 'レシピの詳細',
               ),
               actions: <Widget>[
                 IconButton(
                     onPressed: () {
-                      Navigator.push(
+                      Navigator.push<MaterialPageRoute>(
                           context,
                           MaterialPageRoute(
                             builder: (context) => UpdateRecipePage(recipe),
                             fullscreenDialog: true,
                           ));
                     },
-                    icon: Icon(Icons.edit))
+                    icon: const Icon(Icons.edit))
               ],
             );
           }),
@@ -92,7 +92,9 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                       recipeNumCountProviderFamily(recipe.countInCart)
                           .notifier);
                   return Container(
-                    padding: EdgeInsets.only(left: 16, right: 16, bottom: 48).r,
+                    padding:
+                        const EdgeInsets.only(left: 16, right: 16, bottom: 48)
+                            .r,
                     decoration: BoxDecoration(
                         border: Border(
                             top: BorderSide(
@@ -111,7 +113,7 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                               child: ElevatedButton(
                                 onPressed: () async {
                                   if (counter == 0) {
-                                    showDialog(
+                                    showDialog<AlertDialog>(
                                       context: context,
                                       builder: (context) => AlertDialog(
                                         title: Text('確認'),
@@ -139,16 +141,18 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                                                     'カートを更新しました');
                                               } else {
                                                 EasyLoading.dismiss();
-                                                showDialog(
+                                                showDialog<AlertDialog>(
                                                   context: context,
                                                   builder: (context) {
                                                     return AlertDialog(
-                                                      title: Text('カート更新失敗'),
+                                                      title:
+                                                          const Text('カート更新失敗'),
                                                       content:
                                                           Text('$errorText'),
                                                       actions: [
                                                         TextButton(
-                                                          child: Text('閉じる'),
+                                                          child:
+                                                              const Text('閉じる'),
                                                           onPressed: () {
                                                             Navigator.pop(
                                                                 context);
@@ -160,7 +164,7 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                                                 );
                                               }
                                             },
-                                            child: Text('はい'),
+                                            child: const Text('はい'),
                                           ),
                                         ],
                                       ),
@@ -178,7 +182,7 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                                           '${recipe.recipeName}をカートに追加しました');
                                     } else {
                                       EasyLoading.dismiss();
-                                      showDialog(
+                                      showDialog<AlertDialog>(
                                         context: context,
                                         builder: (context) {
                                           return AlertDialog(
@@ -236,21 +240,22 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
                       }
                     },
                     icon: counter == 0
-                        ? Icon(Icons.remove_circle_outline)
-                        : Icon(Icons.remove_circle)),
+                        ? const Icon(Icons.remove_circle_outline)
+                        : const Icon(Icons.remove_circle)),
                 Text(
                   '× $counter',
                   style: Theme.of(context).primaryTextTheme.headline6,
                 ),
                 IconButton(
-                    onPressed: () {
-                      if (counter < 99) {
-                        counterNotifier.state++;
-                      }
-                    },
-                    icon: counter == 99
-                        ? Icon(Icons.add_circle_outline)
-                        : Icon(Icons.add_circle))
+                  onPressed: () {
+                    if (counter < 99) {
+                      counterNotifier.state++;
+                    }
+                  },
+                  icon: counter == 99
+                      ? const Icon(Icons.add_circle_outline)
+                      : const Icon(Icons.add_circle),
+                )
               ],
             ),
           ],

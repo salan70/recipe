@@ -100,11 +100,12 @@ class CartListPage extends ConsumerWidget {
                                       ),
                                       TextButton.icon(
                                           onPressed: () {
-                                            showDialog(
+                                            showDialog<Widget>(
                                               context: context,
                                               builder: (_) {
                                                 return _introductionOfMoveListDialog(
-                                                    context);
+                                                  context,
+                                                );
                                               },
                                             );
                                           },
@@ -194,15 +195,15 @@ class CartListPage extends ConsumerWidget {
                           style: Theme.of(context).primaryTextTheme.caption,
                         ),
                         trailing: IconButton(
-                          icon: Icon(Icons.chevron_right_rounded),
+                          icon: const Icon(Icons.chevron_right_rounded),
                           onPressed: () {
-                            Navigator.push(
+                            Navigator.push<MaterialPageRoute>(
                                 context,
                                 MaterialPageRoute(
-                                  fullscreenDialog: false,
                                   builder: (context) =>
                                       CartListRecipeDetailPage(
-                                          _recipe.recipeId!),
+                                    _recipe.recipeId!,
+                                  ),
                                 ));
                           },
                         ),
@@ -271,13 +272,15 @@ class CartListPage extends ConsumerWidget {
                 cartListModel.toggleIsChecked(_id, isChecked!);
               },
               secondary: IconButton(
-                icon: Icon(Icons.info_outline),
+                icon: const Icon(Icons.info_outline),
                 onPressed: () {
-                  showDialog(
+                  showDialog<Widget>(
                     context: context,
                     builder: (_) {
                       return _recipeListPerIngredientDialog(
-                          context, _ingredient);
+                        context,
+                        _ingredient,
+                      );
                     },
                   );
                 },
@@ -315,10 +318,9 @@ class CartListPage extends ConsumerWidget {
               trailing: IconButton(
                 icon: Icon(Icons.chevron_right_rounded),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.push<MaterialPageRoute>(
                       context,
                       MaterialPageRoute(
-                        fullscreenDialog: false,
                         builder: (context) =>
                             CartListRecipeDetailPage(recipe.recipeId),
                       ));

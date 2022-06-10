@@ -1,15 +1,15 @@
+import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/services.dart';
-import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'package:recipe/components/widgets/reordable_text_field/procedure_text_field/procedure_text_field_widget.dart';
 import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
+import 'package:recipe/components/widgets/reordable_text_field/procedure_text_field/procedure_text_field_widget.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/state/image_file/image_file_provider.dart';
 import 'package:recipe/view/other/introduction_ingredient_amount/introduction_ingredient_amount_page.dart';
@@ -34,7 +34,7 @@ class EditRecipeWidget extends ConsumerWidget {
             maxLines: 2,
             style: Theme.of(context).primaryTextTheme.headline5,
             controller: TextEditingController(text: recipe.recipeName),
-            decoration: InputDecoration.collapsed(hintText: 'レシピ名'),
+            decoration: const InputDecoration.collapsed(hintText: 'レシピ名'),
             onChanged: (value) {
               recipe.recipeName = value;
             },
@@ -48,13 +48,14 @@ class EditRecipeWidget extends ConsumerWidget {
                   ? imageFile.path != ''
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(20),
-                          child: Image.file(imageFile))
+                          child: Image.file(imageFile),
+                        )
                       : DecoratedBox(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(8),
                             color: Theme.of(context).dividerColor,
                           ),
-                          child: Icon(Icons.add_photo_alternate_outlined),
+                          child: const Icon(Icons.add_photo_alternate_outlined),
                         )
                   : recipe.imageUrl != '' && recipe.imageUrl != null
                       ? Image.network(
@@ -70,11 +71,11 @@ class EditRecipeWidget extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(8.0),
                             color: Theme.of(context).dividerColor,
                           ),
-                          child: Icon(Icons.add_photo_alternate_outlined),
+                          child: const Icon(Icons.add_photo_alternate_outlined),
                         ),
             ),
             onTap: () {
-              showAdaptiveActionSheet(
+              showAdaptiveActionSheet<BottomSheetAction>(
                 context: context,
                 title: const Text('画像の選択'),
                 androidBorderRadius: 30,
@@ -88,7 +89,7 @@ class EditRecipeWidget extends ConsumerWidget {
                               .pickImage(ImageSource.gallery);
                           Navigator.pop(context);
                         } else {
-                          showDialog(
+                          await showDialog<CupertinoAlertDialog>(
                             context: context,
                             builder: (context) {
                               return CupertinoAlertDialog(
@@ -118,7 +119,7 @@ class EditRecipeWidget extends ConsumerWidget {
                           await imageFileNotifier.pickImage(ImageSource.camera);
                           Navigator.pop(context);
                         } else {
-                          showDialog(
+                          await showDialog<CupertinoAlertDialog>(
                             context: context,
                             builder: (context) {
                               return CupertinoAlertDialog(
@@ -185,16 +186,19 @@ class EditRecipeWidget extends ConsumerWidget {
                               width: 24.w,
                               child: TextField(
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(
-                                          left: 2, top: 4, bottom: 4)
-                                      .r,
+                                  contentPadding: const EdgeInsets.only(
+                                    left: 2,
+                                    top: 4,
+                                    bottom: 4,
+                                  ).r,
                                   isDense: true,
                                 ),
                                 controller: recipe.forHowManyPeople == null
                                     ? null
                                     : TextEditingController(
                                         text:
-                                            recipe.forHowManyPeople.toString()),
+                                            recipe.forHowManyPeople.toString(),
+                                      ),
                                 keyboardType: TextInputType.number,
                                 inputFormatters: <TextInputFormatter>[
                                   FilteringTextInputFormatter.digitsOnly,
@@ -211,13 +215,13 @@ class EditRecipeWidget extends ConsumerWidget {
                       ),
                       TextButton.icon(
                           onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      IntroductionIngredientAmountPage(),
-                                  fullscreenDialog: false,
-                                ));
+                            Navigator.push<MaterialPageRoute>(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const IntroductionIngredientAmountPage(),
+                              ),
+                            );
                           },
                           icon: Icon(
                             Icons.info_outline,
@@ -250,7 +254,7 @@ class EditRecipeWidget extends ConsumerWidget {
                 ),
               ),
               SizedBox(height: 8.h),
-              ProcedureTextFieldWidget(),
+              const ProcedureTextFieldWidget(),
             ],
           ),
           // メモ

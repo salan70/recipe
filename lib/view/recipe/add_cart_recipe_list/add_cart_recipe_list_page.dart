@@ -35,13 +35,12 @@ class AddCartRecipeListPage extends ConsumerWidget {
 
     final stateIsChangedNotifier = ref.watch(stateIsChangedProvider.notifier);
 
-    AddCartRecipeListModel addCartRecipeListModel =
-        AddCartRecipeListModel(user: user!);
+    final addCartRecipeListModel = AddCartRecipeListModel(user: user!);
 
     return Scaffold(
       appBar: AppBar(
         elevation: 1,
-        title: Text(
+        title: const Text(
           'カートに追加するレシピを選択',
         ),
       ),
@@ -52,7 +51,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
             controller: pageController,
             maxHeight: MediaQuery.of(context).size.height * 0.6.h,
             minHeight: 20.h,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(18.0),
                     topRight: Radius.circular(18.0))
                 .r,
@@ -66,9 +65,9 @@ class AddCartRecipeListPage extends ConsumerWidget {
                         padding: const EdgeInsets.all(8.0).r,
                         child: GridView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
+                            physics: const NeverScrollableScrollPhysics(),
                             gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                             ),
                             itemCount: recipes.length,
@@ -79,10 +78,9 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                 ///画面遷移
                                 onTap: () {
                                   stateIsChangedNotifier.state = false;
-                                  Navigator.push(
+                                  Navigator.push<MaterialPageRoute>(
                                       context,
                                       MaterialPageRoute(
-                                        fullscreenDialog: false,
                                         builder: (context) =>
                                             AddBasketRecipeDetailPage(
                                                 recipe.recipeId!,
@@ -162,7 +160,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                     if (recipeForInCartListState.isEmpty != true) {
                       if (addCartRecipeListModel
                           .zeroIsIncludeInCart(recipeForInCartListState)) {
-                        showDialog(
+                        showDialog<AlertDialog>(
                           context: context,
                           builder: (context) => AlertDialog(
                             title: Text('確認'),
@@ -186,15 +184,15 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                     EasyLoading.showSuccess('カートを更新しました');
                                   } else {
                                     EasyLoading.dismiss();
-                                    showDialog(
+                                    showDialog<AlertDialog>(
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          title: Text('カート更新失敗'),
+                                          title: const Text('カート更新失敗'),
                                           content: Text('$errorText'),
                                           actions: [
                                             TextButton(
-                                              child: Text('閉じる'),
+                                              child: const Text('閉じる'),
                                               onPressed: () {
                                                 Navigator.pop(context);
                                               },
@@ -205,7 +203,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                     );
                                   }
                                 },
-                                child: Text('はい'),
+                                child: const Text('はい'),
                               ),
                             ],
                           ),
@@ -219,15 +217,15 @@ class AddCartRecipeListPage extends ConsumerWidget {
                           EasyLoading.showSuccess('カートを更新しました');
                         } else {
                           EasyLoading.dismiss();
-                          showDialog(
+                          showDialog<AlertDialog>(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('カート更新失敗'),
+                                title: const Text('カート更新失敗'),
                                 content: Text('$errorText'),
                                 actions: [
                                   TextButton(
-                                    child: Text('閉じる'),
+                                    child: const Text('閉じる'),
                                     onPressed: () {
                                       Navigator.pop(context);
                                     },
@@ -249,7 +247,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
             ],
           ),
         ),
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
       ),
     );
   }
@@ -267,8 +265,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
     final stateIsChanged = ref.watch(stateIsChangedProvider);
     final stateIsChangedNotifier = ref.watch(stateIsChangedProvider.notifier);
 
-    AddCartRecipeListModel addCartRecipeListModel =
-        AddCartRecipeListModel(user: user!);
+    final addCartRecipeListModel = AddCartRecipeListModel(user: user!);
 
     return MediaQuery.removePadding(
         context: context,
@@ -277,15 +274,16 @@ class AddCartRecipeListPage extends ConsumerWidget {
           padding: const EdgeInsets.only(right: 16, left: 16),
           decoration: BoxDecoration(
             color: Theme.of(context).bottomAppBarColor,
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(18.0),
-                topRight: Radius.circular(18.0)),
+            borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(18),
+              topRight: Radius.circular(18),
+            ),
           ),
           child: Column(
             children: [
               /// title
               SizedBox(
-                height: 8,
+                height: 8.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -300,7 +298,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                 ],
               ),
               SizedBox(
-                height: 8,
+                height: 8.h,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -319,15 +317,15 @@ class AddCartRecipeListPage extends ConsumerWidget {
                       style: TextStyle(color: Theme.of(context).errorColor),
                     ),
                     onPressed: () {
-                      showDialog(
+                      showDialog<AlertDialog>(
                         context: context,
                         builder: (context) => AlertDialog(
-                          title: Text('確認'),
-                          content: Text('本当にカートを空にしてよろしいですか？'),
+                          title: const Text('確認'),
+                          content: const Text('本当にカートを空にしてよろしいですか？'),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () => Navigator.pop(context, 'Cancel'),
-                              child: Text('いいえ'),
+                              child: const Text('いいえ'),
                             ),
                             TextButton(
                               onPressed: () async {
@@ -340,15 +338,15 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                   EasyLoading.showSuccess('カートを空にしました');
                                 } else {
                                   EasyLoading.dismiss();
-                                  showDialog(
+                                  showDialog<AlertDialog>(
                                     context: context,
                                     builder: (context) {
                                       return AlertDialog(
-                                        title: Text('カート更新失敗'),
+                                        title: const Text('カート更新失敗'),
                                         content: Text('$errorText'),
                                         actions: [
                                           TextButton(
-                                            child: Text('閉じる'),
+                                            child: const Text('閉じる'),
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
@@ -359,7 +357,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                   );
                                 }
                               },
-                              child: Text('はい'),
+                              child: const Text('はい'),
                             ),
                           ],
                         ),
@@ -369,13 +367,12 @@ class AddCartRecipeListPage extends ConsumerWidget {
                 ],
               ),
               SizedBox(
-                height: 8,
+                height: 8.h,
               ),
-              Divider(),
+              const Divider(),
               // body
               recipeListInCartStream.when(
                   error: (error, stack) {
-                    print('「recipeListInCartStream.when」でエラー： $error');
                     return Text('Error: $error');
                   },
                   loading: () => const CircularProgressIndicator(),
@@ -417,23 +414,26 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                           .subtitle2,
                                     ),
                                     IconButton(
-                                        onPressed: () {
-                                          stateIsChangedNotifier.state = true;
-                                          if (recipeForInCartListState[index]
-                                                  .countInCart! >
-                                              0) {
-                                            recipeForInCartListStateNotifier
-                                                .decrease(
-                                                    recipeForInCartListState[
-                                                            index]
-                                                        .recipeId!);
-                                          }
-                                        },
-                                        icon: recipeForInCartListState[index]
-                                                    .countInCart! ==
-                                                0
-                                            ? Icon(Icons.remove_circle_outline)
-                                            : Icon(Icons.remove_circle)),
+                                      onPressed: () {
+                                        stateIsChangedNotifier.state = true;
+                                        if (recipeForInCartListState[index]
+                                                .countInCart! >
+                                            0) {
+                                          recipeForInCartListStateNotifier
+                                              .decrease(
+                                                  recipeForInCartListState[
+                                                          index]
+                                                      .recipeId!);
+                                        }
+                                      },
+                                      icon: recipeForInCartListState[index]
+                                                  .countInCart! ==
+                                              0
+                                          ? const Icon(
+                                              Icons.remove_circle_outline,
+                                            )
+                                          : const Icon(Icons.remove_circle),
+                                    ),
                                     Text(
                                       '× ${recipeForInCartListState[index].countInCart!}',
                                       style: Theme.of(context)
@@ -441,23 +441,24 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                           .subtitle2,
                                     ),
                                     IconButton(
-                                        onPressed: () {
-                                          stateIsChangedNotifier.state = true;
-                                          if (recipeForInCartListState[index]
-                                                  .countInCart! <
-                                              99) {
-                                            recipeForInCartListStateNotifier
-                                                .increase(
-                                                    recipeForInCartListState[
-                                                            index]
-                                                        .recipeId!);
-                                          }
-                                        },
-                                        icon: recipeForInCartListState[index]
-                                                    .countInCart! ==
-                                                99
-                                            ? Icon(Icons.add_circle_outline)
-                                            : Icon(Icons.add_circle))
+                                      onPressed: () {
+                                        stateIsChangedNotifier.state = true;
+                                        if (recipeForInCartListState[index]
+                                                .countInCart! <
+                                            99) {
+                                          recipeForInCartListStateNotifier
+                                              .increase(
+                                                  recipeForInCartListState[
+                                                          index]
+                                                      .recipeId!);
+                                        }
+                                      },
+                                      icon: recipeForInCartListState[index]
+                                                  .countInCart! ==
+                                              99
+                                          ? const Icon(Icons.add_circle_outline)
+                                          : const Icon(Icons.add_circle),
+                                    )
                                   ],
                                 ),
                               ],

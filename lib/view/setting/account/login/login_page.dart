@@ -14,7 +14,7 @@ class LoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final LoginModel loginModel = LoginModel();
+    final loginModel = LoginModel();
 
     final passwordIsObscure = ref.watch(passwordIsObscureProvider);
     final passwordIsObscureNotifier =
@@ -31,11 +31,11 @@ class LoginPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('ログイン'),
+        title: const Text('ログイン'),
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.all(16.0).r,
+          padding: const EdgeInsets.all(16).r,
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +46,7 @@ class LoginPage extends ConsumerWidget {
                 textAlign: TextAlign.left,
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0).r,
+                padding: const EdgeInsets.all(8).r,
                 child: Column(
                   children: [
                     TextField(
@@ -56,8 +56,8 @@ class LoginPage extends ConsumerWidget {
                       decoration: InputDecoration(
                         labelText: 'メールアドレス',
                         errorText: email == '' ? null : emailValidate(email),
-                        prefixIcon: Icon(Icons.mail_outline_rounded),
-                        border: OutlineInputBorder(),
+                        prefixIcon: const Icon(Icons.mail_outline_rounded),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                     SizedBox(
@@ -70,7 +70,7 @@ class LoginPage extends ConsumerWidget {
                       obscureText: passwordIsObscure,
                       decoration: InputDecoration(
                         labelText: 'パスワード',
-                        prefixIcon: Icon(Icons.lock_open_rounded),
+                        prefixIcon: const Icon(Icons.lock_open_rounded),
                         suffixIcon: IconButton(
                           icon: Icon(passwordIsObscure
                               ? Icons.visibility_off_rounded
@@ -80,7 +80,7 @@ class LoginPage extends ConsumerWidget {
                                 .update((state) => !passwordIsObscure);
                           },
                         ),
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                   ],
@@ -92,7 +92,7 @@ class LoginPage extends ConsumerWidget {
                   child: ElevatedButton(
                     onPressed: () async {
                       final yesAction = TextButton(
-                        child: Text('はい'),
+                        child: const Text('はい'),
                         onPressed: () async {
                           Navigator.pop(context);
                           EasyLoading.show(status: 'loading...');
@@ -117,7 +117,7 @@ class LoginPage extends ConsumerWidget {
                 ),
               ),
               SizedBox(
-                height: 40,
+                height: 40.h,
               ),
               Text(
                 '他のアカウントでログイン',
@@ -139,7 +139,7 @@ class LoginPage extends ConsumerWidget {
                           elevation: 1,
                           onPressed: () async {
                             final yesWidget = TextButton(
-                              child: Text('はい'),
+                              child: const Text('はい'),
                               onPressed: () async {
                                 Navigator.pop(context);
                                 EasyLoading.show(status: 'loading...');
@@ -170,7 +170,7 @@ class LoginPage extends ConsumerWidget {
                           elevation: 1,
                           onPressed: () async {
                             final yesWidget = TextButton(
-                              child: Text('はい'),
+                              child: const Text('はい'),
                               onPressed: () async {
                                 Navigator.pop(context);
                                 EasyLoading.show(status: 'loading...');
@@ -196,14 +196,13 @@ class LoginPage extends ConsumerWidget {
                 height: 40.h,
               ),
               TextButton.icon(
-                icon: Icon(Icons.info_outline),
-                label: Text('ログインで引き継がれる/引き継がれない要素について'),
+                icon: const Icon(Icons.info_outline),
+                label: const Text('ログインで引き継がれる/引き継がれない要素について'),
                 onPressed: () {
-                  Navigator.push(
+                  Navigator.push<MaterialPageRoute>(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => IntroductionTakeOverPage(),
-                        fullscreenDialog: false,
+                        builder: (context) => const IntroductionTakeOverPage(),
                       ));
                 },
               ),
@@ -215,18 +214,18 @@ class LoginPage extends ConsumerWidget {
   }
 
   Future _showLoginAlertDialog(BuildContext context, Widget yesAction) {
-    return showDialog(
+    return showDialog<AlertDialog>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('注意'),
-          content: Text(
+          title: const Text('注意'),
+          content: const Text(
             'このままログインする場合、現在登録されているレシピが消えてしまいますがよろしいですか？\n\n※現在登録されているレシピを保存したい場合、「新規登録画面」より新規登録を行ってください。',
             textAlign: TextAlign.left,
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('いいえ'),
+              child: const Text('いいえ'),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -239,15 +238,15 @@ class LoginPage extends ConsumerWidget {
   }
 
   Future _showLoginErrorAlertDialog(BuildContext context, String errorText) {
-    return showDialog(
+    return showDialog<AlertDialog>(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('ログイン失敗'),
+          title: const Text('ログイン失敗'),
           content: Text('$errorText'),
           actions: [
             TextButton(
-              child: Text('閉じる'),
+              child: const Text('閉じる'),
               onPressed: () {
                 Navigator.pop(context);
               },

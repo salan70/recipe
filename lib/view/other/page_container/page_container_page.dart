@@ -20,9 +20,9 @@ class PageContainerPage extends ConsumerWidget {
     final selectedPage = ref.watch(selectPageProvider);
     final selectedPageNotifier = ref.watch(selectPageProvider.notifier);
 
-    final _pages = [
-      RecipeListPage(),
-      CartListPage(),
+    final pages = [
+      const RecipeListPage(),
+      const CartListPage(),
     ];
 
     return Scaffold(
@@ -38,10 +38,9 @@ class PageContainerPage extends ConsumerWidget {
             labelBackgroundColor: Theme.of(context).bottomAppBarColor,
             labelColor: Theme.of(context).primaryColorDark,
             ontap: () {
-              Navigator.push(
+              Navigator.push<MaterialPageRoute>(
                   context,
                   MaterialPageRoute(
-                    fullscreenDialog: false,
                     builder: (context) => AddCartRecipeListPage(),
                   ));
             },
@@ -56,10 +55,10 @@ class PageContainerPage extends ConsumerWidget {
             labelBackgroundColor: Theme.of(context).bottomAppBarColor,
             labelColor: Theme.of(context).primaryColorDark,
             ontap: () {
-              showCupertinoModalBottomSheet(
+              showCupertinoModalBottomSheet<SearchRecipePage>(
                 expand: true,
                 context: context,
-                builder: (context) => SearchRecipePage(),
+                builder: (context) => const SearchRecipePage(),
               );
             },
             icon: Icon(
@@ -73,11 +72,10 @@ class PageContainerPage extends ConsumerWidget {
             labelBackgroundColor: Theme.of(context).bottomAppBarColor,
             labelColor: Theme.of(context).primaryColorDark,
             ontap: () {
-              Navigator.push(
+              Navigator.push<MaterialPageRoute>(
                   context,
                   MaterialPageRoute(
-                    fullscreenDialog: false,
-                    builder: (context) => SettingTopPage(),
+                    builder: (context) => const SettingTopPage(),
                   ));
             },
             icon: Icon(
@@ -88,17 +86,17 @@ class PageContainerPage extends ConsumerWidget {
         ],
 
         /// PersistentTabView関連
-        body: _pages[selectedPage],
+        body: pages[selectedPage],
       ),
       floatingActionButton: selectedPage == 0
           ? FloatingActionButton(
               child: Icon(
-                Icons.add_rounded,
+                Icons.edit_note_rounded,
                 size: 32.0.sp,
               ),
               onPressed: () {
                 if (selectedPage == 0) {
-                  Navigator.push(
+                  Navigator.push<MaterialPageRoute>(
                       context,
                       MaterialPageRoute(
                         builder: (context) => AddRecipePage(),
@@ -107,10 +105,27 @@ class PageContainerPage extends ConsumerWidget {
                 }
               },
             )
-          : null,
+          :
+          // FloatingActionButton(
+          //         child: Icon(
+          //           Icons.post_add_rounded,
+          //           size: 32.0.sp,
+          //         ),
+          //         onPressed: () {
+          //           if (selectedPage == 1) {
+          //             Navigator.push<MaterialPageRoute>(
+          //                 context,
+          //                 MaterialPageRoute(
+          //                   builder: (context) => AddRecipePage(),
+          //                   fullscreenDialog: true,
+          //                 ));
+          //           }
+          //         },
+          //       ),
+          null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        shape: CircularNotchedRectangle(),
+        shape: const CircularNotchedRectangle(),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
