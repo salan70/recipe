@@ -20,7 +20,7 @@ jest.setTimeout(20000);
 
 beforeAll(async () => {
   testEnv = await ftest.initializeTestEnvironment({
-    projectId: 'demo-recipe-app-74426',
+    projectId: 'demo-storage',
     storage: {
       rules: fs.readFileSync('./storage.rules', 'utf8'),
     },

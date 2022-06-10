@@ -20,7 +20,7 @@ service cloud.firestore {
     // delete時のuserデータのスキーマ検証
     function isValidDeleteUser(user) {
         return user.size() == 1
-        && 'deletedAt' in user && user.deletedAt is timestamp
+        && 'deletedAt' in user && user.deletedAt is timestamp;
     }
 
     // feadbackのスキーマ検証
@@ -28,7 +28,7 @@ service cloud.firestore {
         return feedback.size() == 3
         && 'uid' in feedback && feedback.uid is string
         && 'feedback' in feedback && feedback.feedback is string
-        && 'createdAt' in feedback && feedback.createdAt is timestamp
+        && 'createdAt' in feedback && feedback.createdAt is timestamp;
     }
 
     // create時のrecipeデータのスキーマ検証
@@ -57,14 +57,29 @@ service cloud.firestore {
         && 'procedureList' in recipe && recipe.procedureList is map;
     }
 
-    // 画像追加時(recipeを保存する際、画像データは別で保存するため)
+    // 画像追加時(recipeを保存する際、画像データは別で保存するため)のスキーマ検証
     function isValidRecipeImageUrlForUpdate(recipe) {
       return recipe.size() == 9 && 'imageUrl' in recipe && recipe.imageUrl is string;
     }
 
-    // カートに入れる数更新時
+    // カートに入れる数更新時のスキーマ検証
     function isValidRecipeCountInCartForUpdate(recipe) {
       return recipe.size() == 9 && 'countInCart' in recipe && recipe.countInCart is number;
+    }
+
+    // create時のotherCartItemsのスキーマ検証
+    function isValidAddOtherCartItem(otherCartItem) {
+      return otherCartItem.size() == 3
+      && 'createdAt' in otherCartItem && otherCartItem.createdAt is timestamp
+      && 'title' in otherCartItem && otherCartItem.title is string
+      && 'subTitle' in otherCartItem && otherCartItem.subTitle is string;
+    }
+
+    // update時のotherCartItemsのスキーマ検証
+    function isValidUpdateOtherCartItem(otherCartItem) {
+      return otherCartItem.size() == 3
+      && 'title' in otherCartItem && otherCartItem.title is string
+      && 'subTitle' in otherCartItem && otherCartItem.subTitle is string;
     }
 
     // ルールの記述
@@ -74,7 +89,7 @@ service cloud.firestore {
 
         allow create: if isUserAuthenticated(userId)
         // スキーマ
-        && isValidAddUser(request.resource.data)
+        && isValidAddUser(request.resource.data);
         
         match /recipes/{recipeId} {
         	allow read, delete: if isUserAuthenticated(userId);
@@ -138,6 +153,24 @@ service cloud.firestore {
             && resource.data.createdAt == request.resource.data.createdAt
             && (request.resource.data.countInCart >= 0 && request.resource.data.countInCart <= 99)
           );
+        }
+
+        match /otherCartItems/{documents} {
+          allow read, delete: if isUserAuthenticated(userId);
+
+          allow create: if isUserAuthenticated(userId)
+          // スキーマ
+          && isValidAddOtherCartItem(request.resource.data)
+          // バリデーション
+          && (request.resource.data.title.size() >= 1 &&request.resource.data.title.size() <= 20)
+          && (request.resource.data.subTitle.size() >= 0 &&request.resource.data.subTitle.size() <= 20);
+
+          allow update: if isUserAuthenticated(userId)
+          // スキーマ
+          && isValidUpdateOtherCartItem(request.resource.data)
+          // バリデーション
+          && (request.resource.data.title.size() >= 1 &&request.resource.data.title.size() <= 20)
+          && (request.resource.data.subTitle.size() >= 0 &&request.resource.data.subTitle.size() <= 20);
         }
     }
 
