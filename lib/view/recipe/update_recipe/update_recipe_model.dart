@@ -21,9 +21,11 @@ class UpdateRecipeModel extends ChangeNotifier {
         ingredientListMap,
         procedureListMap,
       );
-      await _updateImage(originalRecipe, recipe);
-
-      return true;
+      if (await _updateImage(originalRecipe, recipe)) {
+        return true;
+      } else {
+        return false;
+      }
     } on Exception {
       return false;
     }
@@ -75,19 +77,25 @@ class UpdateRecipeModel extends ChangeNotifier {
     return procedureListMap;
   }
 
-  Future<void> _updateImage(Recipe originalRecipe, Recipe recipe) async {
+  Future<bool> _updateImage(Recipe originalRecipe, Recipe recipe) async {
     final recipeRepository = RecipeRepository(user: user);
 
     // 元の画像がある & 画像を変更する場合、元の画像を削除して新たに画像を保存する
     if (recipe.imageFile == null || recipe.imageFile!.path == '') {
+      return true;
     } else {
       if (originalRecipe.imageUrl != '') {
-        await recipeRepository.deleteImage(originalRecipe);
+        final errorTextWhenDeleteImage =
+            await recipeRepository.deleteImage(originalRecipe);
+        if (errorTextWhenDeleteImage != null) {
+          return false;
+        }
       }
       await recipeRepository.addImage(
         recipe.imageFile!,
         originalRecipe.recipeId!,
       );
     }
+    return true;
   }
 }

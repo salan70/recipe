@@ -13,7 +13,11 @@ class RecipeDetailModel extends ChangeNotifier {
 
     try {
       if (recipe.imageUrl != '') {
-        await recipeRepository.deleteImage(recipe);
+        final errorTextWhenDeleteImage =
+            await recipeRepository.deleteImage(recipe);
+        if (errorTextWhenDeleteImage != null) {
+          return false;
+        }
       }
       await recipeRepository.deleteRecipe(recipe);
 

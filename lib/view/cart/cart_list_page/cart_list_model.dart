@@ -180,14 +180,17 @@ class CartListModel extends ChangeNotifier {
     return cartItem;
   }
 
-  Future<void> toggleIsChecked(String id, bool isChecked) async {
+  Future<void> toggleIsChecked({
+    required String id,
+    required bool isChecked,
+  }) async {
     final item = _cartItemRepository.fetchItem(id);
-    await _cartItemRepository.putIsChecked(item, isChecked);
+    await _cartItemRepository.putIsChecked(item: item, isChecked: isChecked);
   }
 
   Future<void> toggleIsInBuyList(String id) async {
     final item = _cartItemRepository.fetchItem(id);
     final isInBuyList = !item.isInBuyList;
-    await _cartItemRepository.putIsNeed(item, isInBuyList);
+    await _cartItemRepository.putIsNeed(item: item, isInBuyList: isInBuyList);
   }
 }

@@ -38,8 +38,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
         Builder(
           builder: (context) {
             return ReorderableListView(
-              onReorder: (oldIndex, newIndex) =>
-                  ingredientListNotifier.reorder(oldIndex, newIndex),
+              onReorder: ingredientListNotifier.reorder,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [

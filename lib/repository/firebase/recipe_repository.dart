@@ -25,14 +25,14 @@ class RecipeRepository {
         .delete();
   }
 
-  // deleteRecipeの前にdeleteImageをする
-  Future<void> deleteImage(Recipe recipe) async {
+  Future<String?> deleteImage(Recipe recipe) async {
     final imageRef = FirebaseStorage.instance.refFromURL(recipe.imageUrl!);
 
     try {
       await imageRef.delete();
+      return null;
     } on Exception catch (e) {
-      print('e: ${e.toString()}');
+      return e.toString();
     }
   }
 

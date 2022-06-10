@@ -101,9 +101,9 @@ class EditRecipeWidget extends ConsumerWidget {
                                   child: const Text('キャンセル'),
                                   onPressed: () => Navigator.pop(context),
                                 ),
-                                CupertinoDialogAction(
-                                  child: const Text('設定へ'),
-                                  onPressed: () => openAppSettings(),
+                                const CupertinoDialogAction(
+                                  onPressed: openAppSettings,
+                                  child: Text('設定へ'),
                                 ),
                               ],
                             );
@@ -133,9 +133,9 @@ class EditRecipeWidget extends ConsumerWidget {
                                   child: const Text('キャンセル'),
                                   onPressed: () => Navigator.pop(context),
                                 ),
-                                CupertinoDialogAction(
-                                  child: const Text('設定へ'),
-                                  onPressed: () => openAppSettings(),
+                                const CupertinoDialogAction(
+                                  onPressed: openAppSettings,
+                                  child: Text('設定へ'),
                                 ),
                               ],
                             );

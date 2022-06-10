@@ -25,8 +25,7 @@ class ProcedureTextFieldWidget extends ConsumerWidget {
         Builder(
           builder: (context) {
             return ReorderableListView(
-              onReorder: (oldIndex, newIndex) =>
-                  procedureListNotifier.reorder(oldIndex, newIndex),
+              onReorder: procedureListNotifier.reorder,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [

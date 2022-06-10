@@ -95,12 +95,8 @@ class EditIngredientUnitPage extends ConsumerWidget {
                         color: Theme.of(context).backgroundColor,
                       ),
                       child: ReorderableListView.builder(
-                        onReorder: (oldIndex, newIndex) {
-                          ingredientUnitEditModel.reorderIngredientUnitList(
-                            oldIndex,
-                            newIndex,
-                          );
-                        },
+                        onReorder:
+                            ingredientUnitEditModel.reorderIngredientUnitList,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: ingredientUnitList.length,
@@ -208,7 +204,7 @@ class EditIngredientUnitPage extends ConsumerWidget {
                                   await ingredientUnitEditModel
                                       .deleteIngredientUnitList();
 
-                                  Navigator.of(context).pop();
+                                  Navigator.pop(context);
                                   await EasyLoading.showSuccess('単位を初期化しました');
                                 },
                               ),

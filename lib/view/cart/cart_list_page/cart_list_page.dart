@@ -275,7 +275,7 @@ class CartListPage extends ConsumerWidget {
             controlAffinity: ListTileControlAffinity.leading,
             value: cartListModel.getCartItem(id).isChecked,
             onChanged: (isChecked) {
-              cartListModel.toggleIsChecked(id, isChecked!);
+              cartListModel.toggleIsChecked(id: id, isChecked: isChecked!);
             },
             secondary: IconButton(
               icon: const Icon(Icons.info_outline),

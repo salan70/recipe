@@ -2,14 +2,23 @@ import 'package:hive/hive.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 
 class CartItemRepository {
-  Future<void> putIsNeed(CartItem item, bool isNeed) async {
-    final cartItem =
-        CartItem(id: item.id, isInBuyList: isNeed, isChecked: item.isChecked);
+  Future<void> putIsNeed({
+    required CartItem item,
+    required bool isInBuyList,
+  }) async {
+    final cartItem = CartItem(
+      id: item.id,
+      isInBuyList: isInBuyList,
+      isChecked: item.isChecked,
+    );
     final box = CartItemBoxes.getCartItems();
     await box.put(item.id, cartItem);
   }
 
-  Future<void> putIsChecked(CartItem item, bool isChecked) async {
+  Future<void> putIsChecked({
+    required CartItem item,
+    required bool isChecked,
+  }) async {
     final cartItem = CartItem(
       id: item.id,
       isInBuyList: item.isInBuyList,

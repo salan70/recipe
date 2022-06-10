@@ -94,7 +94,11 @@ class AuthStateNotifier extends StateNotifier<User?> {
         for (final recipe in recipeList) {
           try {
             if (recipe.imageUrl != '') {
-              await recipeRepository.deleteImage(recipe);
+              final errorTextWhenDeleteImage =
+                  await recipeRepository.deleteImage(recipe);
+              if (errorTextWhenDeleteImage != null) {
+                return errorTextWhenDeleteImage;
+              }
             }
             await recipeRepository.deleteRecipe(recipe);
           } on Exception catch (e) {
