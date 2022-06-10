@@ -18,8 +18,7 @@ class RecipeDetailModel extends ChangeNotifier {
       await recipeRepository.deleteRecipe(recipe);
 
       return true;
-    } on Exception catch (e) {
-      print(e);
+    } on Exception {
       return false;
     }
   }

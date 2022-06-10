@@ -23,11 +23,12 @@ class ProcedureListNotifier extends StateNotifier<List<Procedure>> {
   }
 
   void reorder(int oldIndex, int newIndex) {
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
+    var useNewIndex = newIndex;
+    if (oldIndex < useNewIndex) {
+      useNewIndex -= 1;
     }
     final item = state.removeAt(oldIndex);
-    state = [...state..insert(newIndex, item)];
+    state = [...state..insert(useNewIndex, item)];
   }
 
   List<Procedure> getList(List<Procedure> procedureList) {

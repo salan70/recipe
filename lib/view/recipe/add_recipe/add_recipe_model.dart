@@ -23,8 +23,7 @@ class AddRecipeModel extends ChangeNotifier {
       await _addImage(recipe, recipeId);
 
       return true;
-    } on Exception catch (e) {
-      print('error $e');
+    } on Exception {
       return false;
     }
   }

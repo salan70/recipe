@@ -24,8 +24,7 @@ class UpdateRecipeModel extends ChangeNotifier {
       await _updateImage(originalRecipe, recipe);
 
       return true;
-    } on Exception catch (e) {
-      print(e);
+    } on Exception {
       return false;
     }
   }

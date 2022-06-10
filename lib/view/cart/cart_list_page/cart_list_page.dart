@@ -63,11 +63,9 @@ class CartListPage extends ConsumerWidget {
                           <IngredientByRecipeInCart>[];
 
                       for (final recipe in recipeListInCart) {
-                        final addList = cartListModel
-                            .createIngredientListByRecipeInCart(recipe);
-                        for (final item in addList) {
-                          ingredientPerInCartRecipeList.add(item);
-                        }
+                        cartListModel
+                            .createIngredientListByRecipeInCart(recipe)
+                            .forEach(ingredientPerInCartRecipeList.add);
                       }
 
                       final ingredientListInCartPerRecipeList =
