@@ -20,7 +20,7 @@ class RecipeDetailPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userStateNotifierProvider);
 
-    final recipe = ref.watch(recipeStreamProviderFamily(recipeId));
+    final recipe = ref.watch(recipeProviderFamily(recipeId));
 
     final recipeDetailModel = RecipeDetailModel(user: user!);
 

@@ -5,10 +5,9 @@ import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/repository/firebase/cart_repository.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
-import 'package:recipe/state/recipe_in_cart/recipe_in_cart_list_state.dart';
+import 'package:recipe/state/recipe_list_in_cart/recipe_list_in_cart_state.dart';
 
-final recipeListStreamProvider =
-    StreamProvider.autoDispose<List<Recipe>>((ref) {
+final recipeListProvider = StreamProvider.autoDispose<List<Recipe>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
 
   final recipeRepository = RecipeRepository(user: user!);
@@ -16,7 +15,7 @@ final recipeListStreamProvider =
   return recipeRepository.fetchRecipeList();
 });
 
-final recipeStreamProviderFamily =
+final recipeProviderFamily =
     StreamProvider.family.autoDispose<Recipe, String>((ref, recipeId) {
   final user = ref.watch(userStateNotifierProvider);
 
@@ -28,7 +27,7 @@ final recipeStreamProviderFamily =
 /// search
 final searchFunctionProvider = StateProvider.autoDispose((ref) => false);
 
-final recipeAndIngredientNameListStreamProvider =
+final recipeAndIngredientNameListProvider =
     StreamProvider.autoDispose<List<RecipeAndIngredientName>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
 
@@ -37,7 +36,7 @@ final recipeAndIngredientNameListStreamProvider =
   return recipeRepository.fetchRecipeNameAndIngredientNameList();
 });
 
-final searchResultRecipeIdListProvider =
+final searchResultListProvider =
     StateProvider.autoDispose<List<String>?>((ref) {
   return null;
 });
@@ -62,7 +61,7 @@ final recipeNumCountProviderFamily =
 final recipeListInCartPanelIsOpenProvider =
     StateProvider.autoDispose((ref) => false);
 
-final recipeListInCartStreamProvider =
+final recipeListInCartProvider =
     StreamProvider.autoDispose<List<RecipeListInCart>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
   final cartRepository = CartRepository(user: user!);
@@ -70,15 +69,14 @@ final recipeListInCartStreamProvider =
   return cartRepository.fetchRecipeListInCart();
 });
 
-final recipeForInCartListNotifierProvider = StateNotifierProvider.autoDispose<
-    RecipeForInCartListNotifier, List<RecipeListInCart>>(
-  (ref) => RecipeForInCartListNotifier(),
+final recipeListInCartNotifierProvider = StateNotifierProvider.autoDispose<
+    RecipeListInCartNotifier, List<RecipeListInCart>>(
+  (ref) => RecipeListInCartNotifier(),
 );
 
 final stateIsChangedProvider = StateProvider.autoDispose((ref) => false);
 
-final notBuyIngredientListIsOpenProvider =
-    StateProvider.autoDispose((ref) => false);
+final notBuyListIsOpenProvider = StateProvider.autoDispose((ref) => false);
 
 // page_control
 final selectPageProvider = StateProvider.autoDispose((ref) => 0);

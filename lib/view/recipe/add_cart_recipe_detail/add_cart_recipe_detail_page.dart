@@ -23,7 +23,7 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
     final user = ref.watch(userStateNotifierProvider);
     final addCartRecipeDetailModel = AddCartRecipeDetailModel(user: user!);
 
-    final recipe = ref.watch(recipeStreamProviderFamily(recipeId));
+    final recipe = ref.watch(recipeProviderFamily(recipeId));
 
     return Scaffold(
       appBar: recipe.when(

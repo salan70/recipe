@@ -1,10 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:recipe/domain/cart.dart';
 
-class RecipeForInCartListNotifier
-    extends StateNotifier<List<RecipeListInCart>> {
-  RecipeForInCartListNotifier() : super([]);
+class RecipeListInCartNotifier extends StateNotifier<List<RecipeListInCart>> {
+  RecipeListInCartNotifier() : super([]);
 
   void delete(String id) {}
 
@@ -36,13 +34,11 @@ class RecipeForInCartListNotifier
     return state = recipeForInCartList;
   }
 
-  int calculateCountSum() {
+  int calculateSum() {
     var countSum = 0;
-
     for (final recipeForInCart in state) {
       countSum += recipeForInCart.countInCart!;
     }
-
     return countSum;
   }
 }

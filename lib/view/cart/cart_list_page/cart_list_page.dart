@@ -16,11 +16,10 @@ class CartListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final cartListModel = CartListModel();
 
-    final recipeListInCartStream = ref.watch(recipeListInCartStreamProvider);
-    final notBuyIngredientListIsOpen =
-        ref.watch(notBuyIngredientListIsOpenProvider);
+    final recipeListInCartStream = ref.watch(recipeListInCartProvider);
+    final notBuyIngredientListIsOpen = ref.watch(notBuyListIsOpenProvider);
     final notBuyIngredientListIsOpenNotifier =
-        ref.watch(notBuyIngredientListIsOpenProvider.notifier);
+        ref.watch(notBuyListIsOpenProvider.notifier);
 
     return DefaultTabController(
       length: 2,

@@ -10,7 +10,7 @@ class RecipeListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recipes = ref.watch(recipeListStreamProvider);
+    final recipes = ref.watch(recipeListProvider);
 
     return Scaffold(
       appBar: AppBar(

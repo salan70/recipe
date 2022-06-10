@@ -81,7 +81,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
   }
 
   Future<String?> _deleteAllUserInfo(WidgetRef ref) async {
-    final recipeListStream = ref.watch(recipeListStreamProvider);
+    final recipeListStream = ref.watch(recipeListProvider);
     final recipeRepository = RecipeRepository(user: _firebaseAuth.currentUser!);
 
     // 全てのrecipeを削除

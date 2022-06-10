@@ -14,13 +14,12 @@ class SearchRecipePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final searchRecipeModel = SearchRecipeModel();
 
-    final recipes = ref.watch(recipeListStreamProvider);
+    final recipes = ref.watch(recipeListProvider);
     final recipeAndIngredientNameList =
-        ref.watch(recipeAndIngredientNameListStreamProvider);
-    final searchResultRecipeIdList =
-        ref.watch(searchResultRecipeIdListProvider);
+        ref.watch(recipeAndIngredientNameListProvider);
+    final searchResultRecipeIdList = ref.watch(searchResultListProvider);
     final searchResultRecipeIdListNotifier =
-        ref.watch(searchResultRecipeIdListProvider.notifier);
+        ref.watch(searchResultListProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(

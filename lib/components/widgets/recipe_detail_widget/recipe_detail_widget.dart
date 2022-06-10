@@ -13,7 +13,7 @@ class RecipeDetailWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recipe = ref.watch(recipeStreamProviderFamily(recipeId));
+    final recipe = ref.watch(recipeProviderFamily(recipeId));
 
     final ingredientListNotifier =
         ref.watch(ingredientListNotifierProvider.notifier);

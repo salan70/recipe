@@ -19,12 +19,11 @@ class AddCartRecipeListPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userStateNotifierProvider);
 
-    final recipes = ref.watch(recipeListStreamProvider);
+    final recipes = ref.watch(recipeListProvider);
 
-    final recipeForInCartListState =
-        ref.watch(recipeForInCartListNotifierProvider);
-    final recipeForInCartListStateNotifier =
-        ref.watch(recipeForInCartListNotifierProvider.notifier);
+    final recipeListInCartState = ref.watch(recipeListInCartNotifierProvider);
+    final recipeListInCartNotifier =
+        ref.watch(recipeListInCartNotifierProvider.notifier);
 
     final recipeListInCartPanelIsOpen =
         ref.watch(recipeListInCartPanelIsOpenProvider);
@@ -119,22 +118,18 @@ class AddCartRecipeListPage extends ConsumerWidget {
                   position: BadgePosition.topEnd(top: 5, end: -5),
                   padding: const EdgeInsets.all(6).r,
                   badgeContent: SizedBox(
-                    child: recipeForInCartListStateNotifier
-                                .calculateCountSum() >=
-                            99
+                    child: recipeListInCartNotifier.calculateSum() >= 99
                         ? const Text(
                             '99+',
                             style: TextStyle(color: Colors.white, fontSize: 12),
                           )
-                        : recipeForInCartListStateNotifier
-                                    .calculateCountSum() >=
-                                10
+                        : recipeListInCartNotifier.calculateSum() >= 10
                             ? Text(
-                                '${recipeForInCartListStateNotifier.calculateCountSum()}',
+                                '${recipeListInCartNotifier.calculateSum()}',
                                 style: const TextStyle(color: Colors.white),
                               )
                             : Text(
-                                ' ${recipeForInCartListStateNotifier.calculateCountSum()} ',
+                                ' ${recipeListInCartNotifier.calculateSum()} ',
                                 style: const TextStyle(color: Colors.white),
                               ),
                   ),
@@ -159,9 +154,9 @@ class AddCartRecipeListPage extends ConsumerWidget {
                 width: 144.w,
                 child: ElevatedButton(
                   onPressed: () async {
-                    if (recipeForInCartListState.isEmpty != true) {
+                    if (recipeListInCartState.isEmpty != true) {
                       if (addCartRecipeListModel
-                          .zeroIsIncludeInCart(recipeForInCartListState)) {
+                          .zeroIsIncludeInCart(recipeListInCartState)) {
                         await showDialog<AlertDialog>(
                           context: context,
                           builder: (context) => AlertDialog(
@@ -178,7 +173,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                   await EasyLoading.show(status: 'loading...');
                                   final errorText = await addCartRecipeListModel
                                       .updateCountsInCart(
-                                    recipeForInCartListState,
+                                    recipeListInCartState,
                                   );
                                   if (errorText == null) {
                                     var popInt = 0;
@@ -216,7 +211,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                       } else {
                         await EasyLoading.show(status: 'loading...');
                         final errorText = await addCartRecipeListModel
-                            .updateCountsInCart(recipeForInCartListState);
+                            .updateCountsInCart(recipeListInCartState);
                         if (errorText == null) {
                           Navigator.pop(context);
                           await EasyLoading.showSuccess('カートを更新しました');
@@ -263,12 +258,12 @@ class AddCartRecipeListPage extends ConsumerWidget {
     WidgetRef ref,
   ) {
     final user = ref.watch(userStateNotifierProvider);
-    final recipeListInCartStream = ref.watch(recipeListInCartStreamProvider);
+    final recipeListInCartStream = ref.watch(recipeListInCartProvider);
 
     final recipeForInCartListState =
-        ref.watch(recipeForInCartListNotifierProvider);
+        ref.watch(recipeListInCartNotifierProvider);
     final recipeForInCartListStateNotifier =
-        ref.watch(recipeForInCartListNotifierProvider.notifier);
+        ref.watch(recipeListInCartNotifierProvider.notifier);
 
     final stateIsChanged = ref.watch(stateIsChangedProvider);
     final stateIsChangedNotifier = ref.watch(stateIsChangedProvider.notifier);
