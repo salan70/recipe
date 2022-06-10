@@ -1,8 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:riverpod/riverpod.dart';
 
 class ImageFileNotifier extends StateNotifier<File?> {
@@ -12,24 +11,22 @@ class ImageFileNotifier extends StateNotifier<File?> {
   File? croppedFile;
   final picker = ImagePicker();
 
-  Future pickImage(ImageSource source) async {
+  Future<void> pickImage(ImageSource source) async {
     final pickedFile = await picker.pickImage(source: source);
 
     if (pickedFile != null) {
       imageFile = File(pickedFile.path);
       croppedFile = await _cropImage();
       if (croppedFile != null) {
-        state = croppedFile!;
-        // 画像切り抜きに成功した場合、確認ページに遷移
-        // Navigator.of(context).pushNamed(RouteGenerator.userPhotoConfirmPage);
+        state = croppedFile;
       }
     }
   }
 
   Future<File?> _cropImage() async {
-    File? croppedFile = await ImageCropper().cropImage(
+    final croppedFile = await ImageCropper().cropImage(
       sourcePath: imageFile!.path,
-      androidUiSettings: AndroidUiSettings(
+      androidUiSettings: const AndroidUiSettings(
         statusBarColor: Colors.black,
         toolbarTitle: '',
         toolbarColor: Colors.black,
@@ -40,7 +37,7 @@ class ImageFileNotifier extends StateNotifier<File?> {
         hideBottomControls: true,
         initAspectRatio: CropAspectRatioPreset.original,
       ),
-      iosUiSettings: IOSUiSettings(
+      iosUiSettings: const IOSUiSettings(
         hidesNavigationBar: true,
         aspectRatioPickerButtonHidden: true,
         doneButtonTitle: '完了',

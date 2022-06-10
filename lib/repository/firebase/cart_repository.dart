@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
-
-import 'package:recipe/domain/recipe.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:recipe/domain/cart.dart';
+import 'package:recipe/domain/recipe.dart';
+import 'package:uuid/uuid.dart';
 
 class CartRepository {
   CartRepository({required this.user, this.recipe});
@@ -28,12 +27,12 @@ class CartRepository {
             final forHowManyPeople = data['forHowManyPeople'] as int;
             final countInCart = data['countInCart'] as int?;
             // ingredient関連
-            final ingredientListMap = Map<String, Map<String, dynamic>>.from(
-              data['ingredientList'] as Map<String, Map<String, dynamic>>,
+            final ingredientListMap = Map<String, dynamic>.from(
+              data['ingredientList'] as Map<String, dynamic>,
             );
-            // print('ingredientListMap : $ingredientListMap');
+
             final ingredientList = <Ingredient>[];
-            ingredientListMap.forEach((key, value) {
+            ingredientListMap.forEach((key, dynamic value) {
               ingredientList.add(
                 Ingredient(
                   id: const Uuid().v4(),

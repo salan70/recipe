@@ -4,12 +4,13 @@ import 'package:recipe/domain/recipe.dart';
 
 @immutable
 class RecipeListInCart {
-  const RecipeListInCart(
-      {required this.recipeId,
-      required this.recipeName,
-      required this.forHowManyPeople,
-      required this.countInCart,
-      required this.ingredientList});
+  const RecipeListInCart({
+    required this.recipeId,
+    required this.recipeName,
+    required this.forHowManyPeople,
+    required this.countInCart,
+    required this.ingredientList,
+  });
 
   final String? recipeId;
   final String? recipeName;
@@ -25,21 +26,23 @@ class RecipeListInCart {
     List<Ingredient>? ingredientList,
   }) {
     return RecipeListInCart(
-        recipeId: recipeId ?? this.recipeId,
-        recipeName: recipeName ?? this.recipeName,
-        forHowManyPeople: forHowManyPeople ?? this.forHowManyPeople,
-        countInCart: countInCart ?? this.countInCart,
-        ingredientList: ingredientList ?? this.ingredientList);
+      recipeId: recipeId ?? this.recipeId,
+      recipeName: recipeName ?? this.recipeName,
+      forHowManyPeople: forHowManyPeople ?? this.forHowManyPeople,
+      countInCart: countInCart ?? this.countInCart,
+      ingredientList: ingredientList ?? this.ingredientList,
+    );
   }
 }
 
 class IngredientByRecipeInCart {
-  IngredientByRecipeInCart(
-      {required this.recipeId,
-      required this.recipeName,
-      required this.forHowManyPeople,
-      required this.countInCart,
-      required this.ingredient});
+  IngredientByRecipeInCart({
+    required this.recipeId,
+    required this.recipeName,
+    required this.forHowManyPeople,
+    required this.countInCart,
+    required this.ingredient,
+  });
 
   String recipeId;
   String recipeName;
@@ -49,19 +52,21 @@ class IngredientByRecipeInCart {
 }
 
 class TotaledIngredientInCart {
-  TotaledIngredientInCart(
-      {required this.ingredientInCart,
-      required this.recipeListByIngredientInCart});
+  TotaledIngredientInCart({
+    required this.ingredientInCart,
+    required this.recipeListByIngredientInCart,
+  });
 
   IngredientInCart ingredientInCart;
   List<RecipeByIngredientInCart> recipeListByIngredientInCart;
 }
 
 class IngredientInCart {
-  IngredientInCart(
-      {required this.ingredientName,
-      required this.ingredientTotalAmount,
-      required this.ingredientUnit});
+  IngredientInCart({
+    required this.ingredientName,
+    required this.ingredientTotalAmount,
+    required this.ingredientUnit,
+  });
 
   String ingredientName;
   String ingredientTotalAmount;
@@ -69,12 +74,13 @@ class IngredientInCart {
 }
 
 class RecipeByIngredientInCart {
-  RecipeByIngredientInCart(
-      {required this.recipeId,
-      required this.recipeName,
-      required this.forHowManyPeople,
-      required this.countInCart,
-      required this.ingredientAmount});
+  RecipeByIngredientInCart({
+    required this.recipeId,
+    required this.recipeName,
+    required this.forHowManyPeople,
+    required this.countInCart,
+    required this.ingredientAmount,
+  });
 
   String recipeId;
   String recipeName;

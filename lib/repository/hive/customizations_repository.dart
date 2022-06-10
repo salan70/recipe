@@ -6,18 +6,22 @@ class CustomizationsRepository {
     final box = CustomizationsBoxes.getCustomizations();
 
     // 0：system
-    final Customizations getBox = box.get('selectedThemeModeIndex',
-        defaultValue: Customizations(index: 0))!;
+    final getBox = box.get(
+      'selectedThemeModeIndex',
+      defaultValue: Customizations(index: 0),
+    )!;
     return getBox;
   }
 
-  Future putSelectedThemeModeIndex(int selectedIndex) async {
+  Future<void> putSelectedThemeModeIndex(int selectedIndex) async {
     final box = CustomizationsBoxes.getCustomizations();
     await box.put(
-        'selectedThemeModeIndex', Customizations(index: selectedIndex));
+      'selectedThemeModeIndex',
+      Customizations(index: selectedIndex),
+    );
   }
 
-  Future deleteSelectedThemeModeIndex() async {
+  Future<void> deleteSelectedThemeModeIndex() async {
     final box = CustomizationsBoxes.getCustomizations();
     await box.delete('selectedThemeModeIndex');
   }
@@ -27,18 +31,22 @@ class CustomizationsRepository {
     final box = CustomizationsBoxes.getCustomizations();
 
     // 13：green
-    final Customizations getBox = box.get('selectedFlexSchemeIndex',
-        defaultValue: Customizations(index: 13))!;
+    final getBox = box.get(
+      'selectedFlexSchemeIndex',
+      defaultValue: Customizations(index: 13),
+    )!;
     return getBox;
   }
 
-  Future putSelectedFlexScheme(int selectedIndex) async {
+  Future<void> putSelectedFlexScheme(int selectedIndex) async {
     final box = CustomizationsBoxes.getCustomizations();
     await box.put(
-        'selectedFlexSchemeIndex', Customizations(index: selectedIndex));
+      'selectedFlexSchemeIndex',
+      Customizations(index: selectedIndex),
+    );
   }
 
-  Future deleteSelectedFlexScheme() async {
+  Future<void> deleteSelectedFlexScheme() async {
     final box = CustomizationsBoxes.getCustomizations();
     await box.delete('selectedFlexSchemeIndex');
   }

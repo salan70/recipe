@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_validator/form_validator.dart';
+import 'package:recipe/state/auth/auth_provider.dart';
+import 'package:recipe/view/other/introduction_take_over/introduction_take_over_page.dart';
 import 'package:recipe/view/setting/account/sign_up/sign_up_model.dart';
 import 'package:sign_button/sign_button.dart';
-import 'package:form_validator/form_validator.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:recipe/view/other/introduction_take_over/introduction_take_over_page.dart';
-import 'package:recipe/state/auth/auth_provider.dart';
 
 class SignUpPage extends ConsumerWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -76,9 +75,11 @@ class SignUpPage extends ConsumerWidget {
                             password == '' ? null : passwordValidate(password),
                         prefixIcon: const Icon(Icons.lock_open_rounded),
                         suffixIcon: IconButton(
-                          icon: Icon(passwordIsObscure
-                              ? Icons.visibility_off_rounded
-                              : Icons.visibility_rounded),
+                          icon: Icon(
+                            passwordIsObscure
+                                ? Icons.visibility_off_rounded
+                                : Icons.visibility_rounded,
+                          ),
                           onPressed: () {
                             passwordIsObscureNotifier
                                 .update((state) => !passwordIsObscure);
@@ -95,20 +96,26 @@ class SignUpPage extends ConsumerWidget {
                   width: 144.w,
                   child: ElevatedButton(
                     onPressed: () async {
-                      EasyLoading.show(status: 'loading...');
+                      await EasyLoading.show(status: 'loading...');
 
                       if (passwordValidate(password) == '8文字以上で入力してください') {
-                        _showLoginErrorAlertDialog(context, '8文字以上で入力してください');
+                        await _showLoginErrorAlertDialog(
+                          context,
+                          '8文字以上で入力してください',
+                        );
                       }
 
                       final errorText = await signUpModel.signUpWithEmail(
-                          ref, email, password);
+                        ref,
+                        email,
+                        password,
+                      );
                       if (errorText == null) {
                         Navigator.pop(context);
-                        EasyLoading.showSuccess('登録しました');
+                        await EasyLoading.showSuccess('登録しました');
                       } else {
-                        EasyLoading.dismiss();
-                        _showLoginErrorAlertDialog(context, errorText);
+                        await EasyLoading.dismiss();
+                        await _showLoginErrorAlertDialog(context, errorText);
                       }
                     },
                     child: Text(
@@ -127,53 +134,61 @@ class SignUpPage extends ConsumerWidget {
                 textAlign: TextAlign.left,
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0).r,
+                padding: const EdgeInsets.all(8).r,
                 child: Center(
                   child: Column(
                     children: [
                       SignInButton(
-                          buttonType: ButtonType.google,
-                          buttonSize: ButtonSize.large,
-                          width: double.infinity,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          elevation: 1,
-                          onPressed: () async {
-                            EasyLoading.show(status: 'loading...');
-                            final errorText =
-                                await signUpModel.signUpWithGoogle(ref);
-                            if (errorText == null) {
-                              Navigator.pop(context);
-                              EasyLoading.showSuccess('登録しました');
-                            } else {
-                              EasyLoading.dismiss();
-                              _showLoginErrorAlertDialog(context, errorText);
-                            }
-                          }),
+                        buttonType: ButtonType.google,
+                        buttonSize: ButtonSize.large,
+                        width: double.infinity,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        elevation: 1,
+                        onPressed: () async {
+                          await EasyLoading.show(status: 'loading...');
+                          final errorText =
+                              await signUpModel.signUpWithGoogle(ref);
+                          if (errorText == null) {
+                            Navigator.pop(context);
+                            await EasyLoading.showSuccess('登録しました');
+                          } else {
+                            await EasyLoading.dismiss();
+                            await _showLoginErrorAlertDialog(
+                              context,
+                              errorText,
+                            );
+                          }
+                        },
+                      ),
                       SizedBox(
                         height: 8.h,
                       ),
                       SignInButton(
-                          buttonType: ButtonType.apple,
-                          buttonSize: ButtonSize.large,
-                          width: double.infinity,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          elevation: 1,
-                          onPressed: () async {
-                            EasyLoading.show(status: 'loading...');
-                            final errorText =
-                                await signUpModel.signUpWithApple(ref);
-                            if (errorText == null) {
-                              Navigator.pop(context);
-                              EasyLoading.showSuccess('登録しました');
-                            } else {
-                              EasyLoading.dismiss();
-                              _showLoginErrorAlertDialog(context, errorText);
-                            }
-                          }),
+                        buttonType: ButtonType.apple,
+                        buttonSize: ButtonSize.large,
+                        width: double.infinity,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        elevation: 1,
+                        onPressed: () async {
+                          await EasyLoading.show(status: 'loading...');
+                          final errorText =
+                              await signUpModel.signUpWithApple(ref);
+                          if (errorText == null) {
+                            Navigator.pop(context);
+                            await EasyLoading.showSuccess('登録しました');
+                          } else {
+                            await EasyLoading.dismiss();
+                            await _showLoginErrorAlertDialog(
+                              context,
+                              errorText,
+                            );
+                          }
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -185,11 +200,12 @@ class SignUpPage extends ConsumerWidget {
                 icon: const Icon(Icons.info_outline),
                 label: const Text('ログインで引き継がれる/引き継がれない要素について'),
                 onPressed: () {
-                  Navigator.push<MaterialPageRoute>(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const IntroductionTakeOverPage(),
-                      ));
+                  Navigator.push<MaterialPageRoute<void>>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const IntroductionTakeOverPage(),
+                    ),
+                  );
                 },
               ),
             ],
@@ -200,7 +216,9 @@ class SignUpPage extends ConsumerWidget {
   }
 
   Future<void> _showLoginErrorAlertDialog(
-      BuildContext context, String errorText) {
+    BuildContext context,
+    String errorText,
+  ) {
     return showDialog<AlertDialog>(
       context: context,
       builder: (context) {

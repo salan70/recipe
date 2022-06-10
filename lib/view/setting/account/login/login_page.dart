@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:form_validator/form_validator.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_validator/form_validator.dart';
+import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/view/other/introduction_take_over/introduction_take_over_page.dart';
 import 'package:recipe/view/setting/account/login/login_model.dart';
 import 'package:sign_button/sign_button.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:recipe/state/auth/auth_provider.dart';
 
 class LoginPage extends ConsumerWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -72,9 +71,11 @@ class LoginPage extends ConsumerWidget {
                         labelText: 'パスワード',
                         prefixIcon: const Icon(Icons.lock_open_rounded),
                         suffixIcon: IconButton(
-                          icon: Icon(passwordIsObscure
-                              ? Icons.visibility_off_rounded
-                              : Icons.visibility_rounded),
+                          icon: Icon(
+                            passwordIsObscure
+                                ? Icons.visibility_off_rounded
+                                : Icons.visibility_rounded,
+                          ),
                           onPressed: () {
                             passwordIsObscureNotifier
                                 .update((state) => !passwordIsObscure);
@@ -95,19 +96,25 @@ class LoginPage extends ConsumerWidget {
                         child: const Text('はい'),
                         onPressed: () async {
                           Navigator.pop(context);
-                          EasyLoading.show(status: 'loading...');
-                          String? errorText = await loginModel.loginWithEmail(
-                              ref, email, password);
+                          await EasyLoading.show(status: 'loading...');
+                          final errorText = await loginModel.loginWithEmail(
+                            ref,
+                            email,
+                            password,
+                          );
                           if (errorText == null) {
                             Navigator.pop(context);
-                            EasyLoading.showSuccess('ログインしました');
+                            await EasyLoading.showSuccess('ログインしました');
                           } else {
-                            EasyLoading.dismiss();
-                            _showLoginErrorAlertDialog(context, errorText);
+                            await EasyLoading.dismiss();
+                            await _showLoginErrorAlertDialog(
+                              context,
+                              errorText,
+                            );
                           }
                         },
                       );
-                      _showLoginAlertDialog(context, yesAction);
+                      await _showLoginAlertDialog(context, yesAction);
                     },
                     child: Text(
                       'ログイン',
@@ -125,69 +132,75 @@ class LoginPage extends ConsumerWidget {
                 textAlign: TextAlign.left,
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0).r,
+                padding: const EdgeInsets.all(8).r,
                 child: Center(
                   child: Column(
                     children: [
                       SignInButton(
-                          buttonType: ButtonType.google,
-                          buttonSize: ButtonSize.large,
-                          width: double.infinity,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          elevation: 1,
-                          onPressed: () async {
-                            final yesWidget = TextButton(
-                              child: const Text('はい'),
-                              onPressed: () async {
+                        buttonType: ButtonType.google,
+                        buttonSize: ButtonSize.large,
+                        width: double.infinity,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        elevation: 1,
+                        onPressed: () async {
+                          final yesWidget = TextButton(
+                            child: const Text('はい'),
+                            onPressed: () async {
+                              Navigator.pop(context);
+                              await EasyLoading.show(status: 'loading...');
+                              final errorText =
+                                  await loginModel.loginWithGoogle(ref);
+                              if (errorText == null) {
                                 Navigator.pop(context);
-                                EasyLoading.show(status: 'loading...');
-                                final errorText =
-                                    await loginModel.loginWithGoogle(ref);
-                                if (errorText == null) {
-                                  Navigator.pop(context);
-                                  EasyLoading.showSuccess('ログインしました');
-                                } else {
-                                  EasyLoading.dismiss();
-                                  _showLoginErrorAlertDialog(
-                                      context, errorText);
-                                }
-                              },
-                            );
-                            _showLoginAlertDialog(context, yesWidget);
-                          }),
+                                await EasyLoading.showSuccess('ログインしました');
+                              } else {
+                                await EasyLoading.dismiss();
+                                await _showLoginErrorAlertDialog(
+                                  context,
+                                  errorText,
+                                );
+                              }
+                            },
+                          );
+                          await _showLoginAlertDialog(context, yesWidget);
+                        },
+                      ),
                       SizedBox(
                         height: 8.h,
                       ),
                       SignInButton(
-                          buttonType: ButtonType.apple,
-                          buttonSize: ButtonSize.large,
-                          width: double.infinity,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          elevation: 1,
-                          onPressed: () async {
-                            final yesWidget = TextButton(
-                              child: const Text('はい'),
-                              onPressed: () async {
+                        buttonType: ButtonType.apple,
+                        buttonSize: ButtonSize.large,
+                        width: double.infinity,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        elevation: 1,
+                        onPressed: () async {
+                          final yesWidget = TextButton(
+                            child: const Text('はい'),
+                            onPressed: () async {
+                              Navigator.pop(context);
+                              await EasyLoading.show(status: 'loading...');
+                              final errorText =
+                                  await loginModel.loginWithApple(ref);
+                              if (errorText == null) {
                                 Navigator.pop(context);
-                                EasyLoading.show(status: 'loading...');
-                                final errorText =
-                                    await loginModel.loginWithApple(ref);
-                                if (errorText == null) {
-                                  Navigator.pop(context);
-                                  EasyLoading.showSuccess('ログインしました');
-                                } else {
-                                  EasyLoading.dismiss();
-                                  _showLoginErrorAlertDialog(
-                                      context, errorText);
-                                }
-                              },
-                            );
-                            _showLoginAlertDialog(context, yesWidget);
-                          }),
+                                await EasyLoading.showSuccess('ログインしました');
+                              } else {
+                                await EasyLoading.dismiss();
+                                await _showLoginErrorAlertDialog(
+                                  context,
+                                  errorText,
+                                );
+                              }
+                            },
+                          );
+                          await _showLoginAlertDialog(context, yesWidget);
+                        },
+                      ),
                     ],
                   ),
                 ),
@@ -199,11 +212,12 @@ class LoginPage extends ConsumerWidget {
                 icon: const Icon(Icons.info_outline),
                 label: const Text('ログインで引き継がれる/引き継がれない要素について'),
                 onPressed: () {
-                  Navigator.push<MaterialPageRoute>(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const IntroductionTakeOverPage(),
-                      ));
+                  Navigator.push<MaterialPageRoute<dynamic>>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const IntroductionTakeOverPage(),
+                    ),
+                  );
                 },
               ),
             ],
@@ -213,14 +227,15 @@ class LoginPage extends ConsumerWidget {
     );
   }
 
-  Future _showLoginAlertDialog(BuildContext context, Widget yesAction) {
+  Future<void> _showLoginAlertDialog(BuildContext context, Widget yesAction) {
     return showDialog<AlertDialog>(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('注意'),
           content: const Text(
-            'このままログインする場合、現在登録されているレシピが消えてしまいますがよろしいですか？\n\n※現在登録されているレシピを保存したい場合、「新規登録画面」より新規登録を行ってください。',
+            'このままログインする場合、現在登録されているレシピが消えてしまいますがよろしいですか？'
+            '\n\n※現在登録されているレシピを保存したい場合、「新規登録画面」より新規登録を行ってください。',
             textAlign: TextAlign.left,
           ),
           actions: <Widget>[
@@ -237,13 +252,16 @@ class LoginPage extends ConsumerWidget {
     );
   }
 
-  Future _showLoginErrorAlertDialog(BuildContext context, String errorText) {
+  Future<void> _showLoginErrorAlertDialog(
+    BuildContext context,
+    String errorText,
+  ) {
     return showDialog<AlertDialog>(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text('ログイン失敗'),
-          content: Text('$errorText'),
+          content: Text(errorText),
           actions: [
             TextButton(
               child: const Text('閉じる'),

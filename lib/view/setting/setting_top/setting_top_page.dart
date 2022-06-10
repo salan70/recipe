@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:recipe/view/setting/privacy_policy/privacy_policy_page.dart';
-import 'package:recipe/view/setting/setting_top/setting_top_model.dart';
-import 'package:settings_ui/settings_ui.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:in_app_review/in_app_review.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:in_app_review/in_app_review.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
 import 'package:recipe/view/setting/account/login/login_page.dart';
 import 'package:recipe/view/setting/account/sign_up/sign_up_page.dart';
 import 'package:recipe/view/setting/customize/edit_theme/edit_theme_page.dart';
+import 'package:recipe/view/setting/privacy_policy/privacy_policy_page.dart';
 import 'package:recipe/view/setting/send_feedback/send_feedback_page.dart';
+import 'package:recipe/view/setting/setting_top/setting_top_model.dart';
 import 'package:recipe/view/setting/terms/terms_page.dart';
+import 'package:settings_ui/settings_ui.dart';
 
 class SettingTopPage extends ConsumerWidget {
   const SettingTopPage({Key? key}) : super(key: key);
@@ -44,11 +43,12 @@ class SettingTopPage extends ConsumerWidget {
                       title: const Text('ログイン'),
                       trailing: const Icon(Icons.chevron_right_rounded),
                       onPressed: (context) {
-                        Navigator.push<MaterialPageRoute>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginPage(),
-                            ));
+                        Navigator.push<MaterialPageRoute<dynamic>>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                        );
                       },
                     )
                   : SettingsTile.navigation(
@@ -60,11 +60,12 @@ class SettingTopPage extends ConsumerWidget {
                       title: const Text('新規登録'),
                       trailing: const Icon(Icons.chevron_right_rounded),
                       onPressed: (context) {
-                        Navigator.push<MaterialPageRoute>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignUpPage(),
-                            ));
+                        Navigator.push<MaterialPageRoute<dynamic>>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignUpPage(),
+                          ),
+                        );
                       },
                     )
                   : SettingsTile.navigation(
@@ -87,10 +88,12 @@ class SettingTopPage extends ConsumerWidget {
                                 TextButton(
                                   child: const Text('はい'),
                                   onPressed: () async {
-                                    EasyLoading.show(status: 'loading...');
+                                    await EasyLoading.show(
+                                      status: 'loading...',
+                                    );
                                     await userNotifier.signOut();
                                     Navigator.pop(context);
-                                    EasyLoading.showSuccess('ログアウトしました');
+                                    await EasyLoading.showSuccess('ログアウトしました');
                                   },
                                 ),
                               ],
@@ -105,25 +108,27 @@ class SettingTopPage extends ConsumerWidget {
             title: const Text('カスタマイズ'),
             tiles: [
               SettingsTile.navigation(
-                title: Text('材料の単位を編集'),
-                trailing: Icon(Icons.chevron_right_rounded),
+                title: const Text('材料の単位を編集'),
+                trailing: const Icon(Icons.chevron_right_rounded),
                 onPressed: (context) {
-                  Navigator.push<MaterialPageRoute>(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const EditIngredientUnitPage(),
-                      ));
+                  Navigator.push<MaterialPageRoute<dynamic>>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EditIngredientUnitPage(),
+                    ),
+                  );
                 },
               ),
               SettingsTile.navigation(
                 title: const Text('テーマの変更'),
                 trailing: const Icon(Icons.chevron_right_rounded),
                 onPressed: (context) {
-                  Navigator.push<MaterialPageRoute>(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const EditThemePage(),
-                      ));
+                  Navigator.push<MaterialPageRoute<dynamic>>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const EditThemePage(),
+                    ),
+                  );
                 },
               ),
             ],
@@ -143,11 +148,12 @@ class SettingTopPage extends ConsumerWidget {
                 title: const Text('ご意見・ご要望'),
                 trailing: const Icon(Icons.chevron_right_rounded),
                 onPressed: (context) {
-                  Navigator.push<MaterialPageRoute>(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SendFeedbackPage(),
-                      ));
+                  Navigator.push<MaterialPageRoute<dynamic>>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SendFeedbackPage(),
+                    ),
+                  );
                 },
               ),
               SettingsTile.navigation(
@@ -155,13 +161,17 @@ class SettingTopPage extends ConsumerWidget {
                 trailing: const Icon(Icons.chevron_right_rounded),
                 onPressed: (context) async {
                   if (!await sendInquiry()) {
-                    showDialog<AlertDialog>(
+                    await showDialog<AlertDialog>(
                       context: context,
                       builder: (context) {
                         return AlertDialog(
                           title: const Text('エラー'),
-                          content: const Text('エラーが発生しました。\n再度お試しください。'
-                              '\n\n何度かお試しいただいても解決されない場合、お手数ではございますが次の宛先までお問い合わせ内容をお送りください。\n\ntoda.myrecipe@gmail.com'),
+                          content: const Text(
+                            'エラーが発生しました。\n再度お試しください。'
+                            '\n\n何度かお試しいただいても解決されない場合、'
+                            'お手数ではございますが次の宛先までお問い合わせ内容をお送りください。'
+                            '\n\ntoda.myrecipe@gmail.com',
+                          ),
                           actions: [
                             TextButton(
                               child: const Text('閉じる'),
@@ -183,7 +193,7 @@ class SettingTopPage extends ConsumerWidget {
                   final inAppReview = InAppReview.instance;
 
                   if (await inAppReview.isAvailable()) {
-                    inAppReview.requestReview();
+                    await inAppReview.requestReview();
                   }
                 },
               ),
@@ -196,121 +206,79 @@ class SettingTopPage extends ConsumerWidget {
                 title: const Text('利用規約'),
                 trailing: const Icon(Icons.chevron_right_rounded),
                 onPressed: (context) async {
-                  Navigator.push<MaterialPageRoute>(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const TermsPage(),
-                      ));
+                  await Navigator.push<MaterialPageRoute<dynamic>>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const TermsPage(),
+                    ),
+                  );
                 },
               ),
               SettingsTile.navigation(
                 title: const Text('プライバシーポリシー'),
                 trailing: const Icon(Icons.chevron_right_rounded),
                 onPressed: (context) {
-                  Navigator.push<MaterialPageRoute>(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const PrivacyPolicyPage(),
-                      ));
+                  Navigator.push<MaterialPageRoute<dynamic>>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PrivacyPolicyPage(),
+                    ),
+                  );
                 },
               ),
             ],
           ),
           CustomSettingsSection(
-              child: Column(
-            children: [
-              SizedBox(
-                height: 48.h,
-              ),
-              TextButton(
-                child: Text(
-                  '退会する',
-                  style: TextStyle(color: Theme.of(context).errorColor),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 48.h,
                 ),
-                onPressed: () {
-                  showDialog<AlertDialog>(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text('確認'),
-                        content: const Text(
-                            '本当に退会しますか？\n\n※ログインしている場合、退会するには再度認証が必要です。\n※退会した場合、登録したアカウントやレシピの情報全てが削除され、二度とログインすることができなくなります。'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('いいえ'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
+                TextButton(
+                  child: Text(
+                    '退会する',
+                    style: TextStyle(color: Theme.of(context).errorColor),
+                  ),
+                  onPressed: () {
+                    showDialog<AlertDialog>(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('確認'),
+                          content: const Text(
+                            '本当に退会しますか？\n\n※ログインしている場合、退会するには再度認証が必要です。'
+                            '\n※退会した場合、登録したアカウントやレシピの情報全てが削除され、'
+                            '二度とログインすることができなくなります。',
                           ),
-                          TextButton(
-                            child: const Text('はい（認証へ進む）'),
-                            onPressed: () async {
-                              // providerId : 認証(ログイン)種別
-                              final providerId = userNotifier.fetchProviderId();
-                              print(providerId);
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text('いいえ'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                            TextButton(
+                              child: const Text('はい（認証へ進む）'),
+                              onPressed: () async {
+                                // providerId : 認証(ログイン)種別
+                                final providerId =
+                                    userNotifier.fetchProviderId();
 
-                              /// 匿名
-                              if (providerId == null) {
-                                EasyLoading.show(status: 'loading...');
-                                final deleteUserErrorText =
-                                    await userNotifier.deleteUser(ref, null);
-
-                                if (deleteUserErrorText == null) {
-                                  EasyLoading.showSuccess('退会しました');
-                                  int popInt = 0;
-                                  Navigator.popUntil(
-                                      context, (_) => popInt++ >= 2);
-                                } else {
-                                  EasyLoading.dismiss();
-                                  return showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: const Text('退会失敗'),
-                                        content: Text(deleteUserErrorText),
-                                        actions: [
-                                          TextButton(
-                                            child: const Text('閉じる'),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              }
-
-                              /// email
-                              else if (providerId == 'password') {
-                                final email = userNotifier.fetchEmail();
-                                showDialog<ReAuthWithEmailDialog>(
-                                  context: context,
-                                  builder: (context) {
-                                    return ReAuthWithEmailDialog(email);
-                                  },
-                                );
-                              }
-
-                              /// google
-                              else if (providerId == 'google.com') {
-                                EasyLoading.show(status: 'loading...');
-                                final reAuth =
-                                    await settingTopModel.reAuthWithGoogle(ref);
-                                final loginErrorText = reAuth.errorText;
-
-                                if (loginErrorText == null) {
-                                  final deleteUserErrorText = await userNotifier
-                                      .deleteUser(ref, reAuth.credential);
+                                /// 匿名
+                                if (providerId == null) {
+                                  await EasyLoading.show(status: 'loading...');
+                                  final deleteUserErrorText =
+                                      await userNotifier.deleteUser(ref, null);
 
                                   if (deleteUserErrorText == null) {
-                                    EasyLoading.showSuccess('退会しました');
+                                    await EasyLoading.showSuccess('退会しました');
                                     var popInt = 0;
                                     Navigator.popUntil(
-                                        context, (_) => popInt++ >= 2);
+                                      context,
+                                      (_) => popInt++ >= 2,
+                                    );
                                   } else {
-                                    EasyLoading.dismiss();
+                                    await EasyLoading.dismiss();
                                     return showDialog(
                                       context: context,
                                       builder: (context) {
@@ -329,52 +297,70 @@ class SettingTopPage extends ConsumerWidget {
                                       },
                                     );
                                   }
-                                } else {
-                                  EasyLoading.dismiss();
-                                  return showDialog(
+                                }
+
+                                /// email
+                                else if (providerId == 'password') {
+                                  final email = userNotifier.fetchEmail();
+                                  await showDialog<ReAuthWithEmailDialog>(
                                     context: context,
                                     builder: (context) {
-                                      return AlertDialog(
-                                        title: const Text('認証失敗'),
-                                        content: Text(loginErrorText),
-                                        actions: [
-                                          TextButton(
-                                            child: const Text('閉じる'),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
+                                      return ReAuthWithEmailDialog(
+                                        email: email,
                                       );
                                     },
                                   );
                                 }
-                              }
 
-                              /// apple
-                              else if (providerId == 'apple.com') {
-                                EasyLoading.show(status: 'loading...');
-                                final reAuth =
-                                    await settingTopModel.reAuthWithApple(ref);
-                                final loginErrorText = reAuth.errorText;
+                                /// google
+                                else if (providerId == 'google.com') {
+                                  await EasyLoading.show(status: 'loading...');
+                                  final reAuth = await settingTopModel
+                                      .reAuthWithGoogle(ref);
+                                  final loginErrorText = reAuth.errorText;
 
-                                if (loginErrorText == null) {
-                                  final deleteUserErrorText = await userNotifier
-                                      .deleteUser(ref, reAuth.credential);
+                                  if (loginErrorText == null) {
+                                    final deleteUserErrorText =
+                                        await userNotifier.deleteUser(
+                                      ref,
+                                      reAuth.credential,
+                                    );
 
-                                  if (deleteUserErrorText == null) {
-                                    EasyLoading.showSuccess('退会しました');
-                                    var popInt = 0;
-                                    Navigator.popUntil(
-                                        context, (_) => popInt++ >= 2);
+                                    if (deleteUserErrorText == null) {
+                                      await EasyLoading.showSuccess('退会しました');
+                                      var popInt = 0;
+                                      Navigator.popUntil(
+                                        context,
+                                        (_) => popInt++ >= 2,
+                                      );
+                                    } else {
+                                      await EasyLoading.dismiss();
+                                      return showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('退会失敗'),
+                                            content: Text(deleteUserErrorText),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text('閉じる'),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
                                   } else {
-                                    EasyLoading.dismiss();
+                                    await EasyLoading.dismiss();
                                     return showDialog(
                                       context: context,
                                       builder: (context) {
                                         return AlertDialog(
-                                          title: const Text('退会失敗'),
-                                          content: Text(deleteUserErrorText),
+                                          title: const Text('認証失敗'),
+                                          content: Text(loginErrorText),
                                           actions: [
                                             TextButton(
                                               child: const Text('閉じる'),
@@ -387,37 +373,81 @@ class SettingTopPage extends ConsumerWidget {
                                       },
                                     );
                                   }
-                                } else {
-                                  EasyLoading.dismiss();
-                                  return showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: const Text('認証失敗'),
-                                        content: Text(loginErrorText),
-                                        actions: [
-                                          TextButton(
-                                            child: const Text('閉じる'),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
                                 }
-                              }
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-            ],
-          ))
+
+                                /// apple
+                                else if (providerId == 'apple.com') {
+                                  await EasyLoading.show(status: 'loading...');
+                                  final reAuth = await settingTopModel
+                                      .reAuthWithApple(ref);
+                                  final loginErrorText = reAuth.errorText;
+
+                                  if (loginErrorText == null) {
+                                    final deleteUserErrorText =
+                                        await userNotifier.deleteUser(
+                                      ref,
+                                      reAuth.credential,
+                                    );
+
+                                    if (deleteUserErrorText == null) {
+                                      await EasyLoading.showSuccess('退会しました');
+                                      var popInt = 0;
+                                      Navigator.popUntil(
+                                        context,
+                                        (_) => popInt++ >= 2,
+                                      );
+                                    } else {
+                                      await EasyLoading.dismiss();
+                                      return showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return AlertDialog(
+                                            title: const Text('退会失敗'),
+                                            content: Text(deleteUserErrorText),
+                                            actions: [
+                                              TextButton(
+                                                child: const Text('閉じる'),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    }
+                                  } else {
+                                    await EasyLoading.dismiss();
+                                    return showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text('認証失敗'),
+                                          content: Text(loginErrorText),
+                                          actions: [
+                                            TextButton(
+                                              child: const Text('閉じる'),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                }
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -426,20 +456,25 @@ class SettingTopPage extends ConsumerWidget {
   Future<bool> sendInquiry() async {
     try {
       final email = Email(
-        body:
-            'お困りの状況について、以下のフォーマットを参考にお問い合わせいただけますと幸いです。\n\n■お問い合わせフォーマット\n1.発生した事象やお困りの状況の詳細(画面の表示や挙動など)\n\n2.事象が発生した日時\n\n3.事象発生時に行った操作\n\n4.その他',
+        body: 'お困りの状況について、以下のフォーマットを参考にお問い合わせいただけますと幸いです。'
+            '\n\n■お問い合わせフォーマット'
+            '\n1.発生した事象やお困りの状況の詳細(画面の表示や挙動など)'
+            '\n\n2.事象が発生した日時'
+            '\n\n3.事象発生時に行った操作'
+            '\n\n4.その他',
         recipients: ['toda.myrecipe@gmail.com'],
       );
       await FlutterEmailSender.send(email);
       return true;
-    } catch (e) {
+    } on Exception {
       return false;
     }
   }
 }
 
 class ReAuthWithEmailDialog extends ConsumerWidget {
-  ReAuthWithEmailDialog(this.email);
+  const ReAuthWithEmailDialog({Key? key, required this.email})
+      : super(key: key);
 
   final String email;
 
@@ -461,19 +496,20 @@ class ReAuthWithEmailDialog extends ConsumerWidget {
         child: Column(
           children: [
             Padding(
-                padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8).r,
-                child: Row(
-                  children: [
-                    const Icon(Icons.mail_outline_rounded),
-                    SizedBox(
-                      width: 8.w,
-                    ),
-                    Text(
-                      email,
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  ],
-                )),
+              padding: const EdgeInsets.only(left: 16, top: 8, bottom: 8).r,
+              child: Row(
+                children: [
+                  const Icon(Icons.mail_outline_rounded),
+                  SizedBox(
+                    width: 8.w,
+                  ),
+                  Text(
+                    email,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.all(8).r,
               child: TextField(
@@ -513,7 +549,7 @@ class ReAuthWithEmailDialog extends ConsumerWidget {
         TextButton(
           child: const Text('再認証して退会'),
           onPressed: () async {
-            EasyLoading.show(status: 'loading...');
+            await EasyLoading.show(status: 'loading...');
             final reAuth =
                 await userNotifier.reAuthWithEmail(ref, email, password);
             final loginErrorText = reAuth.errorText;
@@ -523,12 +559,12 @@ class ReAuthWithEmailDialog extends ConsumerWidget {
                   await userNotifier.deleteUser(ref, reAuth.credential);
 
               if (deleteUserErrorText == null) {
-                EasyLoading.showSuccess('退会しました');
-                int popInt = 0;
+                await EasyLoading.showSuccess('退会しました');
+                var popInt = 0;
                 Navigator.popUntil(context, (_) => popInt++ >= 3);
               }
             } else {
-              EasyLoading.dismiss();
+              await EasyLoading.dismiss();
               return showDialog(
                 context: context,
                 builder: (context) {

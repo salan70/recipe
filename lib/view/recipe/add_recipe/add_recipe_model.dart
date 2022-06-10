@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
 
@@ -17,12 +15,15 @@ class AddRecipeModel extends ChangeNotifier {
 
     try {
       final docRef = await recipeRepository.addRecipe(
-          recipe, ingredientListMap, procedureListMap);
+        recipe,
+        ingredientListMap,
+        procedureListMap,
+      );
       final recipeId = docRef.id;
       await _addImage(recipe, recipeId);
 
       return true;
-    } catch (e) {
+    } on Exception catch (e) {
       print('error $e');
       return false;
     }
@@ -37,8 +38,9 @@ class AddRecipeModel extends ChangeNotifier {
   }
 
   Map<String, Map<String, dynamic>> _ingredientMapToList(
-      List<Ingredient>? ingredientList) {
-    final Map<String, Map<String, dynamic>> ingredientListMap = {};
+    List<Ingredient>? ingredientList,
+  ) {
+    final ingredientListMap = <String, Map<String, dynamic>>{};
 
     if (ingredientList != null) {
       for (var index = 0; index < ingredientList.length; index++) {
@@ -58,8 +60,9 @@ class AddRecipeModel extends ChangeNotifier {
   }
 
   Map<String, Map<String, dynamic>> _procedureMapToList(
-      List<Procedure>? procedureList) {
-    Map<String, Map<String, dynamic>> procedureListMap = {};
+    List<Procedure>? procedureList,
+  ) {
+    final procedureListMap = <String, Map<String, dynamic>>{};
 
     if (procedureList != null) {
       for (var index = 0; index < procedureList.length; index++) {
@@ -76,9 +79,7 @@ class AddRecipeModel extends ChangeNotifier {
     final recipeRepository = RecipeRepository(user: user);
 
     if (recipe.imageFile == null || recipe.imageFile!.path == '') {
-      print('imageFile is Null or empty');
     } else {
-      print(recipe.imageFile);
       await recipeRepository.addImage(recipe.imageFile!, recipeId);
     }
   }

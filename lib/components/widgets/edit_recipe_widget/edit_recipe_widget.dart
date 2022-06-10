@@ -15,7 +15,7 @@ import 'package:recipe/state/image_file/image_file_provider.dart';
 import 'package:recipe/view/other/introduction_ingredient_amount/introduction_ingredient_amount_page.dart';
 
 class EditRecipeWidget extends ConsumerWidget {
-  EditRecipeWidget(this.recipe);
+  const EditRecipeWidget({Key? key, required this.recipe}) : super(key: key);
   final Recipe recipe;
 
   @override
@@ -24,7 +24,7 @@ class EditRecipeWidget extends ConsumerWidget {
     final imageFileNotifier = ref.watch(imageFileNotifierProvider.notifier);
 
     return Container(
-      margin: const EdgeInsets.only(left: 20.0, right: 20.0).r,
+      margin: const EdgeInsets.only(left: 20, right: 20).r,
       width: double.infinity,
       child: ListView(
         children: [
@@ -68,7 +68,7 @@ class EditRecipeWidget extends ConsumerWidget {
                         )
                       : DecoratedBox(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(8),
                             color: Theme.of(context).dividerColor,
                           ),
                           child: const Icon(Icons.add_photo_alternate_outlined),
@@ -81,93 +81,96 @@ class EditRecipeWidget extends ConsumerWidget {
                 androidBorderRadius: 30,
                 actions: <BottomSheetAction>[
                   BottomSheetAction(
-                      title: const Text('アルバムから選択'),
-                      onPressed: () async {
-                        if (await Permission.photos.status.isGranted ||
-                            await Permission.photos.request().isGranted) {
-                          await imageFileNotifier
-                              .pickImage(ImageSource.gallery);
-                          Navigator.pop(context);
-                        } else {
-                          await showDialog<CupertinoAlertDialog>(
-                            context: context,
-                            builder: (context) {
-                              return CupertinoAlertDialog(
-                                title: const Text('写真へのアクセスが許可されていません'),
-                                content: const Text(
-                                    '端末内の画像をレシピに保存するためには、アクセスの許可が必要です。'),
-                                actions: <Widget>[
-                                  CupertinoDialogAction(
-                                    child: const Text('キャンセル'),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                                  CupertinoDialogAction(
-                                    child: const Text('設定へ'),
-                                    onPressed: () => openAppSettings(),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }
-                      }),
+                    title: const Text('アルバムから選択'),
+                    onPressed: () async {
+                      if (await Permission.photos.status.isGranted ||
+                          await Permission.photos.request().isGranted) {
+                        await imageFileNotifier.pickImage(ImageSource.gallery);
+                        Navigator.pop(context);
+                      } else {
+                        await showDialog<CupertinoAlertDialog>(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoAlertDialog(
+                              title: const Text('写真へのアクセスが許可されていません'),
+                              content: const Text(
+                                '端末内の画像をレシピに保存するためには、アクセスの許可が必要です。',
+                              ),
+                              actions: <Widget>[
+                                CupertinoDialogAction(
+                                  child: const Text('キャンセル'),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                                CupertinoDialogAction(
+                                  child: const Text('設定へ'),
+                                  onPressed: () => openAppSettings(),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
                   BottomSheetAction(
-                      title: const Text('カメラで撮影'),
-                      onPressed: () async {
-                        if (await Permission.camera.status.isGranted ||
-                            await Permission.camera.request().isGranted) {
-                          await imageFileNotifier.pickImage(ImageSource.camera);
-                          Navigator.pop(context);
-                        } else {
-                          await showDialog<CupertinoAlertDialog>(
-                            context: context,
-                            builder: (context) {
-                              return CupertinoAlertDialog(
-                                title: const Text('カメラへのアクセスが許可されていません'),
-                                content: const Text(
-                                    'カメラで撮影した画像をレシピに保存するためには、アクセスの許可が必要です。'),
-                                actions: <Widget>[
-                                  CupertinoDialogAction(
-                                    child: const Text('キャンセル'),
-                                    onPressed: () => Navigator.pop(context),
-                                  ),
-                                  CupertinoDialogAction(
-                                    child: const Text('設定へ'),
-                                    onPressed: () => openAppSettings(),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }
-                      }),
+                    title: const Text('カメラで撮影'),
+                    onPressed: () async {
+                      if (await Permission.camera.status.isGranted ||
+                          await Permission.camera.request().isGranted) {
+                        await imageFileNotifier.pickImage(ImageSource.camera);
+                        Navigator.pop(context);
+                      } else {
+                        await showDialog<CupertinoAlertDialog>(
+                          context: context,
+                          builder: (context) {
+                            return CupertinoAlertDialog(
+                              title: const Text('カメラへのアクセスが許可されていません'),
+                              content: const Text(
+                                'カメラで撮影した画像をレシピに保存するためには、アクセスの許可が必要です。',
+                              ),
+                              actions: <Widget>[
+                                CupertinoDialogAction(
+                                  child: const Text('キャンセル'),
+                                  onPressed: () => Navigator.pop(context),
+                                ),
+                                CupertinoDialogAction(
+                                  child: const Text('設定へ'),
+                                  onPressed: () => openAppSettings(),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    },
+                  ),
                 ],
                 cancelAction: CancelAction(
-                    title: const Text('キャンセル'),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }),
+                  title: const Text('キャンセル'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
               );
             },
           ),
           // 評価
           SizedBox(height: 8.h),
           Center(
-              child: RatingBar.builder(
-            initialRating: recipe.recipeGrade!,
-            minRating: 0.5,
-            direction: Axis.horizontal,
-            allowHalfRating: true,
-            itemCount: 5,
-            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0).r,
-            itemBuilder: (context, _) => const Icon(
-              Icons.star_rounded,
-              color: Colors.amber,
+            child: RatingBar.builder(
+              initialRating: recipe.recipeGrade!,
+              minRating: 0.5,
+              allowHalfRating: true,
+              itemPadding: const EdgeInsets.symmetric(horizontal: 4).r,
+              itemBuilder: (context, _) => const Icon(
+                Icons.star_rounded,
+                color: Colors.amber,
+              ),
+              onRatingUpdate: (rating) {
+                recipe.recipeGrade = rating;
+              },
             ),
-            onRatingUpdate: (rating) {
-              recipe.recipeGrade = rating;
-            },
-          )),
+          ),
 
           // 材料
           SizedBox(height: 8.h),
@@ -176,64 +179,65 @@ class EditRecipeWidget extends ConsumerWidget {
               DefaultTextStyle(
                 style: Theme.of(context).primaryTextTheme.subtitle2!,
                 child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Text('材料'),
-                          SizedBox(width: 8.w),
-                          SizedBox(
-                              width: 24.w,
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.only(
-                                    left: 2,
-                                    top: 4,
-                                    bottom: 4,
-                                  ).r,
-                                  isDense: true,
-                                ),
-                                controller: recipe.forHowManyPeople == null
-                                    ? null
-                                    : TextEditingController(
-                                        text:
-                                            recipe.forHowManyPeople.toString(),
-                                      ),
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  LengthLimitingTextInputFormatter(2)
-                                ],
-                                onChanged: (value) {
-                                  if (int.tryParse(value) != null) {
-                                    recipe.forHowManyPeople = int.parse(value);
-                                  }
-                                },
-                              )),
-                          const Text('人分'),
-                        ],
-                      ),
-                      TextButton.icon(
-                          onPressed: () {
-                            Navigator.push<MaterialPageRoute>(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const IntroductionIngredientAmountPage(),
-                              ),
-                            );
-                          },
-                          icon: Icon(
-                            Icons.info_outline,
-                            size: 20.sp,
-                            color: Theme.of(context).hintColor,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Text('材料'),
+                        SizedBox(width: 8.w),
+                        SizedBox(
+                          width: 24.w,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.only(
+                                left: 2,
+                                top: 4,
+                                bottom: 4,
+                              ).r,
+                              isDense: true,
+                            ),
+                            controller: recipe.forHowManyPeople == null
+                                ? null
+                                : TextEditingController(
+                                    text: recipe.forHowManyPeople.toString(),
+                                  ),
+                            keyboardType: TextInputType.number,
+                            inputFormatters: <TextInputFormatter>[
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(2)
+                            ],
+                            onChanged: (value) {
+                              if (int.tryParse(value) != null) {
+                                recipe.forHowManyPeople = int.parse(value);
+                              }
+                            },
                           ),
-                          label: Text(
-                            '数量について',
-                            style:
-                                TextStyle(color: Theme.of(context).hintColor),
-                          )),
-                    ]),
+                        ),
+                        const Text('人分'),
+                      ],
+                    ),
+                    TextButton.icon(
+                      onPressed: () {
+                        Navigator.push<MaterialPageRoute<dynamic>>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const IntroductionIngredientAmountPage(),
+                          ),
+                        );
+                      },
+                      icon: Icon(
+                        Icons.info_outline,
+                        size: 20.sp,
+                        color: Theme.of(context).hintColor,
+                      ),
+                      label: Text(
+                        '数量について',
+                        style: TextStyle(color: Theme.of(context).hintColor),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               SizedBox(height: 8.h),
               IngredientTextFieldWidget(

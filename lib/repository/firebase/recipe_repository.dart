@@ -1,11 +1,9 @@
 import 'dart:collection';
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/view/setting/setting_top/setting_top_model.dart';
 import 'package:uuid/uuid.dart';
 
 class RecipeRepository {
@@ -18,7 +16,7 @@ class RecipeRepository {
   int procedureListOrderNum = 0;
 
   /// delete
-  Future deleteRecipe(Recipe recipe) async {
+  Future<void> deleteRecipe(Recipe recipe) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
@@ -33,9 +31,8 @@ class RecipeRepository {
 
     try {
       await imageRef.delete();
-    } catch (e) {
-      print('レシピ画像削除失敗');
-      print('e:' + e.toString());
+    } on Exception catch (e) {
+      print('e: ${e.toString()}');
     }
   }
 
@@ -49,7 +46,7 @@ class RecipeRepository {
 
     final recipeStream =
         recipeDocument.snapshots().map((DocumentSnapshot document) {
-      Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+      final data = document.data()! as Map<String, dynamic>;
 
       final recipeId = document.id;
       final recipeName = data['recipeName'] as String;
@@ -58,9 +55,12 @@ class RecipeRepository {
       final countInCart = data['countInCart'] as int?;
       final recipeMemo = data['recipeMemo'] as String?;
       final imageUrl = data['imageUrl'] as String?;
+
       // ingredient関連
-      final ingredientListMap = Map<String, Map<String, dynamic>>.from(
-          data['ingredientList'] as Map<String, Map<String, dynamic>>);
+      final ingredientListMap = Map<String, dynamic>.from(
+        data['ingredientList'] as Map<String, dynamic>,
+      );
+
       final sortedIngredientListMap = SplayTreeMap<String, dynamic>.from(
         ingredientListMap,
         (String key, String value) => key.compareTo(value),
@@ -70,24 +70,28 @@ class RecipeRepository {
         ingredientList.add(
           Ingredient(
             id: const Uuid().v4(),
-            name: value['ingredientName'] as String,
-            amount: value['ingredientAmount'] as String,
-            unit: value['ingredientUnit'] as String,
+            name: value['ingredientName'] as String?,
+            amount: value['ingredientAmount'] as String?,
+            unit: value['ingredientUnit'] as String?,
           ),
         );
       });
       // procedure関連
-      final procedureListMap = Map<String, Map<String, dynamic>>.from(
-        data['procedureList'] as Map<String, Map<String, dynamic>>,
+      final procedureListMap = Map<String, dynamic>.from(
+        data['procedureList'] as Map<String, dynamic>,
       );
       final sortedProcedureListMap = SplayTreeMap<String, dynamic>.from(
-          procedureListMap, (String key, String value) => key.compareTo(value));
+        procedureListMap,
+        (String key, String value) => key.compareTo(value),
+      );
       final procedureList = <Procedure>[];
       sortedProcedureListMap.forEach((key, dynamic value) {
-        procedureList.add(Procedure(
-          id: const Uuid().v4(),
-          content: value['content'] as String,
-        ));
+        procedureList.add(
+          Procedure(
+            id: const Uuid().v4(),
+            content: value['content'] as String?,
+          ),
+        );
       });
 
       return Recipe(
@@ -114,34 +118,34 @@ class RecipeRepository {
         .collection('recipes')
         .orderBy('createdAt');
 
-    final recipeNameAndIngredientNameListStream = recipeCollection
-        .snapshots()
-        .asBroadcastStream()
-        .map(
-          (e) => e.docs.map((DocumentSnapshot document) {
-            final data = document.data()! as Map<String, dynamic>;
+    final recipeNameAndIngredientNameListStream =
+        recipeCollection.snapshots().asBroadcastStream().map(
+              (e) => e.docs.map((DocumentSnapshot document) {
+                final data = document.data()! as Map<String, dynamic>;
 
-            final recipeId = document.id;
-            final recipeName = data['recipeName'] as String;
-            // ingredient関連
-            final ingredientListMap = Map<String, Map<String, dynamic>>.from(
-              data['ingredientList'] as Map<String, Map<String, dynamic>>,
-            );
-            final sortedIngredientListMap = SplayTreeMap<String, dynamic>.from(
-                ingredientListMap,
-                (String key, String value) => key.compareTo(value));
-            final ingredientNameList = <String>[];
-            sortedIngredientListMap.forEach((key, dynamic value) {
-              ingredientNameList.add(value['ingredientName'] as String);
-            });
+                final recipeId = document.id;
+                final recipeName = data['recipeName'] as String;
+                // ingredient関連
+                final ingredientListMap = Map<String, dynamic>.from(
+                  data['ingredientList'] as Map<String, dynamic>,
+                );
+                final sortedIngredientListMap =
+                    SplayTreeMap<String, dynamic>.from(
+                  ingredientListMap,
+                  (String key, String value) => key.compareTo(value),
+                );
+                final ingredientNameList = <String>[];
+                sortedIngredientListMap.forEach((key, dynamic value) {
+                  ingredientNameList.add(value['ingredientName'] as String);
+                });
 
-            return RecipeAndIngredientName(
-              recipeId: recipeId,
-              recipeName: recipeName,
-              ingredientNameList: ingredientNameList,
+                return RecipeAndIngredientName(
+                  recipeId: recipeId,
+                  recipeName: recipeName,
+                  ingredientNameList: ingredientNameList,
+                );
+              }).toList(),
             );
-          }).toList(),
-        );
 
     return recipeNameAndIngredientNameListStream;
   }
@@ -153,12 +157,10 @@ class RecipeRepository {
         .collection('recipes')
         .orderBy('createdAt');
 
-    // データ（Map型）を取得
     final recipeListStream =
         recipeCollection.snapshots().asBroadcastStream().map(
               (e) => e.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data =
-                    document.data()! as Map<String, dynamic>;
+                final data = document.data()! as Map<String, dynamic>;
 
                 final recipeId = document.id;
                 final recipeName = data['recipeName'] as String;
@@ -209,7 +211,7 @@ class RecipeRepository {
     return docRef;
   }
 
-  Future addImage(File imageFile, String recipeId) async {
+  Future<void> addImage(File imageFile, String recipeId) async {
     final timestamp = DateTime.now().microsecondsSinceEpoch;
 
     final name = imageFile.path.split('/').last;
@@ -232,10 +234,11 @@ class RecipeRepository {
 
   /// update
   Future<void> updateRecipe(
-      String originalRecipeId,
-      Recipe recipe,
-      Map<String, Map<String, dynamic>>? ingredientListMap,
-      Map<String, Map<String, dynamic>>? procedureListMap) async {
+    String originalRecipeId,
+    Recipe recipe,
+    Map<String, Map<String, dynamic>>? ingredientListMap,
+    Map<String, Map<String, dynamic>>? procedureListMap,
+  ) async {
     //レシピを保存
     await FirebaseFirestore.instance
         .collection('users')

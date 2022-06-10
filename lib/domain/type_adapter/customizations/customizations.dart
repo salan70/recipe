@@ -4,10 +4,10 @@ part 'customizations.g.dart';
 
 @HiveType(typeId: 3)
 class Customizations {
+  Customizations({required this.index});
+
   @HiveField(0)
   int index;
-
-  Customizations({required this.index});
 }
 
 class CustomizationsBoxes {

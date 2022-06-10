@@ -13,7 +13,8 @@ class RecipeForInCartListNotifier
       for (final recipeForInCart in state)
         if (recipeForInCart.recipeId == recipeId)
           recipeForInCart.copyWith(
-              countInCart: recipeForInCart.countInCart! + 1)
+            countInCart: recipeForInCart.countInCart! + 1,
+          )
         else
           recipeForInCart,
     ];
@@ -24,7 +25,8 @@ class RecipeForInCartListNotifier
       for (final recipeForInCart in state)
         if (recipeForInCart.recipeId == recipeId)
           recipeForInCart.copyWith(
-              countInCart: recipeForInCart.countInCart! - 1)
+            countInCart: recipeForInCart.countInCart! - 1,
+          )
         else
           recipeForInCart,
     ];
@@ -35,9 +37,11 @@ class RecipeForInCartListNotifier
   }
 
   int calculateCountSum() {
-    int countSum = 0;
+    var countSum = 0;
 
-    for (var recipeForInCart in state) countSum += recipeForInCart.countInCart!;
+    for (final recipeForInCart in state) {
+      countSum += recipeForInCart.countInCart!;
+    }
 
     return countSum;
   }

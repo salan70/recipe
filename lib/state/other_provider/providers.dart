@@ -1,18 +1,17 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:recipe/domain/cart.dart';
+import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/repository/firebase/cart_repository.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
-import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/state/recipe_in_cart/recipe_in_cart_list_state.dart';
 
 final recipeListStreamProvider =
     StreamProvider.autoDispose<List<Recipe>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
 
-  RecipeRepository recipeRepository = RecipeRepository(user: user!);
+  final recipeRepository = RecipeRepository(user: user!);
 
   return recipeRepository.fetchRecipeList();
 });
@@ -21,7 +20,7 @@ final recipeStreamProviderFamily =
     StreamProvider.family.autoDispose<Recipe, String>((ref, recipeId) {
   final user = ref.watch(userStateNotifierProvider);
 
-  RecipeRepository recipeRepository = RecipeRepository(user: user!);
+  final recipeRepository = RecipeRepository(user: user!);
 
   return recipeRepository.fetchRecipe(recipeId);
 });
@@ -33,7 +32,7 @@ final recipeAndIngredientNameListStreamProvider =
     StreamProvider.autoDispose<List<RecipeAndIngredientName>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
 
-  RecipeRepository recipeRepository = RecipeRepository(user: user!);
+  final recipeRepository = RecipeRepository(user: user!);
 
   return recipeRepository.fetchRecipeNameAndIngredientNameList();
 });
@@ -52,7 +51,7 @@ final contentIsChangedProvider = StateProvider.autoDispose((ref) => false);
 /// cart
 final recipeNumCountProviderFamily =
     StateProvider.family.autoDispose<int, int?>((count, initialCount) {
-  int count = 1;
+  var count = 1;
 
   if (initialCount != null && initialCount != 0) {
     count = initialCount;
@@ -66,7 +65,7 @@ final recipeListInCartPanelIsOpenProvider =
 final recipeListInCartStreamProvider =
     StreamProvider.autoDispose<List<RecipeListInCart>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
-  CartRepository cartRepository = CartRepository(user: user!);
+  final cartRepository = CartRepository(user: user!);
 
   return cartRepository.fetchRecipeListInCart();
 });

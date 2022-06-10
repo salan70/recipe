@@ -5,12 +5,15 @@ import 'package:recipe/state/auth/auth_provider.dart';
 
 class SignUpModel extends ChangeNotifier {
   Future<String?> signUpWithEmail(
-      WidgetRef ref, String email, String password) async {
+    WidgetRef ref,
+    String email,
+    String password,
+  ) async {
     final userNotifier = ref.watch(userStateNotifierProvider.notifier);
 
     try {
       return await userNotifier.signUpWithEmail(email, password);
-    } catch (e) {
+    } on Exception catch (e) {
       return e.toString();
     }
   }
@@ -20,7 +23,7 @@ class SignUpModel extends ChangeNotifier {
 
     try {
       return await userNotifier.signUpWithGoogle();
-    } catch (e) {
+    } on Exception catch (e) {
       return e.toString();
     }
   }
@@ -30,7 +33,7 @@ class SignUpModel extends ChangeNotifier {
 
     try {
       return await userNotifier.signUpWithApple();
-    } catch (e) {
+    } on Exception catch (e) {
       return e.toString();
     }
   }

@@ -9,17 +9,17 @@ class IntroductionTakeOverPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('説明'),
+        title: const Text('説明'),
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0).r,
-          child: Container(
+          padding: const EdgeInsets.all(16).r,
+          child: SizedBox(
             width: double.infinity,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'ログインによって引き継がれる/引き継がれない要素は以下のとおりです。',
                 ),
                 SizedBox(
@@ -36,13 +36,13 @@ class IntroductionTakeOverPage extends ConsumerWidget {
                     SizedBox(
                       height: 8.h,
                     ),
-                    Text(
+                    const Text(
                       '・登録しているレシピの情報（名前、画像、材料、メモ etc...）',
                     ),
                     SizedBox(
                       height: 8.h,
                     ),
-                    Text(
+                    const Text(
                       '・カートに入っているレシピの数',
                     ),
                   ],
@@ -62,31 +62,31 @@ class IntroductionTakeOverPage extends ConsumerWidget {
                     SizedBox(
                       height: 8.h,
                     ),
-                    Text(
+                    const Text(
                       '・カートの材料のチェック状況\n※全てのチェックが外されます。',
                     ),
                     SizedBox(
                       height: 8.h,
                     ),
-                    Text(
+                    const Text(
                       '・カートの材料の「買わないリスト」への移動\n※全ての材料が「買うリスト」に入っている状態になります。',
                     ),
                     SizedBox(
                       height: 8.h,
                     ),
-                    Text(
+                    const Text(
                       '・カスタマイズした材料の単位\n※追加、削除、順番入れ替え、全てが初期化されます。',
                     ),
                     SizedBox(
                       height: 8.h,
                     ),
-                    Text(
+                    const Text(
                       '・カスタマイズしたテーマモード\n※「デバイスに合わせる」になります。',
                     ),
                     SizedBox(
                       height: 8.h,
                     ),
-                    Text(
+                    const Text(
                       '・カスタマイズしたテーマカラー\n※「green」になります。',
                     ),
                   ],

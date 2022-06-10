@@ -4,10 +4,10 @@ part 'ingredient_unit.g.dart';
 
 @HiveType(typeId: 2)
 class IngredientUnit {
+  IngredientUnit({required this.ingredientUnitList});
+
   @HiveField(0)
   List<String> ingredientUnitList;
-
-  IngredientUnit({required this.ingredientUnitList});
 }
 
 class IngredientUnitBoxes {

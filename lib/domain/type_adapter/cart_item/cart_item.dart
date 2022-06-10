@@ -4,6 +4,12 @@ part 'cart_item.g.dart';
 
 @HiveType(typeId: 1)
 class CartItem {
+  CartItem({
+    required this.id,
+    required this.isInBuyList,
+    required this.isChecked,
+  });
+
   @HiveField(0)
   String id;
 
@@ -12,9 +18,6 @@ class CartItem {
 
   @HiveField(2)
   bool isChecked;
-
-  CartItem(
-      {required this.id, required this.isInBuyList, required this.isChecked});
 }
 
 class CartItemBoxes {

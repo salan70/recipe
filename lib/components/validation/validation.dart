@@ -4,7 +4,9 @@ import 'package:recipe/domain/recipe.dart';
 class Validations {
   /// レシピのvalidation
   String? outputRecipeErrorText(
-      Recipe recipe, List<Ingredient> ingredientList) {
+    Recipe recipe,
+    List<Ingredient> ingredientList,
+  ) {
     if (!_isEnteredString(recipe.recipeName)) {
       return 'レシピ名を入力してください';
     } else if (!_isEnteredInt(recipe.forHowManyPeople)) {
@@ -12,7 +14,7 @@ class Validations {
     } else if (!_isGraterThanZero(recipe.forHowManyPeople!)) {
       return '材料は1人分以上で入力してください';
     } else {
-      for (var ingredient in ingredientList) {
+      for (final ingredient in ingredientList) {
         if (_isEnteredString(ingredient.name) &&
             !_isEnteredString(ingredient.unit)) {
           return '単位が選択されていない材料があります';
@@ -64,13 +66,13 @@ class Validations {
   // 0以上かつdouble型にキャストできるか検証
   bool _isPositiveDouble(String ingredientAmount) {
     try {
-      double num = double.parse(ingredientAmount);
+      final num = double.parse(ingredientAmount);
       if (num >= 0) {
         return true;
       } else {
         return false;
       }
-    } catch (e) {
+    } on Exception {
       return false;
     }
   }
@@ -78,21 +80,21 @@ class Validations {
   // 0以上かつ、fraction型かmixedFraction型にキャストできるか検証
   bool _isPositiveFraction(String ingredientAmount) {
     try {
-      final _fraction = Fraction.fromString(ingredientAmount);
-      if (_fraction.toDouble() >= 0) {
+      final fraction = Fraction.fromString(ingredientAmount);
+      if (fraction.toDouble() >= 0) {
         return true;
       } else {
         return false;
       }
-    } catch (e) {
+    } on Exception {
       try {
-        final _mixedFraction = MixedFraction.fromString(ingredientAmount);
-        if (_mixedFraction.toDouble() >= 0) {
+        final mixedFraction = MixedFraction.fromString(ingredientAmount);
+        if (mixedFraction.toDouble() >= 0) {
           return true;
         } else {
           return false;
         }
-      } catch (e) {
+      } on Exception {
         return false;
       }
     }

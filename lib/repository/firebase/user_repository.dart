@@ -21,7 +21,7 @@ class UserRepository {
   }
 
   /// その他
-  Future addUserInfo(User user) async {
+  Future<void> addUserInfo(User user) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
@@ -31,7 +31,7 @@ class UserRepository {
     });
   }
 
-  Future addDeletedUserInfo(User user) async {
+  Future<void> addDeletedUserInfo(User user) async {
     await FirebaseFirestore.instance
         .collection('deletedUsers')
         .doc(user.uid)
@@ -40,7 +40,7 @@ class UserRepository {
     });
   }
 
-  Future deleteUserInfo(User user) async {
+  Future<void> deleteUserInfo(User user) async {
     await FirebaseFirestore.instance.collection('users').doc(user.uid).delete();
   }
 }

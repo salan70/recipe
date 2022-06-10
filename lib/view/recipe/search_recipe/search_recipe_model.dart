@@ -3,22 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:recipe/domain/recipe.dart';
 
 class SearchRecipeModel extends ChangeNotifier {
-  List<String> searchRecipe(String searchWord,
-      List<RecipeAndIngredientName> recipeAndIngredientNameList) {
+  List<String> searchRecipe(
+    String searchWord,
+    List<RecipeAndIngredientName> recipeAndIngredientNameList,
+  ) {
     final searchWordList = _searchWordToList(searchWord);
-    List<String> searchResultList = [];
+    final searchResultList = <String>[];
 
     // searchWordListが空の場合、全レシピを出力
     if (searchWordList.isEmpty == true) {
-      for (var recipeAndIngredientName in recipeAndIngredientNameList) {
+      for (final recipeAndIngredientName in recipeAndIngredientNameList) {
         searchResultList.add(recipeAndIngredientName.recipeId);
       }
     }
     // searchWordListが空でない場合の処理
     else {
-      for (var recipeAndIngredientName in recipeAndIngredientNameList) {
+      for (final recipeAndIngredientName in recipeAndIngredientNameList) {
         if (_searchWordListFoundInRecipeAndIngredientName(
-                searchWordList, recipeAndIngredientName) ==
+              searchWordList,
+              recipeAndIngredientName,
+            ) ==
             true) {
           searchResultList.add(recipeAndIngredientName.recipeId);
         }
@@ -28,11 +32,14 @@ class SearchRecipeModel extends ChangeNotifier {
   }
 
   bool _searchWordListFoundInRecipeAndIngredientName(
-      List<String> searchWordList,
-      RecipeAndIngredientName recipeAndIngredientName) {
-    for (var searchWord in searchWordList) {
+    List<String> searchWordList,
+    RecipeAndIngredientName recipeAndIngredientName,
+  ) {
+    for (final searchWord in searchWordList) {
       if (!_searchWordFoundInRecipeAndIngredientName(
-          searchWord, recipeAndIngredientName)) {
+        searchWord,
+        recipeAndIngredientName,
+      )) {
         return false;
       }
     }
@@ -40,12 +47,16 @@ class SearchRecipeModel extends ChangeNotifier {
   }
 
   bool _searchWordFoundInRecipeAndIngredientName(
-      String searchWord, RecipeAndIngredientName recipeAndIngredientName) {
+    String searchWord,
+    RecipeAndIngredientName recipeAndIngredientName,
+  ) {
     if (recipeAndIngredientName.recipeName.contains(searchWord)) {
       return true;
     } else {
       if (_searchWordFoundInStringList(
-          searchWord, recipeAndIngredientName.ingredientNameList)) {
+        searchWord,
+        recipeAndIngredientName.ingredientNameList,
+      )) {
         return true;
       }
     }
@@ -53,7 +64,7 @@ class SearchRecipeModel extends ChangeNotifier {
   }
 
   bool _searchWordFoundInStringList(String searchWord, List<String> list) {
-    for (var item in list) {
+    for (final item in list) {
       if (item.contains(searchWord)) {
         return true;
       }
