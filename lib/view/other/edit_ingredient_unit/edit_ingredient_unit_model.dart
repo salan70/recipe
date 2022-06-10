@@ -29,10 +29,9 @@ class EditIngredientUnitModel {
   ];
 
   List<String> fetchIngredientUnitList() {
-    IngredientUnitRepository _ingredientUnitRepository =
-        IngredientUnitRepository();
+    final ingredientUnitRepository = IngredientUnitRepository();
     final ingredientUnitList =
-        _ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
+        ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
     return ingredientUnitList;
   }
 
@@ -46,64 +45,62 @@ class EditIngredientUnitModel {
     }
   }
 
-  Future addIngredientUnit(String unitName) async {
-    IngredientUnitRepository _ingredientUnitRepository =
-        IngredientUnitRepository();
-    final List<String> ingredientUnitList =
-        _ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
+  Future<void> addIngredientUnit(String unitName) async {
+    final ingredientUnitRepository = IngredientUnitRepository();
+    final ingredientUnitList = ingredientUnitRepository
+        .fetchIngredientUnitList()
+        .ingredientUnitList
+      ..add(unitName);
 
-    ingredientUnitList.add(unitName);
-    await _ingredientUnitRepository.putIngredientUnitList(ingredientUnitList);
+    await ingredientUnitRepository.putIngredientUnitList(ingredientUnitList);
   }
 
   Future<bool> deleteIngredientUnit(String unitName) async {
-    IngredientUnitRepository _ingredientUnitRepository =
-        IngredientUnitRepository();
-    final List<String> ingredientUnitList =
-        _ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
+    final ingredientUnitRepository = IngredientUnitRepository();
+    final ingredientUnitList =
+        ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
 
     // 単位が1つしかない場合、削除できない
     if (ingredientUnitList.length == 1) {
       return false;
     }
-    for (int index = 0; index < ingredientUnitList.length; index++) {
+    for (var index = 0; index < ingredientUnitList.length; index++) {
       if (ingredientUnitList[index] == unitName) {
         ingredientUnitList.removeAt(index);
         break;
       }
     }
-    await _ingredientUnitRepository.putIngredientUnitList(ingredientUnitList);
+    await ingredientUnitRepository.putIngredientUnitList(ingredientUnitList);
     return true;
   }
 
-  Future deleteIngredientUnitList() async {
-    IngredientUnitRepository _ingredientUnitRepository =
-        IngredientUnitRepository();
-    await _ingredientUnitRepository.deleteIngredientUnitList();
+  Future<void> deleteIngredientUnitList() async {
+    final ingredientUnitRepository = IngredientUnitRepository();
+    await ingredientUnitRepository.deleteIngredientUnitList();
   }
 
-  Future reorderIngredientUnitList(int oldIndex, int newIndex) async {
-    IngredientUnitRepository _ingredientUnitRepository =
-        IngredientUnitRepository();
-    final List<String> ingredientUnitList =
-        _ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
+  Future<void> reorderIngredientUnitList(int oldIndex, int newIndex) async {
+    final ingredientUnitRepository = IngredientUnitRepository();
+    final ingredientUnitList =
+        ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
 
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
+    var useNewIndex = newIndex;
+
+    if (oldIndex < useNewIndex) {
+      useNewIndex -= 1;
     }
-    String ingredientUnit = ingredientUnitList.removeAt(oldIndex);
+    final ingredientUnit = ingredientUnitList.removeAt(oldIndex);
 
-    ingredientUnitList.insert(newIndex, ingredientUnit);
-    await _ingredientUnitRepository.putIngredientUnitList(ingredientUnitList);
+    ingredientUnitList.insert(useNewIndex, ingredientUnit);
+    await ingredientUnitRepository.putIngredientUnitList(ingredientUnitList);
   }
 
   bool checkIsDuplicate(String unitName) {
-    IngredientUnitRepository _ingredientUnitRepository =
-        IngredientUnitRepository();
-    final List<String> ingredientUnitList =
-        _ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
+    final ingredientUnitRepository = IngredientUnitRepository();
+    final ingredientUnitList =
+        ingredientUnitRepository.fetchIngredientUnitList().ingredientUnitList;
 
-    for (var ingredientUnit in ingredientUnitList) {
+    for (final ingredientUnit in ingredientUnitList) {
       if (ingredientUnit == unitName) {
         return true;
       }

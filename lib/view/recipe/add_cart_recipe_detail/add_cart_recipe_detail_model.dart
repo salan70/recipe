@@ -7,12 +7,12 @@ class AddCartRecipeDetailModel extends ChangeNotifier {
   final User user;
 
   Future<String?> updateCount(String recipeId, int count) async {
-    CartRepository cartRepository = CartRepository(user: user);
+    final cartRepository = CartRepository(user: user);
 
     try {
       await cartRepository.updateCount(recipeId, count);
       return null;
-    } catch (e) {
+    } on Exception catch (e) {
       return e.toString();
     }
   }

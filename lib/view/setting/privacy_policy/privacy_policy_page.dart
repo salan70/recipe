@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-
 import 'package:recipe/state/other_provider/providers.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class PrivacyPolicyPage extends ConsumerWidget {
   const PrivacyPolicyPage({Key? key}) : super(key: key);
@@ -14,7 +13,7 @@ class PrivacyPolicyPage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('プライバシーポリシー'),
+        title: const Text('プライバシーポリシー'),
       ),
       body: SafeArea(
         child: Container(
@@ -23,7 +22,7 @@ class PrivacyPolicyPage extends ConsumerWidget {
           color: Colors.white,
           child: Column(
             children: [
-              isLoading == true ? LinearProgressIndicator() : Container(),
+              isLoading == true ? const LinearProgressIndicator() : Container(),
               Expanded(
                 child: WebView(
                   initialUrl: 'https://salan70.github.io/recipe/PrivacyPolicy',

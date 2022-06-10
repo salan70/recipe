@@ -2,24 +2,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:recipe/components/auth_exception.dart';
-import 'package:sign_in_with_apple/sign_in_with_apple.dart';
-
-import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/domain/re_auth.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
-import 'package:recipe/repository/hive/cart_item_repository.dart';
-import 'package:recipe/repository/hive/ingredient_unit_repository.dart';
-import 'package:recipe/repository/hive/customizations_repository.dart';
 import 'package:recipe/repository/firebase/user_repository.dart';
+import 'package:recipe/repository/hive/cart_item_repository.dart';
+import 'package:recipe/repository/hive/customizations_repository.dart';
+import 'package:recipe/repository/hive/ingredient_unit_repository.dart';
+import 'package:recipe/state/other_provider/providers.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 class AuthStateNotifier extends StateNotifier<User?> {
   AuthStateNotifier() : super(null);
 
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  UserRepository _userRepository = UserRepository();
+  final UserRepository _userRepository = UserRepository();
 
   // アプリ開始
-  Future appStarted() async {
+  Future<void> appStarted() async {
     if (_firebaseAuth.currentUser == null) {
       await _firebaseAuth.signInAnonymously();
     }
@@ -30,7 +29,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
     state = _firebaseAuth.currentUser;
   }
 
-  Future signOut() async {
+  Future<void> signOut() async {
     await _firebaseAuth.signOut();
     await _deleteAllHiveBoxes();
     await _firebaseAuth.signInAnonymously();
@@ -41,7 +40,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
   String? fetchProviderId() {
     try {
       return _firebaseAuth.currentUser!.providerData[0].providerId;
-    } catch (e) {
+    } on Exception {
       return null;
     }
   }
@@ -57,7 +56,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
         await _firebaseAuth.currentUser!
             .reauthenticateWithCredential(credential);
       } on FirebaseAuthException catch (e) {
-        AuthException authException = AuthException();
+        final authException = AuthException();
 
         return authException.outputAuthErrorText(e);
       }
@@ -82,27 +81,32 @@ class AuthStateNotifier extends StateNotifier<User?> {
   }
 
   Future<String?> _deleteAllUserInfo(WidgetRef ref) async {
-    final recipeListStream = ref.watch(recipeListStreamProvider);
-    RecipeRepository recipeRepository =
-        RecipeRepository(user: _firebaseAuth.currentUser!);
+    final recipeListStream = ref.watch(recipeListProvider);
+    final recipeRepository = RecipeRepository(user: _firebaseAuth.currentUser!);
 
     // 全てのrecipeを削除
     recipeListStream.when(
-        error: (error, stack) {
-          return error.toString();
-        },
-        loading: () {},
-        data: (recipeList) async {
-          for (var recipe in recipeList)
-            try {
-              if (recipe.imageUrl != '') {
-                await recipeRepository.deleteImage(recipe);
+      error: (error, stack) {
+        return error.toString();
+      },
+      loading: () {},
+      data: (recipeList) async {
+        for (final recipe in recipeList) {
+          try {
+            if (recipe.imageUrl != '') {
+              final errorTextWhenDeleteImage =
+                  await recipeRepository.deleteImage(recipe);
+              if (errorTextWhenDeleteImage != null) {
+                return errorTextWhenDeleteImage;
               }
-              await recipeRepository.deleteRecipe(recipe);
-            } catch (e) {
-              return e.toString();
             }
-        });
+            await recipeRepository.deleteRecipe(recipe);
+          } on Exception catch (e) {
+            return e.toString();
+          }
+        }
+      },
+    );
     // userInfoを削除
     await _userRepository.deleteUserInfo(_firebaseAuth.currentUser!);
     // hiveを削除
@@ -112,12 +116,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
   }
 
   // すべてのhiveのboxを削除
-  Future _deleteAllHiveBoxes() async {
-    CartItemRepository cartItemRepository = CartItemRepository();
-    IngredientUnitRepository ingredientUnitRepository =
-        IngredientUnitRepository();
-    CustomizationsRepository selectedSchemeColorRepository =
-        CustomizationsRepository();
+  Future<void> _deleteAllHiveBoxes() async {
+    final cartItemRepository = CartItemRepository();
+    final ingredientUnitRepository = IngredientUnitRepository();
+    final selectedSchemeColorRepository = CustomizationsRepository();
 
     await cartItemRepository.deleteAllCartItem();
     await ingredientUnitRepository.deleteIngredientUnitList();
@@ -129,7 +131,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
   Future<String?> signUpWithEmail(String email, String password) async {
     final currentUser = _firebaseAuth.currentUser;
     try {
-      final AuthCredential credential =
+      final credential =
           EmailAuthProvider.credential(email: email, password: password);
       // 匿名アカウントとのリンク
       if (currentUser!.isAnonymous) {
@@ -143,7 +145,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
         return 'サインアップ失敗';
       }
     } on FirebaseAuthException catch (e) {
-      AuthException authException = AuthException();
+      final authException = AuthException();
 
       return authException.outputAuthErrorText(e);
     }
@@ -159,7 +161,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
       await _deleteAllHiveBoxes();
       return null;
     } on FirebaseAuthException catch (e) {
-      AuthException authException = AuthException();
+      final authException = AuthException();
 
       return authException.outputAuthErrorText(e);
     }
@@ -167,9 +169,8 @@ class AuthStateNotifier extends StateNotifier<User?> {
 
   /// Google Account
   Future<String?> signUpWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+    final googleUser = await GoogleSignIn().signIn();
+    final googleAuth = await googleUser!.authentication;
     final currentUser = _firebaseAuth.currentUser;
 
     try {
@@ -188,16 +189,15 @@ class AuthStateNotifier extends StateNotifier<User?> {
         return 'サインアップ失敗';
       }
     } on FirebaseAuthException catch (e) {
-      AuthException authException = AuthException();
+      final authException = AuthException();
 
       return authException.outputAuthErrorText(e);
     }
   }
 
   Future<String?> loginWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+    final googleUser = await GoogleSignIn().signIn();
+    final googleAuth = await googleUser!.authentication;
 
     try {
       final AuthCredential credential = GoogleAuthProvider.credential(
@@ -216,7 +216,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
       await _deleteAllHiveBoxes();
       return null;
     } on FirebaseAuthException catch (e) {
-      AuthException authException = AuthException();
+      final authException = AuthException();
 
       return authException.outputAuthErrorText(e);
     }
@@ -232,7 +232,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
           AppleIDAuthorizationScopes.fullName,
         ],
       );
-      OAuthProvider oauthProvider = OAuthProvider('apple.com');
+      final oauthProvider = OAuthProvider('apple.com');
       final credential = oauthProvider.credential(
         idToken: appleCredential.identityToken,
         accessToken: appleCredential.authorizationCode,
@@ -248,7 +248,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
         return 'サインアップ失敗';
       }
     } on FirebaseAuthException catch (e) {
-      AuthException authException = AuthException();
+      final authException = AuthException();
 
       return authException.outputAuthErrorText(e);
     }
@@ -262,7 +262,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
           AppleIDAuthorizationScopes.fullName,
         ],
       );
-      OAuthProvider oauthProvider = OAuthProvider('apple.com');
+      final oauthProvider = OAuthProvider('apple.com');
       final credential = oauthProvider.credential(
         idToken: appleCredential.identityToken,
         accessToken: appleCredential.authorizationCode,
@@ -272,14 +272,13 @@ class AuthStateNotifier extends StateNotifier<User?> {
       state = _firebaseAuth.currentUser;
 
       if (loginUser.additionalUserInfo!.isNewUser) {
-        print('apple first login');
         await _userRepository.addUserInfo(state!);
       }
 
       await _deleteAllHiveBoxes();
       return null;
     } on FirebaseAuthException catch (e) {
-      AuthException authException = AuthException();
+      final authException = AuthException();
 
       return authException.outputAuthErrorText(e);
     }
@@ -287,7 +286,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
 
   /// reAuth (退会するために必要)
   Future<ReAuth> reAuthWithEmail(
-      WidgetRef ref, String email, String password) async {
+    WidgetRef ref,
+    String email,
+    String password,
+  ) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
@@ -297,20 +299,17 @@ class AuthStateNotifier extends StateNotifier<User?> {
         email: email,
         password: password,
       );
-      print('ok $credential');
       return ReAuth(null, credential);
     } on FirebaseAuthException catch (e) {
-      print(e);
-      AuthException authException = AuthException();
+      final authException = AuthException();
 
       return ReAuth(authException.outputAuthErrorText(e), null);
     }
   }
 
   Future<ReAuth> reAuthWithGoogle(WidgetRef ref) async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser!.authentication;
+    final googleUser = await GoogleSignIn().signIn();
+    final googleAuth = await googleUser!.authentication;
 
     try {
       final credential = GoogleAuthProvider.credential(
@@ -319,7 +318,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
       );
       return ReAuth(null, credential);
     } on FirebaseAuthException catch (e) {
-      AuthException authException = AuthException();
+      final authException = AuthException();
 
       return ReAuth(authException.outputAuthErrorText(e), null);
     }
@@ -333,14 +332,14 @@ class AuthStateNotifier extends StateNotifier<User?> {
           AppleIDAuthorizationScopes.fullName,
         ],
       );
-      OAuthProvider oauthProvider = OAuthProvider('apple.com');
+      final oauthProvider = OAuthProvider('apple.com');
       final credential = oauthProvider.credential(
         idToken: appleCredential.identityToken,
         accessToken: appleCredential.authorizationCode,
       );
       return ReAuth(null, credential);
     } on FirebaseAuthException catch (e) {
-      AuthException authException = AuthException();
+      final authException = AuthException();
 
       return ReAuth(authException.outputAuthErrorText(e), null);
     }

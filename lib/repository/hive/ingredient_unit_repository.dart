@@ -9,19 +9,23 @@ class IngredientUnitRepository {
         ingredientUnitEditModel.defaultIngredientUnitList;
 
     final box = IngredientUnitBoxes.getIngredientUnit();
-    final IngredientUnit getBox = box.get('ingredientUnitList',
-        defaultValue:
-            IngredientUnit(ingredientUnitList: defaultIngredientUnitList))!;
+    final getBox = box.get(
+      'ingredientUnitList',
+      defaultValue:
+          IngredientUnit(ingredientUnitList: defaultIngredientUnitList),
+    )!;
     return getBox;
   }
 
-  Future putIngredientUnitList(List<String> ingredientUnitList) async {
+  Future<void> putIngredientUnitList(List<String> ingredientUnitList) async {
     final box = IngredientUnitBoxes.getIngredientUnit();
-    await box.put('ingredientUnitList',
-        IngredientUnit(ingredientUnitList: ingredientUnitList));
+    await box.put(
+      'ingredientUnitList',
+      IngredientUnit(ingredientUnitList: ingredientUnitList),
+    );
   }
 
-  Future deleteIngredientUnitList() async {
+  Future<void> deleteIngredientUnitList() async {
     final box = IngredientUnitBoxes.getIngredientUnit();
     await box.delete('ingredientUnitList');
   }

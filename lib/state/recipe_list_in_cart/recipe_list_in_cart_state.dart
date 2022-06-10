@@ -1,10 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:recipe/domain/cart.dart';
 
-class RecipeForInCartListNotifier
-    extends StateNotifier<List<RecipeListInCart>> {
-  RecipeForInCartListNotifier() : super([]);
+class RecipeListInCartNotifier extends StateNotifier<List<RecipeListInCart>> {
+  RecipeListInCartNotifier() : super([]);
 
   void delete(String id) {}
 
@@ -13,7 +11,8 @@ class RecipeForInCartListNotifier
       for (final recipeForInCart in state)
         if (recipeForInCart.recipeId == recipeId)
           recipeForInCart.copyWith(
-              countInCart: recipeForInCart.countInCart! + 1)
+            countInCart: recipeForInCart.countInCart! + 1,
+          )
         else
           recipeForInCart,
     ];
@@ -24,7 +23,8 @@ class RecipeForInCartListNotifier
       for (final recipeForInCart in state)
         if (recipeForInCart.recipeId == recipeId)
           recipeForInCart.copyWith(
-              countInCart: recipeForInCart.countInCart! - 1)
+            countInCart: recipeForInCart.countInCart! - 1,
+          )
         else
           recipeForInCart,
     ];
@@ -34,11 +34,11 @@ class RecipeForInCartListNotifier
     return state = recipeForInCartList;
   }
 
-  int calculateCountSum() {
-    int countSum = 0;
-
-    for (var recipeForInCart in state) countSum += recipeForInCart.countInCart!;
-
+  int calculateSum() {
+    var countSum = 0;
+    for (final recipeForInCart in state) {
+      countSum += recipeForInCart.countInCart!;
+    }
     return countSum;
   }
 }

@@ -5,12 +5,15 @@ import 'package:recipe/state/auth/auth_provider.dart';
 
 class LoginModel extends ChangeNotifier {
   Future<String?> loginWithEmail(
-      WidgetRef ref, String email, String password) async {
+    WidgetRef ref,
+    String email,
+    String password,
+  ) async {
     final userNotifier = ref.watch(userStateNotifierProvider.notifier);
 
     try {
       return await userNotifier.loginWithEmail(email, password);
-    } catch (e) {
+    } on Exception catch (e) {
       return e.toString();
     }
   }
@@ -20,7 +23,7 @@ class LoginModel extends ChangeNotifier {
 
     try {
       return await userNotifier.loginWithGoogle();
-    } catch (e) {
+    } on Exception catch (e) {
       return e.toString();
     }
   }
@@ -30,7 +33,7 @@ class LoginModel extends ChangeNotifier {
 
     try {
       return await userNotifier.loginWithApple();
-    } catch (e) {
+    } on Exception catch (e) {
       return e.toString();
     }
   }

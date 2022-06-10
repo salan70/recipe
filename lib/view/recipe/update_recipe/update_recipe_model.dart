@@ -9,27 +9,30 @@ class UpdateRecipeModel extends ChangeNotifier {
   final User user;
 
   Future<bool> updateRecipe(Recipe originalRecipe, Recipe recipe) async {
-    RecipeRepository _recipeRepository = RecipeRepository(user: user);
+    final recipeRepository = RecipeRepository(user: user);
 
-    Map<String, Map<String, dynamic>>? ingredientListMap =
-        _ingredientMapToList(recipe.ingredientList);
-    Map<String, Map<String, dynamic>>? procedureListMap =
-        _procedureMapToList(recipe.procedureList);
+    final ingredientListMap = _ingredientMapToList(recipe.ingredientList);
+    final procedureListMap = _procedureMapToList(recipe.procedureList);
 
     try {
-      await _recipeRepository.updateRecipe(originalRecipe.recipeId!, recipe,
-          ingredientListMap, procedureListMap);
-      await _updateImage(originalRecipe, recipe);
-
-      return true;
-    } catch (e) {
-      print(e);
+      await recipeRepository.updateRecipe(
+        originalRecipe.recipeId!,
+        recipe,
+        ingredientListMap,
+        procedureListMap,
+      );
+      if (await _updateImage(originalRecipe, recipe)) {
+        return true;
+      } else {
+        return false;
+      }
+    } on Exception {
       return false;
     }
   }
 
   Map<String, dynamic> _ingredientToMap(Ingredient ingredient) {
-    return {
+    return <String, dynamic>{
       'ingredientName': ingredient.name,
       'ingredientAmount': ingredient.amount,
       'ingredientUnit': ingredient.unit
@@ -37,13 +40,13 @@ class UpdateRecipeModel extends ChangeNotifier {
   }
 
   Map<String, Map<String, dynamic>> _ingredientMapToList(
-      List<Ingredient>? ingredientList) {
-    Map<String, Map<String, dynamic>> ingredientListMap = {};
+    List<Ingredient>? ingredientList,
+  ) {
+    final ingredientListMap = <String, Map<String, dynamic>>{};
 
     if (ingredientList != null) {
-      for (int index = 0; index < ingredientList.length; index++) {
+      for (var index = 0; index < ingredientList.length; index++) {
         if (ingredientList[index].name != '') {
-          print('$index: ${ingredientList[index].name}');
           ingredientListMap[index.toString()] =
               _ingredientToMap(ingredientList[index]);
         }
@@ -53,17 +56,18 @@ class UpdateRecipeModel extends ChangeNotifier {
   }
 
   Map<String, dynamic> _procedureToMap(Procedure procedure) {
-    return {
+    return <String, dynamic>{
       'content': procedure.content,
     };
   }
 
   Map<String, Map<String, dynamic>> _procedureMapToList(
-      List<Procedure>? procedureList) {
-    Map<String, Map<String, dynamic>> procedureListMap = {};
+    List<Procedure>? procedureList,
+  ) {
+    final procedureListMap = <String, Map<String, dynamic>>{};
 
     if (procedureList != null) {
-      for (int index = 0; index < procedureList.length; index++) {
+      for (var index = 0; index < procedureList.length; index++) {
         if (procedureList[index].content != '') {
           procedureListMap[index.toString()] =
               _procedureToMap(procedureList[index]);
@@ -73,18 +77,25 @@ class UpdateRecipeModel extends ChangeNotifier {
     return procedureListMap;
   }
 
-  Future _updateImage(Recipe originalRecipe, Recipe recipe) async {
-    RecipeRepository _recipeRepository = RecipeRepository(user: user);
+  Future<bool> _updateImage(Recipe originalRecipe, Recipe recipe) async {
+    final recipeRepository = RecipeRepository(user: user);
 
     // 元の画像がある & 画像を変更する場合、元の画像を削除して新たに画像を保存する
     if (recipe.imageFile == null || recipe.imageFile!.path == '') {
-      print('imageFile is Null or empty');
+      return true;
     } else {
       if (originalRecipe.imageUrl != '') {
-        await _recipeRepository.deleteImage(originalRecipe);
+        final errorTextWhenDeleteImage =
+            await recipeRepository.deleteImage(originalRecipe);
+        if (errorTextWhenDeleteImage != null) {
+          return false;
+        }
       }
-      await _recipeRepository.addImage(
-          recipe.imageFile!, originalRecipe.recipeId!);
+      await recipeRepository.addImage(
+        recipe.imageFile!,
+        originalRecipe.recipeId!,
+      );
     }
+    return true;
   }
 }

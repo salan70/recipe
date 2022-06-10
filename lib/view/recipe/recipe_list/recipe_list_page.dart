@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
+import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/view/recipe/recipe_detail/recipe_detail_page.dart';
 
 class RecipeListPage extends ConsumerWidget {
@@ -11,43 +10,47 @@ class RecipeListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final recipes = ref.watch(recipeListStreamProvider);
+    final recipes = ref.watch(recipeListProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'レシピ一覧',
         ),
       ),
       body: recipes.when(
-          error: (error, stack) => Text('Error: $error'),
-          loading: () => CircularProgressIndicator(),
-          data: (recipes) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 8, left: 8, right: 8).r,
-              child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
-                  itemCount: recipes.length,
-                  itemBuilder: (context, index) {
-                    final recipe = recipes[index];
-                    return GestureDetector(
-                      ///画面遷移
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              fullscreenDialog: false,
-                              builder: (context) => RecipeDetailPage(
-                                  recipe.recipeId!, 'recipe_list_page'),
-                            ));
-                      },
-                      child: RecipeCardWidget(recipe),
+        error: (error, stack) => Text('Error: $error'),
+        loading: () => const CircularProgressIndicator(),
+        data: (recipes) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 8, left: 8, right: 8).r,
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+              ),
+              itemCount: recipes.length,
+              itemBuilder: (context, index) {
+                final recipe = recipes[index];
+                return GestureDetector(
+                  ///画面遷移
+                  onTap: () {
+                    Navigator.push<MaterialPageRoute<dynamic>>(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RecipeDetailPage(
+                          recipeId: recipe.recipeId!,
+                          fromPageName: 'recipe_list_page',
+                        ),
+                      ),
                     );
-                  }),
-            );
-          }),
+                  },
+                  child: RecipeCardWidget(recipe: recipe),
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }

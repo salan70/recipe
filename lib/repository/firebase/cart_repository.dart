@@ -1,9 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:uuid/uuid.dart';
-
-import 'package:recipe/domain/recipe.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:recipe/domain/cart.dart';
+import 'package:recipe/domain/recipe.dart';
+import 'package:uuid/uuid.dart';
 
 class CartRepository {
   CartRepository({required this.user, this.recipe});
@@ -21,24 +20,28 @@ class CartRepository {
 
     final recipeStream = recipeCollection.snapshots().map(
           (e) => e.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data =
-                document.data()! as Map<String, dynamic>;
+            final data = document.data()! as Map<String, dynamic>;
 
-            final String recipeId = document.id;
-            final String recipeName = data['recipeName'];
-            final int forHowManyPeople = data['forHowManyPeople'];
-            final int? countInCart = data['countInCart'];
+            final recipeId = document.id;
+            final recipeName = data['recipeName'] as String;
+            final forHowManyPeople = data['forHowManyPeople'] as int;
+            final countInCart = data['countInCart'] as int?;
             // ingredient関連
-            final Map<String, Map<String, dynamic>> ingredientListMap =
-                Map<String, Map<String, dynamic>>.from(data['ingredientList']);
-            // print('ingredientListMap : $ingredientListMap');
-            final List<Ingredient> ingredientList = [];
-            ingredientListMap.forEach((key, value) {
-              ingredientList.add(Ingredient(
-                  id: Uuid().v4(),
-                  name: value['ingredientName'],
-                  amount: value['ingredientAmount'],
-                  unit: value['ingredientUnit']));
+            final ingredientListMap = Map<String, dynamic>.from(
+              data['ingredientList'] as Map<String, dynamic>,
+            );
+
+            final ingredientList = <Ingredient>[];
+            ingredientListMap.forEach((key, dynamic value) {
+              value as Map<String, dynamic>;
+              ingredientList.add(
+                Ingredient(
+                  id: const Uuid().v4(),
+                  name: value['ingredientName'] as String,
+                  amount: value['ingredientAmount'] as String,
+                  unit: value['ingredientUnit'] as String,
+                ),
+              );
             });
 
             return RecipeListInCart(
@@ -55,7 +58,7 @@ class CartRepository {
   }
 
   /// update
-  Future updateCount(String recipeId, int count) async {
+  Future<void> updateCount(String recipeId, int count) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)

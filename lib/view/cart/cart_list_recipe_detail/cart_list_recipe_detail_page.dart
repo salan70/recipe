@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/components/widgets/recipe_detail_widget/recipe_detail_widget.dart';
 
 class CartListRecipeDetailPage extends ConsumerWidget {
-  CartListRecipeDetailPage(this.recipeId);
+  const CartListRecipeDetailPage({Key? key, required this.recipeId})
+      : super(key: key);
   final String recipeId;
 
   @override
@@ -15,17 +16,17 @@ class CartListRecipeDetailPage extends ConsumerWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back_ios),
+          icon: const Icon(Icons.arrow_back_ios),
         ),
-        title: Text(
+        title: const Text(
           'レシピの詳細',
         ),
       ),
       body: ListView(
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
-            child: RecipeDetailWidget(recipeId),
+            child: RecipeDetailWidget(recipeId: recipeId),
           ),
         ],
       ),

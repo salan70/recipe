@@ -5,14 +5,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:recipe/domain/recipe.dart';
 
 class RecipeCardWidget extends ConsumerWidget {
-  RecipeCardWidget(this.recipe);
+  const RecipeCardWidget({Key? key, required this.recipe}) : super(key: key);
   final Recipe recipe;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(8.0).r,
+        padding: const EdgeInsets.all(8).r,
         child: Column(
           children: [
             Expanded(
@@ -32,20 +32,20 @@ class RecipeCardWidget extends ConsumerWidget {
                                 );
                               },
                             )
-                          : Container(
+                          : DecoratedBox(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8.0).r,
+                                borderRadius: BorderRadius.circular(8).r,
                                 color: Theme.of(context).dividerColor,
                               ),
-                              child: Icon(Icons.restaurant_rounded),
+                              child: const Icon(Icons.restaurant_rounded),
                             )
-                      : CircularProgressIndicator(),
+                      : const CircularProgressIndicator(),
                 ),
               ),
             ),
             Expanded(
               flex: 3,
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 child: Text(
                   recipe.recipeName.toString(),

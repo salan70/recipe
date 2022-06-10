@@ -9,19 +9,21 @@ class RecipeDetailModel extends ChangeNotifier {
   final User user;
 
   Future<bool> deleteRecipe(Recipe recipe) async {
-    RecipeRepository _recipeRepository = RecipeRepository(user: user);
+    final recipeRepository = RecipeRepository(user: user);
 
     try {
       if (recipe.imageUrl != '') {
-        await _recipeRepository.deleteImage(recipe);
+        final errorTextWhenDeleteImage =
+            await recipeRepository.deleteImage(recipe);
+        if (errorTextWhenDeleteImage != null) {
+          return false;
+        }
       }
-      await _recipeRepository.deleteRecipe(recipe);
+      await recipeRepository.deleteRecipe(recipe);
 
       return true;
-    } catch (e) {
-      print(e);
+    } on Exception {
+      return false;
     }
-
-    return false;
   }
 }

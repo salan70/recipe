@@ -52,29 +52,29 @@ class EditThemeModel {
 
   /// ThemeMode関連
   int fetchSelectedThemeModeIndex() {
-    CustomizationsRepository _repository = CustomizationsRepository();
+    final repository = CustomizationsRepository();
     final selectedThemeModeIndex =
-        _repository.fetchSelectedThemeModeIndex().index;
+        repository.fetchSelectedThemeModeIndex().index;
     return selectedThemeModeIndex;
   }
 
-  Future editSelectedThemeModeIndex(int selectedIndex) async {
-    CustomizationsRepository _repository = CustomizationsRepository();
+  Future<void> editSelectedThemeModeIndex(int selectedIndex) async {
+    final repository = CustomizationsRepository();
 
-    await _repository.putSelectedThemeModeIndex(selectedIndex);
+    await repository.putSelectedThemeModeIndex(selectedIndex);
   }
 
   /// FlexScheme関連
   int fetchSelectedFlexSchemeIndex() {
-    CustomizationsRepository _repository = CustomizationsRepository();
+    final repository = CustomizationsRepository();
     final selectedFlexSchemeIndex =
-        _repository.fetchSelectedFlexSchemeIndex().index;
+        repository.fetchSelectedFlexSchemeIndex().index;
     return selectedFlexSchemeIndex;
   }
 
-  Future editSelectedFlexSchemeIndex(int selectedIndex) async {
-    CustomizationsRepository _repository = CustomizationsRepository();
+  Future<void> editSelectedFlexSchemeIndex(int selectedIndex) async {
+    final repository = CustomizationsRepository();
 
-    await _repository.putSelectedFlexScheme(selectedIndex);
+    await repository.putSelectedFlexScheme(selectedIndex);
   }
 }

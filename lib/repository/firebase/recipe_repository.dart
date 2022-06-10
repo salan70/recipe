@@ -1,9 +1,8 @@
 import 'dart:collection';
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
 import 'package:recipe/domain/recipe.dart';
 import 'package:uuid/uuid.dart';
 
@@ -17,7 +16,7 @@ class RecipeRepository {
   int procedureListOrderNum = 0;
 
   /// delete
-  Future deleteRecipe(Recipe recipe) async {
+  Future<void> deleteRecipe(Recipe recipe) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
@@ -26,16 +25,14 @@ class RecipeRepository {
         .delete();
   }
 
-  // deleteRecipeの前にdeleteImageをする
-  Future deleteImage(Recipe recipe) async {
+  Future<String?> deleteImage(Recipe recipe) async {
     final imageRef = FirebaseStorage.instance.refFromURL(recipe.imageUrl!);
 
     try {
       await imageRef.delete();
-      print('レシピ画像削除成功');
-    } catch (e) {
-      print('レシピ画像削除失敗');
-      print('e:' + e.toString());
+      return null;
+    } on Exception catch (e) {
+      return e.toString();
     }
   }
 
@@ -49,40 +46,54 @@ class RecipeRepository {
 
     final recipeStream =
         recipeDocument.snapshots().map((DocumentSnapshot document) {
-      Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+      final data = document.data()! as Map<String, dynamic>;
 
-      final String? recipeId = document.id;
-      final String recipeName = data['recipeName'];
-      final double? recipeGrade = data['recipeGrade'];
-      final int? forHowManyPeople = data['forHowManyPeople'];
-      final int? countInCart = data['countInCart'];
-      final String? recipeMemo = data['recipeMemo'];
-      final String? imageUrl = data['imageUrl'];
-      final File? imageFile = null;
+      final recipeId = document.id;
+      final recipeName = data['recipeName'] as String;
+      final recipeGrade = data['recipeGrade'] as double?;
+      final forHowManyPeople = data['forHowManyPeople'] as int;
+      final countInCart = data['countInCart'] as int?;
+      final recipeMemo = data['recipeMemo'] as String?;
+      final imageUrl = data['imageUrl'] as String?;
+
       // ingredient関連
-      final Map<String, Map<String, dynamic>> ingredientListMap =
-          Map<String, Map<String, dynamic>>.from(data['ingredientList']);
-      final sortedIngredientListMap = SplayTreeMap.from(ingredientListMap,
-          (String key, String value) => key.compareTo(value));
-      final List<Ingredient> ingredientList = [];
-      sortedIngredientListMap.forEach((key, value) {
-        ingredientList.add(Ingredient(
-            id: Uuid().v4(),
-            name: value['ingredientName'],
-            amount: value['ingredientAmount'],
-            unit: value['ingredientUnit']));
+      final ingredientListMap = Map<String, dynamic>.from(
+        data['ingredientList'] as Map<String, dynamic>,
+      );
+
+      final sortedIngredientListMap = SplayTreeMap<String, dynamic>.from(
+        ingredientListMap,
+        (String key, String value) => key.compareTo(value),
+      );
+      final ingredientList = <Ingredient>[];
+      sortedIngredientListMap.forEach((key, dynamic value) {
+        value as Map<String, dynamic>;
+        ingredientList.add(
+          Ingredient(
+            id: const Uuid().v4(),
+            name: value['ingredientName'] as String?,
+            amount: value['ingredientAmount'] as String?,
+            unit: value['ingredientUnit'] as String?,
+          ),
+        );
       });
       // procedure関連
-      final Map<String, Map<String, dynamic>> procedureListMap =
-          Map<String, Map<String, dynamic>>.from(data['procedureList']);
-      final sortedProcedureListMap = SplayTreeMap.from(
-          procedureListMap, (String key, String value) => key.compareTo(value));
-      final List<Procedure> procedureList = [];
-      sortedProcedureListMap.forEach((key, value) {
-        procedureList.add(Procedure(
-          id: Uuid().v4(),
-          content: value['content'],
-        ));
+      final procedureListMap = Map<String, dynamic>.from(
+        data['procedureList'] as Map<String, dynamic>,
+      );
+      final sortedProcedureListMap = SplayTreeMap<String, dynamic>.from(
+        procedureListMap,
+        (String key, String value) => key.compareTo(value),
+      );
+      final procedureList = <Procedure>[];
+      sortedProcedureListMap.forEach((key, dynamic value) {
+        value as Map<String, dynamic>;
+        procedureList.add(
+          Procedure(
+            id: const Uuid().v4(),
+            content: value['content'] as String?,
+          ),
+        );
       });
 
       return Recipe(
@@ -93,7 +104,6 @@ class RecipeRepository {
         countInCart: countInCart,
         recipeMemo: recipeMemo,
         imageUrl: imageUrl,
-        imageFile: imageFile,
         ingredientList: ingredientList,
         procedureList: procedureList,
       );
@@ -110,33 +120,35 @@ class RecipeRepository {
         .collection('recipes')
         .orderBy('createdAt');
 
-    final recipeNameAndIngredientNameListStream = recipeCollection
-        .snapshots()
-        .asBroadcastStream()
-        .map(
-          (e) => e.docs.map((DocumentSnapshot document) {
-            Map<String, dynamic> data =
-                document.data()! as Map<String, dynamic>;
+    final recipeNameAndIngredientNameListStream =
+        recipeCollection.snapshots().asBroadcastStream().map(
+              (e) => e.docs.map((DocumentSnapshot document) {
+                final data = document.data()! as Map<String, dynamic>;
 
-            final String recipeId = document.id;
-            final String recipeName = data['recipeName'];
-            // ingredient関連
-            final Map<String, Map<String, dynamic>> ingredientListMap =
-                Map<String, Map<String, dynamic>>.from(data['ingredientList']);
-            final sortedIngredientListMap = SplayTreeMap.from(ingredientListMap,
-                (String key, String value) => key.compareTo(value));
-            final List<String> ingredientNameList = [];
-            sortedIngredientListMap.forEach((key, value) {
-              ingredientNameList.add(value['ingredientName']);
-            });
+                final recipeId = document.id;
+                final recipeName = data['recipeName'] as String;
+                // ingredient関連
+                final ingredientListMap = Map<String, dynamic>.from(
+                  data['ingredientList'] as Map<String, dynamic>,
+                );
+                final sortedIngredientListMap =
+                    SplayTreeMap<String, dynamic>.from(
+                  ingredientListMap,
+                  (String key, String value) => key.compareTo(value),
+                );
+                final ingredientNameList = <String>[];
+                sortedIngredientListMap.forEach((key, dynamic value) {
+                  value as Map<String, dynamic>;
+                  ingredientNameList.add(value['ingredientName'] as String);
+                });
 
-            return RecipeAndIngredientName(
-              recipeId: recipeId,
-              recipeName: recipeName,
-              ingredientNameList: ingredientNameList,
+                return RecipeAndIngredientName(
+                  recipeId: recipeId,
+                  recipeName: recipeName,
+                  ingredientNameList: ingredientNameList,
+                );
+              }).toList(),
             );
-          }).toList(),
-        );
 
     return recipeNameAndIngredientNameListStream;
   }
@@ -148,21 +160,18 @@ class RecipeRepository {
         .collection('recipes')
         .orderBy('createdAt');
 
-    // データ（Map型）を取得
     final recipeListStream =
         recipeCollection.snapshots().asBroadcastStream().map(
               (e) => e.docs.map((DocumentSnapshot document) {
-                Map<String, dynamic> data =
-                    document.data()! as Map<String, dynamic>;
+                final data = document.data()! as Map<String, dynamic>;
 
-                final String? recipeId = document.id;
-                final String recipeName = data['recipeName'];
-                final double? recipeGrade = data['recipeGrade'];
-                final int? forHowManyPeople = data['forHowManyPeople'];
-                final int? countInCart = data['countInCart'];
-                final String? recipeMemo = data['recipeMemo'];
-                final String? imageUrl = data['imageUrl'];
-                final File? imageFile = null;
+                final recipeId = document.id;
+                final recipeName = data['recipeName'] as String;
+                final recipeGrade = data['recipeGrade'] as double?;
+                final forHowManyPeople = data['forHowManyPeople'] as int?;
+                final countInCart = data['countInCart'] as int?;
+                final recipeMemo = data['recipeMemo'] as String?;
+                final imageUrl = data['imageUrl'] as String?;
 
                 return Recipe(
                   recipeId: recipeId,
@@ -172,7 +181,6 @@ class RecipeRepository {
                   countInCart: countInCart,
                   recipeMemo: recipeMemo,
                   imageUrl: imageUrl,
-                  imageFile: imageFile,
                   // ingredientList: ingredientList,
                 );
               }).toList(),
@@ -183,15 +191,16 @@ class RecipeRepository {
 
   /// add
   Future<DocumentReference> addRecipe(
-      Recipe recipe,
-      Map<String, Map<String, dynamic>>? ingredientListMap,
-      Map<String, Map<String, dynamic>>? procedureListMap) async {
+    Recipe recipe,
+    Map<String, Map<String, dynamic>>? ingredientListMap,
+    Map<String, Map<String, dynamic>>? procedureListMap,
+  ) async {
     //レシピを保存
-    DocumentReference docRef = await FirebaseFirestore.instance
+    final DocumentReference docRef = await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .collection('recipes')
-        .add({
+        .add(<String, dynamic>{
       'recipeName': recipe.recipeName,
       'recipeGrade': recipe.recipeGrade,
       'forHowManyPeople': recipe.forHowManyPeople,
@@ -205,12 +214,12 @@ class RecipeRepository {
     return docRef;
   }
 
-  Future addImage(File imageFile, String recipeId) async {
-    final int timestamp = DateTime.now().microsecondsSinceEpoch;
+  Future<void> addImage(File imageFile, String recipeId) async {
+    final timestamp = DateTime.now().microsecondsSinceEpoch;
 
-    final String name = imageFile.path.split('/').last;
-    final String path = '${timestamp}_$name';
-    final TaskSnapshot task = await FirebaseStorage.instance
+    final name = imageFile.path.split('/').last;
+    final path = '${timestamp}_$name';
+    final task = await FirebaseStorage.instance
         .ref()
         .child('users/${user.uid}/recipeImages/$recipeId')
         .child(path)
@@ -227,11 +236,12 @@ class RecipeRepository {
   }
 
   /// update
-  Future updateRecipe(
-      String originalRecipeId,
-      Recipe recipe,
-      Map<String, Map<String, dynamic>>? ingredientListMap,
-      Map<String, Map<String, dynamic>>? procedureListMap) async {
+  Future<void> updateRecipe(
+    String originalRecipeId,
+    Recipe recipe,
+    Map<String, Map<String, dynamic>>? ingredientListMap,
+    Map<String, Map<String, dynamic>>? procedureListMap,
+  ) async {
     //レシピを保存
     await FirebaseFirestore.instance
         .collection('users')

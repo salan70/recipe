@@ -1,10 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe/domain/recipe.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:recipe/domain/recipe.dart';
-
 class ProcedureListNotifier extends StateNotifier<List<Procedure>> {
-  ProcedureListNotifier() : super([Procedure(id: Uuid().v4(), content: '')]);
+  ProcedureListNotifier()
+      : super([Procedure(id: const Uuid().v4(), content: '')]);
 
   bool add(Procedure procedure) {
     if (state.length < 30) {
@@ -23,11 +23,12 @@ class ProcedureListNotifier extends StateNotifier<List<Procedure>> {
   }
 
   void reorder(int oldIndex, int newIndex) {
-    if (oldIndex < newIndex) {
-      newIndex -= 1;
+    var useNewIndex = newIndex;
+    if (oldIndex < useNewIndex) {
+      useNewIndex -= 1;
     }
     final item = state.removeAt(oldIndex);
-    state = [...state..insert(newIndex, item)];
+    state = [...state..insert(useNewIndex, item)];
   }
 
   List<Procedure> getList(List<Procedure> procedureList) {

@@ -7,140 +7,149 @@ import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/repository/hive/cart_item_repository.dart';
 
 class CartListModel extends ChangeNotifier {
-  List<IngredientPerInCartRecipe> createIngredientPerInCartRecipeList(
-      RecipeListInCart recipe) {
-    List<IngredientPerInCartRecipe> ingredientPerInCartRecipeList = [];
+  final _cartItemRepository = CartItemRepository();
+
+  List<IngredientByRecipeInCart> createIngredientListByRecipeInCart(
+    RecipeListInCart recipe,
+  ) {
+    final ingredientListByRecipeInCart = <IngredientByRecipeInCart>[];
 
     if (recipe.ingredientList != null) {
-      for (var item in recipe.ingredientList!) {
-        Ingredient ingredient = Ingredient(
-            id: item.id, name: item.name, amount: item.amount, unit: item.unit);
-        IngredientPerInCartRecipe ingredientPerInCartRecipe =
-            IngredientPerInCartRecipe(
-                recipeId: recipe.recipeId!,
-                recipeName: recipe.recipeName!,
-                forHowManyPeople: recipe.forHowManyPeople!,
-                countInCart: recipe.countInCart!,
-                ingredient: ingredient);
+      for (final item in recipe.ingredientList!) {
+        final ingredientByRecipeInCart = IngredientByRecipeInCart(
+          recipeId: recipe.recipeId!,
+          recipeName: recipe.recipeName!,
+          forHowManyPeople: recipe.forHowManyPeople!,
+          countInCart: recipe.countInCart!,
+          ingredient: Ingredient(
+            id: item.id,
+            name: item.name,
+            amount: item.amount,
+            unit: item.unit,
+          ),
+        );
 
-        ingredientPerInCartRecipeList.add(ingredientPerInCartRecipe);
+        ingredientListByRecipeInCart.add(ingredientByRecipeInCart);
       }
     }
 
-    return ingredientPerInCartRecipeList;
+    return ingredientListByRecipeInCart;
   }
 
-  List<IngredientInCartPerRecipeList> createIngredientListInCartPerRecipeList(
-      List<IngredientPerInCartRecipe> ingredientPerInCartRecipeList) {
-    Calculation calculation = Calculation();
+  List<TotaledIngredientInCart> createTotaledIngredientListInCart(
+    List<IngredientByRecipeInCart> ingredientListByRecipeInCart,
+  ) {
+    final calculation = Calculation();
 
-    List<IngredientInCartPerRecipeList> ingredientListInCartPerRecipeList = [];
+    final totaledIngredientListInCart = <TotaledIngredientInCart>[];
 
     // ingredientNameとingredientUnitでソート
-    ingredientPerInCartRecipeList.sort((a, b) {
-      int result = a.ingredient.name!.compareTo(b.ingredient.name!);
-      if (result != 0) return result;
+    ingredientListByRecipeInCart.sort((a, b) {
+      final result = a.ingredient.name!.compareTo(b.ingredient.name!);
+      if (result != 0) {
+        return result;
+      }
       return a.ingredient.unit!.compareTo(b.ingredient.unit!);
     });
 
-    String previousIngredientName = '';
-    String previousIngredientUnit = '';
-    int returnListIndex = 0;
+    var previousIngredientName = '';
+    var previousIngredientUnit = '';
+    var returnListIndex = 0;
 
-    for (int i = 0; i < ingredientPerInCartRecipeList.length; i++) {
+    for (var i = 0; i < ingredientListByRecipeInCart.length; i++) {
+      final ingredientByRecipeInCart = ingredientListByRecipeInCart[i];
+
       /// ingredientNameとingredientUnitが前のものと同じ場合の処理
-      if (ingredientPerInCartRecipeList[i].ingredient.name == previousIngredientName &&
-          ingredientPerInCartRecipeList[i].ingredient.unit ==
-              previousIngredientUnit &&
+      if (ingredientByRecipeInCart.ingredient.name == previousIngredientName &&
+          ingredientByRecipeInCart.ingredient.unit == previousIngredientUnit &&
           i != 0) {
         // 元々のtotalAmount
-        String previousTotalAmount =
-            ingredientListInCartPerRecipeList[returnListIndex - 1]
+        final previousTotalAmount =
+            totaledIngredientListInCart[returnListIndex - 1]
                 .ingredientInCart
                 .ingredientTotalAmount;
 
         // 新たに追加するtotalAmount
-        String addTotalAmount = calculation.executeMultiply(
-            ingredientPerInCartRecipeList[i].countInCart,
-            ingredientPerInCartRecipeList[i].ingredient.amount);
+        final addTotalAmount = calculation.executeMultiply(
+          ingredientByRecipeInCart.countInCart,
+          ingredientByRecipeInCart.ingredient.amount,
+        );
 
         // totalAmountの計算
-        String totalAmount =
+        final totalAmount =
             calculation.executeAdd(previousTotalAmount, addTotalAmount);
 
         // totalAmountを更新
-        ingredientListInCartPerRecipeList[returnListIndex - 1]
+        totaledIngredientListInCart[returnListIndex - 1]
             .ingredientInCart
             .ingredientTotalAmount = totalAmount;
 
-        RecipeForIngredientInCart recipeForIngredientInCart =
-            RecipeForIngredientInCart(
-                recipeId: ingredientPerInCartRecipeList[i].recipeId,
-                recipeName: ingredientPerInCartRecipeList[i].recipeName,
-                forHowManyPeople:
-                    ingredientPerInCartRecipeList[i].forHowManyPeople,
-                countInCart: ingredientPerInCartRecipeList[i].countInCart,
-                ingredientAmount: addTotalAmount);
-        ingredientListInCartPerRecipeList[returnListIndex - 1]
-            .recipeForIngredientInCartList
-            .add(recipeForIngredientInCart);
+        final recipeByIngredientInCart = RecipeByIngredientInCart(
+          recipeId: ingredientByRecipeInCart.recipeId,
+          recipeName: ingredientByRecipeInCart.recipeName,
+          forHowManyPeople: ingredientByRecipeInCart.forHowManyPeople,
+          countInCart: ingredientByRecipeInCart.countInCart,
+          ingredientAmount: addTotalAmount,
+        );
+        totaledIngredientListInCart[returnListIndex - 1]
+            .recipeListByIngredientInCart
+            .add(recipeByIngredientInCart);
       }
 
       /// ingredientNameとingredientUnitが前のものと異なる場合の処理
       else {
-        previousIngredientName =
-            ingredientPerInCartRecipeList[i].ingredient.name!;
-        previousIngredientUnit =
-            ingredientPerInCartRecipeList[i].ingredient.unit!;
+        previousIngredientName = ingredientByRecipeInCart.ingredient.name!;
+        previousIngredientUnit = ingredientByRecipeInCart.ingredient.unit!;
 
-        String totalAmount = calculation.executeMultiply(
-            ingredientPerInCartRecipeList[i].countInCart,
-            ingredientPerInCartRecipeList[i].ingredient.amount);
+        final totalAmount = calculation.executeMultiply(
+          ingredientByRecipeInCart.countInCart,
+          ingredientByRecipeInCart.ingredient.amount,
+        );
 
         // ingredient系
-        IngredientInCart ingredientInCart = IngredientInCart(
-            ingredientName: ingredientPerInCartRecipeList[i].ingredient.name!,
-            ingredientTotalAmount: totalAmount,
-            ingredientUnit: ingredientPerInCartRecipeList[i].ingredient.unit!);
+        final ingredientInCart = IngredientInCart(
+          ingredientName: ingredientByRecipeInCart.ingredient.name!,
+          ingredientTotalAmount: totalAmount,
+          ingredientUnit: ingredientByRecipeInCart.ingredient.unit!,
+        );
 
         // recipeList系
-        List<RecipeForIngredientInCart> recipeForIngredientInCartList = [];
-        RecipeForIngredientInCart recipeForIngredientInCart =
-            RecipeForIngredientInCart(
-                recipeId: ingredientPerInCartRecipeList[i].recipeId,
-                recipeName: ingredientPerInCartRecipeList[i].recipeName,
-                forHowManyPeople:
-                    ingredientPerInCartRecipeList[i].forHowManyPeople,
-                countInCart: ingredientPerInCartRecipeList[i].countInCart,
-                ingredientAmount: totalAmount);
+        final recipeForIngredientInCartList = <RecipeByIngredientInCart>[];
+        final recipeForIngredientInCart = RecipeByIngredientInCart(
+          recipeId: ingredientByRecipeInCart.recipeId,
+          recipeName: ingredientByRecipeInCart.recipeName,
+          forHowManyPeople: ingredientByRecipeInCart.forHowManyPeople,
+          countInCart: ingredientByRecipeInCart.countInCart,
+          ingredientAmount: totalAmount,
+        );
         recipeForIngredientInCartList.add(recipeForIngredientInCart);
 
         // returnするobject
-        IngredientInCartPerRecipeList ingredientInCartPerInRecipeList =
-            IngredientInCartPerRecipeList(
-                ingredientInCart: ingredientInCart,
-                recipeForIngredientInCartList: recipeForIngredientInCartList);
+        final ingredientInCartPerInRecipeList = TotaledIngredientInCart(
+          ingredientInCart: ingredientInCart,
+          recipeListByIngredientInCart: recipeForIngredientInCartList,
+        );
 
-        ingredientListInCartPerRecipeList.add(ingredientInCartPerInRecipeList);
+        totaledIngredientListInCart.add(ingredientInCartPerInRecipeList);
         returnListIndex += 1;
       }
     }
 
-    return ingredientListInCartPerRecipeList;
+    return totaledIngredientListInCart;
   }
 
   /// cart_listでの処理
+  List<TotaledIngredientInCart> createBuyList(
+    List<TotaledIngredientInCart> list,
+  ) {
+    final cartItemRepository = CartItemRepository();
+    final buyList = <TotaledIngredientInCart>[];
 
-  List<IngredientInCartPerRecipeList> createBuyList(
-      List<IngredientInCartPerRecipeList> list) {
-    CartItemRepository cartItemRepository = CartItemRepository();
-    List<IngredientInCartPerRecipeList> buyList = [];
-
-    for (var ingredient in list) {
-      String id = ingredient.ingredientInCart.ingredientName +
+    for (final ingredient in list) {
+      final id = ingredient.ingredientInCart.ingredientName +
           ingredient.ingredientInCart.ingredientUnit;
-      CartItem cartItem = cartItemRepository.fetchItem(id);
-      if (cartItem.isNeed == true) {
+      final cartItem = cartItemRepository.fetchItem(id);
+      if (cartItem.isInBuyList == true) {
         buyList.add(ingredient);
       }
     }
@@ -148,16 +157,17 @@ class CartListModel extends ChangeNotifier {
     return buyList;
   }
 
-  List<IngredientInCartPerRecipeList> createNotBuyList(
-      List<IngredientInCartPerRecipeList> list) {
-    CartItemRepository cartItemRepository = CartItemRepository();
-    List<IngredientInCartPerRecipeList> notBuyList = [];
+  List<TotaledIngredientInCart> createNotBuyList(
+    List<TotaledIngredientInCart> list,
+  ) {
+    final cartItemRepository = CartItemRepository();
+    final notBuyList = <TotaledIngredientInCart>[];
 
-    for (var ingredient in list) {
-      String id = ingredient.ingredientInCart.ingredientName +
+    for (final ingredient in list) {
+      final id = ingredient.ingredientInCart.ingredientName +
           ingredient.ingredientInCart.ingredientUnit;
-      CartItem cartItem = cartItemRepository.fetchItem(id);
-      if (cartItem.isNeed == false) {
+      final cartItem = cartItemRepository.fetchItem(id);
+      if (cartItem.isInBuyList == false) {
         notBuyList.add(ingredient);
       }
     }
@@ -166,21 +176,21 @@ class CartListModel extends ChangeNotifier {
   }
 
   CartItem getCartItem(String id) {
-    CartItemRepository cartItemRepository = CartItemRepository();
-    final cartItem = cartItemRepository.fetchItem(id);
+    final cartItem = _cartItemRepository.fetchItem(id);
     return cartItem;
   }
 
-  Future toggleIsBought(String id, bool isBought) async {
-    CartItemRepository cartItemRepository = CartItemRepository();
-    final item = cartItemRepository.fetchItem(id);
-    cartItemRepository.putIsBought(item, isBought);
+  Future<void> toggleIsChecked({
+    required String id,
+    required bool isChecked,
+  }) async {
+    final item = _cartItemRepository.fetchItem(id);
+    await _cartItemRepository.putIsChecked(item: item, isChecked: isChecked);
   }
 
-  Future toggleIsNeed(String id) async {
-    CartItemRepository cartItemRepository = CartItemRepository();
-    final item = cartItemRepository.fetchItem(id);
-    final isNeed = !item.isNeed;
-    cartItemRepository.putIsNeed(item, isNeed);
+  Future<void> toggleIsInBuyList(String id) async {
+    final item = _cartItemRepository.fetchItem(id);
+    final isInBuyList = !item.isInBuyList;
+    await _cartItemRepository.putIsNeed(item: item, isInBuyList: isInBuyList);
   }
 }

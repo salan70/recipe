@@ -10,7 +10,7 @@ class SettingTopModel extends ChangeNotifier {
 
     try {
       return await userNotifier.reAuthWithGoogle(ref);
-    } catch (e) {
+    } on Exception catch (e) {
       return ReAuth(e.toString(), null);
     }
   }
@@ -20,7 +20,7 @@ class SettingTopModel extends ChangeNotifier {
 
     try {
       return await userNotifier.reAuthWithApple(ref);
-    } catch (e) {
+    } on Exception catch (e) {
       return ReAuth(e.toString(), null);
     }
   }

@@ -4,16 +4,20 @@ part 'cart_item.g.dart';
 
 @HiveType(typeId: 1)
 class CartItem {
+  CartItem({
+    required this.id,
+    required this.isInBuyList,
+    required this.isChecked,
+  });
+
   @HiveField(0)
   String id;
 
   @HiveField(1)
-  bool isNeed;
+  bool isInBuyList;
 
   @HiveField(2)
-  bool isBought;
-
-  CartItem({required this.id, required this.isNeed, required this.isBought});
+  bool isChecked;
 }
 
 class CartItemBoxes {

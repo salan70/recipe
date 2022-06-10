@@ -9,25 +9,29 @@ class AddCartRecipeListModel extends ChangeNotifier {
   final User user;
 
   bool zeroIsIncludeInCart(List<RecipeListInCart> recipeForInCartList) {
-    bool zeroIsInclude = false;
+    var zeroIsInclude = false;
 
-    for (var recipeForInCart in recipeForInCartList)
+    for (final recipeForInCart in recipeForInCartList) {
       if (recipeForInCart.countInCart == 0) {
         zeroIsInclude = true;
       }
+    }
 
     return zeroIsInclude;
   }
 
   Future<String?> updateCountsInCart(
-      List<RecipeListInCart> recipeForInCartList) async {
-    CartRepository cartRepository = CartRepository(user: user);
+    List<RecipeListInCart> recipeForInCartList,
+  ) async {
+    final cartRepository = CartRepository(user: user);
 
-    for (var recipeForInCart in recipeForInCartList) {
+    for (final recipeForInCart in recipeForInCartList) {
       try {
-        cartRepository.updateCount(
-            recipeForInCart.recipeId!, recipeForInCart.countInCart!);
-      } catch (e) {
+        await cartRepository.updateCount(
+          recipeForInCart.recipeId!,
+          recipeForInCart.countInCart!,
+        );
+      } on Exception catch (e) {
         return e.toString();
       }
     }
@@ -35,13 +39,14 @@ class AddCartRecipeListModel extends ChangeNotifier {
   }
 
   Future<String?> deleteAllRecipeFromCart(
-      List<RecipeListInCart> recipeForInCartList) async {
-    CartRepository cartRepository = CartRepository(user: user);
+    List<RecipeListInCart> recipeForInCartList,
+  ) async {
+    final cartRepository = CartRepository(user: user);
 
-    for (var recipeForInCart in recipeForInCartList) {
+    for (final recipeForInCart in recipeForInCartList) {
       try {
-        cartRepository.updateCount(recipeForInCart.recipeId!, 0);
-      } catch (e) {
+        await cartRepository.updateCount(recipeForInCart.recipeId!, 0);
+      } on Exception catch (e) {
         return e.toString();
       }
     }
