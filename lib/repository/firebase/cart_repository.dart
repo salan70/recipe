@@ -33,6 +33,7 @@ class CartRepository {
 
             final ingredientList = <Ingredient>[];
             ingredientListMap.forEach((key, dynamic value) {
+              value as Map<String, dynamic>;
               ingredientList.add(
                 Ingredient(
                   id: const Uuid().v4(),

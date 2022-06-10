@@ -67,6 +67,7 @@ class RecipeRepository {
       );
       final ingredientList = <Ingredient>[];
       sortedIngredientListMap.forEach((key, dynamic value) {
+        value as Map<String, dynamic>;
         ingredientList.add(
           Ingredient(
             id: const Uuid().v4(),
@@ -86,6 +87,7 @@ class RecipeRepository {
       );
       final procedureList = <Procedure>[];
       sortedProcedureListMap.forEach((key, dynamic value) {
+        value as Map<String, dynamic>;
         procedureList.add(
           Procedure(
             id: const Uuid().v4(),
@@ -136,6 +138,7 @@ class RecipeRepository {
                 );
                 final ingredientNameList = <String>[];
                 sortedIngredientListMap.forEach((key, dynamic value) {
+                  value as Map<String, dynamic>;
                   ingredientNameList.add(value['ingredientName'] as String);
                 });
 
