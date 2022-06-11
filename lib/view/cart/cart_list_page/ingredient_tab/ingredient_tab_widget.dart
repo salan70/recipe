@@ -34,27 +34,16 @@ class IngredientTabWidget extends ConsumerWidget {
             error: (error, stack) => Text('Error: $error'),
             loading: () => const CircularProgressIndicator(),
             data: (recipeListInCart) {
-              final ingredientPerInCartRecipeList =
-                  <IngredientByRecipeInCart>[];
-
-              for (final recipe in recipeListInCart) {
-                ingredientTabModel
-                    .createIngredientListByRecipeInCart(recipe)
-                    .forEach(ingredientPerInCartRecipeList.add);
-              }
-
-              final ingredientListInCartPerRecipeList =
-                  ingredientTabModel.createTotaledIngredientListInCart(
-                ingredientPerInCartRecipeList,
-              );
+              final totaledIngredientListInCart = ingredientTabModel
+                  .castToTotaledIngredientListInCart(recipeListInCart);
 
               final ingredientBuyList =
                   ingredientTabModel.createIngredientBuyList(
-                ingredientListInCartPerRecipeList,
+                totaledIngredientListInCart,
               );
               final ingredientNotBuyList =
                   ingredientTabModel.createIngredientNotBuyList(
-                ingredientListInCartPerRecipeList,
+                totaledIngredientListInCart,
               );
 
               final otherCartItemList = ref.watch(otherCartItemListProvider);
@@ -76,8 +65,6 @@ class IngredientTabWidget extends ConsumerWidget {
 
                   countBuyList += otherItemBuyList.length;
                   countNotBuyList += otherItemNotBuyList.length;
-                  print('buy: $countBuyList');
-                  print('not buy: $countNotBuyList');
                 },
               );
 

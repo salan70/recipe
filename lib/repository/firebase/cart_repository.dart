@@ -11,7 +11,7 @@ class CartRepository {
   final Recipe? recipe;
 
   /// fetch
-  Stream<List<RecipeListInCart>> fetchRecipeListInCart() {
+  Stream<List<RecipeInCart>> fetchRecipeListInCart() {
     final recipeCollection = FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
@@ -37,6 +37,7 @@ class CartRepository {
               ingredientList.add(
                 Ingredient(
                   id: const Uuid().v4(),
+                  symbol: value['ingredientSymbol'] as String,
                   name: value['ingredientName'] as String,
                   amount: value['ingredientAmount'] as String,
                   unit: value['ingredientUnit'] as String,
@@ -44,7 +45,7 @@ class CartRepository {
               );
             });
 
-            return RecipeListInCart(
+            return RecipeInCart(
               recipeId: recipeId,
               recipeName: recipeName,
               forHowManyPeople: forHowManyPeople,

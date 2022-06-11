@@ -10,23 +10,39 @@ import 'package:recipe/repository/hive/cart_item_repository.dart';
 class IngredientTabModel extends ChangeNotifier {
   final _cartItemRepository = CartItemRepository();
 
-  List<IngredientByRecipeInCart> createIngredientListByRecipeInCart(
-    RecipeListInCart recipe,
+  List<TotaledIngredientInCart> castToTotaledIngredientListInCart(
+    List<RecipeInCart> recipeListInCart,
+  ) {
+    final ingredientPerInCartRecipeList = <IngredientByRecipeInCart>[];
+
+    for (final recipe in recipeListInCart) {
+      _createIngredientListByRecipeInCart(recipe)
+          .forEach(ingredientPerInCartRecipeList.add);
+    }
+
+    return _createTotaledIngredientListInCart(
+      ingredientPerInCartRecipeList,
+    );
+  }
+
+  List<IngredientByRecipeInCart> _createIngredientListByRecipeInCart(
+    RecipeInCart recipe,
   ) {
     final ingredientListByRecipeInCart = <IngredientByRecipeInCart>[];
 
     if (recipe.ingredientList != null) {
-      for (final item in recipe.ingredientList!) {
+      for (final ingredient in recipe.ingredientList!) {
         final ingredientByRecipeInCart = IngredientByRecipeInCart(
           recipeId: recipe.recipeId!,
           recipeName: recipe.recipeName!,
           forHowManyPeople: recipe.forHowManyPeople!,
           countInCart: recipe.countInCart!,
           ingredient: Ingredient(
-            id: item.id,
-            name: item.name,
-            amount: item.amount,
-            unit: item.unit,
+            id: ingredient.id,
+            symbol: ingredient.symbol,
+            name: ingredient.name,
+            amount: ingredient.amount,
+            unit: ingredient.unit,
           ),
         );
 
@@ -37,7 +53,7 @@ class IngredientTabModel extends ChangeNotifier {
     return ingredientListByRecipeInCart;
   }
 
-  List<TotaledIngredientInCart> createTotaledIngredientListInCart(
+  List<TotaledIngredientInCart> _createTotaledIngredientListInCart(
     List<IngredientByRecipeInCart> ingredientListByRecipeInCart,
   ) {
     final calculation = Calculation();
