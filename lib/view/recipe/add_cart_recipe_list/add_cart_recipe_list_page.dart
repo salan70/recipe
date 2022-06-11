@@ -260,9 +260,8 @@ class AddCartRecipeListPage extends ConsumerWidget {
     final user = ref.watch(userStateNotifierProvider);
     final recipeListInCartStream = ref.watch(recipeListInCartProvider);
 
-    final recipeForInCartListState =
-        ref.watch(recipeListInCartNotifierProvider);
-    final recipeForInCartListStateNotifier =
+    final recipeListInCartState = ref.watch(recipeListInCartNotifierProvider);
+    final recipeListInCartNotifier =
         ref.watch(recipeListInCartNotifierProvider.notifier);
 
     final stateIsChanged = ref.watch(stateIsChangedProvider);
@@ -336,7 +335,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                               await EasyLoading.show(status: 'loading...');
                               final errorText = await addCartRecipeListModel
                                   .deleteAllRecipeFromCart(
-                                recipeForInCartListState,
+                                recipeListInCartState,
                               );
                               if (errorText == null) {
                                 Navigator.pop(context);
@@ -384,15 +383,14 @@ class AddCartRecipeListPage extends ConsumerWidget {
               data: (recipesForInCartList) {
                 if (stateIsChanged == false) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
-                    recipeForInCartListStateNotifier
-                        .getList(recipesForInCartList);
+                    recipeListInCartNotifier.getList(recipesForInCartList);
                   });
                 }
 
                 return Flexible(
                   child: ListView.builder(
                     controller: sc,
-                    itemCount: recipeForInCartListState.length,
+                    itemCount: recipeListInCartState.length,
                     itemBuilder: (context, index) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -400,7 +398,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                           SizedBox(
                             width: 160.w,
                             child: Text(
-                              recipeForInCartListState[index]
+                              recipeListInCartState[index]
                                   .recipeName
                                   .toString(),
                               maxLines: 2,
@@ -412,7 +410,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                           Row(
                             children: [
                               Text(
-                                '計${recipeForInCartListState[index].forHowManyPeople! * recipeForInCartListState[index].countInCart!}人分',
+                                '計${recipeListInCartState[index].forHowManyPeople! * recipeListInCartState[index].countInCart!}人分',
                                 style: Theme.of(context)
                                     .primaryTextTheme
                                     .subtitle2,
@@ -420,24 +418,24 @@ class AddCartRecipeListPage extends ConsumerWidget {
                               IconButton(
                                 onPressed: () {
                                   stateIsChangedNotifier.state = true;
-                                  if (recipeForInCartListState[index]
+                                  if (recipeListInCartState[index]
                                           .countInCart! >
                                       0) {
-                                    recipeForInCartListStateNotifier.decrease(
-                                      recipeForInCartListState[index].recipeId!,
+                                    recipeListInCartNotifier.decrease(
+                                      recipeListInCartState[index].recipeId!,
                                     );
                                   }
                                 },
-                                icon: recipeForInCartListState[index]
-                                            .countInCart! ==
-                                        0
-                                    ? const Icon(
-                                        Icons.remove_circle_outline,
-                                      )
-                                    : const Icon(Icons.remove_circle),
+                                icon:
+                                    recipeListInCartState[index].countInCart! ==
+                                            0
+                                        ? const Icon(
+                                            Icons.remove_circle_outline,
+                                          )
+                                        : const Icon(Icons.remove_circle),
                               ),
                               Text(
-                                '× ${recipeForInCartListState[index].countInCart!}',
+                                '× ${recipeListInCartState[index].countInCart!}',
                                 style: Theme.of(context)
                                     .primaryTextTheme
                                     .subtitle2,
@@ -445,19 +443,19 @@ class AddCartRecipeListPage extends ConsumerWidget {
                               IconButton(
                                 onPressed: () {
                                   stateIsChangedNotifier.state = true;
-                                  if (recipeForInCartListState[index]
+                                  if (recipeListInCartState[index]
                                           .countInCart! <
                                       99) {
-                                    recipeForInCartListStateNotifier.increase(
-                                      recipeForInCartListState[index].recipeId!,
+                                    recipeListInCartNotifier.increase(
+                                      recipeListInCartState[index].recipeId!,
                                     );
                                   }
                                 },
-                                icon: recipeForInCartListState[index]
-                                            .countInCart! ==
-                                        99
-                                    ? const Icon(Icons.add_circle_outline)
-                                    : const Icon(Icons.add_circle),
+                                icon:
+                                    recipeListInCartState[index].countInCart! ==
+                                            99
+                                        ? const Icon(Icons.add_circle_outline)
+                                        : const Icon(Icons.add_circle),
                               )
                             ],
                           ),

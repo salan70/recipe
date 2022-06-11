@@ -2,7 +2,11 @@ import 'package:hive/hive.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 
 class CartItemRepository {
-  Future<void> putIsNeed({
+  Box<CartItem> getCartItems() {
+    return CartItemBoxes.getCartItems();
+  }
+
+  Future<void> putIsInBuyList({
     required CartItem item,
     required bool isInBuyList,
   }) async {
@@ -11,7 +15,7 @@ class CartItemRepository {
       isInBuyList: isInBuyList,
       isChecked: item.isChecked,
     );
-    final box = CartItemBoxes.getCartItems();
+    final box = getCartItems();
     await box.put(item.id, cartItem);
   }
 
@@ -24,12 +28,12 @@ class CartItemRepository {
       isInBuyList: item.isInBuyList,
       isChecked: isChecked,
     );
-    final box = CartItemBoxes.getCartItems();
+    final box = getCartItems();
     await box.put(item.id, cartItem);
   }
 
-  CartItem fetchItem(String id) {
-    final box = CartItemBoxes.getCartItems();
+  CartItem fetchCartItem(String id) {
+    final box = getCartItems();
     final getBox = box.get(
       id,
       defaultValue: CartItem(id: id, isInBuyList: true, isChecked: false),
@@ -37,8 +41,13 @@ class CartItemRepository {
     return getBox;
   }
 
+  Future<void> deleteCartItem(String id) async {
+    final box = getCartItems();
+    await box.delete(id);
+  }
+
   Future<void> deleteAllCartItem() async {
-    final box = CartItemBoxes.getCartItems();
+    final box = getCartItems();
     await box.deleteFromDisk();
     await Hive.openBox<CartItem>('cartItems');
   }

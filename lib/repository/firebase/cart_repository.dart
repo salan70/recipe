@@ -57,6 +57,34 @@ class CartRepository {
     return recipeStream;
   }
 
+  Stream<List<OtherCartItem>> fetchOtherCartItemList() {
+    final otherCartItemCollection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('otherCartItems')
+        .orderBy('createdAt');
+
+    final otherCartItemList =
+        otherCartItemCollection.snapshots().asBroadcastStream().map(
+              (e) => e.docs.map((DocumentSnapshot document) {
+                final data = document.data()! as Map<String, dynamic>;
+
+                final itemId = document.id;
+                final title = data['title'] as String;
+                final subTitle = data['subTitle'] as String?;
+
+                return OtherCartItem(
+                  itemId: itemId,
+                  createdAt: null,
+                  title: title,
+                  subTitle: subTitle,
+                );
+              }).toList(),
+            );
+
+    return otherCartItemList;
+  }
+
   /// update
   Future<void> updateCount(String recipeId, int count) async {
     await FirebaseFirestore.instance
@@ -67,5 +95,28 @@ class CartRepository {
         .update({
       'countInCart': count,
     });
+  }
+
+  /// add
+  Future<void> addOtherCartItem(OtherCartItem otherCartItem) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('otherCartItems')
+        .add(<String, dynamic>{
+      'createdAt': DateTime.now(),
+      'title': otherCartItem.title,
+      'subTitle': otherCartItem.subTitle,
+    });
+  }
+
+  /// delete
+  Future<void> deleteOtherCartItem(String itemId) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('otherCartItems')
+        .doc(itemId)
+        .delete();
   }
 }

@@ -88,3 +88,17 @@ class RecipeByIngredientInCart {
   int countInCart;
   String? ingredientAmount;
 }
+
+class OtherCartItem {
+  OtherCartItem({
+    required this.itemId,
+    required this.createdAt,
+    required this.title,
+    required this.subTitle,
+  });
+
+  String? itemId;
+  DateTime? createdAt;
+  String title;
+  String? subTitle;
+}

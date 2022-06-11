@@ -1,12 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:recipe/components/calculation/calculation.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
+import 'package:recipe/repository/firebase/cart_repository.dart';
 import 'package:recipe/repository/hive/cart_item_repository.dart';
 
-class CartListModel extends ChangeNotifier {
+class IngredientTabModel extends ChangeNotifier {
   final _cartItemRepository = CartItemRepository();
 
   List<IngredientByRecipeInCart> createIngredientListByRecipeInCart(
@@ -139,16 +140,15 @@ class CartListModel extends ChangeNotifier {
   }
 
   /// cart_listでの処理
-  List<TotaledIngredientInCart> createBuyList(
+  List<TotaledIngredientInCart> createIngredientBuyList(
     List<TotaledIngredientInCart> list,
   ) {
-    final cartItemRepository = CartItemRepository();
     final buyList = <TotaledIngredientInCart>[];
 
     for (final ingredient in list) {
       final id = ingredient.ingredientInCart.ingredientName +
           ingredient.ingredientInCart.ingredientUnit;
-      final cartItem = cartItemRepository.fetchItem(id);
+      final cartItem = _cartItemRepository.fetchCartItem(id);
       if (cartItem.isInBuyList == true) {
         buyList.add(ingredient);
       }
@@ -157,7 +157,7 @@ class CartListModel extends ChangeNotifier {
     return buyList;
   }
 
-  List<TotaledIngredientInCart> createNotBuyList(
+  List<TotaledIngredientInCart> createIngredientNotBuyList(
     List<TotaledIngredientInCart> list,
   ) {
     final cartItemRepository = CartItemRepository();
@@ -166,7 +166,7 @@ class CartListModel extends ChangeNotifier {
     for (final ingredient in list) {
       final id = ingredient.ingredientInCart.ingredientName +
           ingredient.ingredientInCart.ingredientUnit;
-      final cartItem = cartItemRepository.fetchItem(id);
+      final cartItem = cartItemRepository.fetchCartItem(id);
       if (cartItem.isInBuyList == false) {
         notBuyList.add(ingredient);
       }
@@ -175,8 +175,53 @@ class CartListModel extends ChangeNotifier {
     return notBuyList;
   }
 
+  List<OtherCartItem> createOtherItemBuyList(
+    List<OtherCartItem> list,
+  ) {
+    final cartItemRepository = CartItemRepository();
+    final buyList = <OtherCartItem>[];
+
+    for (final ocherItem in list) {
+      final id = ocherItem.itemId;
+      final cartItem = cartItemRepository.fetchCartItem(id!);
+      if (cartItem.isInBuyList == true) {
+        buyList.add(ocherItem);
+      }
+    }
+
+    return buyList;
+  }
+
+  List<OtherCartItem> createOtherItemNotBuyList(
+    List<OtherCartItem> list,
+  ) {
+    final cartItemRepository = CartItemRepository();
+    final notBuyList = <OtherCartItem>[];
+
+    for (final otherItem in list) {
+      final id = otherItem.itemId;
+      final cartItem = cartItemRepository.fetchCartItem(id!);
+      if (cartItem.isInBuyList == false) {
+        notBuyList.add(otherItem);
+      }
+    }
+
+    return notBuyList;
+  }
+
+  Future<String?> deleteOtherCartItem(User user, String itemId) async {
+    final cartRepository = CartRepository(user: user);
+    try {
+      await cartRepository.deleteOtherCartItem(itemId);
+      await _cartItemRepository.deleteCartItem(itemId);
+      return null;
+    } on Exception catch (e) {
+      return e.toString();
+    }
+  }
+
   CartItem getCartItem(String id) {
-    final cartItem = _cartItemRepository.fetchItem(id);
+    final cartItem = _cartItemRepository.fetchCartItem(id);
     return cartItem;
   }
 
@@ -184,13 +229,16 @@ class CartListModel extends ChangeNotifier {
     required String id,
     required bool isChecked,
   }) async {
-    final item = _cartItemRepository.fetchItem(id);
+    final item = _cartItemRepository.fetchCartItem(id);
     await _cartItemRepository.putIsChecked(item: item, isChecked: isChecked);
   }
 
   Future<void> toggleIsInBuyList(String id) async {
-    final item = _cartItemRepository.fetchItem(id);
+    final item = _cartItemRepository.fetchCartItem(id);
     final isInBuyList = !item.isInBuyList;
-    await _cartItemRepository.putIsNeed(item: item, isInBuyList: isInBuyList);
+    await _cartItemRepository.putIsInBuyList(
+      item: item,
+      isInBuyList: isInBuyList,
+    );
   }
 }

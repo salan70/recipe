@@ -99,7 +99,7 @@ class SignUpPage extends ConsumerWidget {
                       await EasyLoading.show(status: 'loading...');
 
                       if (passwordValidate(password) == '8文字以上で入力してください') {
-                        await _showLoginErrorAlertDialog(
+                        await _signUpErrorAlertDialog(
                           context,
                           '8文字以上で入力してください',
                         );
@@ -115,7 +115,7 @@ class SignUpPage extends ConsumerWidget {
                         await EasyLoading.showSuccess('登録しました');
                       } else {
                         await EasyLoading.dismiss();
-                        await _showLoginErrorAlertDialog(context, errorText);
+                        await _signUpErrorAlertDialog(context, errorText);
                       }
                     },
                     child: Text(
@@ -155,7 +155,7 @@ class SignUpPage extends ConsumerWidget {
                             await EasyLoading.showSuccess('登録しました');
                           } else {
                             await EasyLoading.dismiss();
-                            await _showLoginErrorAlertDialog(
+                            await _signUpErrorAlertDialog(
                               context,
                               errorText,
                             );
@@ -182,7 +182,7 @@ class SignUpPage extends ConsumerWidget {
                             await EasyLoading.showSuccess('登録しました');
                           } else {
                             await EasyLoading.dismiss();
-                            await _showLoginErrorAlertDialog(
+                            await _signUpErrorAlertDialog(
                               context,
                               errorText,
                             );
@@ -215,7 +215,7 @@ class SignUpPage extends ConsumerWidget {
     );
   }
 
-  Future<void> _showLoginErrorAlertDialog(
+  Future<void> _signUpErrorAlertDialog(
     BuildContext context,
     String errorText,
   ) {

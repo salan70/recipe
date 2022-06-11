@@ -107,7 +107,7 @@ class LoginPage extends ConsumerWidget {
                             await EasyLoading.showSuccess('ログインしました');
                           } else {
                             await EasyLoading.dismiss();
-                            await _showLoginErrorAlertDialog(
+                            await _loginErrorAlertDialog(
                               context,
                               errorText,
                             );
@@ -157,7 +157,7 @@ class LoginPage extends ConsumerWidget {
                                 await EasyLoading.showSuccess('ログインしました');
                               } else {
                                 await EasyLoading.dismiss();
-                                await _showLoginErrorAlertDialog(
+                                await _loginErrorAlertDialog(
                                   context,
                                   errorText,
                                 );
@@ -191,7 +191,7 @@ class LoginPage extends ConsumerWidget {
                                 await EasyLoading.showSuccess('ログインしました');
                               } else {
                                 await EasyLoading.dismiss();
-                                await _showLoginErrorAlertDialog(
+                                await _loginErrorAlertDialog(
                                   context,
                                   errorText,
                                 );
@@ -252,7 +252,7 @@ class LoginPage extends ConsumerWidget {
     );
   }
 
-  Future<void> _showLoginErrorAlertDialog(
+  Future<void> _loginErrorAlertDialog(
     BuildContext context,
     String errorText,
   ) {

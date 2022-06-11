@@ -74,6 +74,14 @@ final recipeListInCartNotifierProvider = StateNotifierProvider.autoDispose<
   (ref) => RecipeListInCartNotifier(),
 );
 
+final otherCartItemListProvider =
+    StreamProvider.autoDispose<List<OtherCartItem>>((ref) {
+  final user = ref.watch(userStateNotifierProvider);
+  final cartRepository = CartRepository(user: user!);
+
+  return cartRepository.fetchOtherCartItemList();
+});
+
 final stateIsChangedProvider = StateProvider.autoDispose((ref) => false);
 
 final notBuyListIsOpenProvider = StateProvider.autoDispose((ref) => false);
