@@ -71,6 +71,7 @@ class RecipeRepository {
         ingredientList.add(
           Ingredient(
             id: const Uuid().v4(),
+            symbol: value['ingredientSymbol'] as String?,
             name: value['ingredientName'] as String?,
             amount: value['ingredientAmount'] as String?,
             unit: value['ingredientUnit'] as String?,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recipe/state/ingredient_list/ingredient_list_provider.dart';
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/state/procedure_list/procedure_list_provider.dart';
@@ -144,11 +145,27 @@ class RecipeDetailWidget extends ConsumerWidget {
                               Row(
                                 children: [
                                   SizedBox(
-                                    width: 8.w,
+                                    width: 24.w,
+                                    child: ingredient!.symbol == 'clover'
+                                        ? FaIcon(
+                                            FontAwesomeIcons.clover,
+                                            size: 16.sp,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          )
+                                        : ingredient.symbol == 'diamond'
+                                            ? FaIcon(
+                                                FontAwesomeIcons.diamond,
+                                                size: 16.sp,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                              )
+                                            : null,
                                   ),
                                   Expanded(
                                     flex: 3,
-                                    child: Text(ingredient!.name.toString()),
+                                    child: Text(ingredient.name.toString()),
                                   ),
                                   SizedBox(
                                     width: 8.w,

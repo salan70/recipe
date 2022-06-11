@@ -8,7 +8,7 @@ class AddCartRecipeListModel extends ChangeNotifier {
   AddCartRecipeListModel({required this.user});
   final User user;
 
-  bool zeroIsIncludeInCart(List<RecipeListInCart> recipeForInCartList) {
+  bool zeroIsIncludeInCart(List<RecipeInCart> recipeForInCartList) {
     var zeroIsInclude = false;
 
     for (final recipeForInCart in recipeForInCartList) {
@@ -21,7 +21,7 @@ class AddCartRecipeListModel extends ChangeNotifier {
   }
 
   Future<String?> updateCountsInCart(
-    List<RecipeListInCart> recipeForInCartList,
+    List<RecipeInCart> recipeForInCartList,
   ) async {
     final cartRepository = CartRepository(user: user);
 
@@ -39,7 +39,7 @@ class AddCartRecipeListModel extends ChangeNotifier {
   }
 
   Future<String?> deleteAllRecipeFromCart(
-    List<RecipeListInCart> recipeForInCartList,
+    List<RecipeInCart> recipeForInCartList,
   ) async {
     final cartRepository = CartRepository(user: user);
 

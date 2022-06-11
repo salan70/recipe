@@ -62,7 +62,7 @@ final recipeListInCartPanelIsOpenProvider =
     StateProvider.autoDispose((ref) => false);
 
 final recipeListInCartProvider =
-    StreamProvider.autoDispose<List<RecipeListInCart>>((ref) {
+    StreamProvider.autoDispose<List<RecipeInCart>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
   final cartRepository = CartRepository(user: user!);
 
@@ -70,7 +70,7 @@ final recipeListInCartProvider =
 });
 
 final recipeListInCartNotifierProvider = StateNotifierProvider.autoDispose<
-    RecipeListInCartNotifier, List<RecipeListInCart>>(
+    RecipeListInCartNotifier, List<RecipeInCart>>(
   (ref) => RecipeListInCartNotifier(),
 );
 

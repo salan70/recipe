@@ -7,6 +7,7 @@ class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
       : super([
           Ingredient(
             id: const Uuid().v4(),
+            symbol: null,
             name: '',
             amount: '',
             unit: null,
@@ -36,6 +37,19 @@ class IngredientListNotifier extends StateNotifier<List<Ingredient>> {
     }
     final item = state.removeAt(oldIndex);
     state = [...state..insert(useNewIndex, item)];
+  }
+
+  void editSymbol(String id, String symbol) {
+    state = [
+      for (final ingredient in state)
+        if (ingredient.id == id)
+          if (ingredient.symbol == symbol)
+            ingredient.copyWith(symbol: '')
+          else
+            ingredient.copyWith(symbol: symbol)
+        else
+          ingredient,
+    ];
   }
 
   void editName(String id, String name) {

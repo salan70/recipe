@@ -32,24 +32,28 @@ class Recipe {
 class Ingredient {
   const Ingredient({
     required this.id,
+    required this.symbol,
     required this.name,
     required this.amount,
     required this.unit,
   });
 
   final String id;
+  final String? symbol;
   final String? name;
   final String? amount;
   final String? unit;
 
   Ingredient copyWith({
     String? id,
+    String? symbol,
     String? name,
     String? amount,
     String? unit,
   }) {
     return Ingredient(
       id: id ?? this.id,
+      symbol: symbol ?? this.symbol,
       name: name ?? this.name,
       amount: amount ?? this.amount,
       unit: unit ?? this.unit,

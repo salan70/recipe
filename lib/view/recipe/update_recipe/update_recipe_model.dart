@@ -34,6 +34,7 @@ class UpdateRecipeModel extends ChangeNotifier {
   Map<String, dynamic> _ingredientToMap(Ingredient ingredient) {
     return <String, dynamic>{
       'ingredientName': ingredient.name,
+      'ingredientSymbol': ingredient.symbol,
       'ingredientAmount': ingredient.amount,
       'ingredientUnit': ingredient.unit
     };

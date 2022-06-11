@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:recipe/components/validation/validation.dart';
@@ -45,12 +46,48 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                 for (int index = 0; index < ingredientList.length; index++)
                   Slidable(
                     key: ValueKey(ingredientList[index].id),
+                    startActionPane: ActionPane(
+                      extentRatio: 0.3,
+                      motion: const ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          icon: FontAwesomeIcons.clover,
+                          foregroundColor: Theme.of(context).primaryColor,
+                          backgroundColor: Theme.of(context).dividerColor,
+                          onPressed: (context) {
+                            ingredientListNotifier.editSymbol(
+                              ingredientList[index].id,
+                              'clover',
+                            );
+                          },
+                        ),
+                        SlidableAction(
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                          ),
+                          icon: FontAwesomeIcons.diamond,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.secondary,
+                          backgroundColor: Theme.of(context).dividerColor,
+                          onPressed: (context) {
+                            ingredientListNotifier.editSymbol(
+                              ingredientList[index].id,
+                              'diamond',
+                            );
+                          },
+                        )
+                      ],
+                    ),
                     endActionPane: ActionPane(
                       extentRatio: 0.3,
                       motion: const ScrollMotion(),
                       children: [
                         SlidableAction(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                          ),
                           label: '削除',
                           backgroundColor: Theme.of(context).errorColor,
                           onPressed: (context) {
@@ -64,6 +101,29 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                       children: [
                         Row(
                           children: [
+                            ingredientList[index].symbol == 'clover'
+                                ? SizedBox(
+                                    width: 24.w,
+                                    child: FaIcon(
+                                      FontAwesomeIcons.clover,
+                                      size: 16.sp,
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                  )
+                                : ingredientList[index].symbol == 'diamond'
+                                    ? SizedBox(
+                                        width: 24.w,
+                                        child: FaIcon(
+                                          FontAwesomeIcons.diamond,
+                                          size: 16.sp,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                        ),
+                                      )
+                                    : SizedBox(
+                                        width: 20.w,
+                                      ),
                             Expanded(
                               flex: 6,
                               child: TextField(
@@ -250,6 +310,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                 onPressed: () {
                   final ingredient = Ingredient(
                     id: const Uuid().v4(),
+                    symbol: null,
                     name: '',
                     amount: '',
                     unit: null,

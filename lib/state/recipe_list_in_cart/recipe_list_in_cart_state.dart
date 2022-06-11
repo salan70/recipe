@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/domain/cart.dart';
 
-class RecipeListInCartNotifier extends StateNotifier<List<RecipeListInCart>> {
+class RecipeListInCartNotifier extends StateNotifier<List<RecipeInCart>> {
   RecipeListInCartNotifier() : super([]);
 
   void delete(String id) {}
@@ -30,7 +30,7 @@ class RecipeListInCartNotifier extends StateNotifier<List<RecipeListInCart>> {
     ];
   }
 
-  List<RecipeListInCart> getList(List<RecipeListInCart> recipeForInCartList) {
+  List<RecipeInCart> getList(List<RecipeInCart> recipeForInCartList) {
     return state = recipeForInCartList;
   }
 
