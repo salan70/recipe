@@ -37,7 +37,10 @@ class ProcedureTextFieldWidget extends ConsumerWidget {
                       motion: const ScrollMotion(),
                       children: [
                         SlidableAction(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                          ),
                           label: '削除',
                           backgroundColor: Theme.of(context).errorColor,
                           onPressed: (context) {
