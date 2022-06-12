@@ -97,203 +97,184 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                         )
                       ],
                     ),
-                    child: Column(
+                    child: Row(
                       children: [
-                        Row(
-                          children: [
-                            ingredientList[index].symbol == 'clover'
-                                ? SizedBox(
-                                    width: 24.w,
-                                    child: FaIcon(
-                                      FontAwesomeIcons.clover,
+                        Container(
+                          alignment: Alignment.center,
+                          width: 24.w,
+                          child: ingredientList[index].symbol == 'clover'
+                              ? FaIcon(
+                                  FontAwesomeIcons.clover,
+                                  size: 16.sp,
+                                  color: Theme.of(context).primaryColor,
+                                )
+                              : ingredientList[index].symbol == 'diamond'
+                                  ? FaIcon(
+                                      FontAwesomeIcons.diamond,
                                       size: 16.sp,
-                                      color: Theme.of(context).primaryColor,
-                                    ),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                    )
+                                  : null,
+                        ),
+                        Expanded(
+                          flex: 6,
+                          child: TextField(
+                            controller: nameIsChanged == false
+                                ? TextEditingController(
+                                    text: ingredientList[index].name,
                                   )
-                                : ingredientList[index].symbol == 'diamond'
-                                    ? SizedBox(
-                                        width: 24.w,
-                                        child: FaIcon(
-                                          FontAwesomeIcons.diamond,
-                                          size: 16.sp,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                        ),
-                                      )
-                                    : SizedBox(
-                                        width: 20.w,
-                                      ),
-                            Expanded(
-                              flex: 6,
-                              child: TextField(
-                                controller: nameIsChanged == false
-                                    ? TextEditingController(
-                                        text: ingredientList[index].name,
-                                      )
-                                    : null,
-                                maxLength: 20,
-                                maxLines: 2,
-                                decoration: const InputDecoration(
-                                  hintText: '材料名',
-                                  counterText: '',
-                                ),
-                                onChanged: (String value) {
-                                  ingredientListNotifier.editName(
-                                    ingredientList[index].id,
-                                    value,
-                                  );
-                                  nameIsChangedNotifier.update((state) => true);
-                                },
+                                : null,
+                            maxLength: 20,
+                            decoration: const InputDecoration(
+                              hintText: '材料名',
+                              counterText: '',
+                            ),
+                            onChanged: (String value) {
+                              ingredientListNotifier.editName(
+                                ingredientList[index].id,
+                                value,
+                              );
+                              nameIsChangedNotifier.update((state) => true);
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8.w,
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: TextField(
+                            controller: amountIsChanged == false
+                                ? TextEditingController(
+                                    text:
+                                        ingredientList[index].amount.toString(),
+                                  )
+                                : null,
+                            keyboardType: TextInputType.datetime,
+                            maxLength: 5,
+                            decoration: InputDecoration(
+                              hintText: '数量',
+                              counterText: '',
+                              errorText: validation.outputAmountErrorText(
+                                ingredientList[index].amount,
                               ),
                             ),
-                            SizedBox(
-                              width: 8.w,
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: TextField(
-                                controller: amountIsChanged == false
-                                    ? TextEditingController(
-                                        text: ingredientList[index]
-                                            .amount
-                                            .toString(),
-                                      )
-                                    : null,
-                                keyboardType: TextInputType.datetime,
-                                maxLength: 5,
-                                maxLines: 2,
-                                decoration: InputDecoration(
-                                  hintText: '数量',
-                                  counterText: '',
-                                  errorText: validation.outputAmountErrorText(
-                                    ingredientList[index].amount,
-                                  ),
-                                ),
-                                onChanged: (value) {
-                                  ingredientListNotifier.editAmount(
-                                    ingredientList[index].id,
-                                    value,
-                                  );
-                                  amountIsChangedNotifier
-                                      .update((state) => true);
-                                },
-                              ),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: ValueListenableBuilder(
-                                valueListenable:
-                                    IngredientUnitBoxes.getIngredientUnit()
-                                        .listenable(),
-                                builder: (context, box, widget) {
-                                  final ingredientTextFieldModel =
-                                      IngredientTextFieldModel();
+                            onChanged: (value) {
+                              ingredientListNotifier.editAmount(
+                                ingredientList[index].id,
+                                value,
+                              );
+                              amountIsChangedNotifier.update((state) => true);
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: ValueListenableBuilder(
+                            valueListenable:
+                                IngredientUnitBoxes.getIngredientUnit()
+                                    .listenable(),
+                            builder: (context, box, widget) {
+                              final ingredientTextFieldModel =
+                                  IngredientTextFieldModel();
 
-                                  final ingredientUnitList =
-                                      ingredientTextFieldModel
-                                          .fetchIngredientUnitList();
+                              final ingredientUnitList =
+                                  ingredientTextFieldModel
+                                      .fetchIngredientUnitList();
 
-                                  final unitNameForTextButton =
-                                      ingredientList[index].unit == null ||
-                                              ingredientList[index].unit == ''
-                                          ? '単位'
-                                          : ingredientList[index].unit!;
+                              final unitNameForTextButton =
+                                  ingredientList[index].unit == null ||
+                                          ingredientList[index].unit == ''
+                                      ? '単位'
+                                      : ingredientList[index].unit!;
 
-                                  var selectedUnitName = ingredientUnitList[0];
+                              var selectedUnitName = ingredientUnitList[0];
 
-                                  return TextButton(
-                                    onPressed: () {
-                                      showCupertinoModalPopup<Container>(
-                                        context: context,
-                                        builder: (context) {
-                                          return Container(
-                                            height: 250.h,
-                                            color: Theme.of(context)
-                                                .backgroundColor,
-                                            child: Column(
+                              return TextButton(
+                                onPressed: () {
+                                  showCupertinoModalPopup<Container>(
+                                    context: context,
+                                    builder: (context) {
+                                      return Container(
+                                        height: 250.h,
+                                        color:
+                                            Theme.of(context).backgroundColor,
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    TextButton(
-                                                      child: const Text('戻る'),
-                                                      onPressed: () =>
-                                                          Navigator.of(
-                                                        context,
-                                                      ).pop(),
-                                                    ),
-                                                    TextButton(
-                                                      child: const Text(
-                                                        '決定',
-                                                      ),
-                                                      onPressed: () {
-                                                        ingredientListNotifier
-                                                            .editUnit(
-                                                          ingredientList[index]
-                                                              .id,
-                                                          selectedUnitName,
-                                                        );
-                                                        Navigator.of(
-                                                          context,
-                                                        ).pop();
-                                                      },
-                                                    ),
-                                                  ],
+                                                TextButton(
+                                                  child: const Text('戻る'),
+                                                  onPressed: () => Navigator.of(
+                                                    context,
+                                                  ).pop(),
                                                 ),
-                                                const Divider(),
-                                                Expanded(
-                                                  child: CupertinoPicker(
-                                                    backgroundColor:
-                                                        Theme.of(context)
-                                                            .backgroundColor,
-                                                    itemExtent: 30,
-                                                    children: ingredientUnitList
-                                                        .map(
-                                                          (unitName) => Text(
-                                                            unitName,
-                                                            style: TextStyle(
-                                                              color: Theme.of(
-                                                                context,
-                                                              )
-                                                                  .colorScheme
-                                                                  .onBackground,
-                                                            ),
-                                                          ),
-                                                        )
-                                                        .toList(),
-                                                    onSelectedItemChanged:
-                                                        (index) {
-                                                      selectedUnitName =
-                                                          ingredientUnitList[
-                                                              index];
-                                                    },
+                                                TextButton(
+                                                  child: const Text(
+                                                    '決定',
                                                   ),
+                                                  onPressed: () {
+                                                    ingredientListNotifier
+                                                        .editUnit(
+                                                      ingredientList[index].id,
+                                                      selectedUnitName,
+                                                    );
+                                                    Navigator.of(
+                                                      context,
+                                                    ).pop();
+                                                  },
                                                 ),
                                               ],
                                             ),
-                                          );
-                                        },
+                                            const Divider(),
+                                            Expanded(
+                                              child: CupertinoPicker(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .backgroundColor,
+                                                itemExtent: 30,
+                                                children: ingredientUnitList
+                                                    .map(
+                                                      (unitName) => Text(
+                                                        unitName,
+                                                        style: TextStyle(
+                                                          color: Theme.of(
+                                                            context,
+                                                          )
+                                                              .colorScheme
+                                                              .onBackground,
+                                                        ),
+                                                      ),
+                                                    )
+                                                    .toList(),
+                                                onSelectedItemChanged: (index) {
+                                                  selectedUnitName =
+                                                      ingredientUnitList[index];
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       );
                                     },
-                                    child: Text(
-                                      unitNameForTextButton,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
                                   );
                                 },
-                              ),
-                            ),
-                            const Icon(
-                              Icons.drag_handle,
-                            ),
-                          ],
+                                child: Text(
+                                  unitNameForTextButton,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                        SizedBox(
-                          height: 8.h,
-                        )
+                        const Icon(
+                          Icons.drag_handle,
+                        ),
                       ],
                     ),
                   ),
