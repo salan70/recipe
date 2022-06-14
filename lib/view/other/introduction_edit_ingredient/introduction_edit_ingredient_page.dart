@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class IntroductionIngredientAmountPage extends ConsumerWidget {
-  const IntroductionIngredientAmountPage({Key? key}) : super(key: key);
+class IntroductionEditIngredientPage extends ConsumerWidget {
+  const IntroductionEditIngredientPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('説明'),
+        title: const Text('ヘルプ'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -20,10 +20,30 @@ class IntroductionIngredientAmountPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  '材料の数量について、以下のような仕様となっております。',
+                  '材料の入力について、以下のような仕様となっております。',
                 ),
                 SizedBox(
                   height: 24.h,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '各材料へ「a」もしくは「b」を付与する機能について',
+                      style: Theme.of(context).primaryTextTheme.subtitle1,
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    const Text(
+                      '各材料を右へスクロールすることで「a」もしくは「b」を設定することができ、設定したアルファベットが材料の先頭に表示されます。'
+                      '\n\nこの機能を使うことで材料をグループ分けすることができ、「aの調味料を全て混ぜる」といった手順の追加が可能になります。'
+                      '\n\nなお、1つのレシピに同じ材料を複数登録することができるため、同じ材料でも「aと設定するもの」と「何も設定しないもの」に分けるといった使い方もできます。',
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 40.h,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

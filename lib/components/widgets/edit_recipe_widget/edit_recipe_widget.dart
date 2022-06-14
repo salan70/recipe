@@ -12,7 +12,7 @@ import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_f
 import 'package:recipe/components/widgets/reordable_text_field/procedure_text_field/procedure_text_field_widget.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/state/image_file/image_file_provider.dart';
-import 'package:recipe/view/other/introduction_ingredient_amount/introduction_ingredient_amount_page.dart';
+import 'package:recipe/view/other/introduction_edit_ingredient/introduction_edit_ingredient_page.dart';
 
 class EditRecipeWidget extends ConsumerWidget {
   const EditRecipeWidget({Key? key, required this.recipe}) : super(key: key);
@@ -222,17 +222,17 @@ class EditRecipeWidget extends ConsumerWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                const IntroductionIngredientAmountPage(),
+                                const IntroductionEditIngredientPage(),
                           ),
                         );
                       },
                       icon: Icon(
-                        Icons.info_outline,
+                        Icons.help_outline_rounded,
                         size: 20.sp,
                         color: Theme.of(context).hintColor,
                       ),
                       label: Text(
-                        '数量について',
+                        'ヘルプ',
                         style: TextStyle(color: Theme.of(context).hintColor),
                       ),
                     ),

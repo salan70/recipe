@@ -51,13 +51,14 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                       motion: const ScrollMotion(),
                       children: [
                         SlidableAction(
-                          icon: FontAwesomeIcons.clover,
+                          // icon: FontAwesomeIcons.clover,
+                          label: 'a',
                           foregroundColor: Theme.of(context).primaryColor,
                           backgroundColor: Theme.of(context).dividerColor,
                           onPressed: (context) {
                             ingredientListNotifier.editSymbol(
                               ingredientList[index].id,
-                              'clover',
+                              'a',
                             );
                           },
                         ),
@@ -66,14 +67,15 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                             topRight: Radius.circular(10),
                             bottomRight: Radius.circular(10),
                           ),
-                          icon: FontAwesomeIcons.diamond,
+                          // icon: FontAwesomeIcons.diamond,
+                          label: 'b',
                           foregroundColor:
                               Theme.of(context).colorScheme.secondary,
                           backgroundColor: Theme.of(context).dividerColor,
                           onPressed: (context) {
                             ingredientListNotifier.editSymbol(
                               ingredientList[index].id,
-                              'diamond',
+                              'b',
                             );
                           },
                         )
@@ -102,19 +104,25 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                         Container(
                           alignment: Alignment.center,
                           width: 24.w,
-                          child: ingredientList[index].symbol == 'clover'
-                              ? FaIcon(
-                                  FontAwesomeIcons.clover,
-                                  size: 16.sp,
-                                  color: Theme.of(context).primaryColor,
+                          child: (ingredientList[index].symbol == 'clover' ||
+                                  ingredientList[index].symbol == 'a')
+                              ? Text(
+                                  'a',
+                                  style: TextStyle(
+                                    fontSize: 16.sp,
+                                    color: Theme.of(context).primaryColor,
+                                  ),
                                 )
-                              : ingredientList[index].symbol == 'diamond'
-                                  ? FaIcon(
-                                      FontAwesomeIcons.diamond,
-                                      size: 16.sp,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                              : (ingredientList[index].symbol == 'diamond' ||
+                                      ingredientList[index].symbol == 'b')
+                                  ? Text(
+                                      'b',
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                      ),
                                     )
                                   : null,
                         ),

@@ -113,11 +113,11 @@ class RecipeDetailPage extends ConsumerWidget {
                               }
                               //削除成功
                               else {
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
                                 await EasyLoading.showSuccess(
                                   '${recipe.recipeName}を削除しました',
                                 );
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
                               }
                             },
                           ),

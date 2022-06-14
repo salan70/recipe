@@ -146,20 +146,26 @@ class RecipeDetailWidget extends ConsumerWidget {
                                 children: [
                                   SizedBox(
                                     width: 24.w,
-                                    child: ingredient!.symbol == 'clover'
-                                        ? FaIcon(
-                                            FontAwesomeIcons.clover,
-                                            size: 16.sp,
-                                            color:
-                                                Theme.of(context).primaryColor,
+                                    child: (ingredient!.symbol == 'clover' ||
+                                            ingredient.symbol == 'a')
+                                        ? Text(
+                                            'a',
+                                            style: TextStyle(
+                                              fontSize: 16.sp,
+                                              color: Theme.of(context)
+                                                  .primaryColor,
+                                            ),
                                           )
-                                        : ingredient.symbol == 'diamond'
-                                            ? FaIcon(
-                                                FontAwesomeIcons.diamond,
-                                                size: 16.sp,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary,
+                                        : (ingredient.symbol == 'diamond' ||
+                                                ingredient.symbol == 'b')
+                                            ? Text(
+                                                'b',
+                                                style: TextStyle(
+                                                  fontSize: 16.sp,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .secondary,
+                                                ),
                                               )
                                             : null,
                                   ),
