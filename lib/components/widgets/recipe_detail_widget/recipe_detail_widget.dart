@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recipe/state/ingredient_list/ingredient_list_provider.dart';
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/state/procedure_list/procedure_list_provider.dart';
