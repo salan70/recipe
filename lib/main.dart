@@ -51,20 +51,6 @@ class MyApp extends ConsumerWidget {
 
         final usedScheme = editThemeModel.flexSchemeList[usedSchemeIndex];
 
-        final usedSchemePrimaryColorLight =
-            FlexThemeData.light(scheme: usedScheme).primaryColorDark;
-        final usedSchemeBackGroundColorLight =
-            FlexThemeData.light(scheme: usedScheme).backgroundColor;
-        final usedSchemeHintColorLight =
-            FlexThemeData.light(scheme: usedScheme).hintColor;
-
-        final usedSchemePrimaryColorDark =
-            FlexThemeData.dark(scheme: usedScheme).primaryColorDark;
-        final usedSchemeBackGroundColorDark =
-            FlexThemeData.dark(scheme: usedScheme).backgroundColor;
-        final usedSchemeHintColorDark =
-            FlexThemeData.dark(scheme: usedScheme).hintColor;
-
         return ScreenUtilInit(
           designSize: const Size(414, 896),
           builder: (context, child) {
@@ -73,7 +59,8 @@ class MyApp extends ConsumerWidget {
               title: 'Recipe App',
               theme: FlexThemeData.light(
                 scheme: usedScheme,
-                background: usedSchemeBackGroundColorLight,
+                background:
+                    FlexThemeData.light(scheme: usedScheme).backgroundColor,
                 bottomAppBarElevation: 10,
               ).copyWith(
                 /// textField
@@ -110,19 +97,22 @@ class MyApp extends ConsumerWidget {
                   ),
                   caption: TextStyle(
                     fontSize: 12.sp,
-                    color: usedSchemeHintColorLight,
+                    color: FlexThemeData.light(scheme: usedScheme).hintColor,
                   ),
                 ),
 
                 /// appBar
                 appBarTheme: AppBarTheme(
                   elevation: 1,
-                  iconTheme: IconThemeData(color: usedSchemePrimaryColorLight),
+                  iconTheme: IconThemeData(
+                      color: FlexThemeData.light(scheme: usedScheme)
+                          .primaryColorDark),
                   backgroundColor: Colors.white,
                   titleTextStyle: TextStyle(
                     fontSize: 22.sp,
                     fontWeight: FontWeight.bold,
-                    color: usedSchemePrimaryColorLight,
+                    color: FlexThemeData.light(scheme: usedScheme)
+                        .primaryColorDark,
                   ),
                 ),
 
@@ -134,7 +124,8 @@ class MyApp extends ConsumerWidget {
               ),
               darkTheme: FlexThemeData.dark(
                 scheme: usedScheme,
-                background: usedSchemeBackGroundColorDark,
+                background:
+                    FlexThemeData.dark(scheme: usedScheme).backgroundColor,
                 bottomAppBarElevation: 10,
               ).copyWith(
                 /// textField
@@ -171,19 +162,22 @@ class MyApp extends ConsumerWidget {
                   ),
                   caption: TextStyle(
                     fontSize: 12.sp,
-                    color: usedSchemeHintColorDark,
+                    color: FlexThemeData.dark(scheme: usedScheme).hintColor,
                   ),
                 ),
 
                 /// appBar
                 appBarTheme: AppBarTheme(
                   elevation: 1,
-                  iconTheme: IconThemeData(color: usedSchemePrimaryColorDark),
+                  iconTheme: IconThemeData(
+                      color: FlexThemeData.dark(scheme: usedScheme)
+                          .primaryColorDark),
                   backgroundColor: Colors.black,
                   titleTextStyle: TextStyle(
                     fontSize: 22.sp,
                     fontWeight: FontWeight.bold,
-                    color: usedSchemePrimaryColorDark,
+                    color:
+                        FlexThemeData.dark(scheme: usedScheme).primaryColorDark,
                   ),
                 ),
 
