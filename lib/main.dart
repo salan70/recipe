@@ -45,11 +45,11 @@ class MyApp extends ConsumerWidget {
       valueListenable: CustomizationsBoxes.getCustomizations().listenable(),
       builder: (context, box, widget) {
         final usedSchemeIndex = editThemeModel.fetchSelectedFlexSchemeIndex();
+        final usedScheme = editThemeModel.flexSchemeList[usedSchemeIndex];
+
         final usedThemeModeIndex = editThemeModel.fetchSelectedThemeModeIndex();
         final usedThemeMode =
             editThemeModel.themeModeList[usedThemeModeIndex].themeMode;
-
-        final usedScheme = editThemeModel.flexSchemeList[usedSchemeIndex];
 
         return ScreenUtilInit(
           designSize: const Size(414, 896),
