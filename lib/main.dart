@@ -1,5 +1,4 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -59,39 +58,11 @@ class MyApp extends ConsumerWidget {
             return MaterialApp(
               themeMode: usedThemeMode,
               title: 'Recipe App',
-              theme: FlexThemeData.light(
-                scheme: usedScheme,
-                background:
-                    FlexThemeData.light(scheme: usedScheme).backgroundColor,
-                bottomAppBarElevation: 10,
-              ).copyWith(
-                inputDecorationTheme: customTheme.customInputDecoration(),
-                textTheme: customTheme.customTextTheme(
-                  themeMode: ThemeMode.light,
-                ),
-                appBarTheme: customTheme.customAppBarTheme(
-                  themeMode: ThemeMode.light,
-                  usedScheme: usedScheme,
-                ),
-                cardTheme: customTheme.customCardTheme(),
+              theme: customTheme.customLightTheme(
+                usedScheme: usedScheme,
               ),
-
-              /// darkTheme
-              darkTheme: FlexThemeData.dark(
-                scheme: usedScheme,
-                background:
-                    FlexThemeData.dark(scheme: usedScheme).backgroundColor,
-                bottomAppBarElevation: 10,
-              ).copyWith(
-                inputDecorationTheme: customTheme.customInputDecoration(),
-                textTheme: customTheme.customTextTheme(
-                  themeMode: ThemeMode.dark,
-                ),
-                appBarTheme: customTheme.customAppBarTheme(
-                  themeMode: ThemeMode.dark,
-                  usedScheme: usedScheme,
-                ),
-                cardTheme: customTheme.customCardTheme(),
+              darkTheme: customTheme.customDarkTheme(
+                usedScheme: usedScheme,
               ),
               onGenerateRoute: (settings) {
                 return MaterialWithModalsPageRoute<PageContainerPage>(

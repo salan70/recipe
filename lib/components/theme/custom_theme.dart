@@ -3,7 +3,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTheme {
-  AppBarTheme customAppBarTheme({
+  ThemeData customLightTheme({
+    required FlexScheme usedScheme,
+  }) {
+    return FlexThemeData.light(
+      scheme: usedScheme,
+      background: FlexThemeData.light(scheme: usedScheme).backgroundColor,
+      bottomAppBarElevation: 10,
+    ).copyWith(
+      inputDecorationTheme: _customInputDecoration(),
+      textTheme: _customTextTheme(
+        themeMode: ThemeMode.light,
+      ),
+      appBarTheme: _customAppBarTheme(
+        themeMode: ThemeMode.light,
+        usedScheme: usedScheme,
+      ),
+      cardTheme: _customCardTheme(),
+    );
+  }
+
+  ThemeData customDarkTheme({
+    required FlexScheme usedScheme,
+  }) {
+    return FlexThemeData.dark(
+      scheme: usedScheme,
+      background: FlexThemeData.dark(scheme: usedScheme).backgroundColor,
+      bottomAppBarElevation: 10,
+    ).copyWith(
+      inputDecorationTheme: _customInputDecoration(),
+      textTheme: _customTextTheme(
+        themeMode: ThemeMode.dark,
+      ),
+      appBarTheme: _customAppBarTheme(
+        themeMode: ThemeMode.dark,
+        usedScheme: usedScheme,
+      ),
+      cardTheme: _customCardTheme(),
+    );
+  }
+
+  AppBarTheme _customAppBarTheme({
     required ThemeMode themeMode,
     required FlexScheme usedScheme,
   }) {
@@ -26,21 +66,21 @@ class CustomTheme {
     );
   }
 
-  InputDecorationTheme customInputDecoration() {
+  InputDecorationTheme _customInputDecoration() {
     return InputDecorationTheme(
       contentPadding: const EdgeInsets.only(left: 4, bottom: 4).r,
       isDense: true,
     );
   }
 
-  CardTheme customCardTheme() {
+  CardTheme _customCardTheme() {
     return CardTheme(
       margin: const EdgeInsets.all(8).r,
       elevation: 3,
     );
   }
 
-  TextTheme customTextTheme({
+  TextTheme _customTextTheme({
     required ThemeMode themeMode,
   }) {
     final mainTextColor =
