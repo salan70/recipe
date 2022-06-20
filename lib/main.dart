@@ -74,8 +74,10 @@ class MyApp extends ConsumerWidget {
                 ),
 
                 /// appBar
-                appBarTheme:
-                    customTheme.customAppBarTheme(usedScheme: usedScheme),
+                appBarTheme: customTheme.customAppBarTheme(
+                  themeMode: ThemeMode.light,
+                  usedScheme: usedScheme,
+                ),
 
                 /// card
                 cardTheme: CardTheme(
@@ -98,19 +100,9 @@ class MyApp extends ConsumerWidget {
                 ),
 
                 /// appBar
-                appBarTheme: AppBarTheme(
-                  elevation: 1,
-                  iconTheme: IconThemeData(
-                    color:
-                        FlexThemeData.dark(scheme: usedScheme).primaryColorDark,
-                  ),
-                  backgroundColor: Colors.black,
-                  titleTextStyle: TextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.bold,
-                    color:
-                        FlexThemeData.dark(scheme: usedScheme).primaryColorDark,
-                  ),
+                appBarTheme: customTheme.customAppBarTheme(
+                  themeMode: ThemeMode.dark,
+                  usedScheme: usedScheme,
                 ),
 
                 /// card

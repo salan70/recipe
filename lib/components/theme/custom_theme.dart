@@ -3,17 +3,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTheme {
-  AppBarTheme customAppBarTheme({required FlexScheme usedScheme}) {
+  AppBarTheme customAppBarTheme({
+    required ThemeMode themeMode,
+    required FlexScheme usedScheme,
+  }) {
     return AppBarTheme(
       elevation: 1,
       iconTheme: IconThemeData(
-        color: FlexThemeData.light(scheme: usedScheme).primaryColorDark,
+        color: themeMode == ThemeMode.light
+            ? FlexThemeData.light(scheme: usedScheme).primaryColorDark
+            : FlexThemeData.dark(scheme: usedScheme).primaryColorDark,
       ),
-      backgroundColor: Colors.white,
+      backgroundColor:
+          themeMode == ThemeMode.light ? Colors.white : Colors.black,
       titleTextStyle: TextStyle(
         fontSize: 22.sp,
         fontWeight: FontWeight.bold,
-        color: FlexThemeData.light(scheme: usedScheme).primaryColorDark,
+        color: themeMode == ThemeMode.light
+            ? FlexThemeData.light(scheme: usedScheme).primaryColorDark
+            : FlexThemeData.dark(scheme: usedScheme).primaryColorDark,
       ),
     );
   }
