@@ -33,6 +33,13 @@ class CustomTheme {
     );
   }
 
+  CardTheme customCardTheme() {
+    return CardTheme(
+      margin: const EdgeInsets.all(8).r,
+      elevation: 3,
+    );
+  }
+
   TextTheme customTextTheme({
     required ThemeMode themeMode,
   }) {

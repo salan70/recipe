@@ -65,51 +65,33 @@ class MyApp extends ConsumerWidget {
                     FlexThemeData.light(scheme: usedScheme).backgroundColor,
                 bottomAppBarElevation: 10,
               ).copyWith(
-                /// textField
                 inputDecorationTheme: customTheme.customInputDecoration(),
-
-                /// text
                 textTheme: customTheme.customTextTheme(
                   themeMode: ThemeMode.light,
                 ),
-
-                /// appBar
                 appBarTheme: customTheme.customAppBarTheme(
                   themeMode: ThemeMode.light,
                   usedScheme: usedScheme,
                 ),
-
-                /// card
-                cardTheme: CardTheme(
-                  margin: const EdgeInsets.all(8).r,
-                  elevation: 3,
-                ),
+                cardTheme: customTheme.customCardTheme(),
               ),
+
+              /// darkTheme
               darkTheme: FlexThemeData.dark(
                 scheme: usedScheme,
                 background:
                     FlexThemeData.dark(scheme: usedScheme).backgroundColor,
                 bottomAppBarElevation: 10,
               ).copyWith(
-                /// textField
                 inputDecorationTheme: customTheme.customInputDecoration(),
-
-                /// text
                 textTheme: customTheme.customTextTheme(
                   themeMode: ThemeMode.dark,
                 ),
-
-                /// appBar
                 appBarTheme: customTheme.customAppBarTheme(
                   themeMode: ThemeMode.dark,
                   usedScheme: usedScheme,
                 ),
-
-                /// card
-                cardTheme: CardTheme(
-                  margin: const EdgeInsets.all(8).r,
-                  elevation: 3,
-                ),
+                cardTheme: customTheme.customCardTheme(),
               ),
               onGenerateRoute: (settings) {
                 return MaterialWithModalsPageRoute<PageContainerPage>(
