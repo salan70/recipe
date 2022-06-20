@@ -2,6 +2,6 @@ include: package:pedantic_mono/analysis_options.yaml
 
 linter:
   rules:
-    avoid_classes_with_only_static_members: false # classを名前空間として使いたいため
+    avoid_classes_with_only_static_members: false
     use_build_context_synchronously: false # 一旦見送り cf. https://twitter.com/_mono/status/1390556226853904384
     lines_longer_than_80_chars: false
