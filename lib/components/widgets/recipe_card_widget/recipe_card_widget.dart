@@ -52,7 +52,7 @@ class RecipeCardWidget extends ConsumerWidget {
                   maxLines: 2,
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
               ),
             ),

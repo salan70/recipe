@@ -30,7 +30,7 @@ class IntroductionEditIngredientPage extends ConsumerWidget {
                   children: [
                     Text(
                       '各材料へ「a」もしくは「b」を付与する機能について',
-                      style: Theme.of(context).primaryTextTheme.subtitle1,
+                      style: Theme.of(context).textTheme.subtitle2,
                     ),
                     SizedBox(
                       height: 8.h,
@@ -50,7 +50,7 @@ class IntroductionEditIngredientPage extends ConsumerWidget {
                   children: [
                     Text(
                       '入力できる種類や制限について',
-                      style: Theme.of(context).primaryTextTheme.subtitle1,
+                      style: Theme.of(context).textTheme.subtitle2,
                     ),
                     SizedBox(
                       height: 8.h,
@@ -69,7 +69,7 @@ class IntroductionEditIngredientPage extends ConsumerWidget {
                   children: [
                     Text(
                       'カートにレシピを入れた際の計算について',
-                      style: Theme.of(context).primaryTextTheme.subtitle1,
+                      style: Theme.of(context).textTheme.subtitle2,
                       textAlign: TextAlign.left,
                     ),
                     SizedBox(
@@ -90,7 +90,7 @@ class IntroductionEditIngredientPage extends ConsumerWidget {
                   children: [
                     Text(
                       'その他',
-                      style: Theme.of(context).primaryTextTheme.subtitle1,
+                      style: Theme.of(context).textTheme.subtitle2,
                       textAlign: TextAlign.left,
                     ),
                     SizedBox(

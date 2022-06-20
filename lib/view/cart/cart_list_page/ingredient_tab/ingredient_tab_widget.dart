@@ -77,7 +77,7 @@ class IngredientTabWidget extends ConsumerWidget {
                       children: [
                         Text(
                           '買う ($countBuyList)',
-                          style: Theme.of(context).primaryTextTheme.subtitle1,
+                          style: Theme.of(context).textTheme.subtitle2,
                           textAlign: TextAlign.left,
                         ),
                         TextButton.icon(
@@ -127,7 +127,7 @@ class IngredientTabWidget extends ConsumerWidget {
                       children: [
                         Text(
                           '買わない ($countNotBuyList)',
-                          style: Theme.of(context).primaryTextTheme.subtitle1,
+                          style: Theme.of(context).textTheme.subtitle2,
                           textAlign: TextAlign.left,
                         ),
                         GestureDetector(
@@ -220,22 +220,26 @@ class IngredientTabWidget extends ConsumerWidget {
           child: CheckboxListTile(
             title: Text(
               ingredientInCart.ingredientName,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                decoration: ingredientTabModel.getCartItem(id).isChecked
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
-              ),
+              style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                    decoration: ingredientTabModel.getCartItem(id).isChecked
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                  ),
             ),
             subtitle: Text(
               '${ingredientInCart.ingredientTotalAmount}'
               '${ingredientInCart.ingredientUnit}',
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).primaryTextTheme.caption!.copyWith(
-                    decoration: ingredientTabModel.getCartItem(id).isChecked
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none,
-                  ),
+              // style: Theme.of(context).textTheme.caption!.copyWith(
+              //       decoration: ingredientTabModel.getCartItem(id).isChecked
+              //           ? TextDecoration.lineThrough
+              //           : TextDecoration.none,
+              //     ),
+              style: TextStyle(
+                decoration: ingredientTabModel.getCartItem(id).isChecked
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none,
+              ),
             ),
             controlAffinity: ListTileControlAffinity.leading,
             value: ingredientTabModel.getCartItem(id).isChecked,
@@ -334,17 +338,16 @@ class IngredientTabWidget extends ConsumerWidget {
           child: CheckboxListTile(
             title: Text(
               otherItem.title,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                decoration: ingredientTabModel.getCartItem(id!).isChecked
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none,
-              ),
+              style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                    decoration: ingredientTabModel.getCartItem(id!).isChecked
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none,
+                  ),
             ),
             subtitle: Text(
               otherItem.subTitle!,
               overflow: TextOverflow.ellipsis,
-              style: Theme.of(context).primaryTextTheme.caption!.copyWith(
+              style: Theme.of(context).textTheme.caption!.copyWith(
                     decoration: ingredientTabModel.getCartItem(id).isChecked
                         ? TextDecoration.lineThrough
                         : TextDecoration.none,
@@ -371,7 +374,6 @@ class IngredientTabWidget extends ConsumerWidget {
     return AlertDialog(
       title: Text(
         '${ingredient.ingredientInCart.ingredientName}を使うレシピ',
-        style: Theme.of(context).primaryTextTheme.headline5,
       ),
       contentPadding: EdgeInsets.zero,
       content: SizedBox(
@@ -384,13 +386,13 @@ class IngredientTabWidget extends ConsumerWidget {
             return ListTile(
               title: Text(
                 recipe.recipeName,
-                style: Theme.of(context).primaryTextTheme.subtitle1,
+                style: Theme.of(context).textTheme.subtitle1,
               ),
               subtitle: Text(
                 '${recipe.forHowManyPeople * recipe.countInCart}人分  '
                 '${recipe.ingredientAmount}'
                 '${ingredient.ingredientInCart.ingredientUnit}',
-                style: Theme.of(context).primaryTextTheme.caption,
+                style: Theme.of(context).textTheme.caption,
                 overflow: TextOverflow.ellipsis,
               ),
               trailing: IconButton(
@@ -416,7 +418,7 @@ class IngredientTabWidget extends ConsumerWidget {
     return AlertDialog(
       title: Text(
         '移動のやり方',
-        style: Theme.of(context).primaryTextTheme.headline5,
+        style: Theme.of(context).textTheme.headline5,
       ),
       contentPadding: EdgeInsets.zero,
       content: SizedBox(

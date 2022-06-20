@@ -43,7 +43,7 @@ class SignUpPage extends ConsumerWidget {
             children: [
               Text(
                 'メールアドレスで登録',
-                style: Theme.of(context).primaryTextTheme.subtitle1,
+                style: Theme.of(context).textTheme.subtitle2,
                 textAlign: TextAlign.left,
               ),
               Padding(
@@ -130,7 +130,7 @@ class SignUpPage extends ConsumerWidget {
               ),
               Text(
                 '他のアカウントで登録',
-                style: Theme.of(context).primaryTextTheme.subtitle1,
+                style: Theme.of(context).textTheme.subtitle2,
                 textAlign: TextAlign.left,
               ),
               Padding(

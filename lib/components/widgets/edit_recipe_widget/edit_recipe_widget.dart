@@ -32,7 +32,7 @@ class EditRecipeWidget extends ConsumerWidget {
           TextField(
             maxLength: 30,
             maxLines: 2,
-            style: Theme.of(context).primaryTextTheme.headline5,
+            style: Theme.of(context).textTheme.headline5,
             controller: TextEditingController(text: recipe.recipeName),
             decoration: const InputDecoration.collapsed(hintText: 'レシピ名'),
             onChanged: (value) {
@@ -177,7 +177,7 @@ class EditRecipeWidget extends ConsumerWidget {
           Column(
             children: [
               DefaultTextStyle(
-                style: Theme.of(context).primaryTextTheme.subtitle2!,
+                style: Theme.of(context).textTheme.subtitle2!,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -254,7 +254,7 @@ class EditRecipeWidget extends ConsumerWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   '手順',
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
               ),
               SizedBox(height: 8.h),
@@ -269,7 +269,7 @@ class EditRecipeWidget extends ConsumerWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   'メモ',
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                  style: Theme.of(context).textTheme.subtitle2,
                 ),
               ),
               SizedBox(height: 8.h),

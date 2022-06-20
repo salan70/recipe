@@ -308,7 +308,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
               children: [
                 Text(
                   'カートに入っているレシピ',
-                  style: Theme.of(context).primaryTextTheme.headline6,
+                  style: Theme.of(context).textTheme.headline6,
                 ),
                 TextButton.icon(
                   icon: Icon(
@@ -392,74 +392,69 @@ class AddCartRecipeListPage extends ConsumerWidget {
                     controller: sc,
                     itemCount: recipeListInCartState.length,
                     itemBuilder: (context, index) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: 160.w,
-                            child: Text(
-                              recipeListInCartState[index]
-                                  .recipeName
-                                  .toString(),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style:
-                                  Theme.of(context).primaryTextTheme.subtitle1,
+                      return DefaultTextStyle(
+                        style: Theme.of(context).textTheme.subtitle2!,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                              width: 160.w,
+                              child: Text(
+                                recipeListInCartState[index]
+                                    .recipeName
+                                    .toString(),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                '計${recipeListInCartState[index].forHowManyPeople! * recipeListInCartState[index].countInCart!}人分',
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .subtitle2,
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  stateIsChangedNotifier.state = true;
-                                  if (recipeListInCartState[index]
-                                          .countInCart! >
-                                      0) {
-                                    recipeListInCartNotifier.decrease(
-                                      recipeListInCartState[index].recipeId!,
-                                    );
-                                  }
-                                },
-                                icon:
-                                    recipeListInCartState[index].countInCart! ==
-                                            0
-                                        ? const Icon(
-                                            Icons.remove_circle_outline,
-                                          )
-                                        : const Icon(Icons.remove_circle),
-                              ),
-                              Text(
-                                '× ${recipeListInCartState[index].countInCart!}',
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .subtitle2,
-                              ),
-                              IconButton(
-                                onPressed: () {
-                                  stateIsChangedNotifier.state = true;
-                                  if (recipeListInCartState[index]
-                                          .countInCart! <
-                                      99) {
-                                    recipeListInCartNotifier.increase(
-                                      recipeListInCartState[index].recipeId!,
-                                    );
-                                  }
-                                },
-                                icon:
-                                    recipeListInCartState[index].countInCart! ==
-                                            99
-                                        ? const Icon(Icons.add_circle_outline)
-                                        : const Icon(Icons.add_circle),
-                              )
-                            ],
-                          ),
-                        ],
+                            Row(
+                              children: [
+                                Text(
+                                  '計${recipeListInCartState[index].forHowManyPeople! * recipeListInCartState[index].countInCart!}人分',
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    stateIsChangedNotifier.state = true;
+                                    if (recipeListInCartState[index]
+                                            .countInCart! >
+                                        0) {
+                                      recipeListInCartNotifier.decrease(
+                                        recipeListInCartState[index].recipeId!,
+                                      );
+                                    }
+                                  },
+                                  icon: recipeListInCartState[index]
+                                              .countInCart! ==
+                                          0
+                                      ? const Icon(
+                                          Icons.remove_circle_outline,
+                                        )
+                                      : const Icon(Icons.remove_circle),
+                                ),
+                                Text(
+                                  '× ${recipeListInCartState[index].countInCart!}',
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    stateIsChangedNotifier.state = true;
+                                    if (recipeListInCartState[index]
+                                            .countInCart! <
+                                        99) {
+                                      recipeListInCartNotifier.increase(
+                                        recipeListInCartState[index].recipeId!,
+                                      );
+                                    }
+                                  },
+                                  icon: recipeListInCartState[index]
+                                              .countInCart! ==
+                                          99
+                                      ? const Icon(Icons.add_circle_outline)
+                                      : const Icon(Icons.add_circle),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
                       );
                     },
                   ),

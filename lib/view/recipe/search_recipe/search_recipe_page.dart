@@ -87,7 +87,7 @@ class SearchRecipePage extends ConsumerWidget {
                   padding: const EdgeInsets.only(top: 32).r,
                   child: Text(
                     'レシピが見つかりませんでした。',
-                    style: Theme.of(context).primaryTextTheme.subtitle1,
+                    style: Theme.of(context).textTheme.subtitle1,
                     textAlign: TextAlign.center,
                   ),
                 )

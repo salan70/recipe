@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:recipe/state/ingredient_list/ingredient_list_provider.dart';
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/state/procedure_list/procedure_list_provider.dart';
@@ -41,7 +40,7 @@ class RecipeDetailWidget extends ConsumerWidget {
           }
         }
         return DefaultTextStyle(
-          style: Theme.of(context).primaryTextTheme.bodyText1!,
+          style: Theme.of(context).textTheme.subtitle1!,
           child: Container(
             margin: const EdgeInsets.only(left: 16, right: 16).r,
             width: double.infinity,
@@ -53,7 +52,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                   child: Text(
                     recipe.recipeName!,
                     textAlign: TextAlign.left,
-                    style: Theme.of(context).primaryTextTheme.headline5,
+                    style: Theme.of(context).textTheme.headline5,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -114,7 +113,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                   child: Column(
                     children: [
                       DefaultTextStyle(
-                        style: Theme.of(context).primaryTextTheme.subtitle2!,
+                        style: Theme.of(context).textTheme.subtitle2!,
                         child: Row(
                           children: [
                             const Text(
@@ -209,7 +208,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           '手順',
-                          style: Theme.of(context).primaryTextTheme.subtitle2,
+                          style: Theme.of(context).textTheme.subtitle2,
                         ),
                       ),
                       SizedBox(
@@ -259,7 +258,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'メモ',
-                          style: Theme.of(context).primaryTextTheme.subtitle2,
+                          style: Theme.of(context).textTheme.subtitle2,
                         ),
                       ),
                       SizedBox(
