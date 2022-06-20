@@ -40,7 +40,7 @@ class RecipeDetailWidget extends ConsumerWidget {
           }
         }
         return DefaultTextStyle(
-          style: Theme.of(context).textTheme.bodyText1!,
+          style: Theme.of(context).textTheme.subtitle1!,
           child: Container(
             margin: const EdgeInsets.only(left: 16, right: 16).r,
             width: double.infinity,
@@ -208,7 +208,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           '手順',
-                          style: Theme.of(context).primaryTextTheme.subtitle2,
+                          style: Theme.of(context).textTheme.subtitle2,
                         ),
                       ),
                       SizedBox(
@@ -258,7 +258,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           'メモ',
-                          style: Theme.of(context).primaryTextTheme.subtitle2,
+                          style: Theme.of(context).textTheme.subtitle2,
                         ),
                       ),
                       SizedBox(

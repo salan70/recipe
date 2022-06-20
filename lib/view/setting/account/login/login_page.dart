@@ -41,7 +41,7 @@ class LoginPage extends ConsumerWidget {
             children: [
               Text(
                 'メールアドレスでログイン',
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.subtitle2,
                 textAlign: TextAlign.left,
               ),
               Padding(
@@ -128,7 +128,7 @@ class LoginPage extends ConsumerWidget {
               ),
               Text(
                 '他のアカウントでログイン',
-                style: Theme.of(context).textTheme.subtitle1,
+                style: Theme.of(context).textTheme.subtitle2,
                 textAlign: TextAlign.left,
               ),
               Padding(

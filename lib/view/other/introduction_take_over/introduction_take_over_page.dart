@@ -31,7 +31,7 @@ class IntroductionTakeOverPage extends ConsumerWidget {
                   children: [
                     Text(
                       '引き継がれる要素',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.subtitle2,
                     ),
                     SizedBox(
                       height: 8.h,
@@ -56,7 +56,7 @@ class IntroductionTakeOverPage extends ConsumerWidget {
                   children: [
                     Text(
                       '引き継がれない要素',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      style: Theme.of(context).textTheme.subtitle2,
                       textAlign: TextAlign.left,
                     ),
                     SizedBox(

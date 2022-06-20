@@ -22,6 +22,7 @@ class RecipeTabWidget extends ConsumerWidget {
             return ListTile(
               title: Text(
                 recipe.recipeName!,
+                style: Theme.of(context).textTheme.subtitle2,
               ),
               subtitle: Text(
                 '${recipe.countInCart! * recipe.forHowManyPeople!}人分',

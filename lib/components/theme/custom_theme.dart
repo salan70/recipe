@@ -37,14 +37,14 @@ class CustomTheme {
         color: mainTextColor,
         fontWeight: FontWeight.bold,
       ),
+      // TextFieldに使用される(TextField以外では基本使わない)
       subtitle1: TextStyle(
         fontSize: 16.sp,
-        // color: Colors.red,
         color: mainTextColor,
-        fontWeight: FontWeight.bold,
       ),
+      // 小見出し(ListTileのtitleなど)に使用する
       subtitle2: TextStyle(
-        fontSize: 14.sp,
+        fontSize: 16.sp,
         color: mainTextColor,
         fontWeight: FontWeight.bold,
       ),
@@ -52,14 +52,14 @@ class CustomTheme {
         fontSize: 16.sp,
         color: mainTextColor,
       ),
+      // 通常のテキストに使用する
       bodyText2: TextStyle(
         fontSize: 14.sp,
         color: mainTextColor,
       ),
       caption: TextStyle(
         fontSize: 12.sp,
-        color: Colors.green,
-        // color: hintTextColor,
+        color: hintTextColor,
       ),
       overline: TextStyle(
         fontSize: 10.sp,
