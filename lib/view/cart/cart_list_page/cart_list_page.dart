@@ -21,13 +21,13 @@ class CartListPage extends ConsumerWidget {
               Tab(
                 child: Text(
                   '材料',
-                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
               Tab(
                 child: Text(
                   'レシピ',
-                  style: Theme.of(context).primaryTextTheme.subtitle1,
+                  style: Theme.of(context).textTheme.subtitle1,
                 ),
               ),
             ],

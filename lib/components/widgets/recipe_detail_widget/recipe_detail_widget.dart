@@ -40,7 +40,7 @@ class RecipeDetailWidget extends ConsumerWidget {
           }
         }
         return DefaultTextStyle(
-          style: Theme.of(context).primaryTextTheme.bodyText1!,
+          style: Theme.of(context).textTheme.bodyText1!,
           child: Container(
             margin: const EdgeInsets.only(left: 16, right: 16).r,
             width: double.infinity,
@@ -52,7 +52,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                   child: Text(
                     recipe.recipeName!,
                     textAlign: TextAlign.left,
-                    style: Theme.of(context).primaryTextTheme.headline5,
+                    style: Theme.of(context).textTheme.headline5,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -113,7 +113,7 @@ class RecipeDetailWidget extends ConsumerWidget {
                   child: Column(
                     children: [
                       DefaultTextStyle(
-                        style: Theme.of(context).primaryTextTheme.subtitle2!,
+                        style: Theme.of(context).textTheme.subtitle2!,
                         child: Row(
                           children: [
                             const Text(

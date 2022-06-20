@@ -22,11 +22,9 @@ class RecipeTabWidget extends ConsumerWidget {
             return ListTile(
               title: Text(
                 recipe.recipeName!,
-                style: Theme.of(context).primaryTextTheme.subtitle1,
               ),
               subtitle: Text(
                 '${recipe.countInCart! * recipe.forHowManyPeople!}人分',
-                style: Theme.of(context).primaryTextTheme.caption,
               ),
               trailing: IconButton(
                 icon: const Icon(Icons.chevron_right_rounded),

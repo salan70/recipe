@@ -254,7 +254,7 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
         children: [
           Text(
             '計${fowHowManyPeople * counter}人分',
-            style: Theme.of(context).primaryTextTheme.headline6,
+            style: Theme.of(context).textTheme.headline6,
           ),
           Row(
             children: [
@@ -270,7 +270,7 @@ class AddBasketRecipeDetailPage extends ConsumerWidget {
               ),
               Text(
                 '× $counter',
-                style: Theme.of(context).primaryTextTheme.headline6,
+                style: Theme.of(context).textTheme.headline6,
               ),
               IconButton(
                 onPressed: () {

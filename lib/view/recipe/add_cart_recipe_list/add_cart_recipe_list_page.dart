@@ -308,7 +308,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
               children: [
                 Text(
                   'カートに入っているレシピ',
-                  style: Theme.of(context).primaryTextTheme.headline6,
+                  style: Theme.of(context).textTheme.headline6,
                 ),
                 TextButton.icon(
                   icon: Icon(
@@ -403,17 +403,14 @@ class AddCartRecipeListPage extends ConsumerWidget {
                                   .toString(),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style:
-                                  Theme.of(context).primaryTextTheme.subtitle1,
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
                           ),
                           Row(
                             children: [
                               Text(
                                 '計${recipeListInCartState[index].forHowManyPeople! * recipeListInCartState[index].countInCart!}人分',
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .subtitle2,
+                                style: Theme.of(context).textTheme.subtitle2,
                               ),
                               IconButton(
                                 onPressed: () {
@@ -436,9 +433,7 @@ class AddCartRecipeListPage extends ConsumerWidget {
                               ),
                               Text(
                                 '× ${recipeListInCartState[index].countInCart!}',
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .subtitle2,
+                                style: Theme.of(context).textTheme.subtitle2,
                               ),
                               IconButton(
                                 onPressed: () {
