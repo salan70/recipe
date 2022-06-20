@@ -66,10 +66,7 @@ class MyApp extends ConsumerWidget {
                 bottomAppBarElevation: 10,
               ).copyWith(
                 /// textField
-                inputDecorationTheme: InputDecorationTheme(
-                  contentPadding: const EdgeInsets.only(left: 4, bottom: 4).r,
-                  isDense: true,
-                ),
+                inputDecorationTheme: customTheme.customInputDecoration(),
 
                 /// text
                 textTheme: customTheme.customTextTheme(
@@ -106,10 +103,7 @@ class MyApp extends ConsumerWidget {
                 bottomAppBarElevation: 10,
               ).copyWith(
                 /// textField
-                inputDecorationTheme: InputDecorationTheme(
-                  contentPadding: const EdgeInsets.only(left: 4, bottom: 4).r,
-                  isDense: true,
-                ),
+                inputDecorationTheme: customTheme.customInputDecoration(),
 
                 /// text
                 textTheme: customTheme.customTextTheme(

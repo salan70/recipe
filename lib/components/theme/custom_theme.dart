@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTheme {
+  InputDecorationTheme customInputDecoration() {
+    return InputDecorationTheme(
+      contentPadding: const EdgeInsets.only(left: 4, bottom: 4).r,
+      isDense: true,
+    );
+  }
+
   TextTheme customTextTheme({
     required Color mainTextColor,
     required Color hintTextColor,
