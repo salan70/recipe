@@ -1,7 +1,23 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTheme {
+  AppBarTheme customAppBarTheme({required FlexScheme usedScheme}) {
+    return AppBarTheme(
+      elevation: 1,
+      iconTheme: IconThemeData(
+        color: FlexThemeData.light(scheme: usedScheme).primaryColorDark,
+      ),
+      backgroundColor: Colors.white,
+      titleTextStyle: TextStyle(
+        fontSize: 22.sp,
+        fontWeight: FontWeight.bold,
+        color: FlexThemeData.light(scheme: usedScheme).primaryColorDark,
+      ),
+    );
+  }
+
   InputDecorationTheme customInputDecoration() {
     return InputDecorationTheme(
       contentPadding: const EdgeInsets.only(left: 4, bottom: 4).r,
@@ -10,9 +26,13 @@ class CustomTheme {
   }
 
   TextTheme customTextTheme({
-    required Color mainTextColor,
-    required Color hintTextColor,
+    required ThemeMode themeMode,
   }) {
+    final mainTextColor =
+        themeMode == ThemeMode.light ? Colors.black : Colors.white;
+    final hintTextColor =
+        themeMode == ThemeMode.light ? Colors.black54 : Colors.white54;
+
     return TextTheme(
       headline1: TextStyle(
         fontSize: 96.sp,
