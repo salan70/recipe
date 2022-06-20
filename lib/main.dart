@@ -76,36 +76,6 @@ class MyApp extends ConsumerWidget {
                   mainTextColor: Colors.black,
                   hintTextColor: Colors.black54,
                 ),
-                // primaryTextTheme: TextTheme(
-                //   headline5: TextStyle(
-                //     fontSize: 24.sp,
-                //     color: Colors.black,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                //   headline6: TextStyle(
-                //     fontSize: 20.sp,
-                //     color: Colors.black,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                //   subtitle1: TextStyle(
-                //     fontSize: 16.sp,
-                //     color: Colors.black,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                //   subtitle2: TextStyle(
-                //     fontSize: 14.sp,
-                //     color: Colors.black,
-                //     fontWeight: FontWeight.bold,
-                //   ),
-                //   bodyText1: TextStyle(
-                //     fontSize: 16.sp,
-                //     color: Colors.black87,
-                //   ),
-                //   caption: TextStyle(
-                //     fontSize: 12.sp,
-                //     color: FlexThemeData.light(scheme: usedScheme).hintColor,
-                //   ),
-                // ),
 
                 /// appBar
                 appBarTheme: AppBarTheme(
@@ -142,35 +112,9 @@ class MyApp extends ConsumerWidget {
                 ),
 
                 /// text
-                primaryTextTheme: TextTheme(
-                  headline5: TextStyle(
-                    fontSize: 24.sp,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  headline6: TextStyle(
-                    fontSize: 20.sp,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  subtitle1: TextStyle(
-                    fontSize: 16.sp,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  subtitle2: TextStyle(
-                    fontSize: 14.sp,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  bodyText1: TextStyle(
-                    fontSize: 16.sp,
-                    color: Colors.white,
-                  ),
-                  caption: TextStyle(
-                    fontSize: 12.sp,
-                    color: FlexThemeData.dark(scheme: usedScheme).hintColor,
-                  ),
+                textTheme: customTheme.customTextTheme(
+                  mainTextColor: Colors.white,
+                  hintTextColor: Colors.white54,
                 ),
 
                 /// appBar
