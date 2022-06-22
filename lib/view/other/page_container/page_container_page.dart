@@ -183,7 +183,7 @@ class PageContainerPage extends ConsumerWidget {
                   autofocus: true,
                   maxLength: 20,
                   decoration: const InputDecoration(
-                    labelText: 'タイトル (必須)',
+                    labelText: 'アイテム名 (必須)',
                   ),
                   onChanged: (value) {
                     title = value;
