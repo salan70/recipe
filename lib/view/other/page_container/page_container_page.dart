@@ -172,14 +172,16 @@ class PageContainerPage extends ConsumerWidget {
         return AlertDialog(
           title: const Text('カートにアイテムを追加'),
           content: SizedBox(
-            height: 150.h,
+            height: 160.h,
             width: 300.w,
             child: Column(
               children: [
+                SizedBox(
+                  height: 8.h,
+                ),
                 TextField(
                   autofocus: true,
                   maxLength: 20,
-                  maxLines: 2,
                   decoration: const InputDecoration(
                     labelText: 'タイトル (必須)',
                   ),
@@ -189,9 +191,8 @@ class PageContainerPage extends ConsumerWidget {
                 ),
                 TextField(
                   maxLength: 20,
-                  maxLines: 2,
                   decoration: const InputDecoration(
-                    labelText: 'サブタイトル',
+                    labelText: '詳細',
                   ),
                   onChanged: (value) {
                     subTitle = value;
