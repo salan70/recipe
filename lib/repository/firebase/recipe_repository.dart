@@ -97,7 +97,18 @@ class RecipeRepository {
       );
       final sortedProcedureListMap = SplayTreeMap<String, dynamic>.from(
         procedureListMap,
-        (String key, String value) => key.compareTo(value),
+        (String key, String value) {
+          /* key, valueが1桁の場合、頭に0をつける。
+          これにより、1の次に10ではなく2がくるようになる。
+          */
+          if (key.length == 1) {
+            key = '0$key';
+          }
+          if (value.length == 1) {
+            value = '0$value';
+          }
+          return key.compareTo(value);
+        },
       );
       final procedureList = <Procedure>[];
       sortedProcedureListMap.forEach((key, dynamic value) {
