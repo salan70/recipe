@@ -170,7 +170,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
   /// Google Account
   Future<String?> signUpWithGoogle() async {
     final googleUser = await GoogleSignIn().signIn();
-    final googleAuth = await googleUser!.authentication;
+    if (googleUser == null) {
+      return 'Google認証を行ってください';
+    }
+    final googleAuth = await googleUser.authentication;
     final currentUser = _firebaseAuth.currentUser;
 
     try {
@@ -186,7 +189,7 @@ class AuthStateNotifier extends StateNotifier<User?> {
       }
       // このelseは行かない想定
       else {
-        return 'サインアップ失敗';
+        return '不明なエラー';
       }
     } on FirebaseAuthException catch (e) {
       final authException = AuthException();
@@ -197,7 +200,10 @@ class AuthStateNotifier extends StateNotifier<User?> {
 
   Future<String?> loginWithGoogle() async {
     final googleUser = await GoogleSignIn().signIn();
-    final googleAuth = await googleUser!.authentication;
+    if (googleUser == null) {
+      return 'Google認証を行ってください';
+    }
+    final googleAuth = await googleUser.authentication;
 
     try {
       final AuthCredential credential = GoogleAuthProvider.credential(
