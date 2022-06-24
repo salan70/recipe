@@ -44,6 +44,7 @@ class EditIngredientUnitPage extends ConsumerWidget {
                           return AlertDialog(
                             title: const Text('単位を追加'),
                             content: TextField(
+                              autofocus: true,
                               maxLength: 10,
                               onChanged: (value) {
                                 addedUnit = value;
