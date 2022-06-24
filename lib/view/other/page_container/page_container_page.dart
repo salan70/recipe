@@ -180,6 +180,7 @@ class PageContainerPage extends ConsumerWidget {
                   height: 8.h,
                 ),
                 TextField(
+                  textInputAction: TextInputAction.next,
                   autofocus: true,
                   maxLength: 20,
                   decoration: const InputDecoration(
@@ -190,6 +191,7 @@ class PageContainerPage extends ConsumerWidget {
                   },
                 ),
                 TextField(
+                  textInputAction: TextInputAction.done,
                   maxLength: 20,
                   decoration: const InputDecoration(
                     labelText: '詳細',

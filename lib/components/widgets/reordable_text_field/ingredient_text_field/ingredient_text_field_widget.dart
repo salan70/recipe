@@ -25,14 +25,6 @@ class IngredientTextFieldWidget extends ConsumerWidget {
     final ingredientListNotifier =
         ref.watch(ingredientListNotifierProvider.notifier);
 
-    final validation = Validations();
-
-    final nameIsChanged = ref.watch(nameIsChangedProvider);
-    final nameIsChangedNotifier = ref.watch(nameIsChangedProvider.notifier);
-
-    final amountIsChanged = ref.watch(nameIsChangedProvider);
-    final amountIsChangedNotifier = ref.watch(nameIsChangedProvider.notifier);
-
     return Column(
       children: [
         Builder(
@@ -42,21 +34,20 @@ class IngredientTextFieldWidget extends ConsumerWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               children: [
-                for (int index = 0; index < ingredientList.length; index++)
+                for (final ingredient in ingredientList)
                   Slidable(
-                    key: ValueKey(ingredientList[index].id),
+                    key: ValueKey(ingredient.id),
                     startActionPane: ActionPane(
                       extentRatio: 0.3,
                       motion: const ScrollMotion(),
                       children: [
                         SlidableAction(
-                          // icon: FontAwesomeIcons.clover,
                           label: 'a',
                           foregroundColor: Theme.of(context).primaryColor,
                           backgroundColor: Theme.of(context).dividerColor,
                           onPressed: (context) {
                             ingredientListNotifier.editSymbol(
-                              ingredientList[index].id,
+                              ingredient.id,
                               'a',
                             );
                           },
@@ -66,14 +57,13 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                             topRight: Radius.circular(10),
                             bottomRight: Radius.circular(10),
                           ),
-                          // icon: FontAwesomeIcons.diamond,
                           label: 'b',
                           foregroundColor:
                               Theme.of(context).colorScheme.secondary,
                           backgroundColor: Theme.of(context).dividerColor,
                           onPressed: (context) {
                             ingredientListNotifier.editSymbol(
-                              ingredientList[index].id,
+                              ingredient.id,
                               'b',
                             );
                           },
@@ -92,197 +82,13 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                           label: '削除',
                           backgroundColor: Theme.of(context).errorColor,
                           onPressed: (context) {
-                            ingredientListNotifier
-                                .remove(ingredientList[index].id);
+                            ingredientListNotifier.remove(ingredient.id);
                           },
                         )
                       ],
                     ),
-                    child: Row(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          width: 24.w,
-                          child: (ingredientList[index].symbol == 'clover' ||
-                                  ingredientList[index].symbol == 'a')
-                              ? Text(
-                                  'a',
-                                  style: TextStyle(
-                                    fontSize: 16.sp,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                )
-                              : (ingredientList[index].symbol == 'diamond' ||
-                                      ingredientList[index].symbol == 'b')
-                                  ? Text(
-                                      'b',
-                                      style: TextStyle(
-                                        fontSize: 16.sp,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                      ),
-                                    )
-                                  : null,
-                        ),
-                        Expanded(
-                          flex: 6,
-                          child: TextField(
-                            controller: nameIsChanged == false
-                                ? TextEditingController(
-                                    text: ingredientList[index].name,
-                                  )
-                                : null,
-                            maxLength: 20,
-                            decoration: const InputDecoration(
-                              hintText: '材料名',
-                              counterText: '',
-                            ),
-                            onChanged: (String value) {
-                              ingredientListNotifier.editName(
-                                ingredientList[index].id,
-                                value,
-                              );
-                              nameIsChangedNotifier.update((state) => true);
-                            },
-                          ),
-                        ),
-                        SizedBox(
-                          width: 8.w,
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: TextField(
-                            controller: amountIsChanged == false
-                                ? TextEditingController(
-                                    text:
-                                        ingredientList[index].amount.toString(),
-                                  )
-                                : null,
-                            keyboardType: TextInputType.datetime,
-                            maxLength: 5,
-                            decoration: InputDecoration(
-                              hintText: '数量',
-                              counterText: '',
-                              errorText: validation.outputAmountErrorText(
-                                ingredientList[index].amount,
-                              ),
-                            ),
-                            onChanged: (value) {
-                              ingredientListNotifier.editAmount(
-                                ingredientList[index].id,
-                                value,
-                              );
-                              amountIsChangedNotifier.update((state) => true);
-                            },
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: ValueListenableBuilder(
-                            valueListenable:
-                                IngredientUnitBoxes.getIngredientUnit()
-                                    .listenable(),
-                            builder: (context, box, widget) {
-                              final ingredientTextFieldModel =
-                                  IngredientTextFieldModel();
-
-                              final ingredientUnitList =
-                                  ingredientTextFieldModel
-                                      .fetchIngredientUnitList();
-
-                              final unitNameForTextButton =
-                                  ingredientList[index].unit == null ||
-                                          ingredientList[index].unit == ''
-                                      ? '単位'
-                                      : ingredientList[index].unit!;
-
-                              var selectedUnitName = ingredientUnitList[0];
-
-                              return TextButton(
-                                onPressed: () {
-                                  showCupertinoModalPopup<Container>(
-                                    context: context,
-                                    builder: (context) {
-                                      return Container(
-                                        height: 250.h,
-                                        color:
-                                            Theme.of(context).backgroundColor,
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                TextButton(
-                                                  child: const Text('戻る'),
-                                                  onPressed: () => Navigator.of(
-                                                    context,
-                                                  ).pop(),
-                                                ),
-                                                TextButton(
-                                                  child: const Text(
-                                                    '決定',
-                                                  ),
-                                                  onPressed: () {
-                                                    ingredientListNotifier
-                                                        .editUnit(
-                                                      ingredientList[index].id,
-                                                      selectedUnitName,
-                                                    );
-                                                    Navigator.of(
-                                                      context,
-                                                    ).pop();
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                            const Divider(),
-                                            Expanded(
-                                              child: CupertinoPicker(
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .backgroundColor,
-                                                itemExtent: 30,
-                                                children: ingredientUnitList
-                                                    .map(
-                                                      (unitName) => Text(
-                                                        unitName,
-                                                        style: TextStyle(
-                                                          color: Theme.of(
-                                                            context,
-                                                          )
-                                                              .colorScheme
-                                                              .onBackground,
-                                                        ),
-                                                      ),
-                                                    )
-                                                    .toList(),
-                                                onSelectedItemChanged: (index) {
-                                                  selectedUnitName =
-                                                      ingredientUnitList[index];
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Text(
-                                  unitNameForTextButton,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        const Icon(
-                          Icons.drag_handle,
-                        ),
-                      ],
+                    child: _TextFieldRow(
+                      ingredient: ingredient,
                     ),
                   ),
               ],
@@ -343,6 +149,204 @@ class IngredientTextFieldWidget extends ConsumerWidget {
             ),
           ],
         )
+      ],
+    );
+  }
+}
+
+class _TextFieldRow extends ConsumerWidget {
+  const _TextFieldRow({Key? key, required this.ingredient}) : super(key: key);
+
+  final Ingredient ingredient;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final validation = Validations();
+
+    final ingredientListNotifier =
+        ref.watch(ingredientListNotifierProvider.notifier);
+
+    final nameIsChanged = ref.watch(nameIsChangedProvider);
+    final nameIsChangedNotifier = ref.watch(nameIsChangedProvider.notifier);
+
+    final amountIsChanged = ref.watch(nameIsChangedProvider);
+    final amountIsChangedNotifier = ref.watch(nameIsChangedProvider.notifier);
+
+    return Row(
+      children: [
+        Container(
+          alignment: Alignment.center,
+          width: 24.w,
+          child: ingredient.symbol == 'a'
+              ? Text(
+                  'a',
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                )
+              : ingredient.symbol == 'b'
+                  ? Text(
+                      'b',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    )
+                  : null,
+        ),
+        Expanded(
+          flex: 6,
+          child: TextField(
+            textInputAction: TextInputAction.next,
+            controller: nameIsChanged == false
+                ? TextEditingController(
+                    text: ingredient.name,
+                  )
+                : null,
+            maxLength: 20,
+            decoration: const InputDecoration(
+              hintText: '材料名',
+              counterText: '',
+            ),
+            onChanged: (String value) {
+              ingredientListNotifier.editName(
+                ingredient.id,
+                value,
+              );
+              nameIsChangedNotifier.update((state) => true);
+            },
+          ),
+        ),
+        SizedBox(
+          width: 8.w,
+        ),
+        Expanded(
+          flex: 2,
+          child: TextField(
+            textInputAction: TextInputAction.done,
+            controller: amountIsChanged == false
+                ? TextEditingController(
+                    text: ingredient.amount.toString(),
+                  )
+                : null,
+            keyboardType: TextInputType.datetime,
+            maxLength: 5,
+            decoration: InputDecoration(
+              hintText: '数量',
+              counterText: '',
+              errorText: validation.outputAmountErrorText(
+                ingredient.amount,
+              ),
+            ),
+            onChanged: (value) {
+              ingredientListNotifier.editAmount(
+                ingredient.id,
+                value,
+              );
+              amountIsChangedNotifier.update((state) => true);
+            },
+          ),
+        ),
+        Expanded(
+          flex: 2,
+          child: ValueListenableBuilder(
+            valueListenable:
+                IngredientUnitBoxes.getIngredientUnit().listenable(),
+            builder: (context, box, widget) {
+              final ingredientTextFieldModel = IngredientTextFieldModel();
+
+              final ingredientUnitList =
+                  ingredientTextFieldModel.fetchIngredientUnitList();
+
+              final selectedUnit =
+                  ingredient.unit == null || ingredient.unit == ''
+                      ? '単位'
+                      : ingredient.unit!;
+
+              var selectedUnitName = ingredientUnitList[0];
+
+              return TextButton(
+                onPressed: () {
+                  // textFieldのfocusを外す処理
+                  final currentScope = FocusScope.of(context);
+                  if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
+                    FocusManager.instance.primaryFocus!.unfocus();
+                  }
+
+                  showCupertinoModalPopup<Container>(
+                    context: context,
+                    builder: (context) {
+                      return Container(
+                        height: 250.h,
+                        color: Theme.of(context).backgroundColor,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextButton(
+                                  child: const Text('戻る'),
+                                  onPressed: () => Navigator.of(
+                                    context,
+                                  ).pop(),
+                                ),
+                                TextButton(
+                                  child: const Text(
+                                    '決定',
+                                  ),
+                                  onPressed: () {
+                                    ingredientListNotifier.editUnit(
+                                      ingredient.id,
+                                      selectedUnitName,
+                                    );
+                                    Navigator.of(
+                                      context,
+                                    ).pop();
+                                  },
+                                ),
+                              ],
+                            ),
+                            const Divider(),
+                            Expanded(
+                              child: CupertinoPicker(
+                                backgroundColor:
+                                    Theme.of(context).backgroundColor,
+                                itemExtent: 30,
+                                children: ingredientUnitList
+                                    .map(
+                                      (unitName) => Text(
+                                        unitName,
+                                        style: TextStyle(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onBackground,
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                onSelectedItemChanged: (index) {
+                                  selectedUnitName = ingredientUnitList[index];
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: Text(
+                  selectedUnit,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              );
+            },
+          ),
+        ),
+        const Icon(
+          Icons.drag_handle,
+        ),
       ],
     );
   }
