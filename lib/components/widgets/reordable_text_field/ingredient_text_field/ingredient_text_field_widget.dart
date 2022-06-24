@@ -128,6 +128,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                         Expanded(
                           flex: 6,
                           child: TextField(
+                            textInputAction: TextInputAction.next,
                             controller: nameIsChanged == false
                                 ? TextEditingController(
                                     text: ingredientList[index].name,
@@ -153,6 +154,7 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                         Expanded(
                           flex: 2,
                           child: TextField(
+                            textInputAction: TextInputAction.done,
                             controller: amountIsChanged == false
                                 ? TextEditingController(
                                     text:
