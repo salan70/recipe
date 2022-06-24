@@ -173,7 +173,7 @@ class _TextFieldRow extends ConsumerWidget {
     final amountIsChangedNotifier = ref.watch(nameIsChangedProvider.notifier);
 
     // TODO ingredient.unitが''になるのか要検証
-    final selectedUnit = (ingredient.unit == null || ingredient.unit == '')
+    final unitButtonText = (ingredient.unit == null || ingredient.unit == '')
         ? '単位'
         : ingredient.unit!;
 
@@ -255,93 +255,94 @@ class _TextFieldRow extends ConsumerWidget {
         ),
         Expanded(
           flex: 2,
-          child: ValueListenableBuilder(
-            valueListenable:
-                IngredientUnitBoxes.getIngredientUnit().listenable(),
-            builder: (context, box, widget) {
-              final ingredientTextFieldModel = IngredientTextFieldModel();
+          child: TextButton(
+            onPressed: () {
+              // textFieldのfocusを外す処理
+              final currentScope = FocusScope.of(context);
+              if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
+                FocusManager.instance.primaryFocus!.unfocus();
+              }
 
-              final ingredientUnitList =
-                  ingredientTextFieldModel.fetchIngredientUnitList();
+              showCupertinoModalPopup<Container>(
+                context: context,
+                builder: (context) {
+                  return ValueListenableBuilder(
+                      valueListenable:
+                          IngredientUnitBoxes.getIngredientUnit().listenable(),
+                      builder: (context, box, widget) {
+                        final ingredientTextFieldModel =
+                            IngredientTextFieldModel();
 
-              var selectedUnitName = ingredientUnitList[0];
+                        final ingredientUnitList =
+                            ingredientTextFieldModel.fetchIngredientUnitList();
 
-              return TextButton(
-                onPressed: () {
-                  // textFieldのfocusを外す処理
-                  final currentScope = FocusScope.of(context);
-                  if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
-                    FocusManager.instance.primaryFocus!.unfocus();
-                  }
+                        var selectedUnit = ingredientUnitList[0];
 
-                  showCupertinoModalPopup<Container>(
-                    context: context,
-                    builder: (context) {
-                      return Container(
-                        height: 250.h,
-                        color: Theme.of(context).backgroundColor,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                  child: const Text('戻る'),
-                                  onPressed: () => Navigator.of(
-                                    context,
-                                  ).pop(),
-                                ),
-                                TextButton(
-                                  child: const Text(
-                                    '決定',
-                                  ),
-                                  onPressed: () {
-                                    ingredientListNotifier.editUnit(
-                                      ingredient.id,
-                                      selectedUnitName,
-                                    );
-                                    Navigator.of(
+                        return Container(
+                          height: 250.h,
+                          color: Theme.of(context).backgroundColor,
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  TextButton(
+                                    child: const Text('戻る'),
+                                    onPressed: () => Navigator.of(
                                       context,
-                                    ).pop();
+                                    ).pop(),
+                                  ),
+                                  TextButton(
+                                    child: const Text(
+                                      '決定',
+                                    ),
+                                    onPressed: () {
+                                      ingredientListNotifier.editUnit(
+                                        ingredient.id,
+                                        selectedUnit,
+                                      );
+                                      Navigator.of(
+                                        context,
+                                      ).pop();
+                                    },
+                                  ),
+                                ],
+                              ),
+                              const Divider(),
+                              Expanded(
+                                child: CupertinoPicker(
+                                  backgroundColor:
+                                      Theme.of(context).backgroundColor,
+                                  itemExtent: 30,
+                                  children: ingredientUnitList
+                                      .map(
+                                        (unitName) => Text(
+                                          unitName,
+                                          style: TextStyle(
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.onBackground,
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onSelectedItemChanged: (index) {
+                                    selectedUnit = ingredientUnitList[index];
                                   },
                                 ),
-                              ],
-                            ),
-                            const Divider(),
-                            Expanded(
-                              child: CupertinoPicker(
-                                backgroundColor:
-                                    Theme.of(context).backgroundColor,
-                                itemExtent: 30,
-                                children: ingredientUnitList
-                                    .map(
-                                      (unitName) => Text(
-                                        unitName,
-                                        style: TextStyle(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onBackground,
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                                onSelectedItemChanged: (index) {
-                                  selectedUnitName = ingredientUnitList[index];
-                                },
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
+                            ],
+                          ),
+                        );
+                      });
                 },
-                child: Text(
-                  selectedUnit,
-                  overflow: TextOverflow.ellipsis,
-                ),
               );
             },
+            child: Text(
+              unitButtonText,
+              overflow: TextOverflow.ellipsis,
+            ),
           ),
         ),
         const Icon(
