@@ -263,76 +263,7 @@ class _TextFieldRow extends ConsumerWidget {
               showCupertinoModalPopup<Container>(
                 context: context,
                 builder: (context) {
-                  return ValueListenableBuilder(
-                    valueListenable:
-                        IngredientUnitBoxes.getIngredientUnit().listenable(),
-                    builder: (context, box, widget) {
-                      final ingredientTextFieldModel =
-                          IngredientTextFieldModel();
-
-                      final ingredientUnitList =
-                          ingredientTextFieldModel.fetchIngredientUnitList();
-
-                      var selectedUnit = ingredientUnitList[0];
-
-                      return Container(
-                        height: 250.h,
-                        color: Theme.of(context).backgroundColor,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextButton(
-                                  child: const Text('戻る'),
-                                  onPressed: () => Navigator.of(
-                                    context,
-                                  ).pop(),
-                                ),
-                                TextButton(
-                                  child: const Text(
-                                    '決定',
-                                  ),
-                                  onPressed: () {
-                                    ingredientListNotifier.editUnit(
-                                      ingredient.id,
-                                      selectedUnit,
-                                    );
-                                    Navigator.of(
-                                      context,
-                                    ).pop();
-                                  },
-                                ),
-                              ],
-                            ),
-                            const Divider(),
-                            Expanded(
-                              child: CupertinoPicker(
-                                backgroundColor:
-                                    Theme.of(context).backgroundColor,
-                                itemExtent: 30,
-                                children: ingredientUnitList
-                                    .map(
-                                      (unitName) => Text(
-                                        unitName,
-                                        style: TextStyle(
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.onBackground,
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                                onSelectedItemChanged: (index) {
-                                  selectedUnit = ingredientUnitList[index];
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
+                  return _UnitPicker(ingredient: ingredient);
                 },
               );
             },
@@ -346,6 +277,86 @@ class _TextFieldRow extends ConsumerWidget {
           Icons.drag_handle,
         ),
       ],
+    );
+  }
+}
+
+class _UnitPicker extends ConsumerWidget {
+  const _UnitPicker({Key? key, required this.ingredient}) : super(key: key);
+
+  final Ingredient ingredient;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final ingredientListNotifier =
+        ref.watch(ingredientListNotifierProvider.notifier);
+
+    return ValueListenableBuilder(
+      valueListenable: IngredientUnitBoxes.getIngredientUnit().listenable(),
+      builder: (context, box, widget) {
+        final ingredientTextFieldModel = IngredientTextFieldModel();
+
+        final ingredientUnitList =
+            ingredientTextFieldModel.fetchIngredientUnitList();
+
+        var selectedUnit = ingredientUnitList[0];
+
+        return Container(
+          height: 250.h,
+          color: Theme.of(context).backgroundColor,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    child: const Text('戻る'),
+                    onPressed: () => Navigator.of(
+                      context,
+                    ).pop(),
+                  ),
+                  TextButton(
+                    child: const Text(
+                      '決定',
+                    ),
+                    onPressed: () {
+                      ingredientListNotifier.editUnit(
+                        ingredient.id,
+                        selectedUnit,
+                      );
+                      Navigator.of(
+                        context,
+                      ).pop();
+                    },
+                  ),
+                ],
+              ),
+              const Divider(),
+              Expanded(
+                child: CupertinoPicker(
+                  backgroundColor: Theme.of(context).backgroundColor,
+                  itemExtent: 30,
+                  children: ingredientUnitList
+                      .map(
+                        (unitName) => Text(
+                          unitName,
+                          style: TextStyle(
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onBackground,
+                          ),
+                        ),
+                      )
+                      .toList(),
+                  onSelectedItemChanged: (index) {
+                    selectedUnit = ingredientUnitList[index];
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
