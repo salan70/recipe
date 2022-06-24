@@ -42,7 +42,6 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                       motion: const ScrollMotion(),
                       children: [
                         SlidableAction(
-                          // icon: FontAwesomeIcons.clover,
                           label: 'a',
                           foregroundColor: Theme.of(context).primaryColor,
                           backgroundColor: Theme.of(context).dividerColor,
@@ -58,7 +57,6 @@ class IngredientTextFieldWidget extends ConsumerWidget {
                             topRight: Radius.circular(10),
                             bottomRight: Radius.circular(10),
                           ),
-                          // icon: FontAwesomeIcons.diamond,
                           label: 'b',
                           foregroundColor:
                               Theme.of(context).colorScheme.secondary,
@@ -179,7 +177,7 @@ class _TextFieldRow extends ConsumerWidget {
         Container(
           alignment: Alignment.center,
           width: 24.w,
-          child: (ingredient.symbol == 'clover' || ingredient.symbol == 'a')
+          child: ingredient.symbol == 'a'
               ? Text(
                   'a',
                   style: TextStyle(
@@ -187,7 +185,7 @@ class _TextFieldRow extends ConsumerWidget {
                     color: Theme.of(context).primaryColor,
                   ),
                 )
-              : (ingredient.symbol == 'diamond' || ingredient.symbol == 'b')
+              : ingredient.symbol == 'b'
                   ? Text(
                       'b',
                       style: TextStyle(
