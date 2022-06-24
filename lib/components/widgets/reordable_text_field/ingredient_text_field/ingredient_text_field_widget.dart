@@ -172,10 +172,7 @@ class _TextFieldRow extends ConsumerWidget {
     final amountIsChanged = ref.watch(nameIsChangedProvider);
     final amountIsChangedNotifier = ref.watch(nameIsChangedProvider.notifier);
 
-    // TODO ingredient.unitが''になるのか要検証
-    final unitButtonText = (ingredient.unit == null || ingredient.unit == '')
-        ? '単位'
-        : ingredient.unit!;
+    final unitButtonText = ingredient.unit == null ? '単位' : ingredient.unit!;
 
     return Row(
       children: [
@@ -267,75 +264,75 @@ class _TextFieldRow extends ConsumerWidget {
                 context: context,
                 builder: (context) {
                   return ValueListenableBuilder(
-                      valueListenable:
-                          IngredientUnitBoxes.getIngredientUnit().listenable(),
-                      builder: (context, box, widget) {
-                        final ingredientTextFieldModel =
-                            IngredientTextFieldModel();
+                    valueListenable:
+                        IngredientUnitBoxes.getIngredientUnit().listenable(),
+                    builder: (context, box, widget) {
+                      final ingredientTextFieldModel =
+                          IngredientTextFieldModel();
 
-                        final ingredientUnitList =
-                            ingredientTextFieldModel.fetchIngredientUnitList();
+                      final ingredientUnitList =
+                          ingredientTextFieldModel.fetchIngredientUnitList();
 
-                        var selectedUnit = ingredientUnitList[0];
+                      var selectedUnit = ingredientUnitList[0];
 
-                        return Container(
-                          height: 250.h,
-                          color: Theme.of(context).backgroundColor,
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  TextButton(
-                                    child: const Text('戻る'),
-                                    onPressed: () => Navigator.of(
+                      return Container(
+                        height: 250.h,
+                        color: Theme.of(context).backgroundColor,
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextButton(
+                                  child: const Text('戻る'),
+                                  onPressed: () => Navigator.of(
+                                    context,
+                                  ).pop(),
+                                ),
+                                TextButton(
+                                  child: const Text(
+                                    '決定',
+                                  ),
+                                  onPressed: () {
+                                    ingredientListNotifier.editUnit(
+                                      ingredient.id,
+                                      selectedUnit,
+                                    );
+                                    Navigator.of(
                                       context,
-                                    ).pop(),
-                                  ),
-                                  TextButton(
-                                    child: const Text(
-                                      '決定',
-                                    ),
-                                    onPressed: () {
-                                      ingredientListNotifier.editUnit(
-                                        ingredient.id,
-                                        selectedUnit,
-                                      );
-                                      Navigator.of(
-                                        context,
-                                      ).pop();
-                                    },
-                                  ),
-                                ],
-                              ),
-                              const Divider(),
-                              Expanded(
-                                child: CupertinoPicker(
-                                  backgroundColor:
-                                      Theme.of(context).backgroundColor,
-                                  itemExtent: 30,
-                                  children: ingredientUnitList
-                                      .map(
-                                        (unitName) => Text(
-                                          unitName,
-                                          style: TextStyle(
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.onBackground,
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                  onSelectedItemChanged: (index) {
-                                    selectedUnit = ingredientUnitList[index];
+                                    ).pop();
                                   },
                                 ),
+                              ],
+                            ),
+                            const Divider(),
+                            Expanded(
+                              child: CupertinoPicker(
+                                backgroundColor:
+                                    Theme.of(context).backgroundColor,
+                                itemExtent: 30,
+                                children: ingredientUnitList
+                                    .map(
+                                      (unitName) => Text(
+                                        unitName,
+                                        style: TextStyle(
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onBackground,
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                                onSelectedItemChanged: (index) {
+                                  selectedUnit = ingredientUnitList[index];
+                                },
                               ),
-                            ],
-                          ),
-                        );
-                      });
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
                 },
               );
             },
