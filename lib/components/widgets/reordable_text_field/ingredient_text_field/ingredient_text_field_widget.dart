@@ -203,6 +203,12 @@ class IngredientTextFieldWidget extends ConsumerWidget {
 
                               return TextButton(
                                 onPressed: () {
+                                  final currentScope = FocusScope.of(context);
+                                  if (!currentScope.hasPrimaryFocus &&
+                                      currentScope.hasFocus) {
+                                    FocusManager.instance.primaryFocus!
+                                        .unfocus();
+                                  }
                                   showCupertinoModalPopup<Container>(
                                     context: context,
                                     builder: (context) {
