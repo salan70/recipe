@@ -226,7 +226,14 @@ class _TextFieldRow extends ConsumerWidget {
         Expanded(
           flex: 2,
           child: TextField(
-            textInputAction: TextInputAction.done,
+            onSubmitted: (_) {
+              showCupertinoModalPopup<Container>(
+                context: context,
+                builder: (context) {
+                  return _UnitPicker(ingredient: ingredient);
+                },
+              );
+            },
             controller: amountIsChanged == false
                 ? TextEditingController(
                     text: ingredient.amount.toString(),
