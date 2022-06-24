@@ -60,7 +60,7 @@ dependencies:
   hive_flutter: ^1.1.0
 
 dev_dependencies:
-  build_runner:
+  build_runner: ^2.1.0
 
   flutter_test:
     sdk: flutter
@@ -69,6 +69,7 @@ dev_dependencies:
   json_serializable:
   hive_generator: ^1.1.2
   flutter_tree: ^2.0.3
+  monarch: ^2.3.0
 
 flutter:
   uses-material-design: true
