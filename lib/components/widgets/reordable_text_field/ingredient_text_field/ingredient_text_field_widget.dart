@@ -172,6 +172,11 @@ class _TextFieldRow extends ConsumerWidget {
     final amountIsChanged = ref.watch(nameIsChangedProvider);
     final amountIsChangedNotifier = ref.watch(nameIsChangedProvider.notifier);
 
+    // TODO ingredient.unitが''になるのか要検証
+    final selectedUnit = (ingredient.unit == null || ingredient.unit == '')
+        ? '単位'
+        : ingredient.unit!;
+
     return Row(
       children: [
         Container(
@@ -258,11 +263,6 @@ class _TextFieldRow extends ConsumerWidget {
 
               final ingredientUnitList =
                   ingredientTextFieldModel.fetchIngredientUnitList();
-
-              final selectedUnit =
-                  ingredient.unit == null || ingredient.unit == ''
-                      ? '単位'
-                      : ingredient.unit!;
 
               var selectedUnitName = ingredientUnitList[0];
 
