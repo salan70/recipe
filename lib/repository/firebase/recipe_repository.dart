@@ -65,8 +65,7 @@ class RecipeRepository {
         ingredientListMap,
         (String key, String value) {
           /* key, valueが1桁の場合、頭に0をつける。
-          これにより、1の次に10ではなく2がくるようになる。
-          */
+          これにより、1の次に10ではなく2がくるようになる。*/
           if (key.length == 1) {
             key = '0$key';
           }
@@ -99,8 +98,7 @@ class RecipeRepository {
         procedureListMap,
         (String key, String value) {
           /* key, valueが1桁の場合、頭に0をつける。
-          これにより、1の次に10ではなく2がくるようになる。
-          */
+          これにより、1の次に10ではなく2がくるようになる。*/
           if (key.length == 1) {
             key = '0$key';
           }
