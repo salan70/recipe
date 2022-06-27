@@ -22,6 +22,9 @@ class RecipeDetailPage extends ConsumerWidget {
 
     final recipe = ref.watch(recipeProviderFamily(recipeId));
 
+    final isLoading = ref.watch(isLoadingProvider);
+    final isLoadingNotifier = ref.watch(isLoadingProvider.notifier);
+
     final recipeDetailModel = RecipeDetailModel(user: user!);
 
     return Scaffold(
@@ -71,66 +74,74 @@ class RecipeDetailPage extends ConsumerWidget {
           );
         },
       ),
-      body: recipe.when(
-        error: (error, stack) => Text('Error: $error'),
-        loading: () => const CircularProgressIndicator(),
-        data: (recipe) {
-          return ListView(
-            children: [
-              RecipeDetailWidget(recipeId: recipeId),
-              Center(
-                child: TextButton.icon(
-                  icon: Icon(
-                    Icons.delete_rounded,
-                    color: Theme.of(context).errorColor,
-                  ),
-                  label: Text(
-                    'レシピを削除',
-                    style: TextStyle(color: Theme.of(context).errorColor),
-                  ),
-                  onPressed: () => showDialog<AlertDialog>(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text('確認'),
-                        content: const Text('本当にこのレシピを削除しますか？'),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('キャンセル'),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                          TextButton(
-                            child: const Text('はい'),
-                            onPressed: () async {
-                              await EasyLoading.show(status: 'loading...');
-                              //削除失敗
-                              if (recipe.recipeId == null ||
-                                  !await recipeDetailModel
-                                      .deleteRecipe(recipe)) {
-                                await EasyLoading.showError('レシピの削除に失敗しました');
-                              }
-                              //削除成功
-                              else {
-                                await EasyLoading.showSuccess(
-                                  '${recipe.recipeName}を削除しました',
-                                );
-                                Navigator.of(context)
-                                    .popUntil((route) => route.isFirst);
-                              }
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ],
-          );
-        },
-      ),
+      body: isLoading == true
+          ? Container()
+          : recipe.when(
+              error: (error, stack) => Text('エラー: $error'),
+              loading: () => const CircularProgressIndicator(),
+              data: (recipe) {
+                return ListView(
+                  children: [
+                    RecipeDetailWidget(recipeId: recipeId),
+                    Center(
+                      child: TextButton.icon(
+                        icon: Icon(
+                          Icons.delete_rounded,
+                          color: Theme.of(context).errorColor,
+                        ),
+                        label: Text(
+                          'レシピを削除',
+                          style: TextStyle(color: Theme.of(context).errorColor),
+                        ),
+                        onPressed: () => showDialog<AlertDialog>(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('確認'),
+                              content: const Text('本当にこのレシピを削除しますか？'),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text('キャンセル'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text('はい'),
+                                  onPressed: () async {
+                                    isLoadingNotifier.state = true;
+                                    await EasyLoading.show(
+                                      status: 'loading...',
+                                    );
+                                    //削除失敗
+                                    if (recipe.recipeId == null ||
+                                        !await recipeDetailModel
+                                            .deleteRecipe(recipe)) {
+                                      isLoadingNotifier.state = false;
+                                      await EasyLoading.showError(
+                                        'レシピの削除に失敗しました',
+                                      );
+                                    }
+                                    //削除成功
+                                    else {
+                                      await EasyLoading.showSuccess(
+                                        '${recipe.recipeName}を削除しました',
+                                      );
+                                      Navigator.of(context)
+                                          .popUntil((route) => route.isFirst);
+                                    }
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
     );
   }
 }
