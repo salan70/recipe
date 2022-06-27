@@ -28,37 +28,22 @@ class RecipeDetailPage extends ConsumerWidget {
     final recipeDetailModel = RecipeDetailModel(user: user!);
 
     return Scaffold(
-      appBar: recipe.when(
-        error: (error, stack) => AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back_ios),
-          ),
-          title: const Text('エラー'),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
         ),
-        loading: () => AppBar(
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: const Icon(Icons.arrow_back_ios),
-          ),
+        title: const Text(
+          'レシピの詳細',
         ),
-        data: (recipe) {
-          return AppBar(
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(Icons.arrow_back_ios),
-            ),
-            title: const Text(
-              'レシピの詳細',
-            ),
-            actions: <Widget>[
-              IconButton(
+        actions: <Widget>[
+          recipe.when(
+            error: (error, stack) => Container(),
+            loading: () => Container(),
+            data: (recipe) {
+              return IconButton(
                 onPressed: () {
                   Navigator.push<MaterialPageRoute<dynamic>>(
                     context,
@@ -69,10 +54,10 @@ class RecipeDetailPage extends ConsumerWidget {
                   );
                 },
                 icon: const Icon(Icons.edit),
-              )
-            ],
-          );
-        },
+              );
+            },
+          )
+        ],
       ),
       body: isLoading == true
           ? Container()
@@ -110,6 +95,7 @@ class RecipeDetailPage extends ConsumerWidget {
                                   child: const Text('はい'),
                                   onPressed: () async {
                                     isLoadingNotifier.state = true;
+                                    Navigator.pop(context);
                                     await EasyLoading.show(
                                       status: 'loading...',
                                     );
@@ -127,8 +113,9 @@ class RecipeDetailPage extends ConsumerWidget {
                                       await EasyLoading.showSuccess(
                                         '${recipe.recipeName}を削除しました',
                                       );
-                                      Navigator.of(context)
-                                          .popUntil((route) => route.isFirst);
+                                      Navigator.pop(context);
+                                      // Navigator.of(context)
+                                      //     .popUntil((route) => route.isFirst);
                                     }
                                   },
                                 ),
