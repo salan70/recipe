@@ -95,7 +95,6 @@ class RecipeDetailPage extends ConsumerWidget {
                                   child: const Text('はい'),
                                   onPressed: () async {
                                     isLoadingNotifier.state = true;
-                                    Navigator.pop(context);
                                     await EasyLoading.show(
                                       status: 'loading...',
                                     );
@@ -113,9 +112,8 @@ class RecipeDetailPage extends ConsumerWidget {
                                       await EasyLoading.showSuccess(
                                         '${recipe.recipeName}を削除しました',
                                       );
-                                      Navigator.pop(context);
-                                      // Navigator.of(context)
-                                      //     .popUntil((route) => route.isFirst);
+                                      Navigator.of(context)
+                                          .popUntil((route) => route.isFirst);
                                     }
                                   },
                                 ),
