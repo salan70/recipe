@@ -9,7 +9,7 @@ FlutterとFirebaseで開発したモバイルアプリです。
 ## 本アプリをリリースした背景
 作りたいレシピに必要な材料を計算したりメモしたりする煩わしさから開放されたいという思いでこのアプリを作りました。
 
-詳細は、Zennの[Flutterを学習してから個人開発アプリをリリースするまでの道のり](https://zenn.dev/maguroburger/articles/9ffaa882a45b4f)という記事に書きましたのでご覧いただけますと幸いです。
+詳細は、Zennの[Flutterを学習してから個人開発アプリをリリースするまでの道のり](https://zenn.dev/maguroburger/articles/9ffaa882a45b4f)という記事をご覧いただけますと幸いです。
 
 ##  本アプリの機能
 本アプリはFlutter, Firebase(Authentication, Firestore Database, Storage)を使い、次のような機能の実装を行いました。
