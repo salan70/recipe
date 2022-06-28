@@ -24,29 +24,38 @@ class RecipeListPage extends ConsumerWidget {
         data: (recipes) {
           return Padding(
             padding: const EdgeInsets.only(top: 8, left: 8, right: 8).r,
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-              ),
-              itemCount: recipes.length,
-              itemBuilder: (context, index) {
-                final recipe = recipes[index];
-                return GestureDetector(
-                  ///画面遷移
-                  onTap: () {
-                    Navigator.push<MaterialPageRoute<dynamic>>(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => RecipeDetailPage(
-                          recipeId: recipe.recipeId!,
-                          fromPageName: 'recipe_list_page',
-                        ),
-                      ),
+            child: ListView(
+              children: [
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                  ),
+                  itemCount: recipes.length,
+                  itemBuilder: (context, index) {
+                    final recipe = recipes[index];
+                    return GestureDetector(
+                      ///画面遷移
+                      onTap: () {
+                        Navigator.push<MaterialPageRoute<dynamic>>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RecipeDetailPage(
+                              recipeId: recipe.recipeId!,
+                              fromPageName: 'recipe_list_page',
+                            ),
+                          ),
+                        );
+                      },
+                      child: RecipeCardWidget(recipe: recipe),
                     );
                   },
-                  child: RecipeCardWidget(recipe: recipe),
-                );
-              },
+                ),
+                SizedBox(
+                  height: 100.h,
+                )
+              ],
             ),
           );
         },
