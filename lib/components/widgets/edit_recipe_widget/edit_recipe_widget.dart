@@ -23,6 +23,14 @@ class EditRecipeWidget extends ConsumerWidget {
     final imageFile = ref.watch(imageFileNotifierProvider);
     final imageFileNotifier = ref.watch(imageFileNotifierProvider.notifier);
 
+    final forHowManyPeopleText = TextEditingController(
+      text: recipe.forHowManyPeople.toString(),
+    );
+    forHowManyPeopleText.selection = TextSelection.fromPosition(
+      //入力文字のカーソルの位置を管理
+      TextPosition(offset: forHowManyPeopleText.text.length),
+    );
+
     return GestureDetector(
       onTap: () {
         final currentScope = FocusScope.of(context);
@@ -218,9 +226,7 @@ class EditRecipeWidget extends ConsumerWidget {
                               ),
                               controller: recipe.forHowManyPeople == null
                                   ? null
-                                  : TextEditingController(
-                                      text: recipe.forHowManyPeople.toString(),
-                                    ),
+                                  : forHowManyPeopleText,
                               keyboardType: TextInputType.number,
                               inputFormatters: <TextInputFormatter>[
                                 FilteringTextInputFormatter.digitsOnly,
