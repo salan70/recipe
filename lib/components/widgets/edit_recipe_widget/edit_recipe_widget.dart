@@ -23,6 +23,14 @@ class EditRecipeWidget extends ConsumerWidget {
     final imageFile = ref.watch(imageFileNotifierProvider);
     final imageFileNotifier = ref.watch(imageFileNotifierProvider.notifier);
 
+    final forHowManyPeopleText = TextEditingController(
+      text: recipe.forHowManyPeople.toString(),
+    );
+    forHowManyPeopleText.selection = TextSelection.fromPosition(
+      //入力文字のカーソルの位置を管理
+      TextPosition(offset: forHowManyPeopleText.text.length),
+    );
+
     return GestureDetector(
       onTap: () {
         final currentScope = FocusScope.of(context);
@@ -90,7 +98,12 @@ class EditRecipeWidget extends ConsumerWidget {
                   androidBorderRadius: 30,
                   actions: <BottomSheetAction>[
                     BottomSheetAction(
-                      title: const Text('アルバムから選択'),
+                      title: const Text(
+                        'アルバムから選択',
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                       onPressed: () async {
                         if (await Permission.photos.status.isGranted ||
                             await Permission.photos.request().isGranted) {
@@ -123,7 +136,12 @@ class EditRecipeWidget extends ConsumerWidget {
                       },
                     ),
                     BottomSheetAction(
-                      title: const Text('カメラで撮影'),
+                      title: const Text(
+                        'カメラで撮影',
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                       onPressed: () async {
                         if (await Permission.camera.status.isGranted ||
                             await Permission.camera.request().isGranted) {
@@ -208,9 +226,7 @@ class EditRecipeWidget extends ConsumerWidget {
                               ),
                               controller: recipe.forHowManyPeople == null
                                   ? null
-                                  : TextEditingController(
-                                      text: recipe.forHowManyPeople.toString(),
-                                    ),
+                                  : forHowManyPeopleText,
                               keyboardType: TextInputType.number,
                               inputFormatters: <TextInputFormatter>[
                                 FilteringTextInputFormatter.digitsOnly,
