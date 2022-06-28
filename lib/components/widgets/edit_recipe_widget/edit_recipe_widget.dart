@@ -90,7 +90,12 @@ class EditRecipeWidget extends ConsumerWidget {
                   androidBorderRadius: 30,
                   actions: <BottomSheetAction>[
                     BottomSheetAction(
-                      title: const Text('アルバムから選択'),
+                      title: const Text(
+                        'アルバムから選択',
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                       onPressed: () async {
                         if (await Permission.photos.status.isGranted ||
                             await Permission.photos.request().isGranted) {
@@ -123,7 +128,12 @@ class EditRecipeWidget extends ConsumerWidget {
                       },
                     ),
                     BottomSheetAction(
-                      title: const Text('カメラで撮影'),
+                      title: const Text(
+                        'カメラで撮影',
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
                       onPressed: () async {
                         if (await Permission.camera.status.isGranted ||
                             await Permission.camera.request().isGranted) {
