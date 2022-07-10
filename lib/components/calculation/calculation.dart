@@ -22,9 +22,10 @@ class Calculation {
   String executeAdd(String? previousAmount, String? addAmount) {
     final previousAmountType = _checkNumType(previousAmount);
     final addAmountType = _checkNumType(addAmount);
+    final amountTypeList = [previousAmountType, addAmountType];
 
     // どちらかが''
-    if (previousAmountType == 'blank' || addAmountType == 'blank') {
+    if (amountTypeList.contains('blank')) {
       if (previousAmountType == 'blank') {
         return addAmount!;
       }
@@ -33,37 +34,39 @@ class Calculation {
       }
       return '';
     }
+
     // どちらかがdouble
-    if (previousAmountType == 'double' || addAmountType == 'double') {
-      if (previousAmountType == 'fraction' || addAmountType == 'fraction') {
+    if (amountTypeList.contains('double')) {
+      if (amountTypeList.contains('fraction')) {
         return _doubleAddFraction(previousAmount!, addAmount!);
       }
-      if (previousAmountType == 'mixed fraction' ||
-          addAmountType == 'mixed fraction') {
+      if (amountTypeList.contains('mixed fraction')) {
         return _doubleAddMixedFraction(previousAmount!, addAmount!);
       }
       return _doubleAddDouble(previousAmount!, addAmount!);
     }
+
     // どちらかがmixed fraction
-    if (previousAmountType == 'mixed fraction' ||
-        addAmountType == 'mixed fraction') {
-      if (previousAmountType == 'fraction' || addAmountType == 'fraction') {
+    if (amountTypeList.contains('mixed fraction')) {
+      if (amountTypeList.contains('fraction')) {
         return _fractionAddMixedFraction(previousAmount!, addAmount!);
       }
-      if (previousAmountType == 'int' || addAmountType == 'int') {
+      if (amountTypeList.contains('int')) {
         return _intAddMixedFraction(previousAmount!, addAmount!);
       }
       return _mixedFractionAddMixedFraction(previousAmount!, addAmount!);
     }
+
     // どちらかがfraction
-    if (previousAmountType == 'fraction' || addAmountType == 'fraction') {
-      if (previousAmountType == 'int' || addAmountType == 'int') {
+    if (amountTypeList.contains('fraction')) {
+      if (amountTypeList.contains('int')) {
         return _intAddFraction(previousAmount!, addAmount!);
       }
       return _fractionAddFraction(previousAmount!, addAmount!);
     }
+
     // どちらかがint
-    if (previousAmountType == 'int' && addAmountType == 'int') {
+    if (amountTypeList.contains('int')) {
       return _intAddInt(previousAmount!, addAmount!);
     }
 
