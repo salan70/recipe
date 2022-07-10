@@ -119,10 +119,11 @@ class Calculation {
   String _intAddFraction(String originalNum, String addNum) {
     final totalAmount =
         (originalNum.toFraction() + addNum.toFraction()).toString();
+    final doubleOfTotalAmount = totalAmount.toFraction().toDouble();
 
-    if (totalAmount.toFraction().toDouble().toString().endsWith('.0')) {
+    if (doubleOfTotalAmount.toString().endsWith('.0')) {
       return _castToInt(totalAmount);
-    } else if (totalAmount.toFraction().toDouble() >= 1) {
+    } else if (doubleOfTotalAmount >= 1) {
       return _castToMixedFraction(totalAmount);
     }
 
@@ -142,7 +143,7 @@ class Calculation {
               .toString();
 
       if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-        totalAmount = _castToInt(totalAmount);
+        return _castToInt(totalAmount);
       }
     } else if (addNumType == 'int') {
       final addNumInt = int.parse(addNum);
@@ -207,23 +208,25 @@ class Calculation {
 
     if (totalAmount.endsWith('.0')) {
       return _castToInt(totalAmount);
-    } else {
-      return _castToRoundedDouble(totalAmount);
     }
+    return _castToRoundedDouble(totalAmount);
   }
 
   // fraction add
   String _fractionAddFraction(String originalNum, String addNum) {
     var totalAmount =
         (originalNum.toFraction() + addNum.toFraction()).toString();
+    final doubleOfTotalAmount = totalAmount.toFraction().toDouble();
 
     // 約分
-    totalAmount = totalAmount.toFraction().toDouble().toFraction().toString();
+    totalAmount = doubleOfTotalAmount.toFraction().toString();
 
-    if (totalAmount.toFraction().toDouble().toString().endsWith('.0')) {
-      totalAmount = totalAmount.toFraction().toDouble().toString();
+    if (doubleOfTotalAmount.toString().endsWith('.0')) {
+      totalAmount = doubleOfTotalAmount.toString();
       return _castToInt(totalAmount);
-    } else if (totalAmount.toFraction().toDouble() >= 1) {
+    }
+
+    if (doubleOfTotalAmount >= 1) {
       return _castToMixedFraction(totalAmount);
     }
 
@@ -256,7 +259,6 @@ class Calculation {
               addNumFraction.toFraction())
           .toString();
     }
-
     // 約分
     totalAmount = totalAmount.toFraction().toDouble().toFraction().toString();
 
