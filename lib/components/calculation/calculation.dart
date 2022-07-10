@@ -20,59 +20,55 @@ class Calculation {
   }
 
   String executeAdd(String? previousAmount, String? addAmount) {
-    var totalAmount = '';
     final previousAmountType = _checkNumType(previousAmount);
     final addAmountType = _checkNumType(addAmount);
 
     // どちらかが''
-    if (previousAmountType == 'blank' && addAmountType == 'blank') {
-      totalAmount = '';
-    } else if (previousAmountType == 'blank') {
-      totalAmount = addAmount!;
-    } else if (addAmountType == 'blank') {
-      totalAmount = previousAmount!;
+    if (previousAmountType == 'blank' || addAmountType == 'blank') {
+      if (previousAmountType == 'blank') {
+        return addAmount!;
+      }
+      if (addAmountType == 'blank') {
+        return previousAmount!;
+      }
+      return '';
     }
     // どちらかがdouble
-    else if (previousAmountType == 'double' || addAmountType == 'double') {
+    if (previousAmountType == 'double' || addAmountType == 'double') {
       if (previousAmountType == 'fraction' || addAmountType == 'fraction') {
-        totalAmount = _doubleAddFraction(previousAmount!, addAmount!);
-      } else if (previousAmountType == 'mixed fraction' ||
-          addAmountType == 'mixed fraction') {
-        totalAmount = _doubleAddMixedFraction(previousAmount!, addAmount!);
-      } else {
-        totalAmount = _doubleAddDouble(previousAmount!, addAmount!);
+        return _doubleAddFraction(previousAmount!, addAmount!);
       }
+      if (previousAmountType == 'mixed fraction' ||
+          addAmountType == 'mixed fraction') {
+        return _doubleAddMixedFraction(previousAmount!, addAmount!);
+      }
+      return _doubleAddDouble(previousAmount!, addAmount!);
     }
     // どちらかがmixed fraction
-    else if (previousAmountType == 'mixed fraction' ||
+    if (previousAmountType == 'mixed fraction' ||
         addAmountType == 'mixed fraction') {
       if (previousAmountType == 'fraction' || addAmountType == 'fraction') {
-        totalAmount = _fractionAddMixedFraction(previousAmount!, addAmount!);
-      } else if (previousAmountType == 'int' || addAmountType == 'int') {
-        totalAmount = _intAddMixedFraction(previousAmount!, addAmount!);
-      } else {
-        totalAmount =
-            _mixedFractionAddMixedFraction(previousAmount!, addAmount!);
+        return _fractionAddMixedFraction(previousAmount!, addAmount!);
       }
+      if (previousAmountType == 'int' || addAmountType == 'int') {
+        return _intAddMixedFraction(previousAmount!, addAmount!);
+      }
+      return _mixedFractionAddMixedFraction(previousAmount!, addAmount!);
     }
     // どちらかがfraction
-    else if (previousAmountType == 'fraction' || addAmountType == 'fraction') {
+    if (previousAmountType == 'fraction' || addAmountType == 'fraction') {
       if (previousAmountType == 'int' || addAmountType == 'int') {
-        totalAmount = _intAddFraction(previousAmount!, addAmount!);
-      } else {
-        totalAmount = _fractionAddFraction(previousAmount!, addAmount!);
+        return _intAddFraction(previousAmount!, addAmount!);
       }
+      return _fractionAddFraction(previousAmount!, addAmount!);
     }
     // どちらかがint
-    else if (previousAmountType == 'int' && addAmountType == 'int') {
-      totalAmount = _intAddInt(previousAmount!, addAmount!);
-    }
-    // ※ここに入ることはない想定
-    else {
-      totalAmount = '';
+    if (previousAmountType == 'int' && addAmountType == 'int') {
+      return _intAddInt(previousAmount!, addAmount!);
     }
 
-    return totalAmount;
+    // ここまではたどり着かない想定
+    return '';
   }
 
   /// check
