@@ -24,7 +24,7 @@ class Calculation {
     final previousAmountType = _checkNumType(previousAmount);
     final addAmountType = _checkNumType(addAmount);
 
-    // totalAmount = ''
+    // どちらかが''
     if (previousAmountType == 'blank' && addAmountType == 'blank') {
       totalAmount = '';
     } else if (previousAmountType == 'blank') {
@@ -32,7 +32,7 @@ class Calculation {
     } else if (addAmountType == 'blank') {
       totalAmount = previousAmount!;
     }
-    // totalAmount = double
+    // どちらかがdouble
     else if (previousAmountType == 'double' || addAmountType == 'double') {
       if (previousAmountType == 'fraction' || addAmountType == 'fraction') {
         totalAmount = _doubleAddFraction(previousAmount!, addAmount!);
@@ -40,16 +40,13 @@ class Calculation {
           addAmountType == 'mixed fraction') {
         totalAmount = _doubleAddMixedFraction(previousAmount!, addAmount!);
       } else {
-        // print('+++++++++++++');
         totalAmount = _doubleAddDouble(previousAmount!, addAmount!);
-        // print('------');
       }
     }
-    // totalAmount = mixed fraction
+    // どちらかがmixed fraction
     else if (previousAmountType == 'mixed fraction' ||
         addAmountType == 'mixed fraction') {
       if (previousAmountType == 'fraction' || addAmountType == 'fraction') {
-        // print('$previousAmount $addAmount');
         totalAmount = _fractionAddMixedFraction(previousAmount!, addAmount!);
       } else if (previousAmountType == 'int' || addAmountType == 'int') {
         totalAmount = _intAddMixedFraction(previousAmount!, addAmount!);
@@ -58,7 +55,7 @@ class Calculation {
             _mixedFractionAddMixedFraction(previousAmount!, addAmount!);
       }
     }
-    // totalAmount = fraction
+    // どちらかがfraction
     else if (previousAmountType == 'fraction' || addAmountType == 'fraction') {
       if (previousAmountType == 'int' || addAmountType == 'int') {
         totalAmount = _intAddFraction(previousAmount!, addAmount!);
@@ -66,11 +63,11 @@ class Calculation {
         totalAmount = _fractionAddFraction(previousAmount!, addAmount!);
       }
     }
-    // totalAmount = int
+    // どちらかがint
     else if (previousAmountType == 'int' && addAmountType == 'int') {
       totalAmount = _intAddInt(previousAmount!, addAmount!);
     }
-    // totalAmount = '' ※ここに入ることはない想定
+    // ※ここに入ることはない想定
     else {
       totalAmount = '';
     }
@@ -89,12 +86,7 @@ class Calculation {
     else if (num.contains('/')) {
       try {
         num.toFraction();
-
-        if (num.toFraction().toDouble() >= 1) {
-          return 'castable fraction';
-        } else {
-          return 'fraction';
-        }
+        return 'fraction';
       } on Exception {
         try {
           num.toMixedFraction();
@@ -220,10 +212,11 @@ class Calculation {
   }
 
   String _fractionAddFraction(String originalNum, String addNum) {
-    final totalAmount =
+    var totalAmount =
         (originalNum.toFraction() + addNum.toFraction()).toString();
 
     if (totalAmount.toFraction().toDouble().toString().endsWith('.0')) {
+      totalAmount = totalAmount.toFraction().toDouble().toString();
       return _castToInt(totalAmount);
     } else if (totalAmount.toFraction().toDouble() >= 1) {
       return _castToMixedFraction(totalAmount);
@@ -262,6 +255,7 @@ class Calculation {
     totalAmount = _castToMixedFraction(totalAmount);
 
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
+      totalAmount = totalAmount.toMixedFraction().toDouble().toString();
       return _castToInt(totalAmount);
     }
 
@@ -269,10 +263,11 @@ class Calculation {
   }
 
   String _mixedFractionAddMixedFraction(String originalNum, String addNum) {
-    final totalAmount =
+    var totalAmount =
         (originalNum.toMixedFraction() + addNum.toMixedFraction()).toString();
 
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
+      totalAmount = totalAmount.toMixedFraction().toDouble().toString();
       return _castToInt(totalAmount);
     }
 
