@@ -9,8 +9,8 @@ import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/state/other_provider/providers.dart';
-import 'package:recipe/view/cart/cart_list_page/ingredient_tab/ingredient_tab_model.dart';
-import 'package:recipe/view/cart/cart_list_recipe_detail/cart_list_recipe_detail_page.dart';
+import 'package:recipe/view/buy_list/buy_list_page/ingredient_tab/ingredient_tab_model.dart';
+import 'package:recipe/view/buy_list/cart_list_recipe_detail/cart_list_recipe_detail_page.dart';
 
 class IngredientTabWidget extends ConsumerWidget {
   const IngredientTabWidget({Key? key}) : super(key: key);

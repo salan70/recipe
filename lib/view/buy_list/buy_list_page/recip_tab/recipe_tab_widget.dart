@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:recipe/state/other_provider/providers.dart';
-import 'package:recipe/view/cart/cart_list_recipe_detail/cart_list_recipe_detail_page.dart';
+import 'package:recipe/view/buy_list/cart_list_recipe_detail/cart_list_recipe_detail_page.dart';
 
 class RecipeTabWidget extends ConsumerWidget {
   const RecipeTabWidget({Key? key}) : super(key: key);
