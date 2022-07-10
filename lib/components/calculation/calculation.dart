@@ -112,6 +112,7 @@ class Calculation {
   }
 
   /// add
+  // int add
   String _intAddInt(String originalNum, String addNum) {
     return (int.parse(originalNum) + int.parse(addNum)).toString();
   }
@@ -158,6 +159,7 @@ class Calculation {
     return totalAmount;
   }
 
+  // double add
   String _doubleAddDouble(String originalNum, String addNum) {
     final totalAmount =
         (double.parse(originalNum) + double.parse(addNum)).toString();
@@ -211,9 +213,13 @@ class Calculation {
     }
   }
 
+  // fraction add
   String _fractionAddFraction(String originalNum, String addNum) {
     var totalAmount =
         (originalNum.toFraction() + addNum.toFraction()).toString();
+
+    // 約分
+    totalAmount = totalAmount.toFraction().toDouble().toFraction().toString();
 
     if (totalAmount.toFraction().toDouble().toString().endsWith('.0')) {
       totalAmount = totalAmount.toFraction().toDouble().toString();
@@ -252,6 +258,9 @@ class Calculation {
           .toString();
     }
 
+    // 約分
+    totalAmount = totalAmount.toFraction().toDouble().toFraction().toString();
+
     totalAmount = _castToMixedFraction(totalAmount);
 
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
@@ -262,9 +271,13 @@ class Calculation {
     return totalAmount;
   }
 
+  // mixedFraction add
   String _mixedFractionAddMixedFraction(String originalNum, String addNum) {
     var totalAmount =
         (originalNum.toMixedFraction() + addNum.toMixedFraction()).toString();
+
+    totalAmount =
+        totalAmount.toMixedFraction().toDouble().toMixedFraction().toString();
 
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
       totalAmount = totalAmount.toMixedFraction().toDouble().toString();
