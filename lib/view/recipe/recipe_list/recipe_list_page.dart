@@ -32,6 +32,21 @@ class RecipeListPage extends ConsumerWidget {
         title: const Text(
           'レシピ一覧',
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.search_rounded,
+            ),
+            onPressed: () {
+              Navigator.push<MaterialPageRoute<dynamic>>(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingTopPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: recipes.when(
         error: (error, stack) => Text('Error: $error'),
