@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
-import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/state/other_provider/providers.dart';
-import 'package:recipe/view/recipe/recipe_detail/recipe_detail_page.dart';
-import 'package:recipe/view/recipe/search_recipe/search_recipe_model.dart';
 
 class SearchRecipePage extends ConsumerWidget {
   const SearchRecipePage({Key? key}) : super(key: key);
