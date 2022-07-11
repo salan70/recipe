@@ -25,6 +25,7 @@ class SearchRecipePage extends ConsumerWidget {
                   suffixIconConstraints:
                       BoxConstraints(maxHeight: 24.h, maxWidth: 24.w),
                 ),
+                //TODO 「✗(クリア)」関連の処理
                 onSubmitted: (searchWord) {
                   //TODO searchWordを次の画面に渡して検索を行う
                 },
