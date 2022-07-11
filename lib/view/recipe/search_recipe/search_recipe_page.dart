@@ -12,15 +12,6 @@ class SearchRecipePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final searchRecipeModel = SearchRecipeModel();
-
-    final recipes = ref.watch(recipeListProvider);
-    final recipeAndIngredientNameList =
-        ref.watch(recipeAndIngredientNameListProvider);
-    final searchResultRecipeIdList = ref.watch(searchResultListProvider);
-    final searchResultRecipeIdListNotifier =
-        ref.watch(searchResultListProvider.notifier);
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -33,25 +24,14 @@ class SearchRecipePage extends ConsumerWidget {
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(8),
-                  fillColor: Theme.of(context).dividerColor,
                   filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
+                  border: InputBorder.none,
                   hintText: 'レシピ名、材料名で検索',
+                  suffixIconConstraints:
+                      BoxConstraints(maxHeight: 24.h, maxWidth: 24.w),
                 ),
                 onSubmitted: (searchWord) {
-                  recipeAndIngredientNameList.when(
-                    error: (error, stack) => Text('Error: $error'),
-                    loading: () => const CircularProgressIndicator(),
-                    data: (recipeNameAndIngredientNameList) {
-                      searchResultRecipeIdListNotifier.state =
-                          searchRecipeModel.searchRecipe(
-                        searchWord,
-                        recipeNameAndIngredientNameList,
-                      );
-                    },
-                  );
+                  //TODO searchWordを次の画面に渡して検索を行う
                 },
               ),
             ),
@@ -63,63 +43,10 @@ class SearchRecipePage extends ConsumerWidget {
           )
         ],
       ),
-      body: recipes.when(
-        error: (error, stack) => Text('Error: $error'),
-        loading: () => const CircularProgressIndicator(),
-        data: (recipes) {
-          var outputRecipeList = <Recipe>[];
-          // 検索画面起動時に、全レシピが表示される
-          if (searchResultRecipeIdList == null) {
-            outputRecipeList = recipes;
-          } else {
-            outputRecipeList = [];
-            for (final searchResultRecipeId in searchResultRecipeIdList) {
-              for (final recipe in recipes) {
-                if (recipe.recipeId == searchResultRecipeId) {
-                  outputRecipeList.add(recipe);
-                }
-              }
-            }
-          }
-          return outputRecipeList.isEmpty == true
-              ? Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(top: 32).r,
-                  child: Text(
-                    'レシピが見つかりませんでした。',
-                    style: Theme.of(context).textTheme.subtitle1,
-                    textAlign: TextAlign.center,
-                  ),
-                )
-              : Padding(
-                  padding: const EdgeInsets.only(top: 8, left: 8, right: 8).r,
-                  child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                    ),
-                    itemCount: outputRecipeList.length,
-                    itemBuilder: (context, index) {
-                      final outputRecipe = outputRecipeList[index];
-                      return GestureDetector(
-                        ///画面遷移
-                        onTap: () {
-                          Navigator.push<MaterialPageRoute<dynamic>>(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RecipeDetailPage(
-                                recipeId: outputRecipe.recipeId!,
-                                fromPageName: 'recipe_list_page',
-                              ),
-                            ),
-                          );
-                        },
-                        child: RecipeCardWidget(recipe: outputRecipe),
-                      );
-                    },
-                  ),
-                );
-        },
+      body: Container(
+        height: double.infinity,
+        width: double.infinity,
+        color: Theme.of(context).backgroundColor,
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/view/recipe/add_recipe/add_recipe_page.dart';
 import 'package:recipe/view/recipe/recipe_detail/recipe_detail_page.dart';
+import 'package:recipe/view/recipe/search_recipe/search_recipe_page.dart';
 import 'package:recipe/view/setting/setting_top/setting_top_page.dart';
 
 class RecipeListPage extends ConsumerWidget {
@@ -41,7 +42,7 @@ class RecipeListPage extends ConsumerWidget {
               Navigator.push<MaterialPageRoute<dynamic>>(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SettingTopPage(),
+                  builder: (context) => const SearchRecipePage(),
                 ),
               );
             },
