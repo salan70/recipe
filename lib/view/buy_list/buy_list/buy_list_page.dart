@@ -4,8 +4,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
-import 'package:recipe/view/buy_list/buy_list_page/ingredient_tab/ingredient_tab_widget.dart';
-import 'package:recipe/view/other/page_container/page_container_model.dart';
+import 'package:recipe/view/buy_list/buy_list/buy_list_model.dart';
+import 'package:recipe/view/buy_list/ingredient_tab/ingredient_tab_widget.dart';
 import 'package:recipe/view/setting/setting_top/setting_top_page.dart';
 
 class BuyListPage extends ConsumerWidget {
@@ -51,7 +51,7 @@ class BuyListPage extends ConsumerWidget {
     BuildContext context,
     User user,
   ) {
-    final pageContainerModel = PageContainerModel(user: user);
+    final buyListModel = BuyListModel(user: user);
     var title = '';
     var subTitle = '';
 
@@ -108,7 +108,7 @@ class BuyListPage extends ConsumerWidget {
                     'タイトルの入力は必須です。',
                   );
                 } else {
-                  final errorText = await pageContainerModel.addOtherCartItem(
+                  final errorText = await buyListModel.addOtherCartItem(
                     title,
                     subTitle,
                   );

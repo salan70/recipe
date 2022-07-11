@@ -5,7 +5,7 @@ import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/view/recipe/recipe_detail/recipe_detail_page.dart';
-import 'package:recipe/view/recipe/search/search_recipe_model.dart';
+import 'package:recipe/view/recipe/search_recipe/search_recipe_model.dart';
 
 class SearchRecipePage extends ConsumerWidget {
   const SearchRecipePage({Key? key}) : super(key: key);
