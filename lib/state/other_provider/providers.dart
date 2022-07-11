@@ -1,5 +1,4 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/recipe.dart';
@@ -7,6 +6,7 @@ import 'package:recipe/repository/firebase/cart_repository.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/state/recipe_list_in_cart/recipe_list_in_cart_state.dart';
+import 'package:recipe/view/recipe/search_recipe_resulut/search_recipe_result_model.dart';
 
 final recipeListProvider = StreamProvider.autoDispose<List<Recipe>>((ref) {
   final user = ref.watch(userStateNotifierProvider);

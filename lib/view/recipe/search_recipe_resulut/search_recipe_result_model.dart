@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:recipe/domain/recipe.dart';
 
-class SearchRecipeModel extends ChangeNotifier {
+class SearchRecipeResultModel extends ChangeNotifier {
   List<String> searchRecipe(
     String searchWord,
     List<RecipeAndIngredientName> recipeAndIngredientNameList,
@@ -10,24 +9,25 @@ class SearchRecipeModel extends ChangeNotifier {
     final searchWordList = _searchWordToList(searchWord);
     final searchResultList = <String>[];
 
-    // searchWordListが空の場合、全レシピを出力
-    if (searchWordList.isEmpty == true) {
-      for (final recipeAndIngredientName in recipeAndIngredientNameList) {
+    // 空になることはない？
+    // // searchWordListが空の場合、全レシピを出力
+    // if (searchWordList.isEmpty == true) {
+    //   for (final recipeAndIngredientName in recipeAndIngredientNameList) {
+    //     searchResultList.add(recipeAndIngredientName.recipeId);
+    //   }
+    // }
+    // searchWordListが空でない場合の処理
+    // else {
+    for (final recipeAndIngredientName in recipeAndIngredientNameList) {
+      if (_searchWordListFoundInRecipeAndIngredientName(
+            searchWordList,
+            recipeAndIngredientName,
+          ) ==
+          true) {
         searchResultList.add(recipeAndIngredientName.recipeId);
       }
     }
-    // searchWordListが空でない場合の処理
-    else {
-      for (final recipeAndIngredientName in recipeAndIngredientNameList) {
-        if (_searchWordListFoundInRecipeAndIngredientName(
-              searchWordList,
-              recipeAndIngredientName,
-            ) ==
-            true) {
-          searchResultList.add(recipeAndIngredientName.recipeId);
-        }
-      }
-    }
+    // }
     return searchResultList;
   }
 

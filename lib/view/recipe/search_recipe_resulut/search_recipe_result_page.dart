@@ -7,19 +7,16 @@ import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/view/recipe/recipe_detail/recipe_detail_page.dart';
 import 'package:recipe/view/recipe/search_recipe_resulut/search_recipe_result_model.dart';
 
-class SearchRecipePage extends ConsumerWidget {
-  const SearchRecipePage({Key? key}) : super(key: key);
+class SearchRecipeResultPage extends ConsumerWidget {
+  const SearchRecipeResultPage({Key? key, required this.searchWord})
+      : super(key: key);
+
+  final String searchWord;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final searchRecipeModel = SearchRecipeModel();
-
     final recipes = ref.watch(recipeListProvider);
-    final recipeAndIngredientNameList =
-        ref.watch(recipeAndIngredientNameListProvider);
-    final searchResultRecipeIdList = ref.watch(searchResultListProvider);
-    final searchResultRecipeIdListNotifier =
-        ref.watch(searchResultListProvider.notifier);
+    final searchResultList = ref.watch(searchResultListProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -29,30 +26,15 @@ class SearchRecipePage extends ConsumerWidget {
           children: [
             Expanded(
               child: TextField(
-                autofocus: true,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
                   contentPadding: const EdgeInsets.all(8),
-                  fillColor: Theme.of(context).dividerColor,
                   filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  hintText: 'レシピ名、材料名で検索',
+                  border: InputBorder.none,
+                  hintText: searchWord,
+                  suffixIconConstraints:
+                      BoxConstraints(maxHeight: 24.h, maxWidth: 24.w),
                 ),
-                onSubmitted: (searchWord) {
-                  recipeAndIngredientNameList.when(
-                    error: (error, stack) => Text('Error: $error'),
-                    loading: () => const CircularProgressIndicator(),
-                    data: (recipeNameAndIngredientNameList) {
-                      searchResultRecipeIdListNotifier.state =
-                          searchRecipeModel.searchRecipe(
-                        searchWord,
-                        recipeNameAndIngredientNameList,
-                      );
-                    },
-                  );
-                },
               ),
             ),
           ],
@@ -69,18 +51,16 @@ class SearchRecipePage extends ConsumerWidget {
         data: (recipes) {
           var outputRecipeList = <Recipe>[];
           // 検索画面起動時に、全レシピが表示される
-          if (searchResultRecipeIdList == null) {
-            outputRecipeList = recipes;
-          } else {
-            outputRecipeList = [];
-            for (final searchResultRecipeId in searchResultRecipeIdList) {
-              for (final recipe in recipes) {
-                if (recipe.recipeId == searchResultRecipeId) {
-                  outputRecipeList.add(recipe);
-                }
+
+          outputRecipeList = [];
+          for (final searchResultRecipeId in searchResultList!) {
+            for (final recipe in recipes) {
+              if (recipe.recipeId == searchResultRecipeId) {
+                outputRecipeList.add(recipe);
               }
             }
           }
+
           return outputRecipeList.isEmpty == true
               ? Container(
                   width: double.infinity,
