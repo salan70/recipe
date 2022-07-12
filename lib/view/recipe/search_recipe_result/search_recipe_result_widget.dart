@@ -20,7 +20,6 @@ class SearchRecipeResultWidget extends ConsumerWidget {
       data: (recipes) {
         var outputRecipeList = <Recipe>[];
         // 検索画面起動時に、全レシピが表示される
-
         outputRecipeList = [];
         for (final searchResultRecipeId in searchResultList!) {
           for (final recipe in recipes) {

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/view/recipe/search_recipe/search_recipe_model.dart';
-import 'package:recipe/view/recipe/search_recipe_history/search_recipe_history.dart';
+import 'package:recipe/view/recipe/search_recipe_history/search_recipe_history_widget.dart';
 import 'package:recipe/view/recipe/search_recipe_result/search_recipe_result_widget.dart';
 
 class SearchRecipePage extends ConsumerWidget {
@@ -17,7 +17,7 @@ class SearchRecipePage extends ConsumerWidget {
     final searchRecipeModel = SearchRecipeModel();
 
     final recipeAndIngredientNameList =
-        ref.watch(recipeAndIngredientNameListProvider);
+        ref.watch(recipeAndIngredientListProvider);
     final searchResultListNotifier =
         ref.watch(searchResultListProvider.notifier);
 
@@ -31,6 +31,21 @@ class SearchRecipePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios,
+          ),
+          onPressed: () {
+            if (isEntering) {
+              isEnteringNotifier.state = false;
+              FocusScope.of(context).unfocus();
+            } else {
+              // var count = 0;
+              // Navigator.popUntil(context, (_) => count++ >= 2);
+              Navigator.of(context).pop();
+            }
+          },
+        ),
         centerTitle: false,
         titleSpacing: 0,
         title: Row(
@@ -53,18 +68,17 @@ class SearchRecipePage extends ConsumerWidget {
                   isEnteringNotifier.state = true;
                 },
                 //TODO 「✗(クリア)」関連の処理
-
                 onSubmitted: (searchWord) {
                   isEnteringNotifier.state = false;
 
                   recipeAndIngredientNameList.when(
                     error: (error, stack) => Text('Error: $error'),
                     loading: () => const CircularProgressIndicator(),
-                    data: (recipeNameAndIngredientNameList) {
+                    data: (recipeAndIngredientList) {
                       searchResultListNotifier.state =
                           searchRecipeModel.searchRecipe(
                         searchWord,
-                        recipeNameAndIngredientNameList,
+                        recipeAndIngredientList,
                       );
                     },
                   );
