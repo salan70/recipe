@@ -112,8 +112,9 @@ class RecipeDetailPage extends ConsumerWidget {
                                       await EasyLoading.showSuccess(
                                         '${recipe.recipeName}を削除しました',
                                       );
-                                      Navigator.of(context)
-                                          .popUntil((route) => route.isFirst);
+                                      var count = 0;
+                                      Navigator.popUntil(
+                                          context, (_) => count++ >= 2);
                                     }
                                   },
                                 ),
