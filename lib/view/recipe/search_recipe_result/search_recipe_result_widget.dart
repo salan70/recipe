@@ -6,8 +6,8 @@ import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/view/recipe/recipe_detail/recipe_detail_page.dart';
 
-class SearchRecipeResultPage extends ConsumerWidget {
-  const SearchRecipeResultPage({Key? key}) : super(key: key);
+class SearchRecipeResultWidget extends ConsumerWidget {
+  const SearchRecipeResultWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
