@@ -42,9 +42,7 @@ class RecipeListPage extends ConsumerWidget {
               Navigator.push<MaterialPageRoute<dynamic>>(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const SearchRecipePage(
-                    searchWord: '',
-                  ),
+                  builder: (context) => const SearchRecipePage(),
                 ),
               );
             },

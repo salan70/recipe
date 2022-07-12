@@ -27,6 +27,10 @@ final recipeProviderFamily =
 /// search
 final isEnteringProvider = StateProvider.autoDispose((ref) => true);
 
+final isFirstEnterProvider = StateProvider.autoDispose((ref) => true);
+
+final isFirstSearchProvider = StateProvider.autoDispose((ref) => true);
+
 final recipeAndIngredientListProvider =
     StreamProvider.autoDispose<List<RecipeAndIngredient>>((ref) {
   final user = ref.watch(userStateNotifierProvider);

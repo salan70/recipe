@@ -7,10 +7,7 @@ import 'package:recipe/view/recipe/search_recipe_history/search_recipe_history_w
 import 'package:recipe/view/recipe/search_recipe_result/search_recipe_result_widget.dart';
 
 class SearchRecipePage extends ConsumerWidget {
-  const SearchRecipePage({Key? key, required this.searchWord})
-      : super(key: key);
-
-  final String searchWord;
+  const SearchRecipePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -24,36 +21,15 @@ class SearchRecipePage extends ConsumerWidget {
     final isEntering = ref.watch(isEnteringProvider);
     final isEnteringNotifier = ref.watch(isEnteringProvider.notifier);
 
-    final controller = TextEditingController(text: searchWord);
-    controller.selection = TextSelection.fromPosition(
-      TextPosition(offset: controller.text.length),
-    );
-
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios,
-          ),
-          onPressed: () {
-            if (isEntering) {
-              isEnteringNotifier.state = false;
-              FocusScope.of(context).unfocus();
-            } else {
-              // var count = 0;
-              // Navigator.popUntil(context, (_) => count++ >= 2);
-              Navigator.of(context).pop();
-            }
-          },
-        ),
         centerTitle: false,
         titleSpacing: 0,
         title: Row(
           children: [
             Expanded(
               child: TextField(
-                controller: controller,
-                // autofocus: isEntering のほうが良い？
+                // controller: controller,
                 autofocus: isEntering,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
@@ -81,14 +57,6 @@ class SearchRecipePage extends ConsumerWidget {
                         recipeAndIngredientList,
                       );
                     },
-                  );
-                  Navigator.push<MaterialPageRoute<dynamic>>(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SearchRecipePage(
-                        searchWord: searchWord,
-                      ),
-                    ),
                   );
                 },
               ),
