@@ -31,7 +31,7 @@ class RecipeListPage extends ConsumerWidget {
           },
         ),
         title: const Text(
-          'レシピ一覧',
+          'レシピ',
         ),
         actions: [
           IconButton(
