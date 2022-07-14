@@ -69,13 +69,14 @@ class RecipeListPage extends ConsumerWidget {
                     return GestureDetector(
                       ///画面遷移
                       onTap: () {
-                        pushNewScreen<dynamic>(
+                        Navigator.push<MaterialPageRoute<dynamic>>(
                           context,
-                          screen: RecipeDetailPage(
-                            recipeId: recipe.recipeId!,
-                            fromPageName: 'recipe_list_page',
+                          MaterialPageRoute(
+                            builder: (context) => RecipeDetailPage(
+                              recipeId: recipe.recipeId!,
+                              fromPageName: 'recipe_list_page',
+                            ),
                           ),
-                          withNavBar: false,
                         );
                       },
                       child: RecipeCardWidget(recipe: recipe),
