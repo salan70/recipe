@@ -11,10 +11,6 @@ class PageContainerPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    /// 従来式
-    // final selectedPage = ref.watch(selectPageProvider);
-    // final selectedPageNotifier = ref.watch(selectPageProvider.notifier);
-
     final pages = [
       const RecipeListPage(),
       CartListPage(),
@@ -85,37 +81,5 @@ class PageContainerPage extends ConsumerWidget {
         ],
       ),
     );
-
-    /// 従来式
-    // return Scaffold(
-    //   body: pages[selectedPage],
-    //   bottomNavigationBar: BottomNavigationBar(
-    //     currentIndex: selectedPage,
-    //     selectedFontSize: 12.sp,
-    //     onTap: (int index) {
-    //       selectedPageNotifier.state = index;
-    //     },
-    //     items: const <BottomNavigationBarItem>[
-    //       BottomNavigationBarItem(
-    //         icon: Icon(
-    //           Icons.menu_book_rounded,
-    //         ),
-    //         label: 'レシピ',
-    //       ),
-    //       BottomNavigationBarItem(
-    //         icon: Icon(
-    //           Icons.shopping_cart_rounded,
-    //         ),
-    //         label: 'カート',
-    //       ),
-    //       BottomNavigationBarItem(
-    //         icon: Icon(
-    //           Icons.check_box_rounded,
-    //         ),
-    //         label: '買い物リスト',
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }
