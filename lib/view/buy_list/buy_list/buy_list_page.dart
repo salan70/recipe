@@ -36,6 +36,7 @@ class BuyListPage extends ConsumerWidget {
       ),
       body: const IngredientTabWidget(),
       floatingActionButton: FloatingActionButton(
+        // persistent_bottom_nav_bar導入にあたり、他pageのfabとの競合を避けるためheroTagを設定。
         heroTag: 'hero2',
         child: Icon(
           Icons.post_add_rounded,

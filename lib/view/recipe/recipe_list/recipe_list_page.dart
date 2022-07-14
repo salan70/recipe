@@ -92,6 +92,7 @@ class RecipeListPage extends ConsumerWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        // persistent_bottom_nav_bar導入にあたり、他pageのfabとの競合を避けるためheroTagを設定。
         heroTag: 'hero1',
         child: Icon(
           Icons.edit_note_rounded,
