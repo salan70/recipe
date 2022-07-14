@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/components/widgets/recipe_detail_widget/recipe_detail_widget.dart';
 
@@ -27,6 +28,9 @@ class BuyListRecipeDetailPage extends ConsumerWidget {
           SizedBox(
             width: double.infinity,
             child: RecipeDetailWidget(recipeId: recipeId),
+          ),
+          SizedBox(
+            height: 24.h,
           ),
         ],
       ),
