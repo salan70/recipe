@@ -28,6 +28,9 @@ final recipeProviderFamily =
 /// search
 final isEnteringProvider = StateProvider.autoDispose((ref) => true);
 
+final searchWordProvider =
+    StateProvider.autoDispose((ref) => TextEditingController());
+
 final recipeAndIngredientListProvider =
     StreamProvider.autoDispose<List<RecipeAndIngredient>>((ref) {
   final user = ref.watch(userStateNotifierProvider);

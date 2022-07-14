@@ -81,7 +81,7 @@ class RecipeDetailPage extends ConsumerWidget {
                         ),
                         onPressed: () => showDialog<AlertDialog>(
                           context: context,
-                          builder: (context) {
+                          builder: (contextForDialog) {
                             return AlertDialog(
                               title: const Text('確認'),
                               content: const Text('本当にこのレシピを削除しますか？'),
@@ -89,7 +89,7 @@ class RecipeDetailPage extends ConsumerWidget {
                                 TextButton(
                                   child: const Text('キャンセル'),
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    Navigator.pop(contextForDialog);
                                   },
                                 ),
                                 TextButton(
@@ -113,11 +113,8 @@ class RecipeDetailPage extends ConsumerWidget {
                                       await EasyLoading.showSuccess(
                                         '${recipe.recipeName}を削除しました',
                                       );
-                                      var count = 0;
-                                      Navigator.popUntil(
-                                        context,
-                                        (_) => count++ >= 2,
-                                      );
+                                      Navigator.pop(contextForDialog);
+                                      Navigator.pop(context);
                                     }
                                   },
                                 ),
