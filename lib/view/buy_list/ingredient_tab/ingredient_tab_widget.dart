@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
@@ -230,11 +231,6 @@ class IngredientTabWidget extends ConsumerWidget {
               '${ingredientInCart.ingredientTotalAmount}'
               '${ingredientInCart.ingredientUnit}',
               overflow: TextOverflow.ellipsis,
-              // style: Theme.of(context).textTheme.caption!.copyWith(
-              //       decoration: ingredientTabModel.getCartItem(id).isChecked
-              //           ? TextDecoration.lineThrough
-              //           : TextDecoration.none,
-              //     ),
               style: TextStyle(
                 decoration: ingredientTabModel.getCartItem(id).isChecked
                     ? TextDecoration.lineThrough
