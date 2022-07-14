@@ -27,9 +27,23 @@ class PageContainerPage extends ConsumerWidget {
         context,
         screens: pages,
         navBarStyle: NavBarStyle.simple,
+        backgroundColor: Theme.of(context).bottomAppBarColor,
+        decoration: NavBarDecoration(
+          border: Border(
+            top: BorderSide(
+              width: 0.1,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
+          ),
+        ),
         items: [
           PersistentBottomNavBarItem(
             icon: const Icon(
+              // Iconの候補: text snippet, article, description, restaurant, library_books
+              Icons.menu_book_rounded,
+            ),
+            inactiveIcon: const Icon(
+              // text snippet, article, description, restaurant
               Icons.menu_book_rounded,
             ),
             title: 'レシピ',
@@ -37,29 +51,37 @@ class PageContainerPage extends ConsumerWidget {
               fontSize: 10.sp,
             ),
             activeColorPrimary: Theme.of(context).primaryColor,
-            inactiveColorPrimary: Theme.of(context).colorScheme.onBackground,
+            inactiveColorPrimary: Theme.of(context).disabledColor,
           ),
           PersistentBottomNavBarItem(
             icon: const Icon(
-              Icons.shopping_cart_rounded,
+              Icons.shopping_cart,
+            ),
+            inactiveIcon: const Icon(
+              // text snippet, article, description, restaurant
+              Icons.shopping_cart_outlined,
             ),
             title: 'カート',
             textStyle: TextStyle(
               fontSize: 10.sp,
             ),
             activeColorPrimary: Theme.of(context).primaryColor,
-            inactiveColorPrimary: Theme.of(context).colorScheme.onBackground,
+            inactiveColorPrimary: Theme.of(context).disabledColor,
           ),
           PersistentBottomNavBarItem(
             icon: const Icon(
-              Icons.check_box_rounded,
+              Icons.check_box,
+            ),
+            inactiveIcon: const Icon(
+              // text snippet, article, description, restaurant
+              Icons.check_box_outlined,
             ),
             title: '買い物リスト',
             textStyle: TextStyle(
               fontSize: 10.sp,
             ),
             activeColorPrimary: Theme.of(context).primaryColor,
-            inactiveColorPrimary: Theme.of(context).colorScheme.onBackground,
+            inactiveColorPrimary: Theme.of(context).disabledColor,
           ),
         ],
       ),
