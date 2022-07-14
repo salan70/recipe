@@ -91,9 +91,6 @@ final stateIsChangedProvider = StateProvider.autoDispose((ref) => false);
 
 final notBuyListIsOpenProvider = StateProvider.autoDispose((ref) => false);
 
-// page_control
-final selectPageProvider = StateProvider.autoDispose((ref) => 0);
-
 final selectedTabContextProvider = StateProvider.autoDispose((ref) {
   BuildContext? context;
   return context;
