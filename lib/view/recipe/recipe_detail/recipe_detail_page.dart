@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:recipe/components/widgets/recipe_detail_widget/recipe_detail_widget.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
@@ -125,6 +126,9 @@ class RecipeDetailPage extends ConsumerWidget {
                           },
                         ),
                       ),
+                    ),
+                    SizedBox(
+                      height: 24.h,
                     ),
                   ],
                 );
