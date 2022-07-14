@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:recipe/components/widgets/recipe_card_widget/recipe_card_widget.dart';
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/view/recipe/add_recipe/add_recipe_page.dart';
@@ -22,11 +23,10 @@ class RecipeListPage extends ConsumerWidget {
             Icons.settings_rounded,
           ),
           onPressed: () {
-            Navigator.push<MaterialPageRoute<dynamic>>(
+            pushNewScreen<dynamic>(
               context,
-              MaterialPageRoute(
-                builder: (context) => const SettingTopPage(),
-              ),
+              screen: const SettingTopPage(),
+              withNavBar: false,
             );
           },
         ),
@@ -92,6 +92,7 @@ class RecipeListPage extends ConsumerWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'hero1',
         child: Icon(
           Icons.edit_note_rounded,
           size: 32.0.sp,
