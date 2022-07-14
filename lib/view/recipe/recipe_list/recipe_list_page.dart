@@ -69,14 +69,13 @@ class RecipeListPage extends ConsumerWidget {
                     return GestureDetector(
                       ///画面遷移
                       onTap: () {
-                        Navigator.push<MaterialPageRoute<dynamic>>(
+                        pushNewScreen<dynamic>(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => RecipeDetailPage(
-                              recipeId: recipe.recipeId!,
-                              fromPageName: 'recipe_list_page',
-                            ),
+                          screen: RecipeDetailPage(
+                            recipeId: recipe.recipeId!,
+                            fromPageName: 'recipe_list_page',
                           ),
+                          withNavBar: false,
                         );
                       },
                       child: RecipeCardWidget(recipe: recipe),
@@ -98,12 +97,10 @@ class RecipeListPage extends ConsumerWidget {
           size: 32.0.sp,
         ),
         onPressed: () {
-          Navigator.push<MaterialPageRoute<dynamic>>(
+          pushNewScreen<dynamic>(
             context,
-            MaterialPageRoute(
-              builder: (context) => AddRecipePage(),
-              fullscreenDialog: true,
-            ),
+            screen: AddRecipePage(),
+            withNavBar: false,
           );
         },
       ),
