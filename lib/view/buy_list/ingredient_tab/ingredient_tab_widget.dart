@@ -402,7 +402,7 @@ class IngredientTabWidget extends ConsumerWidget {
                     context,
                     MaterialPageRoute(
                       builder: (context) =>
-                          CartListRecipeDetailPage(recipeId: recipe.recipeId),
+                          BuyListRecipeDetailPage(recipeId: recipe.recipeId),
                     ),
                   );
                 },

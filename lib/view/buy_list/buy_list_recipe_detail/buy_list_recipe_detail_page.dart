@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:recipe/components/widgets/recipe_detail_widget/recipe_detail_widget.dart';
 
-class CartListRecipeDetailPage extends ConsumerWidget {
-  const CartListRecipeDetailPage({Key? key, required this.recipeId})
+class BuyListRecipeDetailPage extends ConsumerWidget {
+  const BuyListRecipeDetailPage({Key? key, required this.recipeId})
       : super(key: key);
   final String recipeId;
 
