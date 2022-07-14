@@ -1,12 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/view/buy_list/buy_list/buy_list_page.dart';
 import 'package:recipe/view/cart/cart_list_page.dart';
-import 'package:recipe/view/recipe/recipe_detail/recipe_detail_page.dart';
 import 'package:recipe/view/recipe/recipe_list/recipe_list_page.dart';
 
 class PageContainerPage extends ConsumerWidget {
@@ -28,6 +25,9 @@ class PageContainerPage extends ConsumerWidget {
       body: PersistentTabView(
         context,
         screens: pages,
+        selectedTabScreenContext: (context) {
+          if (context != null) {}
+        },
         navBarStyle: NavBarStyle.simple,
         backgroundColor: Theme.of(context).bottomAppBarColor,
         decoration: NavBarDecoration(

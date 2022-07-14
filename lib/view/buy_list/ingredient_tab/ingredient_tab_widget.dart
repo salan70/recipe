@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
@@ -25,6 +24,8 @@ class IngredientTabWidget extends ConsumerWidget {
     final notBuyIngredientListIsOpen = ref.watch(notBuyListIsOpenProvider);
     final notBuyIngredientListIsOpenNotifier =
         ref.watch(notBuyListIsOpenProvider.notifier);
+
+    final selectedTabContext = context;
 
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 8, right: 8).r,
@@ -109,6 +110,7 @@ class IngredientTabWidget extends ConsumerWidget {
                   ),
                   _ingredientListViewWidget(
                     context,
+                    selectedTabContext,
                     'buyList',
                     ingredientBuyList,
                   ),
@@ -152,6 +154,7 @@ class IngredientTabWidget extends ConsumerWidget {
                           children: [
                             _ingredientListViewWidget(
                               context,
+                              selectedTabContext,
                               'notBuyList',
                               ingredientNotBuyList,
                             ),
@@ -181,6 +184,7 @@ class IngredientTabWidget extends ConsumerWidget {
 
   Widget _ingredientListViewWidget(
     BuildContext context,
+    BuildContext selectedTabContext,
     String listType,
     List<TotaledIngredientInCart> ingredientList,
   ) {
@@ -249,7 +253,7 @@ class IngredientTabWidget extends ConsumerWidget {
                   context: context,
                   builder: (_) {
                     return _recipeListPerIngredientDialog(
-                      context,
+                      selectedTabContext,
                       ingredient,
                     );
                   },
@@ -364,7 +368,7 @@ class IngredientTabWidget extends ConsumerWidget {
   }
 
   Widget _recipeListPerIngredientDialog(
-    BuildContext context,
+    BuildContext selectedTabContext,
     TotaledIngredientInCart ingredient,
   ) {
     return AlertDialog(
@@ -394,8 +398,9 @@ class IngredientTabWidget extends ConsumerWidget {
               trailing: IconButton(
                 icon: const Icon(Icons.chevron_right_rounded),
                 onPressed: () {
+                  Navigator.pop(context);
                   Navigator.push<MaterialPageRoute<dynamic>>(
-                    context,
+                    selectedTabContext,
                     MaterialPageRoute(
                       builder: (context) =>
                           BuyListRecipeDetailPage(recipeId: recipe.recipeId),

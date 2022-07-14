@@ -1,4 +1,5 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/recipe.dart';
@@ -92,6 +93,11 @@ final notBuyListIsOpenProvider = StateProvider.autoDispose((ref) => false);
 
 // page_control
 final selectPageProvider = StateProvider.autoDispose((ref) => 0);
+
+final selectedTabContextProvider = StateProvider.autoDispose((ref) {
+  BuildContext? context;
+  return context;
+});
 
 /// setting
 final selectedSchemeColorProvider =
