@@ -19,7 +19,6 @@ class PageContainerPage extends ConsumerWidget {
       CartListPage(),
       const BuyListPage(),
     ];
-
     return Scaffold(
       body: pages[selectedPage],
       bottomNavigationBar: BottomNavigationBar(

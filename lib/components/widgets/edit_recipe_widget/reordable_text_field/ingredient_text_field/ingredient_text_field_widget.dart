@@ -6,7 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:recipe/components/validation/validation.dart';
-import 'package:recipe/components/widgets/reordable_text_field/ingredient_text_field/ingredient_text_field_model.dart';
+import 'package:recipe/components/widgets/edit_recipe_widget/reordable_text_field/ingredient_text_field/ingredient_text_field_model.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
 import 'package:recipe/state/ingredient_list/ingredient_list_provider.dart';

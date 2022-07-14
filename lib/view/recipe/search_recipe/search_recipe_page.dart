@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:recipe/state/other_provider/providers.dart';
+import 'package:recipe/view/recipe/search_recipe/search_recipe_history/search_recipe_history_widget.dart';
 import 'package:recipe/view/recipe/search_recipe/search_recipe_model.dart';
-import 'package:recipe/view/recipe/search_recipe_history/search_recipe_history_widget.dart';
-import 'package:recipe/view/recipe/search_recipe_result/search_recipe_result_widget.dart';
+import 'package:recipe/view/recipe/search_recipe/search_recipe_result/search_recipe_result_widget.dart';
 
 class SearchRecipePage extends ConsumerWidget {
   const SearchRecipePage({Key? key}) : super(key: key);
