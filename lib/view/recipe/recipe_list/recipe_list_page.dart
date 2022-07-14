@@ -102,6 +102,7 @@ class RecipeListPage extends ConsumerWidget {
             context,
             screen: AddRecipePage(),
             withNavBar: false,
+            pageTransitionAnimation: PageTransitionAnimation.slideUp,
           );
         },
       ),
