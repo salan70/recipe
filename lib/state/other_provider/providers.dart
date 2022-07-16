@@ -52,14 +52,14 @@ final amountIsChangedProvider = StateProvider.autoDispose((ref) => false);
 final contentIsChangedProvider = StateProvider.autoDispose((ref) => false);
 
 /// cart
-final recipeNumCountProviderFamily =
-    StateProvider.family.autoDispose<int, int?>((count, initialCount) {
+final selectedCountProviderFamily =
+    StateProvider.family.autoDispose<String, int?>((count, initialCount) {
   var count = 1;
 
   if (initialCount != null && initialCount != 0) {
     count = initialCount;
   }
-  return count;
+  return count.toString();
 });
 
 final recipeListInCartPanelIsOpenProvider =

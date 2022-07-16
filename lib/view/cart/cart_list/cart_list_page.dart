@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/custom_dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -137,21 +138,28 @@ class CartListPage extends ConsumerWidget {
                                       style:
                                           Theme.of(context).textTheme.subtitle2,
                                     ),
-                                    Text(
-                                      '計 ${recipe.forHowManyPeople! * recipe.countInCart!}人分',
-                                      maxLines: 2,
-                                      textAlign: TextAlign.left,
-                                      overflow: TextOverflow.ellipsis,
-                                      style:
-                                          Theme.of(context).textTheme.subtitle2,
-                                    ),
-                                    Text(
-                                      '${recipe.forHowManyPeople}人分',
-                                      maxLines: 2,
-                                      textAlign: TextAlign.left,
-                                      overflow: TextOverflow.ellipsis,
-                                      style:
-                                          Theme.of(context).textTheme.subtitle2,
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          '${recipe.forHowManyPeople}人分 ×',
+                                          maxLines: 2,
+                                          textAlign: TextAlign.left,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .subtitle1,
+                                        ),
+                                        SizedBox(
+                                          width: 8.w,
+                                        ),
+                                        CountDropdownButton(
+                                          initialCount: recipe.countInCart!,
+                                        ),
+                                        SizedBox(
+                                          width: 8.w,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -227,6 +235,40 @@ class ConfirmDeleteDialog extends ConsumerWidget {
           child: const Text('はい'),
         ),
       ],
+    );
+  }
+}
+
+class CountDropdownButton extends ConsumerWidget {
+  const CountDropdownButton({Key? key, required this.initialCount})
+      : super(key: key);
+
+  final int initialCount;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userStateNotifierProvider);
+    final cartListModel = CartListModel(user: user!);
+    final selectedCount = ref.watch(selectedCountProviderFamily(initialCount));
+    final selectedCountNotifier =
+        ref.watch(selectedCountProviderFamily(initialCount).notifier);
+
+    return CustomDropdownButton2(
+      icon: const Icon(Icons.arrow_drop_down),
+      iconSize: 24.sp,
+      buttonWidth: 72.w,
+      dropdownHeight: 300.h,
+      dropdownWidth: 120.w,
+      buttonPadding: const EdgeInsets.only(left: 8),
+      hint: 'Select Item',
+      dropdownItems: cartListModel.countList,
+      value: selectedCount,
+      onChanged: (value) {
+        if (value != null) {
+          selectedCountNotifier.state = value;
+        }
+        // TODO firestoreのデータ更新(countInCartにvalueを設定)
+      },
     );
   }
 }

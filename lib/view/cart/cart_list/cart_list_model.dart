@@ -7,6 +7,8 @@ import '../../../../repository/firebase/cart_repository.dart';
 class CartListModel extends ChangeNotifier {
   CartListModel({required this.user});
   final User user;
+  final countList =
+      List<String>.generate(99, (index) => (index + 1).toString());
 
   bool zeroIsIncludeInCart(List<RecipeInCart> recipeForInCartList) {
     var zeroIsInclude = false;
