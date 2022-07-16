@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe/domain/cart.dart';
 
-import '../../../repository/firebase/cart_repository.dart';
+import '../../../../repository/firebase/cart_repository.dart';
 
 class CartListModel extends ChangeNotifier {
   CartListModel({required this.user});
