@@ -37,7 +37,7 @@ class BuyListPage extends ConsumerWidget {
       body: const IngredientTabWidget(),
       floatingActionButton: FloatingActionButton(
         child: Icon(
-          Icons.post_add_rounded,
+          Icons.add_rounded,
           size: 32.0.sp,
         ),
         onPressed: () async {

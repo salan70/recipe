@@ -21,6 +21,9 @@ class SearchRecipePage extends ConsumerWidget {
     final isEntering = ref.watch(isEnteringProvider);
     final isEnteringNotifier = ref.watch(isEnteringProvider.notifier);
 
+    final searchWordController = ref.watch(searchWordProvider);
+    final searchWordControllerNotifier = ref.watch(searchWordProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -29,7 +32,7 @@ class SearchRecipePage extends ConsumerWidget {
           children: [
             Expanded(
               child: TextField(
-                // controller: controller,
+                controller: searchWordController,
                 autofocus: isEntering,
                 textInputAction: TextInputAction.search,
                 decoration: InputDecoration(
@@ -39,12 +42,22 @@ class SearchRecipePage extends ConsumerWidget {
                   hintText: 'レシピ名、材料名で検索',
                   suffixIconConstraints:
                       BoxConstraints(maxHeight: 24.h, maxWidth: 24.w),
+                  suffixIcon: IconButton(
+                    padding: EdgeInsets.zero,
+                    onPressed: () {
+                      searchWordControllerNotifier.state =
+                          TextEditingController(text: '');
+                      // searchWordController.clear();
+                    },
+                    icon: const Icon(Icons.clear),
+                  ),
                 ),
                 onTap: () {
                   isEnteringNotifier.state = true;
                 },
-                //TODO 「✗(クリア)」関連の処理
                 onSubmitted: (searchWord) {
+                  searchWordControllerNotifier.state =
+                      TextEditingController(text: searchWord);
                   isEnteringNotifier.state = false;
 
                   recipeAndIngredientNameList.when(
