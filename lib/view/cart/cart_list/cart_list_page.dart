@@ -19,17 +19,8 @@ class CartListPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userStateNotifierProvider);
     final recipeListInCartStream = ref.watch(recipeListInCartProvider);
-
     final recipeListInCart = ref.watch(recipeListInCartNotifierProvider);
-    final recipeListInCartNotifier =
-        ref.watch(recipeListInCartNotifierProvider.notifier);
-
-    final stateIsChanged = ref.watch(stateIsChangedProvider);
-    final stateIsChangedNotifier = ref.watch(stateIsChangedProvider.notifier);
-
-    final cartListModel = CartListModel(user: user!);
 
     return Scaffold(
       appBar: AppBar(
@@ -119,7 +110,8 @@ class CartListPage extends ConsumerWidget {
                                                     .dividerColor,
                                               ),
                                               child: const Icon(
-                                                  Icons.restaurant_rounded),
+                                                Icons.restaurant_rounded,
+                                              ),
                                             )
                                       : const CircularProgressIndicator(),
                                 ),
