@@ -10,33 +10,18 @@ class CartListModel extends ChangeNotifier {
   final countList =
       List<String>.generate(99, (index) => (index + 1).toString());
 
-  bool zeroIsIncludeInCart(List<RecipeInCart> recipeForInCartList) {
-    var zeroIsInclude = false;
-
-    for (final recipeForInCart in recipeForInCartList) {
-      if (recipeForInCart.countInCart == 0) {
-        zeroIsInclude = true;
-      }
-    }
-
-    return zeroIsInclude;
-  }
-
-  Future<String?> updateCountsInCart(
-    List<RecipeInCart> recipeForInCartList,
-  ) async {
+  Future<String?> updateCountInCart(RecipeInCart recipe) async {
     final cartRepository = CartRepository(user: user);
 
-    for (final recipeForInCart in recipeForInCartList) {
-      try {
-        await cartRepository.updateCount(
-          recipeForInCart.recipeId!,
-          recipeForInCart.countInCart!,
-        );
-      } on Exception catch (e) {
-        return e.toString();
-      }
+    try {
+      await cartRepository.updateCount(
+        recipe.recipeId!,
+        recipe.countInCart!,
+      );
+    } on Exception catch (e) {
+      return e.toString();
     }
+
     return null;
   }
 

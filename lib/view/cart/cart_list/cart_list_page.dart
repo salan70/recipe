@@ -41,7 +41,11 @@ class CartListPage extends ConsumerWidget {
           'カート',
         ),
         actions: [
-          IconButton(
+          TextButton(
+            child: Text(
+              '空にする',
+              style: TextStyle(color: Theme.of(context).errorColor),
+            ),
             onPressed: () {
               showDialog<AlertDialog>(
                 context: context,
@@ -51,10 +55,6 @@ class CartListPage extends ConsumerWidget {
                 ),
               );
             },
-            icon: Icon(
-              Icons.delete_rounded,
-              color: Theme.of(context).errorColor,
-            ),
           ),
         ],
       ),
@@ -124,6 +124,9 @@ class CartListPage extends ConsumerWidget {
                                         : const CircularProgressIndicator(),
                                   ),
                                 ),
+                                SizedBox(
+                                  width: 8.w,
+                                ),
                                 Expanded(
                                   child: Column(
                                     mainAxisAlignment:
@@ -159,6 +162,7 @@ class CartListPage extends ConsumerWidget {
                                           ),
                                           CountDropdownButton(
                                             initialCount: recipe.countInCart!,
+                                            recipe: recipe,
                                           ),
                                           SizedBox(
                                             width: 8.w,
@@ -264,10 +268,12 @@ class ConfirmDeleteDialog extends ConsumerWidget {
 }
 
 class CountDropdownButton extends ConsumerWidget {
-  const CountDropdownButton({Key? key, required this.initialCount})
+  const CountDropdownButton(
+      {Key? key, required this.initialCount, required this.recipe})
       : super(key: key);
 
   final int initialCount;
+  final RecipeInCart recipe;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -283,13 +289,37 @@ class CountDropdownButton extends ConsumerWidget {
       buttonWidth: 72.w,
       dropdownHeight: 300.h,
       dropdownWidth: 120.w,
-      buttonPadding: const EdgeInsets.only(left: 8),
+      buttonPadding: const EdgeInsets.only(left: 16),
       hint: 'Select Item',
       dropdownItems: cartListModel.countList,
       value: selectedCount,
-      onChanged: (value) {
+      onChanged: (value) async {
+        await EasyLoading.show(status: 'loading...');
         if (value != null) {
-          selectedCountNotifier.state = value;
+          final errorText = await cartListModel.updateCountInCart(recipe);
+          if (errorText == null) {
+            await EasyLoading.showSuccess('更新しました');
+            selectedCountNotifier.state = value;
+          } else {
+            await EasyLoading.dismiss();
+            await showDialog<AlertDialog>(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('更新失敗'),
+                  content: Text(errorText),
+                  actions: [
+                    TextButton(
+                      child: const Text('閉じる'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
         }
         // TODO firestoreのデータ更新(countInCartにvalueを設定)
       },

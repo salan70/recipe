@@ -45,16 +45,27 @@ class RecipeDetailPage extends ConsumerWidget {
             error: (error, stack) => Container(),
             loading: () => Container(),
             data: (recipe) {
-              return IconButton(
-                onPressed: () {
-                  pushNewScreen<dynamic>(
-                    context,
-                    screen: UpdateRecipePage(recipe: recipe),
-                    withNavBar: false,
-                    pageTransitionAnimation: PageTransitionAnimation.slideUp,
-                  );
-                },
-                icon: const Icon(Icons.edit),
+              return Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.add_shopping_cart_rounded),
+                    onPressed: () {
+                      // TODO カートに追加するようの処理（ダイアログ？）
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () {
+                      pushNewScreen<dynamic>(
+                        context,
+                        screen: UpdateRecipePage(recipe: recipe),
+                        withNavBar: false,
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.slideUp,
+                      );
+                    },
+                  ),
+                ],
               );
             },
           )
