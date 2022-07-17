@@ -10,13 +10,16 @@ class CartListModel extends ChangeNotifier {
   final countList =
       List<String>.generate(99, (index) => (index + 1).toString());
 
-  Future<String?> updateCountInCart(RecipeInCart recipe) async {
+  Future<String?> updateCountInCart({
+    required String recipeId,
+    required int countInCart,
+  }) async {
     final cartRepository = CartRepository(user: user);
 
     try {
       await cartRepository.updateCount(
-        recipe.recipeId!,
-        recipe.countInCart!,
+        recipeId,
+        countInCart,
       );
     } on Exception catch (e) {
       return e.toString();
