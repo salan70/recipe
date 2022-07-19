@@ -44,7 +44,7 @@ class CartRecipeDetailPage extends ConsumerWidget {
               icon: const Icon(Icons.arrow_back_ios),
             ),
             title: const Text(
-              'レシピの詳細',
+              'レシピ詳細',
             ),
             actions: <Widget>[
               IconButton(
