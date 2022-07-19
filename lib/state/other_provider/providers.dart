@@ -6,7 +6,6 @@ import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/repository/firebase/cart_repository.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
-import 'package:recipe/state/recipe_list_in_cart/recipe_list_in_cart_state.dart';
 
 final recipeListProvider = StreamProvider.autoDispose<List<Recipe>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
@@ -62,9 +61,6 @@ final selectedCountProviderFamily =
   return count.toString();
 });
 
-final recipeListInCartPanelIsOpenProvider =
-    StateProvider.autoDispose((ref) => false);
-
 final recipeListInCartProvider =
     StreamProvider.autoDispose<List<RecipeInCart>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
@@ -72,11 +68,6 @@ final recipeListInCartProvider =
 
   return cartRepository.fetchRecipeListInCart();
 });
-
-final recipeListInCartNotifierProvider = StateNotifierProvider.autoDispose<
-    RecipeListInCartNotifier, List<RecipeInCart>>(
-  (ref) => RecipeListInCartNotifier(),
-);
 
 final otherCartItemListProvider =
     StreamProvider.autoDispose<List<OtherCartItem>>((ref) {
