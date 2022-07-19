@@ -13,7 +13,7 @@ class PageContainerPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final pages = [
       const RecipeListPage(),
-      CartListPage(),
+      const CartListPage(),
       const BuyListPage(),
     ];
 

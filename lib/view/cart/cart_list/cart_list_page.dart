@@ -10,7 +10,6 @@ import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/view/cart/cart_list/cart_list_model.dart';
 import 'package:recipe/view/cart/cart_recipe_detail/cart_recipe_detail_page.dart';
 import 'package:recipe/view/setting/setting_top/setting_top_page.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CartListPage extends ConsumerWidget {
   const CartListPage({Key? key}) : super(key: key);
@@ -18,10 +17,6 @@ class CartListPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final recipeListInCartStream = ref.watch(recipeListInCartProvider);
-    final recipeListInCart = ref.watch(recipeListInCartNotifierProvider);
-
-    final user = ref.watch(userStateNotifierProvider);
-    final cartListModel = CartListModel(user: user!);
 
     return Scaffold(
       appBar: AppBar(
@@ -42,19 +37,26 @@ class CartListPage extends ConsumerWidget {
           'カート',
         ),
         actions: [
-          TextButton(
-            child: Text(
-              '空にする',
-              style: TextStyle(color: Theme.of(context).errorColor),
-            ),
-            onPressed: () {
-              showDialog<AlertDialog>(
-                context: context,
-                builder: (context) => ConfirmAllDeleteDialog(
-                  // TODO 懸念あり（.whenなしでいけるのか懸念）
-                  recipeListInCart: recipeListInCart,
-                ),
-              );
+          recipeListInCartStream.when(
+            error: (error, stack) => const Text('Error'),
+            loading: () => const CircularProgressIndicator(),
+            data: (recipeListInCart) {
+              return recipeListInCart.isEmpty
+                  ? const SizedBox()
+                  : TextButton(
+                      child: Text(
+                        '空にする',
+                        style: TextStyle(color: Theme.of(context).errorColor),
+                      ),
+                      onPressed: () {
+                        showDialog<AlertDialog>(
+                          context: context,
+                          builder: (context) => ConfirmAllDeleteDialog(
+                            recipeListInCart: recipeListInCart,
+                          ),
+                        );
+                      },
+                    );
             },
           ),
         ],
@@ -180,7 +182,6 @@ class CartListPage extends ConsumerWidget {
                                           ),
                                         ),
                                         onPressed: () {
-                                          //TODO 確認ダイアログを表示するようにする（別でclassを定義）
                                           showDialog<AlertDialog>(
                                             context: context,
                                             builder: (context) =>
@@ -300,7 +301,7 @@ class ConfirmDeleteDialog extends ConsumerWidget {
             if (errorText == null) {
               Navigator.pop(context);
               await EasyLoading.showSuccess(
-                '更新しました',
+                'カートから削除しました',
               );
               // selectedCountNotifier.state = value;
             } else {
