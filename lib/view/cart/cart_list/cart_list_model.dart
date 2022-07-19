@@ -17,10 +17,14 @@ class CartListModel extends ChangeNotifier {
     final cartRepository = CartRepository(user: user);
 
     try {
-      await cartRepository.updateCount(
+      final errorText = await cartRepository.updateCount(
         recipeId,
         countInCart,
       );
+
+      if (errorText != null) {
+        return errorText;
+      }
     } on Exception catch (e) {
       return e.toString();
     }

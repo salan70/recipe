@@ -13,9 +13,7 @@ import 'package:recipe/view/setting/setting_top/setting_top_page.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class CartListPage extends ConsumerWidget {
-  CartListPage({Key? key}) : super(key: key);
-
-  final PanelController pageController = PanelController();
+  const CartListPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,7 +50,7 @@ class CartListPage extends ConsumerWidget {
             onPressed: () {
               showDialog<AlertDialog>(
                 context: context,
-                builder: (context) => ConfirmDeleteDialog(
+                builder: (context) => ConfirmAllDeleteDialog(
                   // TODO 懸念あり（.whenなしでいけるのか懸念）
                   recipeListInCart: recipeListInCart,
                 ),
@@ -181,41 +179,15 @@ class CartListPage extends ConsumerWidget {
                                             color: Theme.of(context).errorColor,
                                           ),
                                         ),
-                                        onPressed: () async {
+                                        onPressed: () {
                                           //TODO 確認ダイアログを表示するようにする（別でclassを定義）
-                                          await EasyLoading.show(
-                                            status: 'loading...',
+                                          showDialog<AlertDialog>(
+                                            context: context,
+                                            builder: (context) =>
+                                                ConfirmDeleteDialog(
+                                              recipe: recipe,
+                                            ),
                                           );
-                                          final errorText = await cartListModel
-                                              .updateCountInCart(
-                                            recipeId: recipe.recipeId!,
-                                            countInCart: 0,
-                                          );
-                                          if (errorText == null) {
-                                            await EasyLoading.showSuccess(
-                                              '更新しました',
-                                            );
-                                            // selectedCountNotifier.state = value;
-                                          } else {
-                                            await EasyLoading.dismiss();
-                                            await showDialog<AlertDialog>(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  title: const Text('更新失敗'),
-                                                  content: Text(errorText),
-                                                  actions: [
-                                                    TextButton(
-                                                      child: const Text('閉じる'),
-                                                      onPressed: () {
-                                                        Navigator.pop(context);
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          }
                                         },
                                         // ),
                                       ),
@@ -242,8 +214,8 @@ class CartListPage extends ConsumerWidget {
   }
 }
 
-class ConfirmDeleteDialog extends ConsumerWidget {
-  const ConfirmDeleteDialog({Key? key, required this.recipeListInCart})
+class ConfirmAllDeleteDialog extends ConsumerWidget {
+  const ConfirmAllDeleteDialog({Key? key, required this.recipeListInCart})
       : super(key: key);
 
   final List<RecipeInCart> recipeListInCart;
@@ -277,6 +249,67 @@ class ConfirmDeleteDialog extends ConsumerWidget {
                 builder: (context) {
                   return AlertDialog(
                     title: const Text('カート更新失敗'),
+                    content: Text(errorText),
+                    actions: [
+                      TextButton(
+                        child: const Text('閉じる'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
+          },
+          child: const Text('はい'),
+        ),
+      ],
+    );
+  }
+}
+
+class ConfirmDeleteDialog extends ConsumerWidget {
+  const ConfirmDeleteDialog({Key? key, required this.recipe}) : super(key: key);
+
+  final RecipeInCart recipe;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userStateNotifierProvider);
+    final cartListModel = CartListModel(user: user!);
+
+    return AlertDialog(
+      title: const Text('確認'),
+      content: const Text('本当にカートから削除してよろしいですか？'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('いいえ'),
+        ),
+        TextButton(
+          onPressed: () async {
+            await EasyLoading.show(
+              status: 'loading...',
+            );
+            final errorText = await cartListModel.updateCountInCart(
+              recipeId: recipe.recipeId!,
+              countInCart: 0,
+            );
+            if (errorText == null) {
+              Navigator.pop(context);
+              await EasyLoading.showSuccess(
+                '更新しました',
+              );
+              // selectedCountNotifier.state = value;
+            } else {
+              await EasyLoading.dismiss();
+              await showDialog<AlertDialog>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('更新失敗'),
                     content: Text(errorText),
                     actions: [
                       TextButton(

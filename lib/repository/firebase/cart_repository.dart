@@ -89,15 +89,20 @@ class CartRepository {
   }
 
   /// update
-  Future<void> updateCount(String recipeId, int count) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('recipes')
-        .doc(recipeId)
-        .update({
-      'countInCart': count,
-    });
+  Future<String?> updateCount(String recipeId, int count) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('recipes')
+          .doc(recipeId)
+          .update({
+        'countInCart': count,
+      });
+      return null;
+    } on Exception catch (e) {
+      return e.toString();
+    }
   }
 
   /// add
