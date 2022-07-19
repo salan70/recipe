@@ -68,142 +68,159 @@ class CartListPage extends ConsumerWidget {
             error: (error, stack) => Text('Error: $error'),
             loading: () => const CircularProgressIndicator(),
             data: (recipeListInCart) {
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: recipeListInCart.length,
-                itemBuilder: (context, index) {
-                  final recipe = recipeListInCart[index];
-                  return SizedBox(
-                    height: 160.h,
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push<MaterialPageRoute<dynamic>>(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CartRecipeDetailPage(
-                              recipeId: recipe.recipeId!,
-                            ),
-                          ),
-                        );
-                      },
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 8,
-                            right: 8,
-                            left: 8,
-                          ).r,
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(16),
-                                child: SizedBox(
-                                  width: 160.w,
-                                  height: 96.h,
-                                  child: recipe.imageUrl != null
-                                      ? recipe.imageUrl != ''
-                                          ? Image.network(
-                                              recipe.imageUrl!,
-                                              errorBuilder: (c, o, s) {
-                                                return const Icon(
-                                                  Icons.error,
+              return recipeListInCart.isEmpty
+                  ? Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.only(top: 24).r,
+                      child: Text(
+                        'カートが空です。\n「レシピ」>「レシピ詳細」からレシピをカートに追加することができます。',
+                        style: Theme.of(context).textTheme.subtitle1,
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  : ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: recipeListInCart.length,
+                      itemBuilder: (context, index) {
+                        final recipe = recipeListInCart[index];
+                        return SizedBox(
+                          height: 160.h,
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push<MaterialPageRoute<dynamic>>(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CartRecipeDetailPage(
+                                    recipeId: recipe.recipeId!,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Card(
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 8,
+                                  right: 8,
+                                  left: 8,
+                                ).r,
+                                child: Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: SizedBox(
+                                        width: 160.w,
+                                        height: 96.h,
+                                        child: recipe.imageUrl != null
+                                            ? recipe.imageUrl != ''
+                                                ? Image.network(
+                                                    recipe.imageUrl!,
+                                                    errorBuilder: (c, o, s) {
+                                                      return const Icon(
+                                                        Icons.error,
+                                                      );
+                                                    },
+                                                  )
+                                                : DecoratedBox(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        8,
+                                                      ).r,
+                                                      color: Theme.of(context)
+                                                          .dividerColor,
+                                                    ),
+                                                    child: const Icon(
+                                                      Icons.restaurant_rounded,
+                                                    ),
+                                                  )
+                                            : const CircularProgressIndicator(),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 8.w,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          /// レシピ名
+                                          Text(
+                                            recipe.recipeName!,
+                                            maxLines: 2,
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .subtitle2,
+                                          ),
+                                          const Spacer(),
+
+                                          /// 「○人分 × ドロップダウン」
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                '${recipe.forHowManyPeople}人分 ×',
+                                                maxLines: 2,
+                                                textAlign: TextAlign.left,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .subtitle1,
+                                              ),
+                                              SizedBox(
+                                                width: 8.w,
+                                              ),
+                                              CountDropdownButton(
+                                                initialCount:
+                                                    recipe.countInCart!,
+                                                recipe: recipe,
+                                              ),
+                                              SizedBox(
+                                                width: 8.w,
+                                              ),
+                                            ],
+                                          ),
+
+                                          /// 削除ボタン
+                                          Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: TextButton(
+                                              child: Text(
+                                                '削除',
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .errorColor,
+                                                ),
+                                              ),
+                                              onPressed: () {
+                                                showDialog<AlertDialog>(
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      ConfirmDeleteDialog(
+                                                    recipe: recipe,
+                                                  ),
                                                 );
                                               },
-                                            )
-                                          : DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8).r,
-                                                color: Theme.of(context)
-                                                    .dividerColor,
-                                              ),
-                                              child: const Icon(
-                                                Icons.restaurant_rounded,
-                                              ),
-                                            )
-                                      : const CircularProgressIndicator(),
-                                ),
-                              ),
-                              SizedBox(
-                                width: 8.w,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    /// レシピ名
-                                    Text(
-                                      recipe.recipeName!,
-                                      maxLines: 2,
-                                      textAlign: TextAlign.left,
-                                      overflow: TextOverflow.ellipsis,
-                                      style:
-                                          Theme.of(context).textTheme.subtitle2,
-                                    ),
-                                    const Spacer(),
-
-                                    /// 「○人分 × ドロップダウン」
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          '${recipe.forHowManyPeople}人分 ×',
-                                          maxLines: 2,
-                                          textAlign: TextAlign.left,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .subtitle1,
-                                        ),
-                                        SizedBox(
-                                          width: 8.w,
-                                        ),
-                                        CountDropdownButton(
-                                          initialCount: recipe.countInCart!,
-                                          recipe: recipe,
-                                        ),
-                                        SizedBox(
-                                          width: 8.w,
-                                        ),
-                                      ],
-                                    ),
-
-                                    /// 削除ボタン
-                                    Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: TextButton(
-                                        child: Text(
-                                          '削除',
-                                          style: TextStyle(
-                                            color: Theme.of(context).errorColor,
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          showDialog<AlertDialog>(
-                                            context: context,
-                                            builder: (context) =>
-                                                ConfirmDeleteDialog(
-                                              recipe: recipe,
+                                              // ),
                                             ),
-                                          );
-                                        },
-                                        // ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
+                        );
+                      },
+                    );
             },
           ),
           SizedBox(
