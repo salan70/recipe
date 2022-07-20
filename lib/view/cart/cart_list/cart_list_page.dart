@@ -177,8 +177,6 @@ class CartListPage extends ConsumerWidget {
                                                 width: 8.w,
                                               ),
                                               CountDropdownButton(
-                                                initialCount:
-                                                    recipe.countInCart!,
                                                 recipe: recipe,
                                               ),
                                               SizedBox(
@@ -235,11 +233,9 @@ class CartListPage extends ConsumerWidget {
 class CountDropdownButton extends ConsumerWidget {
   const CountDropdownButton({
     Key? key,
-    required this.initialCount,
     required this.recipe,
   }) : super(key: key);
 
-  final int initialCount;
   final RecipeInCart recipe;
 
   @override
