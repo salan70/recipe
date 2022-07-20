@@ -51,16 +51,9 @@ final amountIsChangedProvider = StateProvider.autoDispose((ref) => false);
 final contentIsChangedProvider = StateProvider.autoDispose((ref) => false);
 
 /// cart
-final selectedCountProviderFamily =
-    StateProvider.family.autoDispose<String, int?>((count, initialCount) {
-  var count = 1;
+final selectedCountProvider = StateProvider.autoDispose((ref) => '');
 
-  if (initialCount != null && initialCount != 0) {
-    count = initialCount;
-  }
-  return count.toString();
-});
-
+// TODO RecipeInCartをRecipeにできないか検討する
 final recipeListInCartProvider =
     StreamProvider.autoDispose<List<RecipeInCart>>((ref) {
   final user = ref.watch(userStateNotifierProvider);

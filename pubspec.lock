@@ -985,20 +985,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  sliding_up_panel:
-    dependency: "direct main"
-    description:
-      name: sliding_up_panel
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0+1"
-  snapping_sheet:
-    dependency: "direct main"
-    description:
-      name: snapping_sheet
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.0"
   source_gen:
     dependency: transitive
     description:
