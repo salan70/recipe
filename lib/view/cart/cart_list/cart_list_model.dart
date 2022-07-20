@@ -1,12 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'package:recipe/domain/recipe.dart';
+import 'package:recipe/domain/cart.dart';
 import 'package:recipe/repository/firebase/cart_repository.dart';
-import 'package:recipe/repository/firebase/recipe_repository.dart';
 
-class RecipeDetailModel extends ChangeNotifier {
-  RecipeDetailModel({required this.user});
+class CartListModel extends ChangeNotifier {
+  CartListModel({required this.user});
   final User user;
   final countList =
       List<String>.generate(99, (index) => (index + 1).toString());
@@ -33,22 +31,18 @@ class RecipeDetailModel extends ChangeNotifier {
     return null;
   }
 
-  Future<bool> deleteRecipe(Recipe recipe) async {
-    final recipeRepository = RecipeRepository(user: user);
+  Future<String?> deleteAllRecipeFromCart(
+    List<RecipeInCart> recipeForInCartList,
+  ) async {
+    final cartRepository = CartRepository(user: user);
 
-    try {
-      if (recipe.imageUrl != '') {
-        final errorTextWhenDeleteImage =
-            await recipeRepository.deleteImage(recipe);
-        if (errorTextWhenDeleteImage != null) {
-          return false;
-        }
+    for (final recipeForInCart in recipeForInCartList) {
+      try {
+        await cartRepository.updateCount(recipeForInCart.recipeId!, 0);
+      } on Exception catch (e) {
+        return e.toString();
       }
-      await recipeRepository.deleteRecipe(recipe);
-
-      return true;
-    } on Exception {
-      return false;
     }
+    return null;
   }
 }

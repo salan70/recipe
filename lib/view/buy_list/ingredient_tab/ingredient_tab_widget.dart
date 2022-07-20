@@ -9,8 +9,8 @@ import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/state/other_provider/providers.dart';
-import 'package:recipe/view/cart/cart_list_page/ingredient_tab/ingredient_tab_model.dart';
-import 'package:recipe/view/cart/cart_list_recipe_detail/cart_list_recipe_detail_page.dart';
+import 'package:recipe/view/buy_list/buy_list_recipe_detail/buy_list_recipe_detail_page.dart';
+import 'package:recipe/view/buy_list/ingredient_tab/ingredient_tab_model.dart';
 
 class IngredientTabWidget extends ConsumerWidget {
   const IngredientTabWidget({Key? key}) : super(key: key);
@@ -24,6 +24,8 @@ class IngredientTabWidget extends ConsumerWidget {
     final notBuyIngredientListIsOpen = ref.watch(notBuyListIsOpenProvider);
     final notBuyIngredientListIsOpenNotifier =
         ref.watch(notBuyListIsOpenProvider.notifier);
+
+    final selectedTabContext = context;
 
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 8, right: 8).r,
@@ -108,6 +110,7 @@ class IngredientTabWidget extends ConsumerWidget {
                   ),
                   _ingredientListViewWidget(
                     context,
+                    selectedTabContext,
                     'buyList',
                     ingredientBuyList,
                   ),
@@ -151,6 +154,7 @@ class IngredientTabWidget extends ConsumerWidget {
                           children: [
                             _ingredientListViewWidget(
                               context,
+                              selectedTabContext,
                               'notBuyList',
                               ingredientNotBuyList,
                             ),
@@ -180,6 +184,7 @@ class IngredientTabWidget extends ConsumerWidget {
 
   Widget _ingredientListViewWidget(
     BuildContext context,
+    BuildContext selectedTabContext,
     String listType,
     List<TotaledIngredientInCart> ingredientList,
   ) {
@@ -230,11 +235,6 @@ class IngredientTabWidget extends ConsumerWidget {
               '${ingredientInCart.ingredientTotalAmount}'
               '${ingredientInCart.ingredientUnit}',
               overflow: TextOverflow.ellipsis,
-              // style: Theme.of(context).textTheme.caption!.copyWith(
-              //       decoration: ingredientTabModel.getCartItem(id).isChecked
-              //           ? TextDecoration.lineThrough
-              //           : TextDecoration.none,
-              //     ),
               style: TextStyle(
                 decoration: ingredientTabModel.getCartItem(id).isChecked
                     ? TextDecoration.lineThrough
@@ -253,7 +253,7 @@ class IngredientTabWidget extends ConsumerWidget {
                   context: context,
                   builder: (_) {
                     return _recipeListPerIngredientDialog(
-                      context,
+                      selectedTabContext,
                       ingredient,
                     );
                   },
@@ -368,7 +368,7 @@ class IngredientTabWidget extends ConsumerWidget {
   }
 
   Widget _recipeListPerIngredientDialog(
-    BuildContext context,
+    BuildContext selectedTabContext,
     TotaledIngredientInCart ingredient,
   ) {
     return AlertDialog(
@@ -398,11 +398,12 @@ class IngredientTabWidget extends ConsumerWidget {
               trailing: IconButton(
                 icon: const Icon(Icons.chevron_right_rounded),
                 onPressed: () {
+                  Navigator.pop(context);
                   Navigator.push<MaterialPageRoute<dynamic>>(
-                    context,
+                    selectedTabContext,
                     MaterialPageRoute(
                       builder: (context) =>
-                          CartListRecipeDetailPage(recipeId: recipe.recipeId),
+                          BuyListRecipeDetailPage(recipeId: recipe.recipeId),
                     ),
                   );
                 },

@@ -7,6 +7,7 @@ class RecipeInCart {
   const RecipeInCart({
     required this.recipeId,
     required this.recipeName,
+    required this.imageUrl,
     required this.forHowManyPeople,
     required this.countInCart,
     required this.ingredientList,
@@ -14,6 +15,7 @@ class RecipeInCart {
 
   final String? recipeId;
   final String? recipeName;
+  final String? imageUrl;
   final int? forHowManyPeople;
   final int? countInCart;
   final List<Ingredient>? ingredientList;
@@ -21,6 +23,7 @@ class RecipeInCart {
   RecipeInCart copyWith({
     String? recipeId,
     String? recipeName,
+    String? imageUrl,
     int? forHowManyPeople,
     int? countInCart,
     List<Ingredient>? ingredientList,
@@ -28,6 +31,7 @@ class RecipeInCart {
     return RecipeInCart(
       recipeId: recipeId ?? this.recipeId,
       recipeName: recipeName ?? this.recipeName,
+      imageUrl: imageUrl ?? this.imageUrl,
       forHowManyPeople: forHowManyPeople ?? this.forHowManyPeople,
       countInCart: countInCart ?? this.countInCart,
       ingredientList: ingredientList ?? this.ingredientList,

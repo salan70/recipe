@@ -24,6 +24,7 @@ class CartRepository {
 
             final recipeId = document.id;
             final recipeName = data['recipeName'] as String;
+            final imageUrl = data['imageUrl'] as String?;
             final forHowManyPeople = data['forHowManyPeople'] as int;
             final countInCart = data['countInCart'] as int?;
             // ingredient関連
@@ -48,6 +49,7 @@ class CartRepository {
             return RecipeInCart(
               recipeId: recipeId,
               recipeName: recipeName,
+              imageUrl: imageUrl,
               forHowManyPeople: forHowManyPeople,
               countInCart: countInCart,
               ingredientList: ingredientList,
@@ -87,15 +89,20 @@ class CartRepository {
   }
 
   /// update
-  Future<void> updateCount(String recipeId, int count) async {
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .collection('recipes')
-        .doc(recipeId)
-        .update({
-      'countInCart': count,
-    });
+  Future<String?> updateCount(String recipeId, int count) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .collection('recipes')
+          .doc(recipeId)
+          .update({
+        'countInCart': count,
+      });
+      return null;
+    } on Exception catch (e) {
+      return e.toString();
+    }
   }
 
   /// add

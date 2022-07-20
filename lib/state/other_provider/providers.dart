@@ -1,11 +1,11 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/repository/firebase/cart_repository.dart';
 import 'package:recipe/repository/firebase/recipe_repository.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
-import 'package:recipe/state/recipe_list_in_cart/recipe_list_in_cart_state.dart';
 
 final recipeListProvider = StreamProvider.autoDispose<List<Recipe>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
@@ -25,10 +25,13 @@ final recipeProviderFamily =
 });
 
 /// search
-final searchFunctionProvider = StateProvider.autoDispose((ref) => false);
+final isEnteringProvider = StateProvider.autoDispose((ref) => true);
 
-final recipeAndIngredientNameListProvider =
-    StreamProvider.autoDispose<List<RecipeAndIngredientName>>((ref) {
+final searchWordProvider =
+    StateProvider.autoDispose((ref) => TextEditingController());
+
+final recipeAndIngredientListProvider =
+    StreamProvider.autoDispose<List<RecipeAndIngredient>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
 
   final recipeRepository = RecipeRepository(user: user!);
@@ -48,19 +51,9 @@ final amountIsChangedProvider = StateProvider.autoDispose((ref) => false);
 final contentIsChangedProvider = StateProvider.autoDispose((ref) => false);
 
 /// cart
-final recipeNumCountProviderFamily =
-    StateProvider.family.autoDispose<int, int?>((count, initialCount) {
-  var count = 1;
+final selectedCountProvider = StateProvider.autoDispose((ref) => '');
 
-  if (initialCount != null && initialCount != 0) {
-    count = initialCount;
-  }
-  return count;
-});
-
-final recipeListInCartPanelIsOpenProvider =
-    StateProvider.autoDispose((ref) => false);
-
+// TODO RecipeInCartをRecipeにできないか検討する
 final recipeListInCartProvider =
     StreamProvider.autoDispose<List<RecipeInCart>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
@@ -68,11 +61,6 @@ final recipeListInCartProvider =
 
   return cartRepository.fetchRecipeListInCart();
 });
-
-final recipeListInCartNotifierProvider = StateNotifierProvider.autoDispose<
-    RecipeListInCartNotifier, List<RecipeInCart>>(
-  (ref) => RecipeListInCartNotifier(),
-);
 
 final otherCartItemListProvider =
     StreamProvider.autoDispose<List<OtherCartItem>>((ref) {
@@ -86,8 +74,10 @@ final stateIsChangedProvider = StateProvider.autoDispose((ref) => false);
 
 final notBuyListIsOpenProvider = StateProvider.autoDispose((ref) => false);
 
-// page_control
-final selectPageProvider = StateProvider.autoDispose((ref) => 0);
+final selectedTabContextProvider = StateProvider.autoDispose((ref) {
+  BuildContext? context;
+  return context;
+});
 
 /// setting
 final selectedSchemeColorProvider =

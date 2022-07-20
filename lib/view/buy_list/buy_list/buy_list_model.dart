@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/repository/firebase/cart_repository.dart';
 
-class PageContainerModel extends ChangeNotifier {
-  PageContainerModel({required this.user});
+class BuyListModel extends ChangeNotifier {
+  BuyListModel({required this.user});
   final User user;
 
   Future<String?> addOtherCartItem(String title, String? subTitle) async {

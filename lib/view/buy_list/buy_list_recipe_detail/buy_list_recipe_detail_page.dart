@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:recipe/components/widgets/recipe_detail_widget/recipe_detail_widget.dart';
 
-class CartListRecipeDetailPage extends ConsumerWidget {
-  const CartListRecipeDetailPage({Key? key, required this.recipeId})
+class BuyListRecipeDetailPage extends ConsumerWidget {
+  const BuyListRecipeDetailPage({Key? key, required this.recipeId})
       : super(key: key);
   final String recipeId;
 
@@ -19,7 +20,7 @@ class CartListRecipeDetailPage extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back_ios),
         ),
         title: const Text(
-          'レシピの詳細',
+          'レシピ詳細',
         ),
       ),
       body: ListView(
@@ -27,6 +28,9 @@ class CartListRecipeDetailPage extends ConsumerWidget {
           SizedBox(
             width: double.infinity,
             child: RecipeDetailWidget(recipeId: recipeId),
+          ),
+          SizedBox(
+            height: 24.h,
           ),
         ],
       ),

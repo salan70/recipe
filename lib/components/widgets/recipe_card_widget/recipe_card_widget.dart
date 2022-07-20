@@ -48,7 +48,7 @@ class RecipeCardWidget extends ConsumerWidget {
               child: SizedBox(
                 width: double.infinity,
                 child: Text(
-                  recipe.recipeName.toString(),
+                  recipe.recipeName!,
                   maxLines: 2,
                   textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,

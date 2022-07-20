@@ -72,8 +72,8 @@ class Procedure {
   }
 }
 
-class RecipeAndIngredientName {
-  RecipeAndIngredientName({
+class RecipeAndIngredient {
+  RecipeAndIngredient({
     required this.recipeId,
     required this.recipeName,
     required this.ingredientNameList,

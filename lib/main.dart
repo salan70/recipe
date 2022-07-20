@@ -5,7 +5,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:recipe/components/theme/custom_theme.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/domain/type_adapter/customizations/customizations.dart';
@@ -64,12 +63,7 @@ class MyApp extends ConsumerWidget {
               darkTheme: customTheme.customDarkTheme(
                 usedScheme: usedScheme,
               ),
-              onGenerateRoute: (settings) {
-                return MaterialWithModalsPageRoute<PageContainerPage>(
-                  settings: settings,
-                  builder: (context) => const PageContainerPage(),
-                );
-              },
+              home: const PageContainerPage(),
               debugShowCheckedModeBanner: false,
               builder: EasyLoading.init(),
             );

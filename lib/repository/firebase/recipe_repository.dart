@@ -136,7 +136,7 @@ class RecipeRepository {
   }
 
   // search用
-  Stream<List<RecipeAndIngredientName>> fetchRecipeNameAndIngredientNameList() {
+  Stream<List<RecipeAndIngredient>> fetchRecipeNameAndIngredientNameList() {
     final recipeCollection = FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
@@ -165,7 +165,7 @@ class RecipeRepository {
                   ingredientNameList.add(value['ingredientName'] as String);
                 });
 
-                return RecipeAndIngredientName(
+                return RecipeAndIngredient(
                   recipeId: recipeId,
                   recipeName: recipeName,
                   ingredientNameList: ingredientNameList,
