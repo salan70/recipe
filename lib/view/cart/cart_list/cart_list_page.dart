@@ -232,6 +232,66 @@ class CartListPage extends ConsumerWidget {
   }
 }
 
+class CountDropdownButton extends ConsumerWidget {
+  const CountDropdownButton({
+    Key? key,
+    required this.initialCount,
+    required this.recipe,
+  }) : super(key: key);
+
+  final int initialCount;
+  final RecipeInCart recipe;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userStateNotifierProvider);
+    final cartListModel = CartListModel(user: user!);
+
+    return CustomDropdownButton2(
+      icon: const Icon(Icons.arrow_drop_down),
+      iconSize: 24.sp,
+      buttonWidth: 72.w,
+      dropdownHeight: 300.h,
+      dropdownWidth: 120.w,
+      buttonPadding: const EdgeInsets.only(left: 16),
+      hint: 'Select Item',
+      dropdownItems: cartListModel.countList,
+      value: recipe.countInCart.toString(),
+      onChanged: (value) async {
+        await EasyLoading.show(status: 'loading...');
+        if (value != null) {
+          final errorText = await cartListModel.updateCountInCart(
+            recipeId: recipe.recipeId!,
+            countInCart: int.parse(value),
+          );
+          if (errorText == null) {
+            await EasyLoading.showSuccess('更新しました');
+          } else {
+            await EasyLoading.dismiss();
+            await showDialog<AlertDialog>(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('更新失敗'),
+                  content: Text(errorText),
+                  actions: [
+                    TextButton(
+                      child: const Text('閉じる'),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        }
+      },
+    );
+  }
+}
+
 class ConfirmAllDeleteDialog extends ConsumerWidget {
   const ConfirmAllDeleteDialog({Key? key, required this.recipeListInCart})
       : super(key: key);
@@ -320,7 +380,6 @@ class ConfirmDeleteDialog extends ConsumerWidget {
               await EasyLoading.showSuccess(
                 'カートから削除しました',
               );
-              // selectedCountNotifier.state = value;
             } else {
               await EasyLoading.dismiss();
               await showDialog<AlertDialog>(
@@ -345,70 +404,6 @@ class ConfirmDeleteDialog extends ConsumerWidget {
           child: const Text('はい'),
         ),
       ],
-    );
-  }
-}
-
-class CountDropdownButton extends ConsumerWidget {
-  const CountDropdownButton({
-    Key? key,
-    required this.initialCount,
-    required this.recipe,
-  }) : super(key: key);
-
-  final int initialCount;
-  final RecipeInCart recipe;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userStateNotifierProvider);
-    final cartListModel = CartListModel(user: user!);
-    final selectedCount = ref.watch(selectedCountProviderFamily(initialCount));
-    final selectedCountNotifier =
-        ref.watch(selectedCountProviderFamily(initialCount).notifier);
-
-    return CustomDropdownButton2(
-      icon: const Icon(Icons.arrow_drop_down),
-      iconSize: 24.sp,
-      buttonWidth: 72.w,
-      dropdownHeight: 300.h,
-      dropdownWidth: 120.w,
-      buttonPadding: const EdgeInsets.only(left: 16),
-      hint: 'Select Item',
-      dropdownItems: cartListModel.countList,
-      value: selectedCount,
-      onChanged: (value) async {
-        await EasyLoading.show(status: 'loading...');
-        if (value != null) {
-          final errorText = await cartListModel.updateCountInCart(
-            recipeId: recipe.recipeId!,
-            countInCart: recipe.countInCart!,
-          );
-          if (errorText == null) {
-            await EasyLoading.showSuccess('更新しました');
-            selectedCountNotifier.state = value;
-          } else {
-            await EasyLoading.dismiss();
-            await showDialog<AlertDialog>(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('更新失敗'),
-                  content: Text(errorText),
-                  actions: [
-                    TextButton(
-                      child: const Text('閉じる'),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          }
-        }
-      },
     );
   }
 }
