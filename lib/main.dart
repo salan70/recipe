@@ -32,12 +32,13 @@ void main() async {
   await Hive.openBox<IngredientUnit>('ingredientUnits');
   await Hive.openBox<Customizations>('customizations');
 
-  final packageInfo = await PackageInfo.fromPlatform();
-  final isProd = packageInfo.packageName == 'com.toda.recipe' || false;
+  // final packageInfo = await PackageInfo.fromPlatform();
+  // final isProd = packageInfo.packageName == 'com.toda.recipe' || false;
 
   runApp(
     DevicePreview(
-      enabled: !isProd,
+      // enabled: !isProd,
+      enabled: false,
       builder: (context) => const ProviderScope(child: MyApp()),
     ),
   );
@@ -61,6 +62,7 @@ class MyApp extends ConsumerWidget {
             editThemeModel.themeModeList[usedThemeModeIndex].themeMode;
 
         return ScreenUtilInit(
+          minTextAdapt: true,
           designSize: const Size(414, 896),
           builder: (context, child) {
             final customTheme = CustomTheme();

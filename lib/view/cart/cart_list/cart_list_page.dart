@@ -85,7 +85,7 @@ class CartListPage extends ConsumerWidget {
                       itemBuilder: (context, index) {
                         final recipe = recipeListInCart[index];
                         return SizedBox(
-                          height: 160.h,
+                          height: 200.h,
                           child: GestureDetector(
                             onTap: () {
                               Navigator.push<MaterialPageRoute<dynamic>>(
