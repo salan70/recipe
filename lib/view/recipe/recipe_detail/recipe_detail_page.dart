@@ -219,8 +219,11 @@ class SelectCountInCartDialog extends ConsumerWidget {
           child: const Text('はい'),
           onPressed: () async {
             await EasyLoading.show(status: 'loading...');
-            final countInCart =
-                selectedCount == '' ? 1 : int.parse(selectedCount);
+            final countInCart = selectedCount == ''
+                ? recipeInCart.countInCart == 0
+                    ? 1
+                    : recipeInCart.countInCart!
+                : int.parse(selectedCount);
             final errorText = await recipeDetailModel.updateCountInCart(
               recipeId: recipe.recipeId!,
               countInCart: countInCart,
