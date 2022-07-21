@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:601576837842:android:515f8d3cad7dd6ccc6530b",
+        "mobilesdk_app_id": "1:601576837842:android:ab79b18d31258d62c6530b",
         "android_client_info": {
-          "package_name": "com.toda.recipe"
+          "package_name": "com.toda.recipe.stg"
         }
       },
       "oauth_client": [

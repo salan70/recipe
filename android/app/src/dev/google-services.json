@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1070077102168:android:ae16776815d695e8b9e22d",
+        "mobilesdk_app_id": "1:1070077102168:android:00ae165c81193d1cb9e22d",
         "android_client_info": {
-          "package_name": "com.toda.recipe"
+          "package_name": "com.toda.recipe.dev"
         }
       },
       "oauth_client": [
@@ -31,10 +31,10 @@
               "client_type": 3
             },
             {
-              "client_id": "1070077102168-ulgs53efantsdkpsrk4f9h8jdnfmh71t.apps.googleusercontent.com",
+              "client_id": "1070077102168-jmn4vq8mpeel4ktcnqkmvpcofdj08p75.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.toda.recipe"
+                "bundle_id": "com.toda.recipe.dev"
               }
             }
           ]
