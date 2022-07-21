@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:recipe/components/theme/custom_theme.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/domain/type_adapter/customizations/customizations.dart';
@@ -30,7 +32,15 @@ void main() async {
   await Hive.openBox<IngredientUnit>('ingredientUnits');
   await Hive.openBox<Customizations>('customizations');
 
-  runApp(const ProviderScope(child: MyApp()));
+  final packageInfo = await PackageInfo.fromPlatform();
+  final isProd = packageInfo.packageName == 'com.toda.recipe' || false;
+
+  runApp(
+    DevicePreview(
+      enabled: !isProd,
+      builder: (context) => const ProviderScope(child: MyApp()),
+    ),
+  );
 }
 
 class MyApp extends ConsumerWidget {
