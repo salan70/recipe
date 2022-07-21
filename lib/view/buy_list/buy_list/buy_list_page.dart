@@ -31,7 +31,7 @@ class BuyListPage extends ConsumerWidget {
           },
         ),
         title: const Text(
-          'カート',
+          '買い物リスト',
         ),
       ),
       body: const IngredientTabWidget(),
