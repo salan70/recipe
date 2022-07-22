@@ -32,6 +32,7 @@ void main() async {
   await Hive.openBox<IngredientUnit>('ingredientUnits');
   await Hive.openBox<Customizations>('customizations');
 
+  /// device_preview関連
   // final packageInfo = await PackageInfo.fromPlatform();
   // final isProd = packageInfo.packageName == 'com.toda.recipe' || false;
 
