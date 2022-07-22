@@ -11,7 +11,7 @@ import 'package:recipe/components/theme/custom_theme.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/domain/type_adapter/customizations/customizations.dart';
 import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
-import 'package:recipe/view/other/page_container/page_container_page.dart';
+import 'package:recipe/view/other/base_page/base_page.dart';
 import 'view/setting/customize/edit_theme/edit_theme_model.dart';
 
 void main() async {
@@ -75,7 +75,7 @@ class MyApp extends ConsumerWidget {
               darkTheme: customTheme.customDarkTheme(
                 usedScheme: usedScheme,
               ),
-              home: const PageContainerPage(),
+              home: const BasePage(),
               debugShowCheckedModeBanner: false,
               builder: EasyLoading.init(),
             );

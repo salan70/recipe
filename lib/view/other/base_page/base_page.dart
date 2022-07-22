@@ -6,8 +6,8 @@ import 'package:recipe/view/buy_list/buy_list/buy_list_page.dart';
 import 'package:recipe/view/cart/cart_list/cart_list_page.dart';
 import 'package:recipe/view/recipe/recipe_list/recipe_list_page.dart';
 
-class PageContainerPage extends ConsumerWidget {
-  const PageContainerPage({Key? key}) : super(key: key);
+class BasePage extends ConsumerWidget {
+  const BasePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
