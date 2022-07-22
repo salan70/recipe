@@ -21,9 +21,6 @@ class PageContainerPage extends ConsumerWidget {
       body: PersistentTabView(
         context,
         screens: pages,
-        selectedTabScreenContext: (context) {
-          if (context != null) {}
-        },
         navBarStyle: NavBarStyle.simple,
         backgroundColor: Theme.of(context).bottomAppBarColor,
         decoration: NavBarDecoration(
