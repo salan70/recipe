@@ -142,6 +142,7 @@ class EditRecipeWidget extends ConsumerWidget {
                         ),
                       ),
                       onPressed: () async {
+                        await Permission.camera.request();
                         if (await Permission.camera.status.isGranted ||
                             await Permission.camera.request().isGranted) {
                           await imageFileNotifier.pickImage(ImageSource.camera);
