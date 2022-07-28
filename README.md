@@ -18,15 +18,15 @@ FlutterとFirebaseで開発したモバイルアプリです。
 - レシピの記録、読み取り、更新、削除
   <details><summary>画像</summary>
 
-  | 記録 | 読み取り | 更新 |
-  | ---- | ---- | ---- |
-  | ![intro_create_recipe](https://user-images.githubusercontent.com/78355880/175882068-38729504-ea77-4093-b1e8-ea6f27d81eba.gif) | ![intro_read_recipe](https://user-images.githubusercontent.com/78355880/175882101-d6b09631-2aa1-4d36-b61f-30b494fb49ad.png) | ![intro_update_recipe](https://user-images.githubusercontent.com/78355880/175882105-bc74276a-03d8-4c88-972f-13bd12507b88.gif) |
+  | 記録 | 読み取り | 更新 | 削除 |
+  | ---- | ---- | ---- | ---- |
+  | <img src="https://user-images.githubusercontent.com/78355880/181409066-6ce8fc9d-8149-4026-89e9-28a620c11dc8.gif" width="200px">  | <img src="https://user-images.githubusercontent.com/78355880/181409103-553b6b42-156d-4ff8-bed3-1ebcd1dac4d0.gif" width="200px"> | <img src="https://user-images.githubusercontent.com/78355880/181409203-62f64205-b7aa-44a0-bd85-61cdceacb31c.gif" width="200px"> | <img src="https://user-images.githubusercontent.com/78355880/181409100-84b2410b-6996-4606-8dc7-6905f0b69729.gif" width="200px"> |
   </details>
 
 - レシピの検索
   <details><summary>画像</summary>
 
-  ![intro_search_recipe](https://user-images.githubusercontent.com/78355880/175886607-9cd95268-91f9-40ff-8eab-cfd4169c5bfb.gif)
+  <img src="https://user-images.githubusercontent.com/78355880/181409175-535404cd-217e-4a38-a6ff-a7260e6748f3.gif" width="200px">
   </details>
 
 - 記録したレシピをカートに追加し、カート内のレシピの材料から買い物リストを作成
@@ -34,13 +34,13 @@ FlutterとFirebaseで開発したモバイルアプリです。
 
   | カートへの追加 | 買い物リスト | 
   | ---- | ---- | 
-  | ![intro_add_cart_recipe](https://user-images.githubusercontent.com/78355880/175889498-ac4d426b-f25d-4ae3-bb9d-5ff0fca5bcc4.gif) | ![intro_buy_list](https://user-images.githubusercontent.com/78355880/175888532-b6136004-3ef2-4941-830c-4dd0ad592abf.PNG) | 
+  | <img src="https://user-images.githubusercontent.com/78355880/181409197-0b6016f8-8696-4f52-9eb4-bb5f89181edb.gif" width="200px"> | <img src="https://user-images.githubusercontent.com/78355880/181409099-9adc970e-5ea2-449a-a3e4-e86639423e33.gif" width="200px"> | 
   </details>
 
 - 買い物リストにて、買うリストから買わないリストへの移動
   <details><summary>画像</summary>
 
-  ![intro_move_list](https://user-images.githubusercontent.com/78355880/175890370-91b7ea29-b2ce-4335-b982-0c18f9208879.gif)
+  <img src="https://user-images.githubusercontent.com/78355880/181409096-64068288-f68f-44c0-b72c-e1bb1fbd2b7b.gif" width="200px">
   </details>
 
 - ユーザー認証（匿名認証、メールアドレス認証、Googleアカウント認証、Appleアカウント認証）
@@ -48,7 +48,7 @@ FlutterとFirebaseで開発したモバイルアプリです。
 
   | 新規登録 | ログイン | 
   | ---- | ---- | 
-  | ![intro_signupPNG](https://user-images.githubusercontent.com/78355880/175891084-9448a8bf-4622-439e-9371-091d20493a30.PNG) | ![intro_login](https://user-images.githubusercontent.com/78355880/175891068-3a4694da-8b0d-4021-85b6-25e144cb9f69.PNG) | 
+  | <img src="https://user-images.githubusercontent.com/78355880/181409196-4fa0784e-3f74-4ae6-9200-8e2254a09cc0.PNG" width="200px"> | <img src="https://user-images.githubusercontent.com/78355880/181409101-0d5be2f6-af94-4319-8bfb-373d3d2b5d79.PNG" width="200px"> | 
   </details>
 
 ##  その他
