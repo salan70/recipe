@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:recipe/domain/recipe.dart';
 
 @immutable
@@ -91,18 +90,4 @@ class RecipeByIngredientInCart {
   int forHowManyPeople;
   int countInCart;
   String? ingredientAmount;
-}
-
-class OtherCartItem {
-  OtherCartItem({
-    required this.itemId,
-    required this.createdAt,
-    required this.title,
-    required this.subTitle,
-  });
-
-  String? itemId;
-  DateTime? createdAt;
-  String title;
-  String? subTitle;
 }

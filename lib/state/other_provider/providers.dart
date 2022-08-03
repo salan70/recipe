@@ -1,6 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:recipe/domain/buy_list.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/repository/firebase/cart_repository.dart';
@@ -63,7 +64,7 @@ final recipeListInCartProvider =
 });
 
 final otherCartItemListProvider =
-    StreamProvider.autoDispose<List<OtherCartItem>>((ref) {
+    StreamProvider.autoDispose<List<OtherBuyListItem>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
   final cartRepository = CartRepository(user: user!);
 
