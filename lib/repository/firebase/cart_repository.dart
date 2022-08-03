@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:recipe/domain/buy_list.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:uuid/uuid.dart';
@@ -60,7 +61,7 @@ class CartRepository {
     return recipeStream;
   }
 
-  Stream<List<OtherCartItem>> fetchOtherCartItemList() {
+  Stream<List<OtherBuyListItem>> fetchOtherCartItemList() {
     final otherCartItemCollection = FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
@@ -76,7 +77,7 @@ class CartRepository {
                 final title = data['title'] as String;
                 final subTitle = data['subTitle'] as String?;
 
-                return OtherCartItem(
+                return OtherBuyListItem(
                   itemId: itemId,
                   createdAt: null,
                   title: title,
@@ -106,7 +107,7 @@ class CartRepository {
   }
 
   /// add
-  Future<void> addOtherCartItem(OtherCartItem otherCartItem) async {
+  Future<void> addOtherCartItem(OtherBuyListItem otherCartItem) async {
     await FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
