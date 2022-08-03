@@ -63,12 +63,12 @@ final recipeListInCartProvider =
   return cartRepository.fetchRecipeListInCart();
 });
 
-final otherCartItemListProvider =
+final otherBuyListItemListProvider =
     StreamProvider.autoDispose<List<OtherBuyListItem>>((ref) {
   final user = ref.watch(userStateNotifierProvider);
   final cartRepository = CartRepository(user: user!);
 
-  return cartRepository.fetchOtherCartItemList();
+  return cartRepository.fetchOtherBuyListItemList();
 });
 
 final stateIsChangedProvider = StateProvider.autoDispose((ref) => false);

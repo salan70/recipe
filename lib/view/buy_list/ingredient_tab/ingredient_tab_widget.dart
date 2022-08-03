@@ -49,7 +49,7 @@ class IngredientTabWidget extends ConsumerWidget {
                 totaledIngredientListInCart,
               );
 
-              final otherCartItemList = ref.watch(otherCartItemListProvider);
+              final otherCartItemList = ref.watch(otherBuyListItemListProvider);
 
               var otherItemBuyList = <OtherBuyListItem>[];
               var otherItemNotBuyList = <OtherBuyListItem>[];
