@@ -61,14 +61,14 @@ class CartRepository {
     return recipeStream;
   }
 
-  Stream<List<OtherBuyListItem>> fetchOtherCartItemList() {
+  Stream<List<OtherBuyListItem>> fetchOtherBuyListItemList() {
     final otherCartItemCollection = FirebaseFirestore.instance
         .collection('users')
         .doc(user.uid)
         .collection('otherCartItems')
         .orderBy('createdAt');
 
-    final otherCartItemList =
+    final otherBuyListItemList =
         otherCartItemCollection.snapshots().asBroadcastStream().map(
               (e) => e.docs.map((DocumentSnapshot document) {
                 final data = document.data()! as Map<String, dynamic>;
@@ -85,7 +85,7 @@ class CartRepository {
               }).toList(),
             );
 
-    return otherCartItemList;
+    return otherBuyListItemList;
   }
 
   /// update
