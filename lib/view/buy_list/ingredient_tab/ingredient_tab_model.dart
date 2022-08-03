@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:recipe/components/calculation/calculation.dart';
+import 'package:recipe/domain/buy_list.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
@@ -191,11 +192,11 @@ class IngredientTabModel extends ChangeNotifier {
     return notBuyList;
   }
 
-  List<OtherCartItem> createOtherItemBuyList(
-    List<OtherCartItem> list,
+  List<OtherBuyListItem> createOtherItemBuyList(
+    List<OtherBuyListItem> list,
   ) {
     final cartItemRepository = CartItemRepository();
-    final buyList = <OtherCartItem>[];
+    final buyList = <OtherBuyListItem>[];
 
     for (final ocherItem in list) {
       final id = ocherItem.itemId;
@@ -208,11 +209,11 @@ class IngredientTabModel extends ChangeNotifier {
     return buyList;
   }
 
-  List<OtherCartItem> createOtherItemNotBuyList(
-    List<OtherCartItem> list,
+  List<OtherBuyListItem> createOtherItemNotBuyList(
+    List<OtherBuyListItem> list,
   ) {
     final cartItemRepository = CartItemRepository();
-    final notBuyList = <OtherCartItem>[];
+    final notBuyList = <OtherBuyListItem>[];
 
     for (final otherItem in list) {
       final id = otherItem.itemId;

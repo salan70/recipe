@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:recipe/domain/buy_list.dart';
 import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
@@ -50,8 +51,8 @@ class IngredientTabWidget extends ConsumerWidget {
 
               final otherCartItemList = ref.watch(otherCartItemListProvider);
 
-              var otherItemBuyList = <OtherCartItem>[];
-              var otherItemNotBuyList = <OtherCartItem>[];
+              var otherItemBuyList = <OtherBuyListItem>[];
+              var otherItemNotBuyList = <OtherBuyListItem>[];
 
               var countBuyList = ingredientBuyList.length;
               var countNotBuyList = ingredientNotBuyList.length;
@@ -269,7 +270,7 @@ class IngredientTabWidget extends ConsumerWidget {
   Widget _otherItemListViewWidget(
     BuildContext context,
     String listType,
-    List<OtherCartItem> otherItemList,
+    List<OtherBuyListItem> otherItemList,
     User user,
   ) {
     final ingredientTabModel = IngredientTabModel();
@@ -345,7 +346,7 @@ class IngredientTabWidget extends ConsumerWidget {
                   ),
             ),
             subtitle: Text(
-              otherItem.subTitle!,
+              otherItem.subTitle,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.caption!.copyWith(
                     decoration: ingredientTabModel.getCartItem(id).isChecked
