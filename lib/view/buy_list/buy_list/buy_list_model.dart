@@ -7,10 +7,9 @@ class BuyListModel extends ChangeNotifier {
   BuyListModel({required this.user});
   final User user;
 
-  Future<String?> addOtherCartItem(String title, String? subTitle) async {
+  Future<String?> addOtherCartItem(String title, String subTitle) async {
     final cartRepository = CartRepository(user: user);
     final otherCartItem = OtherBuyListItem(
-      itemId: null,
       createdAt: DateTime.now(),
       title: title,
       subTitle: subTitle,

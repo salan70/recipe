@@ -346,7 +346,7 @@ class IngredientTabWidget extends ConsumerWidget {
                   ),
             ),
             subtitle: Text(
-              otherItem.subTitle!,
+              otherItem.subTitle,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.caption!.copyWith(
                     decoration: ingredientTabModel.getCartItem(id).isChecked

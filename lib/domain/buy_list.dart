@@ -1,13 +1,13 @@
-class OtherBuyListItem {
-  OtherBuyListItem({
-    required this.itemId,
-    required this.createdAt,
-    required this.title,
-    required this.subTitle,
-  });
+import 'package:flutter/foundation.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'buy_list.freezed.dart';
 
-  String? itemId;
-  DateTime? createdAt;
-  String title;
-  String? subTitle;
+@freezed
+class OtherBuyListItem with _$OtherBuyListItem {
+  const factory OtherBuyListItem({
+    String? itemId,
+    DateTime? createdAt,
+    required String title,
+    required String subTitle,
+  }) = _OtherBuyListItem;
 }

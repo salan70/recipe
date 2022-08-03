@@ -75,11 +75,10 @@ class CartRepository {
 
                 final itemId = document.id;
                 final title = data['title'] as String;
-                final subTitle = data['subTitle'] as String?;
+                final subTitle = data['subTitle'] as String;
 
                 return OtherBuyListItem(
                   itemId: itemId,
-                  createdAt: null,
                   title: title,
                   subTitle: subTitle,
                 );
