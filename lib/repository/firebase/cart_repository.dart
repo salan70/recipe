@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:recipe/domain/buy_list.dart';
-import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/recipe.dart';
 import 'package:uuid/uuid.dart';
 
