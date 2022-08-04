@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:recipe/domain/buy_list.dart';
-import 'package:recipe/domain/cart.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/state/other_provider/providers.dart';
@@ -22,8 +21,8 @@ class IngredientTabWidget extends ConsumerWidget {
 
     final user = ref.watch(userStateNotifierProvider);
     final recipeListInCart = ref.watch(recipeListInCartProvider);
-    final notBuyIngredientListIsOpen = ref.watch(notBuyListIsOpenProvider);
-    final notBuyIngredientListIsOpenNotifier =
+    final notBuyListIsOpen = ref.watch(notBuyListIsOpenProvider);
+    final notBuyListIsOpenNotifier =
         ref.watch(notBuyListIsOpenProvider.notifier);
 
     final selectedTabContext = context;
@@ -37,16 +36,16 @@ class IngredientTabWidget extends ConsumerWidget {
             error: (error, stack) => Text('Error: $error'),
             loading: () => const CircularProgressIndicator(),
             data: (recipeListInCart) {
-              final totaledIngredientListInCart = ingredientTabModel
-                  .castToTotaledIngredientListInCart(recipeListInCart);
+              final totaledIngredientList = ingredientTabModel
+                  .castToTotaledIngredientList(recipeListInCart);
 
               final ingredientBuyList =
                   ingredientTabModel.createIngredientBuyList(
-                totaledIngredientListInCart,
+                totaledIngredientList,
               );
               final ingredientNotBuyList =
                   ingredientTabModel.createIngredientNotBuyList(
-                totaledIngredientListInCart,
+                totaledIngredientList,
               );
 
               final otherCartItemList = ref.watch(otherBuyListItemListProvider);
@@ -135,7 +134,7 @@ class IngredientTabWidget extends ConsumerWidget {
                           textAlign: TextAlign.left,
                         ),
                         GestureDetector(
-                          child: notBuyIngredientListIsOpen == true
+                          child: notBuyListIsOpen == true
                               ? const Icon(
                                   Icons.expand_less_rounded,
                                 )
@@ -143,14 +142,13 @@ class IngredientTabWidget extends ConsumerWidget {
                                   Icons.expand_more_rounded,
                                 ),
                           onTap: () {
-                            notBuyIngredientListIsOpenNotifier.state =
-                                !notBuyIngredientListIsOpen;
+                            notBuyListIsOpenNotifier.state = !notBuyListIsOpen;
                           },
                         ),
                       ],
                     ),
                   ),
-                  notBuyIngredientListIsOpen == true
+                  notBuyListIsOpen == true
                       ? Column(
                           children: [
                             _ingredientListViewWidget(
@@ -187,7 +185,7 @@ class IngredientTabWidget extends ConsumerWidget {
     BuildContext context,
     BuildContext selectedTabContext,
     String listType,
-    List<TotaledIngredientInCart> ingredientList,
+    List<TotaledIngredient> ingredientList,
   ) {
     final ingredientTabModel = IngredientTabModel();
     final slidableActionText = listType == 'buyList' ? '買わないへ' : '買うへ';
@@ -199,8 +197,8 @@ class IngredientTabWidget extends ConsumerWidget {
       itemBuilder: (context, index) {
         final ingredient = ingredientList[index];
         final ingredientInCart = ingredient.ingredientInCart;
-        final id = ingredient.ingredientInCart.ingredientName +
-            ingredient.ingredientInCart.ingredientUnit;
+        final id =
+            ingredient.ingredientInCart.name + ingredient.ingredientInCart.unit;
 
         return Slidable(
           key: ValueKey(id),
@@ -225,7 +223,7 @@ class IngredientTabWidget extends ConsumerWidget {
           ),
           child: CheckboxListTile(
             title: Text(
-              ingredientInCart.ingredientName,
+              ingredientInCart.name,
               style: Theme.of(context).textTheme.subtitle2!.copyWith(
                     decoration: ingredientTabModel.getCartItem(id).isChecked
                         ? TextDecoration.lineThrough
@@ -233,8 +231,8 @@ class IngredientTabWidget extends ConsumerWidget {
                   ),
             ),
             subtitle: Text(
-              '${ingredientInCart.ingredientTotalAmount}'
-              '${ingredientInCart.ingredientUnit}',
+              '${ingredientInCart.totalAmount}'
+              '${ingredientInCart.unit}',
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 decoration: ingredientTabModel.getCartItem(id).isChecked
@@ -319,7 +317,7 @@ class IngredientTabWidget extends ConsumerWidget {
                 onPressed: (context) async {
                   await EasyLoading.show(status: 'loading...');
                   final errorText =
-                      await ingredientTabModel.deleteOtherCartItem(
+                      await ingredientTabModel.deleteOtherBuyListItem(
                     user,
                     otherItem.itemId!,
                   );
@@ -370,20 +368,20 @@ class IngredientTabWidget extends ConsumerWidget {
 
   Widget _recipeListPerIngredientDialog(
     BuildContext selectedTabContext,
-    TotaledIngredientInCart ingredient,
+    TotaledIngredient ingredient,
   ) {
     return AlertDialog(
       title: Text(
-        '${ingredient.ingredientInCart.ingredientName}を使うレシピ',
+        '${ingredient.ingredientInCart.name}を使うレシピ',
       ),
       contentPadding: EdgeInsets.zero,
       content: SizedBox(
         width: double.maxFinite,
         height: 200.h,
         child: ListView.builder(
-          itemCount: ingredient.recipeListByIngredientInCart.length,
+          itemCount: ingredient.recipeListPerIngredient.length,
           itemBuilder: (context, recipeIndex) {
-            final recipe = ingredient.recipeListByIngredientInCart[recipeIndex];
+            final recipe = ingredient.recipeListPerIngredient[recipeIndex];
             return ListTile(
               title: Text(
                 recipe.recipeName,
@@ -392,7 +390,7 @@ class IngredientTabWidget extends ConsumerWidget {
               subtitle: Text(
                 '${recipe.forHowManyPeople * recipe.countInCart}人分  '
                 '${recipe.ingredientAmount}'
-                '${ingredient.ingredientInCart.ingredientUnit}',
+                '${ingredient.ingredientInCart.unit}',
                 style: Theme.of(context).textTheme.caption,
                 overflow: TextOverflow.ellipsis,
               ),

@@ -4,7 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'package:recipe/domain/cart.dart';
+import 'package:recipe/domain/buy_list.dart';
 import 'package:recipe/state/auth/auth_provider.dart';
 import 'package:recipe/state/other_provider/providers.dart';
 import 'package:recipe/view/cart/cart_list/cart_list_model.dart';
