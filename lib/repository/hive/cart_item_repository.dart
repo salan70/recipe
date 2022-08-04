@@ -41,7 +41,7 @@ class CartItemRepository {
     return getBox;
   }
 
-  Future<void> deleteCartItem(String id) async {
+  Future<void> deleteBuyListItem(String id) async {
     final box = getCartItems();
     await box.delete(id);
   }

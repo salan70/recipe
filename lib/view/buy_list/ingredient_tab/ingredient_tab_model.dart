@@ -226,11 +226,11 @@ class IngredientTabModel extends ChangeNotifier {
     return notBuyList;
   }
 
-  Future<String?> deleteOtherCartItem(User user, String itemId) async {
+  Future<String?> deleteOtherBuyListItem(User user, String itemId) async {
     final cartRepository = CartRepository(user: user);
     try {
       await cartRepository.deleteOtherCartItem(itemId);
-      await _cartItemRepository.deleteCartItem(itemId);
+      await _cartItemRepository.deleteBuyListItem(itemId);
       return null;
     } on Exception catch (e) {
       return e.toString();

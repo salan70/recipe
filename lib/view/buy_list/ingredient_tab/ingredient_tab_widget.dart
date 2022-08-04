@@ -319,7 +319,7 @@ class IngredientTabWidget extends ConsumerWidget {
                 onPressed: (context) async {
                   await EasyLoading.show(status: 'loading...');
                   final errorText =
-                      await ingredientTabModel.deleteOtherCartItem(
+                      await ingredientTabModel.deleteOtherBuyListItem(
                     user,
                     otherItem.itemId!,
                   );
