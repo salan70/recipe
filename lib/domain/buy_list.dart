@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:recipe/domain/recipe.dart';
 
+import 'recipe.dart';
 part 'buy_list.freezed.dart';
 
 @freezed
