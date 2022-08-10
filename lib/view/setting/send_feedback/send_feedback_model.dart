@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:recipe/repository/firebase/feedback_repository.dart';
+import '../../../repository/firebase/feedback_repository.dart';
 
 class SendFeedbackModel extends ChangeNotifier {
   SendFeedbackModel({required this.user});

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:recipe/domain/re_auth.dart';
-import 'package:recipe/state/auth/auth_provider.dart';
+import '../../../domain/re_auth.dart';
+import '../../../state/auth/auth_provider.dart';
 
 class SettingTopModel extends ChangeNotifier {
   Future<ReAuth> reAuthWithGoogle(WidgetRef ref) async {

@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
+
+import '../../domain/type_adapter/cart_item/cart_item.dart';
 
 class CartItemRepository {
   Box<CartItem> getCartItems() {

@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:recipe/domain/type_adapter/customizations/customizations.dart';
-import 'package:recipe/view/setting/customize/edit_theme/edit_theme_model.dart';
 import 'package:settings_ui/settings_ui.dart';
+
+import '../../../../domain/type_adapter/customizations/customizations.dart';
+import 'edit_theme_model.dart';
 
 class EditThemePage extends ConsumerWidget {
   const EditThemePage({Key? key}) : super(key: key);

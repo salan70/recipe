@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/state/other_provider/providers.dart';
-import 'package:recipe/state/procedure_list/procedure_list_provider.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../../../../domain/recipe.dart';
+import '../../../../../state/other_provider/providers.dart';
+import '../../../../../state/procedure_list/procedure_list_provider.dart';
 
 class ProcedureTextFieldWidget extends ConsumerWidget {
   const ProcedureTextFieldWidget({Key? key}) : super(key: key);

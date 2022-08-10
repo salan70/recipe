@@ -1,4 +1,4 @@
-import 'package:recipe/domain/type_adapter/customizations/customizations.dart';
+import '../../domain/type_adapter/customizations/customizations.dart';
 
 class CustomizationsRepository {
   /// ThemeMode関連

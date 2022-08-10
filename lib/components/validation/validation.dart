@@ -1,5 +1,6 @@
 import 'package:fraction/fraction.dart';
-import 'package:recipe/domain/recipe.dart';
+
+import '../../domain/recipe.dart';
 
 class Validations {
   /// レシピのvalidation

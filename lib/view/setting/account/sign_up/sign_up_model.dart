@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:recipe/state/auth/auth_provider.dart';
+import '../../../../state/auth/auth_provider.dart';
 
 class SignUpModel extends ChangeNotifier {
   Future<String?> signUpWithEmail(

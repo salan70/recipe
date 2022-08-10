@@ -1,15 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:recipe/components/auth_exception.dart';
-import 'package:recipe/domain/re_auth.dart';
-import 'package:recipe/repository/firebase/recipe_repository.dart';
-import 'package:recipe/repository/firebase/user_repository.dart';
-import 'package:recipe/repository/hive/cart_item_repository.dart';
-import 'package:recipe/repository/hive/customizations_repository.dart';
-import 'package:recipe/repository/hive/ingredient_unit_repository.dart';
-import 'package:recipe/state/other_provider/providers.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+
+import '../../components/auth_exception.dart';
+import '../../domain/re_auth.dart';
+import '../../repository/firebase/recipe_repository.dart';
+import '../../repository/firebase/user_repository.dart';
+import '../../repository/hive/cart_item_repository.dart';
+import '../../repository/hive/customizations_repository.dart';
+import '../../repository/hive/ingredient_unit_repository.dart';
+import '../other_provider/providers.dart';
 
 class AuthStateNotifier extends StateNotifier<User?> {
   AuthStateNotifier() : super(null);
