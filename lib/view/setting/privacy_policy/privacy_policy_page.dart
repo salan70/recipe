@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe/state/other_provider/providers.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../../../state/other_provider/providers.dart';
 
 class PrivacyPolicyPage extends ConsumerWidget {
   const PrivacyPolicyPage({Key? key}) : super(key: key);

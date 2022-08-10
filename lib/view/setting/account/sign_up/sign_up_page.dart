@@ -3,10 +3,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:recipe/state/auth/auth_provider.dart';
-import 'package:recipe/view/other/introduction_take_over/introduction_take_over_page.dart';
-import 'package:recipe/view/setting/account/sign_up/sign_up_model.dart';
 import 'package:sign_button/sign_button.dart';
+
+import '../../../../state/auth/auth_provider.dart';
+import '../../../other/introduction_take_over/introduction_take_over_page.dart';
+import 'sign_up_model.dart';
 
 class SignUpPage extends ConsumerWidget {
   const SignUpPage({Key? key}) : super(key: key);

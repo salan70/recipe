@@ -4,16 +4,17 @@ import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:in_app_review/in_app_review.dart';
-import 'package:recipe/state/auth/auth_provider.dart';
-import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
-import 'package:recipe/view/setting/account/login/login_page.dart';
-import 'package:recipe/view/setting/account/sign_up/sign_up_page.dart';
-import 'package:recipe/view/setting/customize/edit_theme/edit_theme_page.dart';
-import 'package:recipe/view/setting/privacy_policy/privacy_policy_page.dart';
-import 'package:recipe/view/setting/send_feedback/send_feedback_page.dart';
-import 'package:recipe/view/setting/setting_top/setting_top_model.dart';
-import 'package:recipe/view/setting/terms/terms_page.dart';
 import 'package:settings_ui/settings_ui.dart';
+
+import '../../../state/auth/auth_provider.dart';
+import '../../other/edit_ingredient_unit/edit_ingredient_unit_page.dart';
+import '../account/login/login_page.dart';
+import '../account/sign_up/sign_up_page.dart';
+import '../customize/edit_theme/edit_theme_page.dart';
+import '../privacy_policy/privacy_policy_page.dart';
+import '../send_feedback/send_feedback_page.dart';
+import '../terms/terms_page.dart';
+import 'setting_top_model.dart';
 
 class SettingTopPage extends ConsumerWidget {
   const SettingTopPage({Key? key}) : super(key: key);
