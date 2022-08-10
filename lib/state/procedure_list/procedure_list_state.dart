@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:recipe/domain/recipe.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../domain/recipe.dart';
 
 class ProcedureListNotifier extends StateNotifier<List<Procedure>> {
   ProcedureListNotifier()
