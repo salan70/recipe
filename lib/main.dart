@@ -7,11 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:recipe/components/theme/custom_theme.dart';
-import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
-import 'package:recipe/domain/type_adapter/customizations/customizations.dart';
-import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
-import 'package:recipe/view/other/base_page/base_page.dart';
+
+import 'components/theme/custom_theme.dart';
+import 'domain/type_adapter/cart_item/cart_item.dart';
+import 'domain/type_adapter/customizations/customizations.dart';
+import 'domain/type_adapter/ingredient_unit/ingredient_unit.dart';
+import 'view/other/base_page/base_page.dart';
 import 'view/setting/customize/edit_theme/edit_theme_model.dart';
 
 void main() async {
