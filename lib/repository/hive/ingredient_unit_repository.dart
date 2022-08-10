@@ -1,5 +1,5 @@
-import 'package:recipe/domain/type_adapter/ingredient_unit/ingredient_unit.dart';
-import 'package:recipe/view/other/edit_ingredient_unit/edit_ingredient_unit_model.dart';
+import '../../domain/type_adapter/ingredient_unit/ingredient_unit.dart';
+import '../../view/other/edit_ingredient_unit/edit_ingredient_unit_model.dart';
 
 class IngredientUnitRepository {
   EditIngredientUnitModel ingredientUnitEditModel = EditIngredientUnitModel();

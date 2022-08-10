@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:recipe/domain/buy_list.dart';
-import 'package:recipe/domain/recipe.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../domain/buy_list.dart';
+import '../../domain/recipe.dart';
 
 class CartRepository {
   CartRepository({required this.user, this.recipe});
