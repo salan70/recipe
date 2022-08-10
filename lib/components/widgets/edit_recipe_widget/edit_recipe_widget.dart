@@ -7,11 +7,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:recipe/components/widgets/edit_recipe_widget/reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
-import 'package:recipe/components/widgets/edit_recipe_widget/reordable_text_field/procedure_text_field/procedure_text_field_widget.dart';
-import 'package:recipe/domain/recipe.dart';
-import 'package:recipe/state/image_file/image_file_provider.dart';
-import 'package:recipe/view/other/introduction_edit_ingredient/introduction_edit_ingredient_page.dart';
+
+import '../../../domain/recipe.dart';
+import '../../../state/image_file/image_file_provider.dart';
+import '../../../view/other/introduction_edit_ingredient/introduction_edit_ingredient_page.dart';
+import 'reordable_text_field/ingredient_text_field/ingredient_text_field_widget.dart';
+import 'reordable_text_field/procedure_text_field/procedure_text_field_widget.dart';
 
 class EditRecipeWidget extends ConsumerWidget {
   const EditRecipeWidget({Key? key, required this.recipe}) : super(key: key);

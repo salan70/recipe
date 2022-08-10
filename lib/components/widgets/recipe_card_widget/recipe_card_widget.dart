@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:recipe/domain/recipe.dart';
+import '../../../domain/recipe.dart';
 
 class RecipeCardWidget extends ConsumerWidget {
   const RecipeCardWidget({Key? key, required this.recipe}) : super(key: key);
