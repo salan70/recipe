@@ -6,29 +6,29 @@ class Multiply {
   final Convert _convert = Convert();
   final Check _check = Check();
 
-  String executeMultiply(int countInCart, String? amount) {
+  String calculate(int countInCart, String? amount) {
     final amountType = _check.checkNumType(amount);
 
     switch (amountType) {
       case 'int':
-        return _multiplyInt(countInCart, amount!);
+        return _int(countInCart, amount!);
       case 'double':
-        return _multiplyDouble(countInCart, amount!);
+        return _double(countInCart, amount!);
       case 'fraction':
-        return _multiplyFraction(countInCart, amount!);
+        return _fraction(countInCart, amount!);
       case 'mixed fraction':
-        return _multiplyMixedFraction(countInCart, amount!);
+        return _mixedFraction(countInCart, amount!);
       default:
         return '';
     }
   }
 
-  /// multiply
-  String _multiplyInt(int countInCart, String num) {
+  /// private
+  String _int(int countInCart, String num) {
     return (countInCart * double.parse(num).toInt()).toString();
   }
 
-  String _multiplyDouble(int countInCart, String num) {
+  String _double(int countInCart, String num) {
     final totalAmount = (countInCart * double.parse(num)).toString();
 
     if (totalAmount.endsWith('.0')) {
@@ -38,7 +38,7 @@ class Multiply {
     return totalAmount;
   }
 
-  String _multiplyFraction(int countInCart, String num) {
+  String _fraction(int countInCart, String num) {
     final totalAmount =
         (countInCart.toFraction() * num.toFraction()).toString();
 
@@ -51,7 +51,7 @@ class Multiply {
     return totalAmount;
   }
 
-  String _multiplyMixedFraction(int countInCart, String num) {
+  String _mixedFraction(int countInCart, String num) {
     final totalAmount =
         (countInCart.toMixedFraction() * num.toMixedFraction()).toString();
 

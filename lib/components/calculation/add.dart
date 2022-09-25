@@ -6,8 +6,7 @@ class Add {
   final Convert _convert = Convert();
   final Check _check = Check();
 
-  /// execute
-  String executeAdd(String? previousAmount, String? addAmount) {
+  String calculate(String? previousAmount, String? addAmount) {
     final previousAmountType = _check.checkNumType(previousAmount);
     final addAmountType = _check.checkNumType(addAmount);
     final amountTypeList = [previousAmountType, addAmountType];
@@ -62,7 +61,7 @@ class Add {
     return '';
   }
 
-  /// add
+  /// private
   // int add
   String _intAddInt(String originalNum, String addNum) {
     return (int.parse(originalNum) + int.parse(addNum)).toString();
