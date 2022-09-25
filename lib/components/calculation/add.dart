@@ -1,27 +1,15 @@
 import 'package:fraction/fraction.dart';
+import 'package:recipe/components/calculation/check.dart';
+import 'package:recipe/components/calculation/convert.dart';
 
-class Calculation {
+class Add {
+  final Convert _convert = Convert();
+  final Check _check = Check();
+
   /// execute
-  String executeMultiply(int countInCart, String? amount) {
-    final amountType = _checkNumType(amount);
-
-    switch (amountType) {
-      case 'int':
-        return _multiplyInt(countInCart, amount!);
-      case 'double':
-        return _multiplyDouble(countInCart, amount!);
-      case 'fraction':
-        return _multiplyFraction(countInCart, amount!);
-      case 'mixed fraction':
-        return _multiplyMixedFraction(countInCart, amount!);
-      default:
-        return '';
-    }
-  }
-
   String executeAdd(String? previousAmount, String? addAmount) {
-    final previousAmountType = _checkNumType(previousAmount);
-    final addAmountType = _checkNumType(addAmount);
+    final previousAmountType = _check.checkNumType(previousAmount);
+    final addAmountType = _check.checkNumType(addAmount);
     final amountTypeList = [previousAmountType, addAmountType];
 
     // 計算しない
@@ -74,41 +62,6 @@ class Calculation {
     return '';
   }
 
-  /// check
-  String _checkNumType(String? num) {
-    if (num == null) {
-      return 'null';
-    } else if (num == '') {
-      return 'blank';
-    }
-    // fraction or mixedFraction
-    else if (num.contains('/')) {
-      try {
-        num.toFraction();
-        return 'fraction';
-      } on Exception {
-        try {
-          num.toMixedFraction();
-          return 'mixed fraction';
-        } on Exception {
-          return 'error';
-        }
-      }
-    }
-    // double or int
-    else {
-      try {
-        if (double.tryParse(num)! % 1 == 0) {
-          return 'int';
-        } else {
-          return 'double';
-        }
-      } on Exception {
-        return 'error';
-      }
-    }
-  }
-
   /// add
   // int add
   String _intAddInt(String originalNum, String addNum) {
@@ -121,9 +74,9 @@ class Calculation {
     final doubleOfTotalAmount = totalAmount.toFraction().toDouble();
 
     if (doubleOfTotalAmount.toString().endsWith('.0')) {
-      return _toInt(totalAmount);
+      return _convert.toInt(totalAmount);
     } else if (doubleOfTotalAmount >= 1) {
-      return _toMixedFraction(totalAmount);
+      return _convert.toMixedFraction(totalAmount);
     }
 
     return totalAmount;
@@ -132,8 +85,8 @@ class Calculation {
   String _intAddMixedFraction(String originalNum, String addNum) {
     var totalAmount = '';
 
-    final originalNumType = _checkNumType(originalNum);
-    final addNumType = _checkNumType(addNum);
+    final originalNumType = _check.checkNumType(originalNum);
+    final addNumType = _check.checkNumType(addNum);
 
     if (originalNumType == 'int') {
       final originalNumInt = int.parse(originalNum);
@@ -142,7 +95,7 @@ class Calculation {
               .toString();
 
       if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-        return _toInt(totalAmount);
+        return _convert.toInt(totalAmount);
       }
     } else if (addNumType == 'int') {
       final addNumInt = int.parse(addNum);
@@ -151,7 +104,7 @@ class Calculation {
               .toString();
 
       if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-        return _toInt(totalAmount);
+        return _convert.toInt(totalAmount);
       }
     }
 
@@ -164,14 +117,14 @@ class Calculation {
         (double.parse(originalNum) + double.parse(addNum)).toString();
 
     if (totalAmount.endsWith('.0')) {
-      return _toInt(totalAmount);
+      return _convert.toInt(totalAmount);
     }
 
     return totalAmount;
   }
 
   String _doubleAddFraction(String originalNum, String addNum) {
-    final originalNumType = _checkNumType(originalNum);
+    final originalNumType = _check.checkNumType(originalNum);
     var totalAmount = '';
 
     if (originalNumType == 'fraction') {
@@ -185,14 +138,14 @@ class Calculation {
     }
 
     if (totalAmount.endsWith('.0')) {
-      return _toInt(totalAmount);
+      return _convert.toInt(totalAmount);
     } else {
-      return _toRoundedDouble(totalAmount);
+      return _convert.toRoundedDouble(totalAmount);
     }
   }
 
   String _doubleAddMixedFraction(String originalNum, String addNum) {
-    final originalNumType = _checkNumType(originalNum);
+    final originalNumType = _check.checkNumType(originalNum);
     var totalAmount = '';
 
     if (originalNumType == 'mixed fraction') {
@@ -206,9 +159,9 @@ class Calculation {
     }
 
     if (totalAmount.endsWith('.0')) {
-      return _toInt(totalAmount);
+      return _convert.toInt(totalAmount);
     }
-    return _toRoundedDouble(totalAmount);
+    return _convert.toRoundedDouble(totalAmount);
   }
 
   // fraction add
@@ -222,18 +175,18 @@ class Calculation {
 
     if (doubleOfTotalAmount.toString().endsWith('.0')) {
       totalAmount = doubleOfTotalAmount.toString();
-      return _toInt(totalAmount);
+      return _convert.toInt(totalAmount);
     }
 
     if (doubleOfTotalAmount >= 1) {
-      return _toMixedFraction(totalAmount);
+      return _convert.toMixedFraction(totalAmount);
     }
 
     return totalAmount;
   }
 
   String _fractionAddMixedFraction(String originalNum, String addNum) {
-    final originalNumType = _checkNumType(originalNum);
+    final originalNumType = _check.checkNumType(originalNum);
 
     var totalAmount = '';
 
@@ -261,11 +214,11 @@ class Calculation {
     // 約分
     totalAmount = totalAmount.toFraction().toDouble().toFraction().toString();
 
-    totalAmount = _toMixedFraction(totalAmount);
+    totalAmount = _convert.toMixedFraction(totalAmount);
 
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
       totalAmount = totalAmount.toMixedFraction().toDouble().toString();
-      return _toInt(totalAmount);
+      return _convert.toInt(totalAmount);
     }
 
     return totalAmount;
@@ -281,66 +234,9 @@ class Calculation {
 
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
       totalAmount = totalAmount.toMixedFraction().toDouble().toString();
-      return _toInt(totalAmount);
+      return _convert.toInt(totalAmount);
     }
 
     return totalAmount;
-  }
-
-  /// multiply
-  String _multiplyInt(int countInCart, String num) {
-    return (countInCart * double.parse(num).toInt()).toString();
-  }
-
-  String _multiplyDouble(int countInCart, String num) {
-    final totalAmount = (countInCart * double.parse(num)).toString();
-
-    if (totalAmount.endsWith('.0')) {
-      return _toInt(totalAmount);
-    }
-
-    return totalAmount;
-  }
-
-  String _multiplyFraction(int countInCart, String num) {
-    final totalAmount =
-        (countInCart.toFraction() * num.toFraction()).toString();
-
-    if (totalAmount.toFraction().toDouble().toString().endsWith('.0')) {
-      return _toInt(totalAmount.toFraction().toDouble().toString());
-    } else if (totalAmount.toFraction().toDouble() >= 1) {
-      return _toMixedFraction(totalAmount);
-    }
-
-    return totalAmount;
-  }
-
-  String _multiplyMixedFraction(int countInCart, String num) {
-    final totalAmount =
-        (countInCart.toMixedFraction() * num.toMixedFraction()).toString();
-
-    if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-      return _toInt(totalAmount.toMixedFraction().toDouble().toString());
-    }
-    return totalAmount;
-  }
-
-  /// cast
-  String _toMixedFraction(String num) {
-    return MixedFraction.fromFraction(num.toFraction()).toString();
-  }
-
-  String _toInt(String num) {
-    if (num.endsWith('.0')) {
-      return double.parse(num).toInt().toString();
-    }
-
-    return num;
-  }
-
-  // 四捨五入
-  String _toRoundedDouble(String num) {
-    const baseNum = 100;
-    return ((double.tryParse(num)! * baseNum).round() / baseNum).toString();
   }
 }

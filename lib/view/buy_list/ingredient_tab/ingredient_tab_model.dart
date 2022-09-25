@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe/components/calculation/calculation.dart';
+import 'package:recipe/components/calculation/multiply.dart';
 import 'package:recipe/domain/buy_list.dart';
 import 'package:recipe/domain/type_adapter/cart_item/cart_item.dart';
 import 'package:recipe/repository/firebase/cart_repository.dart';
 import 'package:recipe/repository/hive/cart_item_repository.dart';
+
+import '../../../components/calculation/add.dart';
 
 class IngredientTabModel extends ChangeNotifier {
   final _cartItemRepository = CartItemRepository();
@@ -49,7 +51,8 @@ class IngredientTabModel extends ChangeNotifier {
   List<TotaledIngredient> _createTotaledIngredientList(
     List<IngredientPerRecipe> ingredientListPerRecipe,
   ) {
-    final calculation = Calculation();
+    final multiply = Multiply();
+    final add = Add();
 
     final totaledIngredientList = <TotaledIngredient>[];
 
@@ -79,14 +82,13 @@ class IngredientTabModel extends ChangeNotifier {
             .totalAmount;
 
         // 新たに追加するtotalAmount
-        final addTotalAmount = calculation.executeMultiply(
+        final addTotalAmount = multiply.executeMultiply(
           ingredientPerRecipe.countInCart,
           ingredientPerRecipe.ingredient.amount,
         );
 
         // totalAmountの計算
-        final totalAmount =
-            calculation.executeAdd(previousTotalAmount, addTotalAmount);
+        final totalAmount = add.executeAdd(previousTotalAmount, addTotalAmount);
 
         // totalAmountを更新
         totaledIngredientList[returnListIndex - 1]
@@ -110,7 +112,7 @@ class IngredientTabModel extends ChangeNotifier {
         previousIngredientName = ingredientPerRecipe.ingredient.name!;
         previousIngredientUnit = ingredientPerRecipe.ingredient.unit!;
 
-        final totalAmount = calculation.executeMultiply(
+        final totalAmount = multiply.executeMultiply(
           ingredientPerRecipe.countInCart,
           ingredientPerRecipe.ingredient.amount,
         );
