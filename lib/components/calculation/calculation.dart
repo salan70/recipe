@@ -124,7 +124,7 @@ class Calculation {
     if (doubleOfTotalAmount.toString().endsWith('.0')) {
       return _castToInt(totalAmount);
     } else if (doubleOfTotalAmount >= 1) {
-      return _castToMixedFraction(totalAmount);
+      return _toMixedFraction(totalAmount);
     }
 
     return totalAmount;
@@ -188,7 +188,7 @@ class Calculation {
     if (totalAmount.endsWith('.0')) {
       return _castToInt(totalAmount);
     } else {
-      return _castToRoundedDouble(totalAmount);
+      return _toRoundedDouble(totalAmount);
     }
   }
 
@@ -209,7 +209,7 @@ class Calculation {
     if (totalAmount.endsWith('.0')) {
       return _castToInt(totalAmount);
     }
-    return _castToRoundedDouble(totalAmount);
+    return _toRoundedDouble(totalAmount);
   }
 
   // fraction add
@@ -227,7 +227,7 @@ class Calculation {
     }
 
     if (doubleOfTotalAmount >= 1) {
-      return _castToMixedFraction(totalAmount);
+      return _toMixedFraction(totalAmount);
     }
 
     return totalAmount;
@@ -262,7 +262,7 @@ class Calculation {
     // 約分
     totalAmount = totalAmount.toFraction().toDouble().toFraction().toString();
 
-    totalAmount = _castToMixedFraction(totalAmount);
+    totalAmount = _toMixedFraction(totalAmount);
 
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
       totalAmount = totalAmount.toMixedFraction().toDouble().toString();
@@ -310,7 +310,7 @@ class Calculation {
     if (totalAmount.toFraction().toDouble().toString().endsWith('.0')) {
       return _castToInt(totalAmount.toFraction().toDouble().toString());
     } else if (totalAmount.toFraction().toDouble() >= 1) {
-      return _castToMixedFraction(totalAmount);
+      return _toMixedFraction(totalAmount);
     }
 
     return totalAmount;
@@ -327,7 +327,7 @@ class Calculation {
   }
 
   /// cast
-  String _castToMixedFraction(String num) {
+  String _toMixedFraction(String num) {
     return MixedFraction.fromFraction(num.toFraction()).toString();
   }
 
@@ -341,7 +341,7 @@ class Calculation {
   }
 
   // 四捨五入
-  String _castToRoundedDouble(String num) {
+  String _toRoundedDouble(String num) {
     const baseNum = 100;
     return ((double.tryParse(num)! * baseNum).round() / baseNum).toString();
   }
