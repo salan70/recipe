@@ -7,7 +7,7 @@ class Calculation {
 
     switch (amountType) {
       case 'int':
-        return _multiplyInt(countInCart, _castToInt(amount!));
+        return _multiplyInt(countInCart, _toInt(amount!));
       case 'double':
         return _multiplyDouble(countInCart, amount!);
       case 'fraction':
@@ -122,7 +122,7 @@ class Calculation {
     final doubleOfTotalAmount = totalAmount.toFraction().toDouble();
 
     if (doubleOfTotalAmount.toString().endsWith('.0')) {
-      return _castToInt(totalAmount);
+      return _toInt(totalAmount);
     } else if (doubleOfTotalAmount >= 1) {
       return _toMixedFraction(totalAmount);
     }
@@ -143,7 +143,7 @@ class Calculation {
               .toString();
 
       if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-        return _castToInt(totalAmount);
+        return _toInt(totalAmount);
       }
     } else if (addNumType == 'int') {
       final addNumInt = int.parse(addNum);
@@ -152,7 +152,7 @@ class Calculation {
               .toString();
 
       if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-        return _castToInt(totalAmount);
+        return _toInt(totalAmount);
       }
     }
 
@@ -165,7 +165,7 @@ class Calculation {
         (double.parse(originalNum) + double.parse(addNum)).toString();
 
     if (totalAmount.endsWith('.0')) {
-      return _castToInt(totalAmount);
+      return _toInt(totalAmount);
     }
 
     return totalAmount;
@@ -186,7 +186,7 @@ class Calculation {
     }
 
     if (totalAmount.endsWith('.0')) {
-      return _castToInt(totalAmount);
+      return _toInt(totalAmount);
     } else {
       return _toRoundedDouble(totalAmount);
     }
@@ -207,7 +207,7 @@ class Calculation {
     }
 
     if (totalAmount.endsWith('.0')) {
-      return _castToInt(totalAmount);
+      return _toInt(totalAmount);
     }
     return _toRoundedDouble(totalAmount);
   }
@@ -223,7 +223,7 @@ class Calculation {
 
     if (doubleOfTotalAmount.toString().endsWith('.0')) {
       totalAmount = doubleOfTotalAmount.toString();
-      return _castToInt(totalAmount);
+      return _toInt(totalAmount);
     }
 
     if (doubleOfTotalAmount >= 1) {
@@ -266,7 +266,7 @@ class Calculation {
 
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
       totalAmount = totalAmount.toMixedFraction().toDouble().toString();
-      return _castToInt(totalAmount);
+      return _toInt(totalAmount);
     }
 
     return totalAmount;
@@ -282,7 +282,7 @@ class Calculation {
 
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
       totalAmount = totalAmount.toMixedFraction().toDouble().toString();
-      return _castToInt(totalAmount);
+      return _toInt(totalAmount);
     }
 
     return totalAmount;
@@ -297,7 +297,7 @@ class Calculation {
     final totalAmount = (countInCart * double.parse(num)).toString();
 
     if (totalAmount.endsWith('.0')) {
-      return _castToInt(totalAmount);
+      return _toInt(totalAmount);
     }
 
     return totalAmount;
@@ -308,7 +308,7 @@ class Calculation {
         (countInCart.toFraction() * num.toFraction()).toString();
 
     if (totalAmount.toFraction().toDouble().toString().endsWith('.0')) {
-      return _castToInt(totalAmount.toFraction().toDouble().toString());
+      return _toInt(totalAmount.toFraction().toDouble().toString());
     } else if (totalAmount.toFraction().toDouble() >= 1) {
       return _toMixedFraction(totalAmount);
     }
@@ -321,7 +321,7 @@ class Calculation {
         (countInCart.toMixedFraction() * num.toMixedFraction()).toString();
 
     if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-      return _castToInt(totalAmount.toMixedFraction().toDouble().toString());
+      return _toInt(totalAmount.toMixedFraction().toDouble().toString());
     }
     return totalAmount;
   }
@@ -331,7 +331,7 @@ class Calculation {
     return MixedFraction.fromFraction(num.toFraction()).toString();
   }
 
-  String _castToInt(String num) {
+  String _toInt(String num) {
     if (num.endsWith('.0')) {
       final pos = num.length - 2;
       return num.substring(0, pos);
