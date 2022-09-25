@@ -24,7 +24,7 @@ class Calculation {
     final addAmountType = _checkNumType(addAmount);
     final amountTypeList = [previousAmountType, addAmountType];
 
-    // どちらかが''
+    // 計算しない
     if (amountTypeList.contains('blank')) {
       if (previousAmountType == 'blank') {
         return addAmount!;
@@ -35,7 +35,7 @@ class Calculation {
       return '';
     }
 
-    // どちらかがdouble
+    // 結果がdouble
     if (amountTypeList.contains('double')) {
       if (amountTypeList.contains('fraction')) {
         return _doubleAddFraction(previousAmount!, addAmount!);
@@ -46,7 +46,7 @@ class Calculation {
       return _doubleAddDouble(previousAmount!, addAmount!);
     }
 
-    // どちらかがmixed fraction
+    // 結果がmixed fraction
     if (amountTypeList.contains('mixed fraction')) {
       if (amountTypeList.contains('fraction')) {
         return _fractionAddMixedFraction(previousAmount!, addAmount!);
@@ -57,7 +57,7 @@ class Calculation {
       return _mixedFractionAddMixedFraction(previousAmount!, addAmount!);
     }
 
-    // どちらかがfraction
+    // 結果がfraction
     if (amountTypeList.contains('fraction')) {
       if (amountTypeList.contains('int')) {
         return _intAddFraction(previousAmount!, addAmount!);
@@ -65,7 +65,7 @@ class Calculation {
       return _fractionAddFraction(previousAmount!, addAmount!);
     }
 
-    // どちらかがint
+    // 結果がint
     if (amountTypeList.contains('int')) {
       return _intAddInt(previousAmount!, addAmount!);
     }
