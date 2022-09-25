@@ -7,7 +7,7 @@ class Calculation {
 
     switch (amountType) {
       case 'int':
-        return _multiplyInt(countInCart, _toInt(amount!));
+        return _multiplyInt(countInCart, amount!);
       case 'double':
         return _multiplyDouble(countInCart, amount!);
       case 'fraction':
@@ -290,7 +290,7 @@ class Calculation {
 
   /// multiply
   String _multiplyInt(int countInCart, String num) {
-    return (countInCart * int.parse(num)).toString();
+    return (countInCart * double.parse(num).toInt()).toString();
   }
 
   String _multiplyDouble(int countInCart, String num) {
