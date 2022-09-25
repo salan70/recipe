@@ -333,8 +333,7 @@ class Calculation {
 
   String _toInt(String num) {
     if (num.endsWith('.0')) {
-      final pos = num.length - 2;
-      return num.substring(0, pos);
+      return double.parse(num).toInt().toString();
     }
 
     return num;
