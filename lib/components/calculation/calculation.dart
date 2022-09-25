@@ -98,8 +98,7 @@ class Calculation {
     // double or int
     else {
       try {
-        final doubleNum = double.tryParse(num).toString();
-        if (doubleNum.endsWith('.0')) {
+        if (double.tryParse(num)! % 1 == 0) {
           return 'int';
         } else {
           return 'double';
