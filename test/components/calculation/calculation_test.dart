@@ -108,11 +108,14 @@ void main() {
       test('int', () {
         expect(add.calculate('1.5', '1'), '2.5');
       });
-      test('double', () {
+      test('double 1', () {
         expect(add.calculate('1.5', '1.5'), '3');
       });
-      test('double', () {
+      test('double 2', () {
         expect(add.calculate('1.5', '1.6'), '3.1');
+      });
+      test('double 3', () {
+        expect(add.calculate('1.555', '1.444'), '3');
       });
       test('fraction 1', () {
         expect(add.calculate('1.5', '1/2'), '2');
