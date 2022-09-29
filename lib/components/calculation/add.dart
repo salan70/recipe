@@ -46,8 +46,10 @@ class Add {
     // 結果がint
     else if (amountTypeList.contains('int')) {
       return _intAddInt(previousAmount!, addAmount!).toString();
-    } else {
-      // ここまではたどり着かない想定
+    }
+
+    // ここまではたどり着かない想定
+    else {
       return '';
     }
   }
