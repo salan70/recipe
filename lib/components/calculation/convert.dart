@@ -40,4 +40,10 @@ class Convert {
     const baseNum = 100;
     return ((double.tryParse(num)! * baseNum).round() / baseNum).toString();
   }
+
+  /// TODO 関数名変える
+  double toRoundedDouble2(double num) {
+    const baseNum = 100;
+    return (num * baseNum).round() / baseNum;
+  }
 }
