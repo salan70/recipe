@@ -46,7 +46,11 @@ class Add {
     // 結果がfraction
     else if (amountTypeList.contains('fraction')) {
       if (amountTypeList.contains('int')) {
-        return _intAddFraction(previousAmount!, addAmount!);
+        final result = _intAddFraction(previousAmount!, addAmount!);
+        if (result.toDouble() >= 1) {
+          return result.toMixedFraction().toString();
+        }
+        return result.toString();
       }
       return _fractionAddFraction(previousAmount!, addAmount!);
     }
@@ -71,18 +75,8 @@ class Add {
     return int.parse(originalNum) + int.parse(addNum);
   }
 
-  String _intAddFraction(String originalNum, String addNum) {
-    final totalAmount =
-        (originalNum.toFraction() + addNum.toFraction()).toString();
-    final doubleOfTotalAmount = totalAmount.toFraction().toDouble();
-
-    if (doubleOfTotalAmount.toString().endsWith('.0')) {
-      return _convert.toInt(totalAmount);
-    } else if (doubleOfTotalAmount >= 1) {
-      return _convert.toMixedFraction(totalAmount);
-    }
-
-    return totalAmount;
+  Fraction _intAddFraction(String originalNum, String addNum) {
+    return originalNum.toFraction() + addNum.toFraction();
   }
 
   MixedFraction _intAddMixedFraction(String originalNum, String addNum) {
