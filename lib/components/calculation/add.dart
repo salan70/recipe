@@ -32,7 +32,8 @@ class Add {
       if (amountTypeList.contains('int')) {
         return _intAddMixedFraction(previousAmount!, addAmount!);
       }
-      return _mixedFractionAddMixedFraction(previousAmount!, addAmount!);
+      return _mixedFractionAddMixedFraction(previousAmount!, addAmount!)
+          .toString();
     }
 
     // 結果がfraction
@@ -167,18 +168,14 @@ class Add {
   }
 
   // mixedFraction add
-  String _mixedFractionAddMixedFraction(String originalNum, String addNum) {
-    var totalAmount =
-        (originalNum.toMixedFraction() + addNum.toMixedFraction()).toString();
-
-    totalAmount =
-        totalAmount.toMixedFraction().toDouble().toMixedFraction().toString();
-
-    if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-      totalAmount = totalAmount.toMixedFraction().toDouble().toString();
-      return _convert.toInt(totalAmount);
-    }
-
-    return totalAmount;
+  MixedFraction _mixedFractionAddMixedFraction(
+    String originalNum,
+    String addNum,
+  ) {
+    // toDouble()を一度入れることで、約分できる
+    // '3 3/3'のようば場合には、'4 0/1'になる（整数にはならない）ので注意
+    return (originalNum.toMixedFraction() + addNum.toMixedFraction())
+        .toDouble()
+        .toMixedFraction();
   }
 }
