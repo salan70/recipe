@@ -6,6 +6,7 @@ class Add {
   final Convert _convert = Convert();
   final Check _check = Check();
 
+  //TODO 引数の型をString?じゃなくてStringにできないか検討する
   String calculate(String? previousAmount, String? addAmount) {
     final previousAmountType = _check.checkNumType(previousAmount);
     final addAmountType = _check.checkNumType(addAmount);
