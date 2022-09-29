@@ -26,14 +26,9 @@ class Add {
 
     // 結果がdouble
     else if (amountTypeList.contains('double')) {
-      return _addOfResultIsDouble(previousAmount!, addAmount!).toString();
-      // if (amountTypeList.contains('fraction')) {
-      //   return _doubleAddFraction(previousAmount!, addAmount!);
-      // }
-      // if (amountTypeList.contains('mixed fraction')) {
-      //   return _doubleAddMixedFraction(previousAmount!, addAmount!);
-      // }
-      // return _doubleAddDouble(previousAmount!, addAmount!);
+      var result = _addOfResultIsDouble(previousAmount!, addAmount!);
+      result = _convert.toRoundedDouble2(result);
+      return _convert.toInt2(result);
     }
 
     // 結果がmixed fraction
