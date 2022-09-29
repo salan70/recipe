@@ -86,9 +86,7 @@ class Add {
   }
 
   MixedFraction _intAddMixedFraction(String originalNum, String addNum) {
-    final originalNumType = _check.checkNumType(originalNum);
-
-    if (originalNumType == 'int') {
+    if (_check.checkNumType(originalNum) == 'int') {
       return int.parse(originalNum).toMixedFraction() +
           addNum.toMixedFraction();
     }
