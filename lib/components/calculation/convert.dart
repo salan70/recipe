@@ -13,6 +13,36 @@ class Convert {
     return num;
   }
 
+  double toDouble(String num) {
+    // Fraction or MixedFraction
+    if (num.contains('/')) {
+      try {
+        return num.toFraction().toDouble();
+      } on Exception {
+        try {
+          return num.toMixedFraction().toDouble();
+        }
+        // このExceptionには行かない想定
+        on Exception {
+          print('toMixedFraction()ができない');
+          return 0;
+        }
+      }
+    }
+    // int or Double
+    else {
+      return double.tryParse(num)!;
+    }
+  }
+  // int? toInt2(String num) {
+  //
+  //   if (num.endsWith('.0')) {
+  //     return double.parse(num).toInt().toString();
+  //   }
+  //
+  //   return num;
+  // }
+
   // 四捨五入
   String toRoundedDouble(String num) {
     const baseNum = 100;
