@@ -34,14 +34,6 @@ class Convert {
       return double.tryParse(num)!;
     }
   }
-  // int? toInt2(String num) {
-  //
-  //   if (num.endsWith('.0')) {
-  //     return double.parse(num).toInt().toString();
-  //   }
-  //
-  //   return num;
-  // }
 
   // 四捨五入
   String toRoundedDouble(String num) {
