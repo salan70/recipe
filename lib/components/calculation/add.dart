@@ -32,8 +32,15 @@ class Add {
       if (amountTypeList.contains('int')) {
         return _intAddMixedFraction(previousAmount!, addAmount!);
       }
-      return _mixedFractionAddMixedFraction(previousAmount!, addAmount!)
-          .toString();
+
+      //TODO 以下の処理もっときれいに書きたい
+      final result =
+          _mixedFractionAddMixedFraction(previousAmount!, addAmount!);
+
+      if (result.toDouble() % 1 == 0) {
+        return _convert.toInt2(result.toDouble());
+      }
+      return result.toString();
     }
 
     // 結果がfraction
