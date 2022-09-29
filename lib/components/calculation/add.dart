@@ -93,6 +93,7 @@ class Add {
   }
 
   // fraction add
+  //TODO 関数名変える
   Fraction _fractionAddFraction(String originalNum, String addNum) {
     // toDouble()を一度入れることで、約分できる
     return (originalNum.toFraction() + addNum.toFraction())
