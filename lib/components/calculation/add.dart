@@ -30,7 +30,7 @@ class Add {
         return _fractionAddMixedFraction(previousAmount!, addAmount!);
       }
       if (amountTypeList.contains('int')) {
-        return _intAddMixedFraction(previousAmount!, addAmount!);
+        return _intAddMixedFraction(previousAmount!, addAmount!).toString();
       }
 
       //TODO 以下の処理もっときれいに書きたい
@@ -85,33 +85,15 @@ class Add {
     return totalAmount;
   }
 
-  String _intAddMixedFraction(String originalNum, String addNum) {
-    var totalAmount = '';
-
+  MixedFraction _intAddMixedFraction(String originalNum, String addNum) {
     final originalNumType = _check.checkNumType(originalNum);
-    final addNumType = _check.checkNumType(addNum);
 
     if (originalNumType == 'int') {
-      final originalNumInt = int.parse(originalNum);
-      totalAmount =
-          (originalNumInt.toMixedFraction() + addNum.toMixedFraction())
-              .toString();
-
-      if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-        return _convert.toInt(totalAmount);
-      }
-    } else if (addNumType == 'int') {
-      final addNumInt = int.parse(addNum);
-      totalAmount =
-          (originalNum.toMixedFraction() + addNumInt.toMixedFraction())
-              .toString();
-
-      if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-        return _convert.toInt(totalAmount);
-      }
+      return int.parse(originalNum).toMixedFraction() +
+          addNum.toMixedFraction();
     }
 
-    return totalAmount;
+    return originalNum.toMixedFraction() + int.parse(addNum).toMixedFraction();
   }
 
   // fraction add
