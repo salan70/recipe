@@ -45,17 +45,19 @@ class Add {
 
     // 結果がfraction
     else if (amountTypeList.contains('fraction')) {
+      Fraction result;
+
       if (amountTypeList.contains('int')) {
-        final result = _intAddFraction(previousAmount!, addAmount!);
-        if (result.toDouble() >= 1) {
-          return result.toMixedFraction().toString();
-        }
-        return result.toString();
+        result = _intAddFraction(previousAmount!, addAmount!);
       }
-      final result = _fractionAddFraction(previousAmount!, addAmount!);
+
+      result = _fractionAddFraction(previousAmount!, addAmount!);
+
+      // intへ変換
       if (result.toDouble() % 1 == 0) {
         return _convert.toInt2(result.toDouble());
       }
+      // MixedFractionへ変換
       if (result.toDouble() >= 1) {
         return result.toMixedFraction().toString();
       }
