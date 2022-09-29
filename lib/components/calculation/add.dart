@@ -52,7 +52,14 @@ class Add {
         }
         return result.toString();
       }
-      return _fractionAddFraction(previousAmount!, addAmount!);
+      final result = _fractionAddFraction(previousAmount!, addAmount!);
+      if (result.toDouble() % 1 == 0) {
+        return _convert.toInt2(result.toDouble());
+      }
+      if (result.toDouble() >= 1) {
+        return result.toMixedFraction().toString();
+      }
+      return result.toString();
     }
 
     // 結果がint
@@ -92,24 +99,11 @@ class Add {
   }
 
   // fraction add
-  String _fractionAddFraction(String originalNum, String addNum) {
-    var totalAmount =
-        (originalNum.toFraction() + addNum.toFraction()).toString();
-    final doubleOfTotalAmount = totalAmount.toFraction().toDouble();
-
-    // 約分
-    totalAmount = doubleOfTotalAmount.toFraction().toString();
-
-    if (doubleOfTotalAmount.toString().endsWith('.0')) {
-      totalAmount = doubleOfTotalAmount.toString();
-      return _convert.toInt(totalAmount);
-    }
-
-    if (doubleOfTotalAmount >= 1) {
-      return _convert.toMixedFraction(totalAmount);
-    }
-
-    return totalAmount;
+  Fraction _fractionAddFraction(String originalNum, String addNum) {
+    // toDouble()を一度入れることで、約分できる
+    return (originalNum.toFraction() + addNum.toFraction())
+        .toDouble()
+        .toFraction();
   }
 
   String _fractionAddMixedFraction(String originalNum, String addNum) {
