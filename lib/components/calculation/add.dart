@@ -86,6 +86,8 @@ class Add {
   }
 
   MixedFraction _intAddMixedFraction(String originalNum, String addNum) {
+    // int.parseをtryするのがいいやり方かはわからない
+    // if文より簡潔に書けるためtrhで実装
     try {
       return int.parse(originalNum).toMixedFraction() +
           addNum.toMixedFraction();
