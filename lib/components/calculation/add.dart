@@ -11,17 +11,9 @@ class Add {
     final addAmountType = _check.checkNumType(addAmount);
     final amountTypeList = [previousAmountType, addAmountType];
 
-    dynamic result = '';
-
     // 計算しない
     if (amountTypeList.contains('blank')) {
-      if (previousAmountType == 'blank') {
-        return addAmount!;
-      }
-      if (addAmountType == 'blank') {
-        return previousAmount!;
-      }
-      return '';
+      return previousAmount! + addAmount!;
     }
 
     // 結果がdouble
