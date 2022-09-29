@@ -11,6 +11,8 @@ class Add {
     final addAmountType = _check.checkNumType(addAmount);
     final amountTypeList = [previousAmountType, addAmountType];
 
+    dynamic result = '';
+
     // 計算しない
     if (amountTypeList.contains('blank')) {
       if (previousAmountType == 'blank') {
@@ -23,18 +25,19 @@ class Add {
     }
 
     // 結果がdouble
-    if (amountTypeList.contains('double')) {
-      if (amountTypeList.contains('fraction')) {
-        return _doubleAddFraction(previousAmount!, addAmount!);
-      }
-      if (amountTypeList.contains('mixed fraction')) {
-        return _doubleAddMixedFraction(previousAmount!, addAmount!);
-      }
-      return _doubleAddDouble(previousAmount!, addAmount!);
+    else if (amountTypeList.contains('double')) {
+      return _addOfResultIsDouble(previousAmount!, addAmount!).toString();
+      // if (amountTypeList.contains('fraction')) {
+      //   return _doubleAddFraction(previousAmount!, addAmount!);
+      // }
+      // if (amountTypeList.contains('mixed fraction')) {
+      //   return _doubleAddMixedFraction(previousAmount!, addAmount!);
+      // }
+      // return _doubleAddDouble(previousAmount!, addAmount!);
     }
 
     // 結果がmixed fraction
-    if (amountTypeList.contains('mixed fraction')) {
+    else if (amountTypeList.contains('mixed fraction')) {
       if (amountTypeList.contains('fraction')) {
         return _fractionAddMixedFraction(previousAmount!, addAmount!);
       }
@@ -45,7 +48,7 @@ class Add {
     }
 
     // 結果がfraction
-    if (amountTypeList.contains('fraction')) {
+    else if (amountTypeList.contains('fraction')) {
       if (amountTypeList.contains('int')) {
         return _intAddFraction(previousAmount!, addAmount!);
       }
@@ -53,16 +56,19 @@ class Add {
     }
 
     // 結果がint
-    if (amountTypeList.contains('int')) {
+    else if (amountTypeList.contains('int')) {
       return _intAddInt(previousAmount!, addAmount!);
+    } else {
+      // ここまではたどり着かない想定
+      return '';
     }
-
-    // ここまではたどり着かない想定
-    return '';
   }
 
   /// private
-  // int add
+  double _addOfResultIsDouble(String originalNum, String addNum) {
+    return _convert.toDouble(originalNum) + _convert.toDouble(addNum);
+  }
+
   String _intAddInt(String originalNum, String addNum) {
     return (int.parse(originalNum) + int.parse(addNum)).toString();
   }
