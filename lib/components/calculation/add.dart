@@ -45,7 +45,7 @@ class Add {
 
     // 結果がint
     else if (amountTypeList.contains('int')) {
-      return _intAddInt(previousAmount!, addAmount!);
+      return _intAddInt(previousAmount!, addAmount!).toString();
     } else {
       // ここまではたどり着かない想定
       return '';
@@ -57,8 +57,8 @@ class Add {
     return _convert.toDouble(originalNum) + _convert.toDouble(addNum);
   }
 
-  String _intAddInt(String originalNum, String addNum) {
-    return (int.parse(originalNum) + int.parse(addNum)).toString();
+  int _intAddInt(String originalNum, String addNum) {
+    return int.parse(originalNum) + int.parse(addNum);
   }
 
   String _intAddFraction(String originalNum, String addNum) {
