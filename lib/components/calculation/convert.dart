@@ -13,6 +13,14 @@ class Convert {
     return num;
   }
 
+  /// TODO 関数名変える
+  String toInt2(double num) {
+    if (num % 1 == 0) {
+      return num.toInt().toString();
+    }
+    return num.toString();
+  }
+
   double toDouble(String num) {
     // Fraction or MixedFraction
     if (num.contains('/')) {

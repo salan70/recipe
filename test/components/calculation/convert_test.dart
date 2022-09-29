@@ -19,6 +19,15 @@ void main() {
     });
   });
 
+  group('toInt', () {
+    test('', () {
+      expect(convert.toInt2(1.0), '1');
+    });
+    test('', () {
+      expect(convert.toInt2(1.5), '1.5');
+    });
+  });
+
   group('toRoundedDouble', () {
     test('', () {
       expect(convert.toRoundedDouble2(1.0), 1.0);
