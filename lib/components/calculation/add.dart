@@ -75,26 +75,26 @@ class Add {
   }
 
   /// private
-  double _addOfResultIsDouble(String originalNum, String addNum) {
-    return _convert.toDouble(originalNum) + _convert.toDouble(addNum);
+  double _addOfResultIsDouble(String amountA, String amountB) {
+    return _convert.toDouble(amountA) + _convert.toDouble(amountB);
   }
 
-  int _intAddInt(String originalNum, String addNum) {
-    return int.parse(originalNum) + int.parse(addNum);
+  int _intAddInt(String amountA, String amountB) {
+    return int.parse(amountA) + int.parse(amountB);
   }
 
   // fraction add
   //TODO 関数名変える
-  Fraction _fractionAddFraction(String originalNum, String addNum) {
+  Fraction _fractionAddFraction(String amountA, String amountB) {
     // toDouble()を一度入れることで、約分できる
-    return (originalNum.toFraction() + addNum.toFraction())
+    return (amountA.toFraction() + amountB.toFraction())
         .toDouble()
         .toFraction();
   }
 
-  MixedFraction _fractionAddMixedFraction(String originalNum, String addNum) {
-    return (Rational.tryParse(originalNum)!.toDouble() +
-            Rational.tryParse(addNum)!.toDouble())
+  MixedFraction _fractionAddMixedFraction(String amountA, String amountB) {
+    return (Rational.tryParse(amountA)!.toDouble() +
+            Rational.tryParse(amountB)!.toDouble())
         .toMixedFraction();
   }
 }
