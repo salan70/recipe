@@ -1,18 +1,6 @@
 import 'package:fraction/fraction.dart';
 
 class Convert {
-  String toMixedFraction(String num) {
-    return MixedFraction.fromFraction(num.toFraction()).toString();
-  }
-
-  String toInt(String num) {
-    if (num.endsWith('.0')) {
-      return double.parse(num).toInt().toString();
-    }
-
-    return num;
-  }
-
   String toIntFromDouble(double num) {
     if (num % 1 == 0) {
       return num.toInt().toString();

@@ -29,6 +29,10 @@ class Multiply {
     return countInCart * _convert.toDoubleFromSomeTypes(amount);
   }
 
+  String _formatIntAndDouble() {
+    return '';
+  }
+
   String _formatFractions(int countInCart, String amount) {
     final amountOfDouble = _multiplyOfDouble(countInCart, amount);
 
