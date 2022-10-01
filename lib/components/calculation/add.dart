@@ -7,87 +7,62 @@ class Add {
   final Check _check = Check();
 
   //TODO 引数の型をString?じゃなくてStringにできないか検討する
-  String calculate(String? amountA, String? amountB) {
+  String calcSum(String? amountA, String? amountB) {
+    if (amountA == null || amountB == null) {
+      return '';
+    }
+
     final amountAType = _check.checkNumType(amountA);
     final amountBType = _check.checkNumType(amountB);
     final amountTypeList = [amountAType, amountBType];
 
-    // 計算しない
     if (amountTypeList.contains('blank')) {
-      return amountA! + amountB!;
+      return amountA + amountB;
     }
 
-    // 結果がdouble
-    else if (amountTypeList.contains('double')) {
-      var totalAmount = _addOfResultIsDouble(amountA!, amountB!);
-      totalAmount = _convert.toRoundedDouble(totalAmount);
-      return _convert.toInt2(totalAmount);
+    final totalAmount = _addOfResultIsDouble(amountA, amountB);
+
+    if (amountTypeList.contains('double')) {
+      //TODO 定数名変えたい
+      final totalAmountOfRoundedDouble = _convert.toRoundedDouble(totalAmount);
+      return _convert.toInt2(totalAmountOfRoundedDouble);
     }
 
-    // 結果がmixed fraction
-    else if (amountTypeList.contains('mixed fraction')) {
-      if (amountTypeList.contains('fraction')) {
-        final totalAmount = _fractionAddMixedFraction(amountA!, amountB!);
-        if (totalAmount.toDouble() % 1 == 0) {
-          return _convert.toInt2(totalAmount.toDouble());
-        }
-        return totalAmount.toString();
-      }
-      if (amountTypeList.contains('int')) {
-        return _fractionAddMixedFraction(amountA!, amountB!).toString();
-      }
+    if (amountTypeList.contains('mixed fraction')) {
+      //TODO 定数名変えたい
+      final totalAmountOfMixedFraction = totalAmount.toMixedFraction();
 
-      //TODO 以下の処理もっときれいに書きたい
-      final totalAmount = _fractionAddMixedFraction(amountA!, amountB!);
-
-      if (totalAmount.toDouble() % 1 == 0) {
-        return _convert.toInt2(totalAmount.toDouble());
+      if (totalAmountOfMixedFraction.toDouble() % 1 == 0) {
+        return _convert.toInt2(totalAmountOfMixedFraction.toDouble());
       }
-      return totalAmount.toString();
+      return totalAmountOfMixedFraction.toString();
     }
 
-    // 結果がfraction
-    else if (amountTypeList.contains('fraction')) {
-      final totalAmount = _fractionAddFraction(amountA!, amountB!);
+    if (amountTypeList.contains('fraction')) {
+      final totalAmountOfFraction = totalAmount.toFraction();
 
       // intへ変換
       //TODO 関数化したい
-      if (totalAmount.toDouble() % 1 == 0) {
-        return _convert.toInt2(totalAmount.toDouble());
+      if (totalAmountOfFraction.toDouble() % 1 == 0) {
+        return _convert.toInt2(totalAmountOfFraction.toDouble());
       }
       // MixedFractionへ変換
       //TODO 関数化したい
-      if (totalAmount.toDouble() >= 1) {
-        return totalAmount.toMixedFraction().toString();
+      if (totalAmountOfFraction.toDouble() >= 1) {
+        return totalAmountOfFraction.toMixedFraction().toString();
       }
-      return totalAmount.toString();
+      return totalAmountOfFraction.toString();
     }
 
-    // 結果がint
-    else if (amountTypeList.contains('int')) {
-      return _intAddInt(amountA!, amountB!).toString();
+    if (amountTypeList.contains('int')) {
+      return totalAmount.toInt().toString();
     }
 
     // ここまではたどり着かない想定
-
     return '';
   }
 
   double _addOfResultIsDouble(String amountA, String amountB) {
     return _convert.toDouble(amountA) + _convert.toDouble(amountB);
-  }
-
-  int _intAddInt(String amountA, String amountB) {
-    return int.parse(amountA) + int.parse(amountB);
-  }
-
-  // fraction add
-  //TODO 関数名変える
-  Fraction _fractionAddFraction(String amountA, String amountB) {
-    return _addOfResultIsDouble(amountA, amountB).toFraction();
-  }
-
-  MixedFraction _fractionAddMixedFraction(String amountA, String amountB) {
-    return _addOfResultIsDouble(amountA, amountB).toMixedFraction();
   }
 }

@@ -88,7 +88,7 @@ class IngredientTabModel extends ChangeNotifier {
         );
 
         // totalAmountの計算
-        final totalAmount = add.calculate(previousTotalAmount, addTotalAmount);
+        final totalAmount = add.calcSum(previousTotalAmount, addTotalAmount);
 
         // totalAmountを更新
         totaledIngredientList[returnListIndex - 1]
