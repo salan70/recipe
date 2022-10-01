@@ -23,20 +23,19 @@ class Add {
     final sum = _addOfResultIsDouble(amountA, amountB);
 
     if (amountTypeList.contains('double')) {
-      final sumOfRoundedDouble = _convert.toRoundedDouble(sum);
-      return _convert.toIntFromDouble(sumOfRoundedDouble);
+      return _formatDouble(sum);
     }
 
     if (amountTypeList.contains('mixed fraction')) {
-      return _convert.toIntFromFractions(sum.toMixedFraction());
+      return _formantMixedFraction(sum);
     }
 
     if (amountTypeList.contains('fraction')) {
-      return _formantFraction(sum.toFraction());
+      return _formantFraction(sum);
     }
 
     if (amountTypeList.contains('int')) {
-      return sum.toInt().toString();
+      return _formatInt(sum);
     }
     // ここまではたどり着かない想定
     return '';
@@ -46,14 +45,39 @@ class Add {
     return _convert.toDouble(amountA) + _convert.toDouble(amountB);
   }
 
-  String _formantFraction(Fraction amount) {
-    final amountOfDouble = amount.toDouble();
+  String _formatInt(double amount) {
+    return amount.toInt().toString();
+  }
+
+  String _formatDouble(double amount) {
+    final amountOfRoundedDouble = _convert.toRoundedDouble(amount);
+    return _convert.toIntFromDouble(amountOfRoundedDouble);
+  }
+
+  String _formantFraction(double amount) {
+    final amountOfFraction = amount.toFraction();
+    // Fix 定数名イケてない
+    // MixedFractionに変換されてからDoubleに変換されたということがわからないため
+    final amountOfDouble = amountOfFraction.toDouble();
+
     if (amountOfDouble % 1 == 0) {
       return _convert.toIntFromDouble(amountOfDouble);
     }
     if (amountOfDouble > 1) {
-      return amount.toMixedFraction().toString();
+      return amountOfDouble.toMixedFraction().toString();
     }
-    return amount.toString();
+    return amountOfFraction.toString();
+  }
+
+  String _formantMixedFraction(double amount) {
+    final amountOfMixedFraction = amount.toMixedFraction();
+    // Fix 定数名イケてない
+    // MixedFractionに変換されてからDoubleに変換されたということがわからないため
+    final amountOfDouble = amountOfMixedFraction.toDouble();
+
+    if (amountOfDouble % 1 == 0) {
+      return _convert.toIntFromDouble(amountOfDouble);
+    }
+    return amountOfMixedFraction.toString();
   }
 }

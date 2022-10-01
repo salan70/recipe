@@ -20,17 +20,6 @@ class Convert {
     return num.toString();
   }
 
-  String toIntFromFractions(Object num) {
-    final parsedNum = Rational.tryParse(num.toString());
-    if (parsedNum != null) {
-      final parsedNumOfDouble = parsedNum.toDouble();
-      if (parsedNumOfDouble % 1 == 0) {
-        return parsedNumOfDouble.toInt().toString();
-      }
-    }
-    return num.toString();
-  }
-
   double toDouble(String num) {
     // Rational.tryParse(x)は、xが整数、分数、帯分数以外の場合nullを返す
     if (Rational.tryParse(num) != null) {
