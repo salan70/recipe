@@ -82,7 +82,7 @@ class IngredientTabModel extends ChangeNotifier {
             .totalAmount;
 
         // 新たに追加するtotalAmount
-        final addTotalAmount = multiply.calculate(
+        final addTotalAmount = multiply.calcProduct(
           ingredientPerRecipe.countInCart,
           ingredientPerRecipe.ingredient.amount,
         );
@@ -112,7 +112,7 @@ class IngredientTabModel extends ChangeNotifier {
         previousIngredientName = ingredientPerRecipe.ingredient.name!;
         previousIngredientUnit = ingredientPerRecipe.ingredient.unit!;
 
-        final totalAmount = multiply.calculate(
+        final totalAmount = multiply.calcProduct(
           ingredientPerRecipe.countInCart,
           ingredientPerRecipe.ingredient.amount,
         );

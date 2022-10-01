@@ -6,59 +6,39 @@ class Multiply {
   final Convert _convert = Convert();
   final Check _check = Check();
 
-  String calculate(int countInCart, String? amount) {
+  String calcProduct(int countInCart, String? amount) {
     final amountType = _check.checkType(amount);
 
     switch (amountType) {
       case 'int':
-        return _int(countInCart, amount!);
+        final resultOfDouble = _multiplyOfDouble(countInCart, amount!);
+        return _convert.toIntFromDouble(resultOfDouble);
       case 'double':
-        return _double(countInCart, amount!);
+        final resultOfDouble = _multiplyOfDouble(countInCart, amount!);
+        return _convert.toIntFromDouble(resultOfDouble);
       case 'fraction':
-        return _fraction(countInCart, amount!);
+        return _formatFractions(countInCart, amount!);
       case 'mixed fraction':
-        return _mixedFraction(countInCart, amount!);
+        return _formatFractions(countInCart, amount!);
       default:
         return '';
     }
   }
 
-  /// private
-  String _int(int countInCart, String num) {
-    return (countInCart * double.parse(num).toInt()).toString();
+  double _multiplyOfDouble(int countInCart, String amount) {
+    return countInCart * _convert.toDoubleFromSomeTypes(amount);
   }
 
-  String _double(int countInCart, String num) {
-    final totalAmount = (countInCart * double.parse(num)).toString();
+  String _formatFractions(int countInCart, String amount) {
+    final amountOfDouble = _multiplyOfDouble(countInCart, amount);
 
-    if (totalAmount.endsWith('.0')) {
-      return _convert.toInt(totalAmount);
+    if (amountOfDouble % 1 == 0) {
+      return _convert.toIntFromDouble(amountOfDouble);
+    }
+    if (amountOfDouble > 1) {
+      return amountOfDouble.toMixedFraction().toString();
     }
 
-    return totalAmount;
-  }
-
-  String _fraction(int countInCart, String num) {
-    final totalAmount =
-        (countInCart.toFraction() * num.toFraction()).toString();
-
-    if (totalAmount.toFraction().toDouble().toString().endsWith('.0')) {
-      return _convert.toInt(totalAmount.toFraction().toDouble().toString());
-    } else if (totalAmount.toFraction().toDouble() >= 1) {
-      return _convert.toMixedFraction(totalAmount);
-    }
-
-    return totalAmount;
-  }
-
-  String _mixedFraction(int countInCart, String num) {
-    final totalAmount =
-        (countInCart.toMixedFraction() * num.toMixedFraction()).toString();
-
-    if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-      return _convert
-          .toInt(totalAmount.toMixedFraction().toDouble().toString());
-    }
-    return totalAmount;
+    return amountOfDouble.toFraction().toString();
   }
 }

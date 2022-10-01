@@ -10,73 +10,73 @@ void main() {
     // 1 *
     group('1 *', () {
       test('null', () {
-        expect(multiply.calculate(1, null), '');
+        expect(multiply.calcProduct(1, null), '');
       });
       test('', () {
-        expect(multiply.calculate(1, ''), '');
+        expect(multiply.calcProduct(1, ''), '');
       });
       test('int', () {
-        expect(multiply.calculate(1, '1'), '1');
+        expect(multiply.calcProduct(1, '1'), '1');
       });
       test('double 1', () {
-        expect(multiply.calculate(1, '1.5'), '1.5');
+        expect(multiply.calcProduct(1, '1.5'), '1.5');
       });
       test('double 2', () {
-        expect(multiply.calculate(1, '1.0'), '1');
+        expect(multiply.calcProduct(1, '1.0'), '1');
       });
       test('fraction 1', () {
-        expect(multiply.calculate(1, '1/2'), '1/2');
+        expect(multiply.calcProduct(1, '1/2'), '1/2');
       });
       test('fraction 2', () {
-        expect(multiply.calculate(1, '2/2'), '1');
+        expect(multiply.calcProduct(1, '2/2'), '1');
       });
       test('fraction 3', () {
-        expect(multiply.calculate(1, '3/2'), '1 1/2');
+        expect(multiply.calcProduct(1, '3/2'), '1 1/2');
       });
       test('mixedFraction 1', () {
-        expect(multiply.calculate(1, '1 1/2'), '1 1/2');
+        expect(multiply.calcProduct(1, '1 1/2'), '1 1/2');
       });
       test('mixedFraction 2', () {
-        expect(multiply.calculate(1, '1 2/2'), '2');
+        expect(multiply.calcProduct(1, '1 2/2'), '2');
       });
       test('mixedFraction 3', () {
-        expect(multiply.calculate(1, '1 3/2'), '2 1/2');
+        expect(multiply.calcProduct(1, '1 3/2'), '2 1/2');
       });
     });
     // 2 *
     group('2 *', () {
       test('null', () {
-        expect(multiply.calculate(2, null), '');
+        expect(multiply.calcProduct(2, null), '');
       });
       test('', () {
-        expect(multiply.calculate(2, ''), '');
+        expect(multiply.calcProduct(2, ''), '');
       });
       test('int', () {
-        expect(multiply.calculate(2, '1'), '2');
+        expect(multiply.calcProduct(2, '1'), '2');
       });
       test('double', () {
-        expect(multiply.calculate(2, '1.5'), '3');
+        expect(multiply.calcProduct(2, '1.5'), '3');
       });
       test('double 1', () {
-        expect(multiply.calculate(2, '1.0'), '2');
+        expect(multiply.calcProduct(2, '1.0'), '2');
       });
       test('fraction 1', () {
-        expect(multiply.calculate(2, '1/2'), '1');
+        expect(multiply.calcProduct(2, '1/2'), '1');
       });
       test('fraction 2', () {
-        expect(multiply.calculate(2, '2/2'), '2');
+        expect(multiply.calcProduct(2, '2/2'), '2');
       });
       test('fraction 3', () {
-        expect(multiply.calculate(2, '3/2'), '3');
+        expect(multiply.calcProduct(2, '3/2'), '3');
       });
       test('mixedFraction 1', () {
-        expect(multiply.calculate(2, '1 1/2'), '3');
+        expect(multiply.calcProduct(2, '1 1/2'), '3');
       });
       test('mixedFraction 2', () {
-        expect(multiply.calculate(2, '1 2/2'), '4');
+        expect(multiply.calcProduct(2, '1 2/2'), '4');
       });
       test('mixedFraction 3', () {
-        expect(multiply.calculate(2, '1 3/2'), '5');
+        expect(multiply.calcProduct(2, '1 3/2'), '5');
       });
     });
   });
