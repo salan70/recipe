@@ -21,13 +21,10 @@ class Convert {
   }
 
   String toIntFromFractions(Object num) {
-    print(num);
     final parsedNum = Rational.tryParse(num.toString());
-    print(parsedNum);
     if (parsedNum != null) {
       final parsedNumOfDouble = parsedNum.toDouble();
       if (parsedNumOfDouble % 1 == 0) {
-        print(parsedNumOfDouble);
         return parsedNumOfDouble.toInt().toString();
       }
     }

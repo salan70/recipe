@@ -28,33 +28,32 @@ class Add {
     }
 
     if (amountTypeList.contains('mixed fraction')) {
-      final sumOfMixedFraction = sum.toMixedFraction();
-      return _convert.toIntFromFractions(sumOfMixedFraction);
+      return _convert.toIntFromFractions(sum.toMixedFraction());
     }
 
     if (amountTypeList.contains('fraction')) {
-      final sumOfFraction = sum.toFraction();
-      print(sumOfFraction);
-
-      _convert.toIntFromFractions(sumOfFraction);
-
-      // MixedFractionへ変換
-      //TODO 関数化したい
-      if (sumOfFraction.toDouble() >= 1) {
-        return sumOfFraction.toMixedFraction().toString();
-      }
-      return sumOfFraction.toString();
+      return _formantFraction(sum.toFraction());
     }
 
     if (amountTypeList.contains('int')) {
       return sum.toInt().toString();
     }
-_
     // ここまではたどり着かない想定
     return '';
   }
 
   double _addOfResultIsDouble(String amountA, String amountB) {
     return _convert.toDouble(amountA) + _convert.toDouble(amountB);
+  }
+
+  String _formantFraction(Fraction amount) {
+    final amountOfDouble = amount.toDouble();
+    if (amountOfDouble % 1 == 0) {
+      return _convert.toIntFromDouble(amountOfDouble);
+    }
+    if (amountOfDouble > 1) {
+      return amount.toMixedFraction().toString();
+    }
+    return amount.toString();
   }
 }
