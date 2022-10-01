@@ -7,7 +7,7 @@ class Multiply {
   final Check _check = Check();
 
   String calculate(int countInCart, String? amount) {
-    final amountType = _check.checkNumType(amount);
+    final amountType = _check.checkType(amount);
 
     switch (amountType) {
       case 'int':

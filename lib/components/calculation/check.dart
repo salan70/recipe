@@ -1,7 +1,7 @@
 import 'package:fraction/fraction.dart';
 
 class Check {
-  String checkNumType(String? num) {
+  String checkType(String? num) {
     if (num == null) {
       return 'null';
     } else if (num == '') {

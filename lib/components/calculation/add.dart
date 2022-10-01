@@ -12,8 +12,8 @@ class Add {
       return '';
     }
 
-    final amountAType = _check.checkNumType(amountA);
-    final amountBType = _check.checkNumType(amountB);
+    final amountAType = _check.checkType(amountA);
+    final amountBType = _check.checkType(amountB);
     final amountTypeList = [amountAType, amountBType];
 
     if (amountTypeList.contains('blank')) {
@@ -39,6 +39,7 @@ class Add {
     }
 
     if (amountTypeList.contains('fraction')) {
+      //TODO 定数名変えたい
       final totalAmountOfFraction = totalAmount.toFraction();
 
       // intへ変換
