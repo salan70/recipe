@@ -20,7 +20,7 @@ class Add {
     // 結果がdouble
     else if (amountTypeList.contains('double')) {
       var totalAmount = _addOfResultIsDouble(amountA!, amountB!);
-      totalAmount = _convert.toRoundedDouble2(totalAmount);
+      totalAmount = _convert.toRoundedDouble(totalAmount);
       return _convert.toInt2(totalAmount);
     }
 

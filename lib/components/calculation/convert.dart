@@ -44,13 +44,7 @@ class Convert {
   }
 
   // 四捨五入
-  String toRoundedDouble(String num) {
-    const baseNum = 100;
-    return ((double.tryParse(num)! * baseNum).round() / baseNum).toString();
-  }
-
-  /// TODO 関数名変える
-  double toRoundedDouble2(double num) {
+  double toRoundedDouble(double num) {
     const baseNum = 100;
     return (num * baseNum).round() / baseNum;
   }

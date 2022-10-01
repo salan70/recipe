@@ -30,19 +30,19 @@ void main() {
 
   group('toRoundedDouble', () {
     test('', () {
-      expect(convert.toRoundedDouble2(1.0), 1.0);
+      expect(convert.toRoundedDouble(1.0), 1.0);
     });
     test('', () {
-      expect(convert.toRoundedDouble2(1.5), 1.5);
+      expect(convert.toRoundedDouble(1.5), 1.5);
     });
     test('', () {
-      expect(convert.toRoundedDouble2(1.55), 1.55);
+      expect(convert.toRoundedDouble(1.55), 1.55);
     });
     test('', () {
-      expect(convert.toRoundedDouble2(1.555), 1.56);
+      expect(convert.toRoundedDouble(1.555), 1.56);
     });
     test('', () {
-      expect(convert.toRoundedDouble2(1.999), 2.0);
+      expect(convert.toRoundedDouble(1.999), 2.0);
     });
   });
 }
