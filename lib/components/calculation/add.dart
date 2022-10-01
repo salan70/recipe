@@ -24,27 +24,22 @@ class Add {
 
     if (amountTypeList.contains('double')) {
       final sumOfRoundedDouble = _convert.toRoundedDouble(sum);
-      return _convert.toInt2(sumOfRoundedDouble);
+      return _convert.toIntFromDouble(sumOfRoundedDouble);
     }
 
     if (amountTypeList.contains('mixed fraction')) {
       final sumOfMixedFraction = sum.toMixedFraction();
-
-      if (sumOfMixedFraction.toDouble() % 1 == 0) {
-        return _convert.toInt2(sumOfMixedFraction.toDouble());
-      }
-      return sumOfMixedFraction.toString();
+      return _convert.toIntFromFractions(sumOfMixedFraction);
     }
 
     if (amountTypeList.contains('fraction')) {
       final sumOfFraction = sum.toFraction();
+      print(sumOfFraction);
 
-      // intへ変換
-      //TODO 関数化したい
-      if (sumOfFraction.toDouble() % 1 == 0) {
-        return _convert.toInt2(sumOfFraction.toDouble());
-      }
+      _convert.toIntFromFractions(sumOfFraction);
+
       // MixedFractionへ変換
+      //TODO 関数化したい
       if (sumOfFraction.toDouble() >= 1) {
         return sumOfFraction.toMixedFraction().toString();
       }
@@ -54,7 +49,7 @@ class Add {
     if (amountTypeList.contains('int')) {
       return sum.toInt().toString();
     }
-
+_
     // ここまではたどり着かない想定
     return '';
   }

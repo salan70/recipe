@@ -13,10 +13,23 @@ class Convert {
     return num;
   }
 
-  /// TODO 関数名変える
-  String toInt2(double num) {
+  String toIntFromDouble(double num) {
     if (num % 1 == 0) {
       return num.toInt().toString();
+    }
+    return num.toString();
+  }
+
+  String toIntFromFractions(Object num) {
+    print(num);
+    final parsedNum = Rational.tryParse(num.toString());
+    print(parsedNum);
+    if (parsedNum != null) {
+      final parsedNumOfDouble = parsedNum.toDouble();
+      if (parsedNumOfDouble % 1 == 0) {
+        print(parsedNumOfDouble);
+        return parsedNumOfDouble.toInt().toString();
+      }
     }
     return num.toString();
   }
