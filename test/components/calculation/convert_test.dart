@@ -6,16 +6,16 @@ void main() {
 
   group('toDouble', () {
     test('mixedFraction', () {
-      expect(convert.toDouble('1 1/2'), 1.5);
+      expect(convert.toDoubleFromSomeTypes('1 1/2'), 1.5);
     });
     test('fraction', () {
-      expect(convert.toDouble('1/2'), 0.5);
+      expect(convert.toDoubleFromSomeTypes('1/2'), 0.5);
     });
     test('double', () {
-      expect(convert.toDouble('0.5'), 0.5);
+      expect(convert.toDoubleFromSomeTypes('0.5'), 0.5);
     });
     test('int', () {
-      expect(convert.toDouble('5'), 5.0);
+      expect(convert.toDoubleFromSomeTypes('5'), 5.0);
     });
   });
 

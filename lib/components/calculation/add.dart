@@ -42,7 +42,8 @@ class Add {
   }
 
   double _addOfDoubles(String amountA, String amountB) {
-    return _convert.toDouble(amountA) + _convert.toDouble(amountB);
+    return _convert.toDoubleFromSomeTypes(amountA) +
+        _convert.toDoubleFromSomeTypes(amountB);
   }
 
   /// format

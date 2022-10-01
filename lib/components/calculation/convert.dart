@@ -20,7 +20,7 @@ class Convert {
     return num.toString();
   }
 
-  double toDouble(String num) {
+  double toDoubleFromSomeTypes(String num) {
     // Rational.tryParse(x)は、xが整数、分数、帯分数以外の場合nullを返す
     if (Rational.tryParse(num) != null) {
       return Rational.tryParse(num)!.toDouble();
