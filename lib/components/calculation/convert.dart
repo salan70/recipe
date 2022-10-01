@@ -22,25 +22,11 @@ class Convert {
   }
 
   double toDouble(String num) {
-    // Fraction or MixedFraction
-    if (num.contains('/')) {
-      try {
-        return num.toFraction().toDouble();
-      } on Exception {
-        try {
-          return num.toMixedFraction().toDouble();
-        }
-        // このExceptionには行かない想定
-        on Exception {
-          print('toMixedFraction()ができない');
-          return 0;
-        }
-      }
+    // Rational.tryParse(x)は、xが整数、分数、帯分数以外の場合nullを返す
+    if (Rational.tryParse(num) != null) {
+      return Rational.tryParse(num)!.toDouble();
     }
-    // int or Double
-    else {
-      return double.tryParse(num)!;
-    }
+    return double.parse(num);
   }
 
   // 四捨五入
