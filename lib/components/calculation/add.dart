@@ -20,43 +20,39 @@ class Add {
       return amountA + amountB;
     }
 
-    final totalAmount = _addOfResultIsDouble(amountA, amountB);
+    final sum = _addOfResultIsDouble(amountA, amountB);
 
     if (amountTypeList.contains('double')) {
-      //TODO 定数名変えたい
-      final totalAmountOfRoundedDouble = _convert.toRoundedDouble(totalAmount);
-      return _convert.toInt2(totalAmountOfRoundedDouble);
+      final sumOfRoundedDouble = _convert.toRoundedDouble(sum);
+      return _convert.toInt2(sumOfRoundedDouble);
     }
 
     if (amountTypeList.contains('mixed fraction')) {
-      //TODO 定数名変えたい
-      final totalAmountOfMixedFraction = totalAmount.toMixedFraction();
+      final sumOfMixedFraction = sum.toMixedFraction();
 
-      if (totalAmountOfMixedFraction.toDouble() % 1 == 0) {
-        return _convert.toInt2(totalAmountOfMixedFraction.toDouble());
+      if (sumOfMixedFraction.toDouble() % 1 == 0) {
+        return _convert.toInt2(sumOfMixedFraction.toDouble());
       }
-      return totalAmountOfMixedFraction.toString();
+      return sumOfMixedFraction.toString();
     }
 
     if (amountTypeList.contains('fraction')) {
-      //TODO 定数名変えたい
-      final totalAmountOfFraction = totalAmount.toFraction();
+      final sumOfFraction = sum.toFraction();
 
       // intへ変換
       //TODO 関数化したい
-      if (totalAmountOfFraction.toDouble() % 1 == 0) {
-        return _convert.toInt2(totalAmountOfFraction.toDouble());
+      if (sumOfFraction.toDouble() % 1 == 0) {
+        return _convert.toInt2(sumOfFraction.toDouble());
       }
       // MixedFractionへ変換
-      //TODO 関数化したい
-      if (totalAmountOfFraction.toDouble() >= 1) {
-        return totalAmountOfFraction.toMixedFraction().toString();
+      if (sumOfFraction.toDouble() >= 1) {
+        return sumOfFraction.toMixedFraction().toString();
       }
-      return totalAmountOfFraction.toString();
+      return sumOfFraction.toString();
     }
 
     if (amountTypeList.contains('int')) {
-      return totalAmount.toInt().toString();
+      return sum.toInt().toString();
     }
 
     // ここまではたどり着かない想定
