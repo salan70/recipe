@@ -27,11 +27,11 @@ class Add {
     }
 
     if (amountTypeList.contains('mixed fraction')) {
-      return _formantMixedFraction(sum);
+      return _formatMixedFraction(sum);
     }
 
     if (amountTypeList.contains('fraction')) {
-      return _formantFraction(sum);
+      return _formatFraction(sum);
     }
 
     if (amountTypeList.contains('int')) {
@@ -55,7 +55,7 @@ class Add {
     return _convert.toIntFromDouble(amountOfRoundedDouble);
   }
 
-  String _formantFraction(double amount) {
+  String _formatFraction(double amount) {
     final amountOfFraction = amount.toFraction();
     // Fix 定数名イケてない
     // MixedFractionに変換されてからDoubleに変換されたということがわからないため
@@ -70,7 +70,7 @@ class Add {
     return amountOfFraction.toString();
   }
 
-  String _formantMixedFraction(double amount) {
+  String _formatMixedFraction(double amount) {
     final amountOfMixedFraction = amount.toMixedFraction();
     // Fix 定数名イケてない
     // MixedFractionに変換されてからDoubleに変換されたということがわからないため
