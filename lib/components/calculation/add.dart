@@ -69,12 +69,10 @@ class Add {
     }
 
     // ここまではたどり着かない想定
-    else {
-      return '';
-    }
+
+    return '';
   }
 
-  /// private
   double _addOfResultIsDouble(String amountA, String amountB) {
     return _convert.toDouble(amountA) + _convert.toDouble(amountB);
   }
@@ -86,15 +84,10 @@ class Add {
   // fraction add
   //TODO 関数名変える
   Fraction _fractionAddFraction(String amountA, String amountB) {
-    // toDouble()を一度入れることで、約分できる
-    return (amountA.toFraction() + amountB.toFraction())
-        .toDouble()
-        .toFraction();
+    return _addOfResultIsDouble(amountA, amountB).toFraction();
   }
 
   MixedFraction _fractionAddMixedFraction(String amountA, String amountB) {
-    return (Rational.tryParse(amountA)!.toDouble() +
-            Rational.tryParse(amountB)!.toDouble())
-        .toMixedFraction();
+    return _addOfResultIsDouble(amountA, amountB).toMixedFraction();
   }
 }
