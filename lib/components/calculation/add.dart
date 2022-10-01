@@ -20,7 +20,7 @@ class Add {
       return amountA + amountB;
     }
 
-    final sum = _addOfResultIsDouble(amountA, amountB);
+    final sum = _addOfDoubles(amountA, amountB);
 
     if (amountTypeList.contains('double')) {
       return _formatDouble(sum);
@@ -41,10 +41,11 @@ class Add {
     return '';
   }
 
-  double _addOfResultIsDouble(String amountA, String amountB) {
+  double _addOfDoubles(String amountA, String amountB) {
     return _convert.toDouble(amountA) + _convert.toDouble(amountB);
   }
 
+  /// format
   String _formatInt(double amount) {
     return amount.toInt().toString();
   }
