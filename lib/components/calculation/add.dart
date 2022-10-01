@@ -27,7 +27,11 @@ class Add {
     // 結果がmixed fraction
     else if (amountTypeList.contains('mixed fraction')) {
       if (amountTypeList.contains('fraction')) {
-        return _fractionAddMixedFraction(previousAmount!, addAmount!);
+        final result = _fractionAddMixedFraction(previousAmount!, addAmount!);
+        if (result.toDouble() % 1 == 0) {
+          return _convert.toInt2(result.toDouble());
+        }
+        return result.toString();
       }
       if (amountTypeList.contains('int')) {
         return _intAddMixedFraction(previousAmount!, addAmount!).toString();
@@ -101,41 +105,10 @@ class Add {
         .toFraction();
   }
 
-  String _fractionAddMixedFraction(String originalNum, String addNum) {
-    final originalNumType = _check.checkNumType(originalNum);
-
-    var totalAmount = '';
-
-    if (originalNumType == 'mixed fraction') {
-      // 帯分数を整数と小数に分割
-      final originalNumList = originalNum.split(' ');
-      final originalNumInt = originalNumList[0];
-      final originalNumFraction = originalNumList[1];
-
-      totalAmount = (originalNumInt.toFraction() +
-              originalNumFraction.toFraction() +
-              addNum.toFraction())
-          .toString();
-    } else {
-      // 帯分数を整数と小数に分割
-      final addNumList = addNum.split(' ');
-      final addNumInt = addNumList[0];
-      final addNumFraction = addNumList[1];
-
-      totalAmount = (originalNum.toFraction() +
-              addNumInt.toFraction() +
-              addNumFraction.toFraction())
-          .toString();
-    }
-    // 約分
-    totalAmount = totalAmount.toFraction().toDouble().toFraction().toString();
-
-    totalAmount = _convert.toMixedFraction(totalAmount);
-
-    if (totalAmount.toMixedFraction().toDouble().toString().endsWith('.0')) {
-      totalAmount = totalAmount.toMixedFraction().toDouble().toString();
-      return _convert.toInt(totalAmount);
-    }
+  MixedFraction _fractionAddMixedFraction(String originalNum, String addNum) {
+    final totalAmount = (Rational.tryParse(originalNum)!.toDouble() +
+            Rational.tryParse(addNum)!.toDouble())
+        .toMixedFraction();
 
     return totalAmount;
   }
