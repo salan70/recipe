@@ -168,7 +168,13 @@ void main() {
       test('mixedFraction 2', () {
         expect(add.calculate('1/2', '1 1/5'), '1 7/10');
       });
-      test('mixedFraction 3 約分される', () {
+      test('mixedFraction 3', () {
+        expect(add.calculate('1/3', '1 1/3'), '1 2/3');
+      });
+      test('mixedFraction 4', () {
+        expect(add.calculate('1/3', '1 1/2'), '1 5/6');
+      });
+      test('mixedFraction 5 約分される', () {
         expect(add.calculate('2/8', '1 1/4'), '1 1/2');
       });
     });
