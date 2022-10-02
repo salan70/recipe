@@ -38,7 +38,6 @@ class Add {
         _convert.toDoubleFromSomeTypes(amountB);
   }
 
-  /// format
   String _formatInt(double amount) {
     return amount.toInt().toString();
   }

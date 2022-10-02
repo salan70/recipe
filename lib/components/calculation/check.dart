@@ -1,7 +1,6 @@
 import 'package:fraction/fraction.dart';
 
 class Check {
-  //TODO 引数の型をString?からStringにできないか検討する
   String checkType(String amount) {
     if (amount == '') {
       return 'blank';
