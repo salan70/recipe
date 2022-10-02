@@ -7,20 +7,21 @@ class Multiply {
   final Check _check = Check();
 
   String calcProduct(int countInCart, String? amount) {
+    if (amount == null) {
+      return '';
+    }
     final amountType = _check.checkType(amount);
 
-    if (amountType == 'blank' || amountType == 'null') {
+    if (amountType == 'blank') {
       return '';
     }
 
-    final resultOfDouble = _multiply(countInCart, amount!);
-
-    if (amountType == 'int' || amountType == 'double') {
-      return _convert.toIntOrDoubleFromDouble(resultOfDouble);
+    final resultOfDouble = _multiply(countInCart, amount);
+    if (amountType == 'fractions') {
+      return _formatFractions(countInCart, amount);
     }
 
-    // fraction or mixed fraction
-    return _formatFractions(countInCart, amount);
+    return _convert.toIntOrDoubleFromDouble(resultOfDouble);
   }
 
   double _multiply(int countInCart, String amount) {

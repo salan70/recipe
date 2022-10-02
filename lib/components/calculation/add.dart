@@ -26,19 +26,11 @@ class Add {
       return _formatDouble(sum);
     }
 
-    if (amountTypeList.contains('mixed fraction')) {
-      return _formatMixedFraction(sum);
+    if (amountTypeList.contains('fractions')) {
+      return _formatFractions(sum);
     }
 
-    if (amountTypeList.contains('fraction')) {
-      return _formatFraction(sum);
-    }
-
-    if (amountTypeList.contains('int')) {
-      return _formatInt(sum);
-    }
-    // ここまではたどり着かない想定
-    return '';
+    return _formatInt(sum);
   }
 
   double _add(String amountA, String amountB) {
@@ -56,7 +48,7 @@ class Add {
     return _convert.toIntOrDoubleFromDouble(amountOfRoundedDouble);
   }
 
-  String _formatFraction(double amount) {
+  String _formatFractions(double amount) {
     final amountOfFraction = amount.toFraction();
     // Fix 定数名イケてない？（Fractionに変換されてからDoubleに変換されたということがわからないため）
     final amountOfDouble = amountOfFraction.toDouble();
@@ -68,16 +60,5 @@ class Add {
       return amountOfDouble.toMixedFraction().toString();
     }
     return amountOfFraction.toString();
-  }
-
-  String _formatMixedFraction(double amount) {
-    final amountOfMixedFraction = amount.toMixedFraction();
-    // Fix 定数名イケてない？（MixedFractionに変換されてからDoubleに変換されたということがわからないため）
-    final amountOfDouble = amountOfMixedFraction.toDouble();
-
-    if (amountOfDouble % 1 == 0) {
-      return _convert.toIntOrDoubleFromDouble(amountOfDouble);
-    }
-    return amountOfMixedFraction.toString();
   }
 }
