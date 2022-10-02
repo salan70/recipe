@@ -1,5 +1,3 @@
-import 'package:fraction/fraction.dart';
-
 class Check {
   String checkType(String amount) {
     if (amount == '') {
