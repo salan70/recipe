@@ -45,20 +45,16 @@ class Add {
 
   String _formatDouble(double amount) {
     final amountOfRoundedDouble = _convert.toRoundedDouble(amount);
-    return _convert.toIntOrDoubleFromDouble(amountOfRoundedDouble);
+    return _convert.toIntOrDouble(amountOfRoundedDouble);
   }
 
   String _formatFractions(double amount) {
-    final amountOfFraction = amount.toFraction();
-    // Fix 定数名イケてない？（Fractionに変換されてからDoubleに変換されたということがわからないため）
-    final amountOfDouble = amountOfFraction.toDouble();
-
-    if (amountOfDouble % 1 == 0) {
-      return _convert.toIntOrDoubleFromDouble(amountOfDouble);
+    if (amount % 1 == 0) {
+      return _convert.toIntOrDouble(amount);
     }
-    if (amountOfDouble > 1) {
-      return amountOfDouble.toMixedFraction().toString();
+    if (amount > 1) {
+      return amount.toMixedFraction().toString();
     }
-    return amountOfFraction.toString();
+    return amount.toFraction().toString();
   }
 }

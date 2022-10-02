@@ -6,6 +6,7 @@ class Multiply {
   final Convert _convert = Convert();
   final Check _check = Check();
 
+  // product:積
   String calcProduct(int countInCart, String? amount) {
     if (amount == null) {
       return '';
@@ -16,28 +17,26 @@ class Multiply {
       return '';
     }
 
-    final resultOfDouble = _multiply(countInCart, amount);
+    final product = _multiply(countInCart, amount);
+
     if (amountType == 'fractions') {
-      return _formatFractions(countInCart, amount);
+      return _formatFractions(product);
     }
 
-    return _convert.toIntOrDoubleFromDouble(resultOfDouble);
+    return _convert.toIntOrDouble(product);
   }
 
   double _multiply(int countInCart, String amount) {
     return countInCart * _convert.toDoubleFromSomeTypes(amount);
   }
 
-  String _formatFractions(int countInCart, String amount) {
-    final amountOfDouble = _multiply(countInCart, amount);
-
-    if (amountOfDouble % 1 == 0) {
-      return _convert.toIntOrDoubleFromDouble(amountOfDouble);
+  String _formatFractions(double product) {
+    if (product % 1 == 0) {
+      return _convert.toIntOrDouble(product);
     }
-    if (amountOfDouble > 1) {
-      return amountOfDouble.toMixedFraction().toString();
+    if (product > 1) {
+      return product.toMixedFraction().toString();
     }
-
-    return amountOfDouble.toFraction().toString();
+    return product.toFraction().toString();
   }
 }
