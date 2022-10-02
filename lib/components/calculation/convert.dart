@@ -16,7 +16,7 @@ class Convert {
     return double.parse(num);
   }
 
-  // 四捨五入
+  // 四捨五入する関数
   double toRoundedDouble(double num) {
     const baseNum = 100;
     return (num * baseNum).round() / baseNum;
