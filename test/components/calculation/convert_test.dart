@@ -21,10 +21,10 @@ void main() {
 
   group('toInt', () {
     test('', () {
-      expect(convert.toIntFromDouble(1.0), '1');
+      expect(convert.toIntOrDoubleFromDouble(1.0), '1');
     });
     test('', () {
-      expect(convert.toIntFromDouble(1.5), '1.5');
+      expect(convert.toIntOrDoubleFromDouble(1.5), '1.5');
     });
   });
 

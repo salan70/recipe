@@ -9,35 +9,29 @@ class Multiply {
   String calcProduct(int countInCart, String? amount) {
     final amountType = _check.checkType(amount);
 
-    switch (amountType) {
-      case 'int':
-        final resultOfDouble = _multiplyOfDouble(countInCart, amount!);
-        return _convert.toIntFromDouble(resultOfDouble);
-      case 'double':
-        final resultOfDouble = _multiplyOfDouble(countInCart, amount!);
-        return _convert.toIntFromDouble(resultOfDouble);
-      case 'fraction':
-        return _formatFractions(countInCart, amount!);
-      case 'mixed fraction':
-        return _formatFractions(countInCart, amount!);
-      default:
-        return '';
+    if (amountType == 'blank' || amountType == 'null') {
+      return '';
     }
+
+    final resultOfDouble = _multiply(countInCart, amount!);
+
+    if (amountType == 'int' || amountType == 'double') {
+      return _convert.toIntOrDoubleFromDouble(resultOfDouble);
+    }
+
+    // fraction or mixed fraction
+    return _formatFractions(countInCart, amount);
   }
 
-  double _multiplyOfDouble(int countInCart, String amount) {
+  double _multiply(int countInCart, String amount) {
     return countInCart * _convert.toDoubleFromSomeTypes(amount);
   }
 
-  String _formatIntAndDouble() {
-    return '';
-  }
-
   String _formatFractions(int countInCart, String amount) {
-    final amountOfDouble = _multiplyOfDouble(countInCart, amount);
+    final amountOfDouble = _multiply(countInCart, amount);
 
     if (amountOfDouble % 1 == 0) {
-      return _convert.toIntFromDouble(amountOfDouble);
+      return _convert.toIntOrDoubleFromDouble(amountOfDouble);
     }
     if (amountOfDouble > 1) {
       return amountOfDouble.toMixedFraction().toString();

@@ -2,37 +2,24 @@ import 'package:fraction/fraction.dart';
 
 class Check {
   //TODO 引数の型をString?からStringにできないか検討する
-  String checkType(String? num) {
-    if (num == null) {
+  String checkType(String? amount) {
+    if (amount == null) {
       return 'null';
-    } else if (num == '') {
+    }
+    if (amount == '') {
       return 'blank';
     }
     // fraction or mixedFraction
-    else if (num.contains('/')) {
-      try {
-        num.toFraction();
+    if (amount.contains('/')) {
+      if (Rational.tryParse(amount) is Fraction) {
         return 'fraction';
-      } on Exception {
-        try {
-          num.toMixedFraction();
-          return 'mixed fraction';
-        } on Exception {
-          return 'error';
-        }
       }
+      return 'mixed fraction';
     }
-    // double or int
-    else {
-      try {
-        if (double.tryParse(num)! % 1 == 0) {
-          return 'int';
-        } else {
-          return 'double';
-        }
-      } on Exception {
-        return 'error';
-      }
+    // int or double
+    if (int.tryParse(amount) != null) {
+      return 'int';
     }
+    return 'double';
   }
 }

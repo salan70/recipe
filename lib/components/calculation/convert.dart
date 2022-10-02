@@ -1,7 +1,7 @@
 import 'package:fraction/fraction.dart';
 
 class Convert {
-  String toIntFromDouble(double num) {
+  String toIntOrDoubleFromDouble(double num) {
     if (num % 1 == 0) {
       return num.toInt().toString();
     }
