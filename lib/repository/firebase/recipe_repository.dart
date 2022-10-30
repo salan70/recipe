@@ -13,9 +13,6 @@ class RecipeRepository {
   final User user;
   final Recipe? recipe;
 
-  int ingredientListOrderNum = 0;
-  int procedureListOrderNum = 0;
-
   /// delete
   Future<void> deleteRecipe(Recipe recipe) async {
     await FirebaseFirestore.instance
