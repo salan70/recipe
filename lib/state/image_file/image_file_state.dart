@@ -8,7 +8,7 @@ class ImageFileNotifier extends StateNotifier<File?> {
   ImageFileNotifier() : super(null);
 
   File? imageFile;
-  File? croppedFile;
+  CroppedFile? croppedFile;
   final picker = ImagePicker();
 
   Future<void> pickImage(ImageSource source) async {
@@ -18,31 +18,33 @@ class ImageFileNotifier extends StateNotifier<File?> {
       imageFile = File(pickedFile.path);
       croppedFile = await _cropImage();
       if (croppedFile != null) {
-        state = croppedFile;
+        state = File(croppedFile!.path);
       }
     }
   }
 
-  Future<File?> _cropImage() async {
+  Future<CroppedFile?> _cropImage() async {
     final croppedFile = await ImageCropper().cropImage(
       sourcePath: imageFile!.path,
-      androidUiSettings: const AndroidUiSettings(
-        statusBarColor: Colors.black,
-        toolbarTitle: '',
-        toolbarColor: Colors.black,
-        toolbarWidgetColor: Colors.white,
-        backgroundColor: Colors.black,
-        cropFrameColor: Colors.transparent,
-        showCropGrid: false,
-        hideBottomControls: true,
-        initAspectRatio: CropAspectRatioPreset.original,
-      ),
-      iosUiSettings: const IOSUiSettings(
-        hidesNavigationBar: true,
-        aspectRatioPickerButtonHidden: true,
-        doneButtonTitle: '完了',
-        cancelButtonTitle: '戻る',
-      ),
+      uiSettings: [
+        AndroidUiSettings(
+          statusBarColor: Colors.black,
+          toolbarTitle: '',
+          toolbarColor: Colors.black,
+          toolbarWidgetColor: Colors.white,
+          backgroundColor: Colors.black,
+          cropFrameColor: Colors.transparent,
+          showCropGrid: false,
+          hideBottomControls: true,
+          initAspectRatio: CropAspectRatioPreset.original,
+        ),
+        IOSUiSettings(
+          hidesNavigationBar: true,
+          aspectRatioPickerButtonHidden: true,
+          doneButtonTitle: '完了',
+          cancelButtonTitle: '戻る',
+        ),
+      ],
     );
     return croppedFile;
   }
