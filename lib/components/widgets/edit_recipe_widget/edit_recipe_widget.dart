@@ -104,7 +104,7 @@ class EditRecipeWidget extends ConsumerWidget {
                           fontWeight: FontWeight.normal,
                         ),
                       ),
-                      onPressed: () async {
+                      onPressed: (_) async {
                         if (await Permission.photos.status.isGranted ||
                             await Permission.photos.request().isGranted) {
                           await imageFileNotifier
@@ -142,7 +142,7 @@ class EditRecipeWidget extends ConsumerWidget {
                           fontWeight: FontWeight.normal,
                         ),
                       ),
-                      onPressed: () async {
+                      onPressed: (_) async {
                         await Permission.camera.request();
                         if (await Permission.camera.status.isGranted ||
                             await Permission.camera.request().isGranted) {
@@ -176,7 +176,7 @@ class EditRecipeWidget extends ConsumerWidget {
                   ],
                   cancelAction: CancelAction(
                     title: const Text('キャンセル'),
-                    onPressed: () {
+                    onPressed: (_) {
                       Navigator.pop(context);
                     },
                   ),
